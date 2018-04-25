@@ -1,18 +1,18 @@
 {
-  "name": "electron-react-boilerplate",
-  "productName": "electron-react-boilerplate",
-  "version": "1.0.0",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
-  "main": "./main.prod.js",
+  "name": "overlay",
+  "productName": "overlay",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./main.js",
   "author": {
-    "name": "C. T. Lin",
-    "email": "chentsulin@gmail.com",
-    "url": "https://github.com/chentsulin"
+    "name": "Nahuel Scotti",
+    "email": "nahuel.scotti@gmail.com",
+    "url": "https://github.com/irath96"
   },
   "scripts": {
-    "electron-rebuild": "node -r babel-register ../internals/scripts/ElectronRebuild.js",
-    "postinstall": "npm run electron-rebuild"
+    "postinstall": "npm rebuild --runtime=electron --target=1.6.6 --disturl=https://atom.io/download/atom-shell --build-from-source"
   },
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+  }
 }

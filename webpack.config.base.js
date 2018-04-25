@@ -2,48 +2,41 @@
  * Base webpack config used across other specific configs
  */
 
-import path from 'path';
-import webpack from 'webpack';
-import { dependencies as externals } from './app/package.json';
+const path = require('path');
+const {
+  dependencies: externals
+} = require('./app/package.json');
 
-export default {
-  externals: Object.keys(externals || {}),
-
+module.exports = {
   module: {
-    rules: [{
-      test: /\.jsx?$/,
-      exclude: /node_modules/,
-      use: {
-        loader: 'babel-loader',
-        options: {
-          cacheDirectory: true
-        }
-      }
+    loaders: [{
+      test: /\.tsx?$/,
+      loaders: ['react-hot-loader/webpack', 'ts-loader'],
+      exclude: /node_modules/
+    }, {
+      test: /\.json$/,
+      loader: 'json-loader'
     }]
   },
 
   output: {
     path: path.join(__dirname, 'app'),
+    filename: 'bundle.js',
+
     // https://github.com/webpack/webpack/issues/1114
     libraryTarget: 'commonjs2'
   },
 
-  /**
-   * Determine the array of extensions that should be used to resolve modules.
-   */
+  // https://webpack.github.io/docs/configuration.html#resolve
   resolve: {
-    extensions: ['.js', '.jsx', '.json'],
+    extensions: ['.js', '.ts', '.tsx', '.json'],
     modules: [
       path.join(__dirname, 'app'),
       'node_modules',
-    ],
+    ]
   },
 
-  plugins: [
-    new webpack.EnvironmentPlugin({
-      NODE_ENV: 'production'
-    }),
+  plugins: [],
 
-    new webpack.NamedModulesPlugin(),
-  ],
+  externals: Object.keys(externals || {})
 };
