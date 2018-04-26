@@ -4,15 +4,30 @@ import Guide from '../components/guide/Guide';
 import Ruler from '../components/ruler/Ruler';
 import Grid from '../components/grid/Grid';
 
-const screen1 = require('./screen1.png');
-const screen2 = require('./screen2.jpg');
+const onionImages: string[] = [
+  require('./screen1.png'),
+  require('./screen2.jpg')
+];
 
 export default () => (
   <>
     <Grid />
-    <Ruler x={50} y={50} width={400} height={100} />
-    <OnionImage src={screen1} />
-    <OnionImage src={screen2} />
+    <Ruler
+      x={Math.round(Math.random() * 500)}
+      y={Math.round(Math.random() * 500)}
+      width={Math.round(Math.random() * 500)}
+      height={Math.round(Math.random() * 500)}
+    />
+    {onionImages.map((image) => (
+      <OnionImage
+        src={image}
+        x={Math.round(Math.random() * 500)}
+        y={Math.round(Math.random() * 500)}
+        width={Math.round(Math.random() * 500)}
+        height={Math.round(Math.random() * 500)}
+      />
+    ))}
+
     <Guide />
     <Guide />
   </>

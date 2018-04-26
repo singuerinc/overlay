@@ -69,19 +69,18 @@ export default class Ruler extends React.Component<Props, State> {
     height: 100
   };
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return {
+      ...prevState,
+      x: nextProps.x,
+      y: nextProps.y,
+      width: nextProps.width,
+      height: nextProps.height
+    };
+  }
+
   componentDidMount() {
-    this.setState(
-      {
-        ...this.state,
-        x: this.props.x,
-        y: this.props.x,
-        width: this.props.width,
-        height: this.props.height
-      },
-      () => {
-        setPosition(this.el, this.state.x, this.state.y);
-      }
-    );
+    setPosition(this.el, this.state.x, this.state.y);
 
     interactjs(this.el).draggable({
       onmove: ({ dx, dy, target }) => {

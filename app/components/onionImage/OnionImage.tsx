@@ -7,6 +7,10 @@ import Size from '../coords/Size';
 
 interface Props {
   src: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 
 interface State {
@@ -73,10 +77,10 @@ export default class OnionImage extends React.Component<Props, State> {
   state = {
     opacity: 1,
     inverted: false,
-    x: Math.round(Math.random() * 500),
-    y: Math.round(Math.random() * 500),
-    width: Math.round(Math.random() * 500),
-    height: Math.round(Math.random() * 500)
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0
   };
 
   bindKeys() {
@@ -161,6 +165,16 @@ export default class OnionImage extends React.Component<Props, State> {
     mousetrap.unbind(opacityNumberKeys);
     mousetrap.unbind(invertKeys);
     mousetrap.unbind(arrowKeys);
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return {
+      ...prevState,
+      x: nextProps.x,
+      y: nextProps.y,
+      width: nextProps.width,
+      height: nextProps.height
+    };
   }
 
   componentDidMount() {
