@@ -1,22 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import * as interactjs from 'interactjs';
+import Coords from '../coords/Coords';
 
 const grid = require('./grid.png');
-
-const Coords = styled.span`
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: rgba(255, 255, 255, 0.9);
-  color: #111;
-  z-index: 1;
-  font-size: 12px;
-  font-family: sans-serif;
-  padding: 3px 6px;
-  margin: 3px 0 0 3px;
-  display: none;
-`;
 
 const RulerWrapper = styled.div.attrs({})`
   position: fixed;
@@ -80,9 +67,7 @@ export default class Ruler extends React.Component {
           this.el = el;
         }}
       >
-        <Coords>
-          {x}:{y}
-        </Coords>
+        <Coords x={x} y={y} />
         <RulerElement />
       </RulerWrapper>
     );
