@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as mousetrap from 'mousetrap';
 import styled from 'styled-components';
 import * as interactjs from 'interactjs';
+import Coords from '../coords/Coords';
 
 interface Props {
   src: string;
@@ -13,20 +14,6 @@ interface State {
   x: number;
   y: number;
 }
-
-const Coords = styled.span`
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: rgba(255, 255, 255, 0.9);
-  color: #111;
-  z-index: 1;
-  font-size: 12px;
-  font-family: sans-serif;
-  padding: 3px 6px;
-  margin: 3px 0 0 3px;
-  display: none;
-`;
 
 const OnionImageWrapper = styled.div.attrs({})`
   position: fixed;
@@ -196,9 +183,7 @@ export default class OnionImage extends React.Component<Props, State> {
           this.el = el;
         }}
       >
-        <Coords>
-          {x}:{y}
-        </Coords>
+        <Coords x={x} y={y} />
         <OnionImageElement src={src} opacity={opacity} inverted={inverted} />
       </OnionImageWrapper>
     );
