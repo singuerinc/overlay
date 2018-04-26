@@ -6,8 +6,18 @@ import Grid from '../components/grid/Grid';
 import { IRuler } from './ruler/IRuler';
 import { IOnionImage } from './onionImage/IOnionImage';
 import { IGuide } from './guide/IGuide';
+import { IGrid } from './grid/IGrid';
 
-const onionImages: IOnionImage[] = [
+const grids: IGrid[] = [
+  {
+    size: 10,
+    color: 'red',
+    type: 'solid',
+    opacity: 0.3
+  }
+];
+
+const images: IOnionImage[] = [
   {
     src: require('./screen1.png'),
     x: 100,
@@ -56,17 +66,9 @@ const guides: IGuide[] = [
 
 export default () => (
   <>
-    <Grid />
-    {rulers.map(({ x, y, width, height }) => (
-      <Ruler x={x} y={y} width={width} height={height} />
-    ))}
-
-    {onionImages.map(({ src, x, y, width, height }) => (
-      <OnionImage src={src} x={x} y={y} width={width} height={height} />
-    ))}
-
-    {guides.map(({ x, y, type, color }) => (
-      <Guide x={x} y={y} type={type} color={color} />
-    ))}
+    {grids.map((props) => <Grid {...props} />)}
+    {rulers.map((props) => <Ruler {...props} />)}
+    {images.map((props) => <OnionImage {...props} />)}
+    {guides.map((props) => <Guide {...props} />)}
   </>
 );
