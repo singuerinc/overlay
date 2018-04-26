@@ -3,15 +3,9 @@ import styled from 'styled-components';
 import * as interactjs from 'interactjs';
 import Coords from '../coords/Coords';
 import Size from '../coords/Size';
+import { IRuler as Props } from './IRuler.d';
 
 const grid = require('./grid.png');
-
-interface Props {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
 
 interface State {
   x: number;

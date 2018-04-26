@@ -4,14 +4,7 @@ import styled from 'styled-components';
 import * as interactjs from 'interactjs';
 import Coords from '../coords/Coords';
 import Size from '../coords/Size';
-
-interface Props {
-  src: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
+import { IOnionImage as Props } from './IOnionImage.d';
 
 interface State {
   opacity: number;

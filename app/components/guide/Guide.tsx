@@ -3,6 +3,16 @@ import * as mousetrap from 'mousetrap';
 import styled from 'styled-components';
 import * as interactjs from 'interactjs';
 import Position from '../positions/Position';
+import { IGuide as Props } from './IGuide.d';
+
+type Direction = 'h' | 'v';
+
+interface State {
+  x: number;
+  y: number;
+  type: Direction;
+  color: 'red' | 'green' | 'blue' | 'yellow' | 'black';
+}
 
 interface GuideElementProps {
   color: string;
@@ -60,15 +70,18 @@ const setPosition = (el, x, y) => {
   el.style.webkitTransform = el.style.transform = `translate(${x}px,${y}px)`;
 };
 
-export default class Guide extends React.Component {
+export default class Guide extends React.Component<Props, State> {
   private el: HTMLDivElement;
 
-  state = {
-    x: 0,
-    y: Math.floor(Math.random() * 100),
-    type: 'h',
-    color: 'green'
-  };
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return {
+      ...prevState,
+      x: nextProps.x,
+      y: nextProps.y,
+      type: nextProps.type,
+      color: nextProps.color
+    };
+  }
 
   bindKeys() {
     mousetrap.bind(arrowKeys, ({ shiftKey, key }) => {
@@ -125,7 +138,7 @@ export default class Guide extends React.Component {
         this.setState(
           {
             ...this.state,
-            type: key,
+            type: key as Direction,
             x: y,
             y: x
           },
