@@ -56,26 +56,7 @@ export default class Guide extends React.Component {
     color: 'green'
   };
 
-  componentDidMount() {
-    setPosition(this.el, this.state.x, this.state.y);
-
-    interactjs(this.el).draggable({
-      onmove: (event) => {
-        const { x, y, type } = this.state;
-        const { dx, dy, target } = event;
-        const newX = type === 'h' ? 0 : x + dx;
-        const newY = type === 'h' ? y + dy : 0;
-
-        setPosition(target, newX, newY);
-
-        this.setState({
-          ...this.state,
-          y: newY,
-          x: newX
-        });
-      }
-    });
-
+  bindKeys() {
     mousetrap.bind(
       [
         'up',
@@ -94,31 +75,43 @@ export default class Guide extends React.Component {
 
         if (type === 'h') {
           if (key === 'ArrowUp') {
-            this.setState({
-              ...this.state,
-              y: y - value,
-              x: 0
-            });
+            this.setState(
+              {
+                ...this.state,
+                y: y - value,
+                x: 0
+              },
+              () => setPosition(this.el, this.state.x, this.state.y)
+            );
           } else if (key === 'ArrowDown') {
-            this.setState({
-              ...this.state,
-              y: y + value,
-              x: 0
-            });
+            this.setState(
+              {
+                ...this.state,
+                y: y + value,
+                x: 0
+              },
+              () => setPosition(this.el, this.state.x, this.state.y)
+            );
           }
         } else if (type === 'v') {
           if (key === 'ArrowLeft') {
-            this.setState({
-              ...this.state,
-              x: x - value,
-              y: 0
-            });
+            this.setState(
+              {
+                ...this.state,
+                x: x - value,
+                y: 0
+              },
+              () => setPosition(this.el, this.state.x, this.state.y)
+            );
           } else if (key === 'ArrowRight') {
-            this.setState({
-              ...this.state,
-              x: x + value,
-              y: 0
-            });
+            this.setState(
+              {
+                ...this.state,
+                x: x + value,
+                y: 0
+              },
+              () => setPosition(this.el, this.state.x, this.state.y)
+            );
           }
         }
       }
@@ -136,9 +129,7 @@ export default class Guide extends React.Component {
             x: y,
             y: x
           },
-          () => {
-            setPosition(this.el, this.state.x, this.state.y);
-          }
+          () => setPosition(this.el, this.state.x, this.state.y)
         );
       }
     });
@@ -167,6 +158,45 @@ export default class Guide extends React.Component {
         color
       });
     });
+  }
+
+  unbindKeys() {
+    mousetrap.unbind([
+      'up',
+      'shift+up',
+      'down',
+      'shift+down',
+      'left',
+      'shift+left',
+      'right',
+      'shift+right'
+    ]);
+    mousetrap.unbind(['v', 'h']);
+    mousetrap.unbind(['r', 'g', 'b', 'y']);
+  }
+
+  componentDidMount() {
+    setPosition(this.el, this.state.x, this.state.y);
+
+    interactjs(this.el).draggable({
+      onmove: (event) => {
+        const { x, y, type } = this.state;
+        const { dx, dy, target } = event;
+        const newX = type === 'h' ? 0 : x + dx;
+        const newY = type === 'h' ? y + dy : 0;
+
+        setPosition(target, newX, newY);
+
+        this.setState({
+          ...this.state,
+          y: newY,
+          x: newX
+        });
+      }
+    });
+
+    this.el.addEventListener('mouseover', () => this.bindKeys());
+    this.el.addEventListener('mouseout', () => this.unbindKeys());
   }
 
   render() {

@@ -37,26 +37,31 @@ const ImageElement = styled.img.attrs<ImageElementProps>({
   filter: invert(${({ inverted }) => (inverted ? '100%' : '0%')});
 `;
 
-export default class ImageComponent extends React.Component {
+const setPosition = (el, x, y) => {
+  el.style.webkitTransform = el.style.transform = `translate(${x}px,${y}px)`;
+  el.setAttribute('data-x', x);
+  el.setAttribute('data-y', y);
+};
+
+export default class Image extends React.Component {
   private el: HTMLDivElement;
   state = {
     opacity: 1,
     inverted: false,
-    x: 0,
-    y: 0
+    x: Math.round(Math.random() * 500),
+    y: Math.round(Math.random() * 500)
   };
 
   componentDidMount() {
+    setPosition(this.el, this.state.x, this.state.y);
+
     interactjs(this.el).draggable({
       onmove: (event) => {
         const { dx, dy, target } = event;
         const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
         const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
 
-        target.style.webkitTransform = target.style.transform = `translate(${x}px,${y}px)`;
-
-        target.setAttribute('data-x', x);
-        target.setAttribute('data-y', y);
+        setPosition(target, x, y);
 
         this.setState({
           ...this.state,
