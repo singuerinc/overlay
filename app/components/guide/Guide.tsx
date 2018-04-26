@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as mousetrap from 'mousetrap';
 import styled from 'styled-components';
 import * as interactjs from 'interactjs';
-import Position from './positions/Position';
+import Position from '../positions/Position';
 
 interface GuideElementProps {
   color: string;

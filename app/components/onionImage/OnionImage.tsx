@@ -14,24 +14,18 @@ const Coords = styled.span`
   z-index: 1;
 `;
 
-const Wrapper = styled.div`
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-`;
-
-const ImageWrapper = styled.div.attrs({})`
+const OnionImageWrapper = styled.div.attrs({})`
   position: fixed;
 `;
 
-interface ImageElementProps {
+interface OnionImageElementProps {
   opacity: number;
   inverted: boolean;
 }
 
-const ImageElement = styled.img.attrs<ImageElementProps>({
-  opacity: (props: ImageElementProps) => props.opacity,
-  inverted: (props: ImageElementProps) => props.inverted
+const OnionImageElement = styled.img.attrs<OnionImageElementProps>({
+  opacity: (props: OnionImageElementProps) => props.opacity,
+  inverted: (props: OnionImageElementProps) => props.inverted
 })`
   opacity: ${({ opacity }) => opacity};
   filter: invert(${({ inverted }) => (inverted ? '100%' : '0%')});
@@ -43,7 +37,7 @@ const setPosition = (el, x, y) => {
   el.setAttribute('data-y', y);
 };
 
-export default class Image extends React.Component {
+export default class OnionImage extends React.Component {
   private el: HTMLDivElement;
   state = {
     opacity: 1,
@@ -113,18 +107,16 @@ export default class Image extends React.Component {
   render() {
     const { opacity, inverted, x, y } = this.state;
     return (
-      <Wrapper>
-        <ImageWrapper
-          innerRef={(el: HTMLDivElement) => {
-            this.el = el;
-          }}
-        >
-          <Coords>
-            {x}:{y}
-          </Coords>
-          <ImageElement src={screen} opacity={opacity} inverted={inverted} />
-        </ImageWrapper>
-      </Wrapper>
+      <OnionImageWrapper
+        innerRef={(el: HTMLDivElement) => {
+          this.el = el;
+        }}
+      >
+        <Coords>
+          {x}:{y}
+        </Coords>
+        <OnionImageElement src={screen} opacity={opacity} inverted={inverted} />
+      </OnionImageWrapper>
     );
   }
 }

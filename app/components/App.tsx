@@ -1,12 +1,14 @@
 import * as React from 'react';
-import Image from '../components/Image';
-import Guide from '../components/Guide';
+import OnionImage from '../components/onionImage/OnionImage';
+import Guide from '../components/guide/Guide';
+import Ruler from '../components/ruler/Ruler';
 // import Grid from '../components/grid/Grid';
 
 export default () => (
   <>
     {/* <Grid /> */}
-    <Image />
+    <Ruler />
+    <OnionImage />
     <Guide />
     <Guide />
   </>
