@@ -3,19 +3,40 @@ import * as mousetrap from 'mousetrap';
 import styled from 'styled-components';
 import * as interactjs from 'interactjs';
 
-const screen = require('./screen.png');
+interface Props {
+  src: string;
+}
+
+interface State {
+  opacity: number;
+  inverted: boolean;
+  x: number;
+  y: number;
+}
 
 const Coords = styled.span`
   position: absolute;
   top: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.7);
-  color: #999;
+  background: rgba(255, 255, 255, 0.9);
+  color: #111;
   z-index: 1;
+  font-size: 12px;
+  font-family: sans-serif;
+  padding: 3px 6px;
+  margin: 3px 0 0 3px;
+  display: none;
 `;
 
 const OnionImageWrapper = styled.div.attrs({})`
   position: fixed;
+  border: 1px solid transparent;
+  &:hover {
+    border: 1px dashed rgba(0, 255, 255, 0.4);
+  }
+  &:hover ${Coords} {
+    display: initial;
+  }
 `;
 
 interface OnionImageElementProps {
@@ -37,7 +58,21 @@ const setPosition = (el, x, y) => {
   el.setAttribute('data-y', y);
 };
 
-export default class OnionImage extends React.Component {
+const opacityNumberKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+const opacityLettersKeys = ['=', '+', '-', '_'];
+const invertKeys = 'i';
+const arrowKeys = [
+  'up',
+  'shift+up',
+  'down',
+  'shift+down',
+  'left',
+  'shift+left',
+  'right',
+  'shift+right'
+];
+
+export default class OnionImage extends React.Component<Props, State> {
   private el: HTMLDivElement;
   state = {
     opacity: 1,
@@ -46,36 +81,16 @@ export default class OnionImage extends React.Component {
     y: Math.round(Math.random() * 500)
   };
 
-  componentDidMount() {
-    setPosition(this.el, this.state.x, this.state.y);
-
-    interactjs(this.el).draggable({
-      onmove: ({ dx, dy, target }) => {
-        const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
-        const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
-
-        setPosition(target, x, y);
-
-        this.setState({
-          ...this.state,
-          x,
-          y
-        });
-      }
+  bindKeys() {
+    mousetrap.bind(opacityNumberKeys, ({ key }) => {
+      const val = parseInt(key, 10) * 0.1;
+      this.setState({
+        ...this.state,
+        opacity: val === 0 ? 1 : val
+      });
     });
 
-    mousetrap.bind(
-      ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
-      ({ key }) => {
-        const val = parseInt(key, 10) * 0.1;
-        this.setState({
-          ...this.state,
-          opacity: val === 0 ? 1 : val
-        });
-      }
-    );
-
-    mousetrap.bind(['=', '+', '-', '_'], ({ keyCode }) => {
+    mousetrap.bind(opacityLettersKeys, ({ keyCode }) => {
       let value = 0.05;
       if (keyCode === 45 || keyCode === 95) {
         // - 45
@@ -96,15 +111,84 @@ export default class OnionImage extends React.Component {
       });
     });
 
-    mousetrap.bind(['i'], () => {
+    mousetrap.bind(invertKeys, () => {
       this.setState({
         ...this.state,
         inverted: !this.state.inverted
       });
     });
+
+    mousetrap.bind(arrowKeys, ({ shiftKey, key }) => {
+      const { x, y } = this.state;
+      const value = shiftKey ? 10 : 1;
+
+      if (key === 'ArrowUp') {
+        this.setState(
+          {
+            ...this.state,
+            y: y - value
+          },
+          () => setPosition(this.el, this.state.x, this.state.y)
+        );
+      } else if (key === 'ArrowDown') {
+        this.setState(
+          {
+            ...this.state,
+            y: y + value
+          },
+          () => setPosition(this.el, this.state.x, this.state.y)
+        );
+      } else if (key === 'ArrowLeft') {
+        this.setState(
+          {
+            ...this.state,
+            x: x - value
+          },
+          () => setPosition(this.el, this.state.x, this.state.y)
+        );
+      } else if (key === 'ArrowRight') {
+        this.setState(
+          {
+            ...this.state,
+            x: x + value
+          },
+          () => setPosition(this.el, this.state.x, this.state.y)
+        );
+      }
+    });
+  }
+
+  unbindKeys() {
+    mousetrap.unbind(opacityLettersKeys);
+    mousetrap.unbind(opacityNumberKeys);
+    mousetrap.unbind(invertKeys);
+    mousetrap.unbind(arrowKeys);
+  }
+
+  componentDidMount() {
+    setPosition(this.el, this.state.x, this.state.y);
+
+    this.el.addEventListener('mouseover', () => this.bindKeys());
+    this.el.addEventListener('mouseout', () => this.unbindKeys());
+
+    interactjs(this.el).draggable({
+      onmove: ({ dx, dy, target }) => {
+        const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
+        const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
+
+        setPosition(target, x, y);
+
+        this.setState({
+          ...this.state,
+          x,
+          y
+        });
+      }
+    });
   }
 
   render() {
+    const { src } = this.props;
     const { opacity, inverted, x, y } = this.state;
     return (
       <OnionImageWrapper
@@ -115,7 +199,7 @@ export default class OnionImage extends React.Component {
         <Coords>
           {x}:{y}
         </Coords>
-        <OnionImageElement src={screen} opacity={opacity} inverted={inverted} />
+        <OnionImageElement src={src} opacity={opacity} inverted={inverted} />
       </OnionImageWrapper>
     );
   }

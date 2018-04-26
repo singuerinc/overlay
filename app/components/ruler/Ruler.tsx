@@ -8,9 +8,22 @@ const Coords = styled.span`
   position: absolute;
   top: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.7);
-  color: #999;
+  background: rgba(255, 255, 255, 0.9);
+  color: #111;
   z-index: 1;
+  font-size: 12px;
+  font-family: sans-serif;
+  padding: 3px 6px;
+  margin: 3px 0 0 3px;
+  display: none;
+`;
+
+const RulerWrapper = styled.div.attrs({})`
+  position: fixed;
+
+  &:hover ${Coords} {
+    display: initial;
+  }
 `;
 
 const RulerElement = styled.div`
@@ -25,17 +38,13 @@ const RulerElement = styled.div`
   opacity: 0.5;
 `;
 
-const OnionImageWrapper = styled.div.attrs({})`
-  position: fixed;
-`;
-
 const setPosition = (el, x, y) => {
   el.style.webkitTransform = el.style.transform = `translate(${x}px,${y}px)`;
   el.setAttribute('data-x', x);
   el.setAttribute('data-y', y);
 };
 
-export default class OnionImage extends React.Component {
+export default class Ruler extends React.Component {
   private el: HTMLDivElement;
   state = {
     opacity: 1,
@@ -66,7 +75,7 @@ export default class OnionImage extends React.Component {
   render() {
     const { x, y } = this.state;
     return (
-      <OnionImageWrapper
+      <RulerWrapper
         innerRef={(el: HTMLDivElement) => {
           this.el = el;
         }}
@@ -75,7 +84,7 @@ export default class OnionImage extends React.Component {
           {x}:{y}
         </Coords>
         <RulerElement />
-      </OnionImageWrapper>
+      </RulerWrapper>
     );
   }
 }
