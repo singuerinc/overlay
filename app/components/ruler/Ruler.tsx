@@ -26,6 +26,10 @@ const RulerWrapper = styled.div.attrs({})`
   position: fixed;
   display: block;
 
+  & ${Coords}, & ${Size} {
+    display: none;
+  }
+
   &:hover ${Coords}, &:hover ${Size} {
     display: initial;
   }

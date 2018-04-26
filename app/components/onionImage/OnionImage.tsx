@@ -3,6 +3,7 @@ import * as mousetrap from 'mousetrap';
 import styled from 'styled-components';
 import * as interactjs from 'interactjs';
 import Coords from '../coords/Coords';
+import Size from '../coords/Size';
 
 interface Props {
   src: string;
@@ -13,15 +14,23 @@ interface State {
   inverted: boolean;
   x: number;
   y: number;
+  width: number;
+  height: number;
 }
 
 const OnionImageWrapper = styled.div.attrs({})`
   position: fixed;
   border: 1px solid transparent;
+
   &:hover {
     border: 1px dashed rgba(0, 255, 255, 0.4);
   }
-  &:hover ${Coords} {
+
+  & ${Coords}, & ${Size} {
+    display: none;
+  }
+
+  &:hover ${Coords}, &:hover ${Size} {
     display: initial;
   }
 `;
@@ -65,7 +74,9 @@ export default class OnionImage extends React.Component<Props, State> {
     opacity: 1,
     inverted: false,
     x: Math.round(Math.random() * 500),
-    y: Math.round(Math.random() * 500)
+    y: Math.round(Math.random() * 500),
+    width: Math.round(Math.random() * 500),
+    height: Math.round(Math.random() * 500)
   };
 
   bindKeys() {
@@ -176,7 +187,7 @@ export default class OnionImage extends React.Component<Props, State> {
 
   render() {
     const { src } = this.props;
-    const { opacity, inverted, x, y } = this.state;
+    const { opacity, inverted, x, y, width, height } = this.state;
     return (
       <OnionImageWrapper
         innerRef={(el: HTMLDivElement) => {
@@ -184,6 +195,7 @@ export default class OnionImage extends React.Component<Props, State> {
         }}
       >
         <Coords x={x} y={y} />
+        <Size width={width} height={height} />
         <OnionImageElement src={src} opacity={opacity} inverted={inverted} />
       </OnionImageWrapper>
     );

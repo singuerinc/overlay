@@ -29,5 +29,4 @@ export default styled(Element)`
   font-family: sans-serif;
   padding: 3px 6px;
   margin: 0 3px 3px 0;
-  display: none;
 `;
