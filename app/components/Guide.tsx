@@ -42,6 +42,20 @@ const GuideElement = styled.div.attrs<GuideElementProps>({
   }
 `;
 
+const arrowKeys = [
+  'up',
+  'shift+up',
+  'down',
+  'shift+down',
+  'left',
+  'shift+left',
+  'right',
+  'shift+right'
+];
+
+const horizontalVerticalKeys = ['v', 'h'];
+const colorKeys = ['r', 'g', 'b', 'y'];
+
 const setPosition = (el, x, y) => {
   el.style.webkitTransform = el.style.transform = `translate(${x}px,${y}px)`;
 };
@@ -57,69 +71,55 @@ export default class Guide extends React.Component {
   };
 
   bindKeys() {
-    mousetrap.bind(
-      [
-        'up',
-        'shift+up',
-        'down',
-        'shift+down',
-        'left',
-        'shift+left',
-        'right',
-        'shift+right'
-      ],
-      (e) => {
-        const { type, x, y } = this.state;
-        const { shiftKey, key } = e;
-        const value = shiftKey ? 10 : 1;
+    mousetrap.bind(arrowKeys, ({ shiftKey, key }) => {
+      const { type, x, y } = this.state;
+      const value = shiftKey ? 10 : 1;
 
-        if (type === 'h') {
-          if (key === 'ArrowUp') {
-            this.setState(
-              {
-                ...this.state,
-                y: y - value,
-                x: 0
-              },
-              () => setPosition(this.el, this.state.x, this.state.y)
-            );
-          } else if (key === 'ArrowDown') {
-            this.setState(
-              {
-                ...this.state,
-                y: y + value,
-                x: 0
-              },
-              () => setPosition(this.el, this.state.x, this.state.y)
-            );
-          }
-        } else if (type === 'v') {
-          if (key === 'ArrowLeft') {
-            this.setState(
-              {
-                ...this.state,
-                x: x - value,
-                y: 0
-              },
-              () => setPosition(this.el, this.state.x, this.state.y)
-            );
-          } else if (key === 'ArrowRight') {
-            this.setState(
-              {
-                ...this.state,
-                x: x + value,
-                y: 0
-              },
-              () => setPosition(this.el, this.state.x, this.state.y)
-            );
-          }
+      if (type === 'h') {
+        if (key === 'ArrowUp') {
+          this.setState(
+            {
+              ...this.state,
+              y: y - value,
+              x: 0
+            },
+            () => setPosition(this.el, this.state.x, this.state.y)
+          );
+        } else if (key === 'ArrowDown') {
+          this.setState(
+            {
+              ...this.state,
+              y: y + value,
+              x: 0
+            },
+            () => setPosition(this.el, this.state.x, this.state.y)
+          );
+        }
+      } else if (type === 'v') {
+        if (key === 'ArrowLeft') {
+          this.setState(
+            {
+              ...this.state,
+              x: x - value,
+              y: 0
+            },
+            () => setPosition(this.el, this.state.x, this.state.y)
+          );
+        } else if (key === 'ArrowRight') {
+          this.setState(
+            {
+              ...this.state,
+              x: x + value,
+              y: 0
+            },
+            () => setPosition(this.el, this.state.x, this.state.y)
+          );
         }
       }
-    );
+    });
 
-    mousetrap.bind(['v', 'h'], (e) => {
+    mousetrap.bind(horizontalVerticalKeys, ({ key }) => {
       const { x, y } = this.state;
-      const { key } = e;
 
       if (key !== this.state.type) {
         this.setState(
@@ -134,9 +134,9 @@ export default class Guide extends React.Component {
       }
     });
 
-    mousetrap.bind(['r', 'g', 'b', 'y'], (e) => {
+    mousetrap.bind(colorKeys, ({ key }) => {
       let color;
-      switch (e.key) {
+      switch (key) {
         case 'r':
           color = 'red';
           break;
@@ -161,27 +161,17 @@ export default class Guide extends React.Component {
   }
 
   unbindKeys() {
-    mousetrap.unbind([
-      'up',
-      'shift+up',
-      'down',
-      'shift+down',
-      'left',
-      'shift+left',
-      'right',
-      'shift+right'
-    ]);
-    mousetrap.unbind(['v', 'h']);
-    mousetrap.unbind(['r', 'g', 'b', 'y']);
+    mousetrap.unbind(arrowKeys);
+    mousetrap.unbind(horizontalVerticalKeys);
+    mousetrap.unbind(colorKeys);
   }
 
   componentDidMount() {
     setPosition(this.el, this.state.x, this.state.y);
 
     interactjs(this.el).draggable({
-      onmove: (event) => {
+      onmove: ({ dx, dy, target }) => {
         const { x, y, type } = this.state;
-        const { dx, dy, target } = event;
         const newX = type === 'h' ? 0 : x + dx;
         const newY = type === 'h' ? y + dy : 0;
 

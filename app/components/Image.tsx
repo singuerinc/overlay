@@ -56,8 +56,7 @@ export default class Image extends React.Component {
     setPosition(this.el, this.state.x, this.state.y);
 
     interactjs(this.el).draggable({
-      onmove: (event) => {
-        const { dx, dy, target } = event;
+      onmove: ({ dx, dy, target }) => {
         const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
         const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
 
@@ -71,21 +70,24 @@ export default class Image extends React.Component {
       }
     });
 
-    mousetrap.bind(['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'], (e) => {
-      const val = parseInt(e.key, 10) * 0.1;
-      this.setState({
-        ...this.state,
-        opacity: val === 0 ? 1 : val
-      });
-    });
+    mousetrap.bind(
+      ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
+      ({ key }) => {
+        const val = parseInt(key, 10) * 0.1;
+        this.setState({
+          ...this.state,
+          opacity: val === 0 ? 1 : val
+        });
+      }
+    );
 
-    mousetrap.bind(['=', '+', '-', '_'], (e) => {
+    mousetrap.bind(['=', '+', '-', '_'], ({ keyCode }) => {
       let value = 0.05;
-      if (e.keyCode === 45 || e.keyCode === 95) {
+      if (keyCode === 45 || keyCode === 95) {
         // - 45
         // _ 95
         value *= -1;
-      } else if (e.keyCode === 61 || e.keyCode === 43) {
+      } else if (keyCode === 61 || keyCode === 43) {
         // = 61
         // + 43
         value *= 1;
