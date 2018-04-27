@@ -60,25 +60,9 @@ const setPosition = (el, x, y) => {
 
 export default class Ruler extends React.Component<Props, State> {
   private el: HTMLDivElement;
-  state = {
-    opacity: 1,
-    inverted: false,
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0,
-    color: 'black'
-  };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    return {
-      ...prevState,
-      x: nextProps.x,
-      y: nextProps.y,
-      width: nextProps.width,
-      height: nextProps.height,
-      color: nextProps.color
-    };
+    return { ...nextProps };
   }
 
   componentDidMount() {
@@ -91,11 +75,7 @@ export default class Ruler extends React.Component<Props, State> {
 
         setPosition(target, x, y);
 
-        this.setState({
-          ...this.state,
-          x,
-          y
-        });
+        this.setState({ x, y });
       }
     });
   }
