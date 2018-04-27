@@ -53,6 +53,8 @@ const MenuWrapper = styled.ul`
 interface Props {
   x: number;
   y: number;
+  isStuffVisible: boolean;
+  setVisibility: (visible: boolean) => void;
   create: (tool: ToolType) => void;
 }
 
@@ -69,12 +71,6 @@ export class Toolbox extends React.Component<Props, State> {
     isMenuOpen: false
   };
 
-  setVisibility = (value: boolean) => {
-    this.setState({
-      visible: value
-    });
-  };
-
   setOnTop = (value: boolean) => {
     this.setState({
       onTop: value
@@ -88,8 +84,8 @@ export class Toolbox extends React.Component<Props, State> {
   };
 
   render() {
-    const { x, y, create } = this.props;
-    const { visible, onTop, isMenuOpen } = this.state;
+    const { isStuffVisible, x, y, create } = this.props;
+    const { onTop, isMenuOpen } = this.state;
     return (
       <Wrapper x={x} y={y}>
         <ToolItem onClick={() => this.setMenuOpen(!isMenuOpen)}>
@@ -101,8 +97,8 @@ export class Toolbox extends React.Component<Props, State> {
             <ToolItem onClick={() => this.setOnTop(!onTop)}>
               <ToolboxIcon icon={onTop ? 'zap' : 'zap-off'} />
             </ToolItem>
-            <ToolItem onClick={() => this.setVisibility(!visible)}>
-              <ToolboxIcon icon={visible ? 'eye' : 'eye-off'} />
+            <ToolItem onClick={() => this.props.setVisibility(!isStuffVisible)}>
+              <ToolboxIcon icon={isStuffVisible ? 'eye' : 'eye-off'} />
             </ToolItem>
             <ToolSpace />
             <MenuWrapper>

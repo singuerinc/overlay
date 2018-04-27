@@ -1,6 +1,7 @@
 import { IOnionImage } from './IOnionImage';
 
 const onion: IOnionImage = {
+  id: '',
   src: require('./screen1.png'),
   x: 500,
   y: 100,

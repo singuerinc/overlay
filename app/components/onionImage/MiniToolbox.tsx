@@ -26,8 +26,8 @@ const ToolItem = styled.li`
   flex: 1 1 auto;
   text-align: center;
   justify-content: center;
-  flex-direction: column;
-  padding: 5px 15px;
+  flex-direction: row;
+  padding: 6px 8px;
   margin: 0 1px;
 
   &:hover {
@@ -39,15 +39,18 @@ const ToolItem = styled.li`
 interface Props {
   x: number;
   y: number;
+  inverted: boolean;
+  setInverted: (value: boolean) => void;
+  remove: () => void;
 }
 
-export const MiniToolbox = ({ x, y }: Props) => (
+export const MiniToolbox = ({ x, y, inverted, setInverted, remove }: Props) => (
   <Wrapper x={x} y={y}>
-    <ToolItem>
+    <ToolItem onClick={() => remove()}>
       <MiniToolboxIcon icon="trash-2" />
     </ToolItem>
-    <ToolItem>
-      <MiniToolboxIcon icon="sun" />
+    <ToolItem onClick={() => setInverted(!inverted)}>
+      <MiniToolboxIcon icon={inverted ? 'sun' : 'moon'} />
     </ToolItem>
   </Wrapper>
 );

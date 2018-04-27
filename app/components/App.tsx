@@ -14,6 +14,7 @@ import { default as guide } from './guide/guideObj';
 import { default as ruler } from './ruler/rulerObj';
 import { default as grid } from './grid/gridObj';
 import { default as onion } from './onionImage/onionObj';
+import * as uuid from 'uuid/v1';
 
 injectGlobal`
   * {
@@ -28,6 +29,7 @@ interface State {
   grids: IGrid[];
   onions: IOnionImage[];
   rulers: IRuler[];
+  isStuffVisible: boolean;
 }
 
 class App extends React.Component<{}, State> {
@@ -35,47 +37,78 @@ class App extends React.Component<{}, State> {
     guides: [],
     grids: [],
     onions: [],
-    rulers: []
+    rulers: [],
+    isStuffVisible: true
   };
 
   create(tool: ToolType) {
     switch (tool) {
       case Tool.GUIDE:
         this.setState({
-          ...this.state,
           guides: [...this.state.guides, { ...guide }]
         });
         break;
       case Tool.RULER:
         this.setState({
-          ...this.state,
           rulers: [...this.state.rulers, { ...ruler }]
         });
         break;
       case Tool.ONION:
+        const newOnion: IOnionImage = {
+          ...onion,
+          id: uuid()
+        };
         this.setState({
-          ...this.state,
-          onions: [...this.state.onions, { ...onion }]
+          onions: [...this.state.onions, newOnion]
         });
         break;
       case Tool.GRID:
         this.setState({
-          ...this.state,
           grids: [...this.state.grids, { ...grid }]
         });
         break;
     }
   }
 
+  setVisibility = (value: boolean) => {
+    this.setState({
+      isStuffVisible: value
+    });
+  };
+
+  removeOnion = (id: string) => {
+    const filtered: IOnionImage[] = this.state.onions.filter(
+      (onion: IOnionImage) => onion.id !== id
+    );
+    this.setState({
+      onions: filtered
+    });
+  };
+
   render() {
-    const { grids, rulers, onions, guides } = this.state;
+    const { grids, rulers, onions, guides, isStuffVisible } = this.state;
     return (
       <>
-        {grids.map((props) => <Grid {...props} />)}
-        {rulers.map((props) => <Ruler {...props} />)}
-        {onions.map((props) => <OnionImage {...props} />)}
-        {guides.map((props) => <Guide {...props} />)}
-        <Toolbox x={20} y={20} create={(tool: Tool) => this.create(tool)} />
+        {isStuffVisible && (
+          <>
+            {grids.map((props) => <Grid {...props} />)}
+            {rulers.map((props) => <Ruler {...props} />)}
+            {onions.map((props: IOnionImage) => (
+              <OnionImage
+                {...props}
+                remove={() => this.removeOnion(props.id)}
+              />
+            ))}
+            {guides.map((props) => <Guide {...props} />)}
+          </>
+        )}
+        <Toolbox
+          x={20}
+          y={20}
+          setVisibility={(visible: boolean) => this.setVisibility(visible)}
+          isStuffVisible={isStuffVisible}
+          create={(tool: Tool) => this.create(tool)}
+        />
       </>
     );
   }

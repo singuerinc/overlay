@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import * as interactjs from 'interactjs';
 import { Coords } from '../helpers/Coords';
 import { Size } from '../helpers/Size';
-import { IOnionImage as Props } from './IOnionImage.d';
+import { IOnionImage } from './IOnionImage.d';
 import { MiniToolbox } from './MiniToolbox';
 
 interface State {
@@ -66,7 +66,14 @@ const arrowKeys = [
   'shift+right'
 ];
 
-export default class OnionImage extends React.Component<Props, State> {
+interface Props {
+  remove: () => void;
+}
+
+export default class OnionImage extends React.Component<
+  IOnionImage & Props,
+  State
+> {
   private el: HTMLDivElement;
   state = {
     opacity: 1,
@@ -75,6 +82,12 @@ export default class OnionImage extends React.Component<Props, State> {
     y: 0,
     width: 0,
     height: 0
+  };
+
+  setInverted = (value: boolean) => {
+    this.setState({
+      inverted: value
+    });
   };
 
   bindKeys() {
@@ -89,12 +102,10 @@ export default class OnionImage extends React.Component<Props, State> {
     mousetrap.bind(opacityLettersKeys, ({ keyCode }) => {
       let value = 0.05;
       if (keyCode === 45 || keyCode === 95) {
-        // - 45
-        // _ 95
+        // - 45 _ 95
         value *= -1;
       } else if (keyCode === 61 || keyCode === 43) {
-        // = 61
-        // + 43
+        // = 61 + 43
         value *= 1;
       }
 
@@ -102,54 +113,27 @@ export default class OnionImage extends React.Component<Props, State> {
       const newOpacity = Math.max(0, Math.min(1, opacity + value));
 
       this.setState({
-        ...this.state,
         opacity: newOpacity
       });
     });
 
     mousetrap.bind(invertKeys, () => {
-      this.setState({
-        ...this.state,
-        inverted: !this.state.inverted
-      });
+      this.setInverted(!this.state.inverted);
     });
 
     mousetrap.bind(arrowKeys, ({ shiftKey, key }) => {
+      const el = this.el;
       const { x, y } = this.state;
       const value = shiftKey ? 10 : 1;
 
       if (key === 'ArrowUp') {
-        this.setState(
-          {
-            ...this.state,
-            y: y - value
-          },
-          () => setPosition(this.el, this.state.x, this.state.y)
-        );
+        this.setState({ y: y - value }, () => setPosition(el, x, y));
       } else if (key === 'ArrowDown') {
-        this.setState(
-          {
-            ...this.state,
-            y: y + value
-          },
-          () => setPosition(this.el, this.state.x, this.state.y)
-        );
+        this.setState({ y: y + value }, () => setPosition(el, x, y));
       } else if (key === 'ArrowLeft') {
-        this.setState(
-          {
-            ...this.state,
-            x: x - value
-          },
-          () => setPosition(this.el, this.state.x, this.state.y)
-        );
+        this.setState({ x: x - value }, () => setPosition(el, x, y));
       } else if (key === 'ArrowRight') {
-        this.setState(
-          {
-            ...this.state,
-            x: x + value
-          },
-          () => setPosition(this.el, this.state.x, this.state.y)
-        );
+        this.setState({ x: x + value }, () => setPosition(el, x, y));
       }
     });
   }
@@ -184,17 +168,13 @@ export default class OnionImage extends React.Component<Props, State> {
 
         setPosition(target, x, y);
 
-        this.setState({
-          ...this.state,
-          x,
-          y
-        });
+        this.setState({ x, y });
       }
     });
   }
 
   render() {
-    const { src } = this.props;
+    const { src, remove } = this.props;
     const { opacity, inverted, x, y, width, height } = this.state;
     return (
       <OnionImageWrapper
@@ -205,7 +185,13 @@ export default class OnionImage extends React.Component<Props, State> {
         <OnionImageElement src={src} opacity={opacity} inverted={inverted} />
         <Coords x={x} y={y} />
         <Size width={width} height={height} />
-        <MiniToolbox x={100} y={100} />
+        <MiniToolbox
+          inverted={inverted}
+          setInverted={this.setInverted}
+          remove={remove}
+          x={100}
+          y={100}
+        />
       </OnionImageWrapper>
     );
   }

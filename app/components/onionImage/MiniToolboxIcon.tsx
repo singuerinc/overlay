@@ -10,7 +10,7 @@ export const MiniToolboxIcon = ({ icon }: { icon: string }) => {
   return (
     <Wrapper
       dangerouslySetInnerHTML={{
-        __html: icons[icon].toSvg({ width: 16, height: 16 })
+        __html: icons[icon].toSvg()
       }}
     />
   );
