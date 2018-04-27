@@ -5,6 +5,7 @@ import * as interactjs from 'interactjs';
 import { Coords } from '../helpers/Coords';
 import { Size } from '../helpers/Size';
 import { IOnionImage as Props } from './IOnionImage.d';
+import { MiniToolbox } from './MiniToolbox';
 
 interface State {
   opacity: number;
@@ -201,9 +202,10 @@ export default class OnionImage extends React.Component<Props, State> {
           this.el = el;
         }}
       >
+        <OnionImageElement src={src} opacity={opacity} inverted={inverted} />
         <Coords x={x} y={y} />
         <Size width={width} height={height} />
-        <OnionImageElement src={src} opacity={opacity} inverted={inverted} />
+        <MiniToolbox x={100} y={100} />
       </OnionImageWrapper>
     );
   }

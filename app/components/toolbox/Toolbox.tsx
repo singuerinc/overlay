@@ -20,23 +20,34 @@ const Wrapper = styled.ul.attrs<{
   left: ${({ x }) => x}px;
 `;
 
+const ToolSpace = styled.li`
+  background-color: transparent;
+  display: flex;
+  width: 5px;
+  margin: 0 1px;
+`;
+
 const ToolItem = styled.li`
-  background-color: #111;
-  color: #f4f4f4;
+  background-color: #607d8b;
   display: flex;
   flex: 1 1 auto;
   text-align: center;
   justify-content: center;
   flex-direction: column;
-  padding: 5px 15px;
+  padding: 6px 8px;
   margin: 0 1px;
-  font-size: 12px;
-  text-transform: uppercase;
 
   &:hover {
     cursor: pointer;
-    background-color: #333;
+    background-color: orange;
   }
+`;
+
+const MenuWrapper = styled.ul`
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding: 0;
 `;
 
 interface Props {
@@ -45,19 +56,73 @@ interface Props {
   create: (tool: ToolType) => void;
 }
 
-export const Toolbox = ({ x, y, create }: Props) => (
-  <Wrapper x={x} y={y}>
-    <ToolItem onClick={() => create(Tool.GUIDE)}>
-      <ToolboxIcon icon="layout" />
-    </ToolItem>
-    <ToolItem onClick={() => create(Tool.RULER)}>
-      <ToolboxIcon icon="square" />
-    </ToolItem>
-    <ToolItem onClick={() => create(Tool.ONION)}>
-      <ToolboxIcon icon="layers" />
-    </ToolItem>
-    <ToolItem onClick={() => create(Tool.GRID)}>
-      <ToolboxIcon icon="grid" />
-    </ToolItem>
-  </Wrapper>
-);
+interface State {
+  visible: boolean;
+  onTop: boolean;
+  isMenuOpen: boolean;
+}
+
+export class Toolbox extends React.Component<Props, State> {
+  state = {
+    visible: true,
+    onTop: true,
+    isMenuOpen: false
+  };
+
+  setVisibility = (value: boolean) => {
+    this.setState({
+      visible: value
+    });
+  };
+
+  setOnTop = (value: boolean) => {
+    this.setState({
+      onTop: value
+    });
+  };
+
+  setMenuOpen = (value: boolean) => {
+    this.setState({
+      isMenuOpen: value
+    });
+  };
+
+  render() {
+    const { x, y, create } = this.props;
+    const { visible, onTop, isMenuOpen } = this.state;
+    return (
+      <Wrapper x={x} y={y}>
+        <ToolItem onClick={() => this.setMenuOpen(!isMenuOpen)}>
+          <ToolboxIcon icon={isMenuOpen ? 'x' : 'more-vertical'} />
+        </ToolItem>
+        {isMenuOpen && (
+          <MenuWrapper>
+            <ToolSpace />
+            <ToolItem onClick={() => this.setOnTop(!onTop)}>
+              <ToolboxIcon icon={onTop ? 'zap' : 'zap-off'} />
+            </ToolItem>
+            <ToolItem onClick={() => this.setVisibility(!visible)}>
+              <ToolboxIcon icon={visible ? 'eye' : 'eye-off'} />
+            </ToolItem>
+            <ToolSpace />
+            <MenuWrapper>
+              <ToolItem onClick={() => create(Tool.GUIDE)}>
+                <ToolboxIcon icon="layout" />
+              </ToolItem>
+              <ToolItem onClick={() => create(Tool.RULER)}>
+                <ToolboxIcon icon="square" />
+              </ToolItem>
+              <ToolItem onClick={() => create(Tool.ONION)}>
+                <ToolboxIcon icon="layers" />
+              </ToolItem>
+              <ToolItem onClick={() => create(Tool.GRID)}>
+                <ToolboxIcon icon="grid" />
+              </ToolItem>
+              <ToolSpace />
+            </MenuWrapper>
+          </MenuWrapper>
+        )}
+      </Wrapper>
+    );
+  }
+}
