@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import * as interactjs from 'interactjs';
 import Position from '../positions/Position';
 import { IGuide as Props } from './IGuide.d';
-import { IGuideDirection } from './IGuideDirection';
+import { IGuideDirection, GuideDirection } from './IGuideDirection';
 
 interface State {
   x: number;
@@ -37,7 +37,7 @@ const GuideElement = styled.div.attrs<GuideElementProps>({
     width: ${({ type }) => (type === 'h' ? '100vw' : '9px')};
     height: ${({ type }) => (type === 'h' ? '9px' : '100vh')};
     background: ${({ color }) => color};
-    opacity: 0.1;
+    opacity: 0;
   }
   &:hover {
     opacity: 1;
@@ -73,13 +73,7 @@ export default class Guide extends React.Component<Props, State> {
   private el: HTMLDivElement;
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    return {
-      ...prevState,
-      x: nextProps.x,
-      y: nextProps.y,
-      type: nextProps.type,
-      color: nextProps.color
-    };
+    return { ...nextProps };
   }
 
   bindKeys() {
@@ -87,44 +81,24 @@ export default class Guide extends React.Component<Props, State> {
       const { type, x, y } = this.state;
       const value = shiftKey ? 10 : 1;
 
-      if (type === 'h') {
+      if (type === GuideDirection.HORIZONTAL) {
         if (key === 'ArrowUp') {
-          this.setState(
-            {
-              ...this.state,
-              y: y - value,
-              x: 0
-            },
-            () => setPosition(this.el, this.state.x, this.state.y)
+          this.setState({ y: y - value, x: 0 }, () =>
+            setPosition(this.el, this.state.x, this.state.y)
           );
         } else if (key === 'ArrowDown') {
-          this.setState(
-            {
-              ...this.state,
-              y: y + value,
-              x: 0
-            },
-            () => setPosition(this.el, this.state.x, this.state.y)
+          this.setState({ y: y + value, x: 0 }, () =>
+            setPosition(this.el, this.state.x, this.state.y)
           );
         }
-      } else if (type === 'v') {
+      } else if (type === GuideDirection.VERTICAL) {
         if (key === 'ArrowLeft') {
-          this.setState(
-            {
-              ...this.state,
-              x: x - value,
-              y: 0
-            },
-            () => setPosition(this.el, this.state.x, this.state.y)
+          this.setState({ x: x - value, y: 0 }, () =>
+            setPosition(this.el, this.state.x, this.state.y)
           );
         } else if (key === 'ArrowRight') {
-          this.setState(
-            {
-              ...this.state,
-              x: x + value,
-              y: 0
-            },
-            () => setPosition(this.el, this.state.x, this.state.y)
+          this.setState({ x: x + value, y: 0 }, () =>
+            setPosition(this.el, this.state.x, this.state.y)
           );
         }
       }
@@ -134,14 +108,9 @@ export default class Guide extends React.Component<Props, State> {
       const { x, y } = this.state;
 
       if (key !== this.state.type) {
-        this.setState(
-          {
-            ...this.state,
-            type: key as IGuideDirection,
-            x: y,
-            y: x
-          },
-          () => setPosition(this.el, this.state.x, this.state.y)
+        // x and y are inverted
+        this.setState({ type: key as IGuideDirection, x: y, y: x }, () =>
+          setPosition(this.el, this.state.x, this.state.y)
         );
       }
     });
@@ -166,7 +135,6 @@ export default class Guide extends React.Component<Props, State> {
       }
 
       this.setState({
-        ...this.state,
         color
       });
     });
@@ -189,11 +157,7 @@ export default class Guide extends React.Component<Props, State> {
 
         setPosition(target, newX, newY);
 
-        this.setState({
-          ...this.state,
-          y: newY,
-          x: newX
-        });
+        this.setState({ y: newY, x: newX });
       }
     });
 

@@ -3,9 +3,11 @@ import styled from 'styled-components';
 import * as interactjs from 'interactjs';
 import { Coords } from '../helpers/Coords';
 import { Size } from '../helpers/Size';
-import { IRuler as Props } from './IRuler.d';
+import { IRuler } from './IRuler.d';
 import { createGrid } from '../grid/utils';
 import * as chroma from 'chroma-js';
+import { RulerToolbox } from './RulerToolbox';
+import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 
 interface State {
   x: number;
@@ -21,11 +23,11 @@ const RulerWrapper = styled.div.attrs({})`
   position: fixed;
   display: block;
 
-  & ${Coords}, & ${Size} {
+  & ${Coords}, & ${Size}, & ${MiniToolboxWrapper} {
     display: none;
   }
 
-  &:hover ${Coords}, &:hover ${Size} {
+  &:hover ${Coords}, &:hover ${Size}, &:hover ${MiniToolboxWrapper} {
     display: initial;
   }
 `;
@@ -58,7 +60,11 @@ const setPosition = (el, x, y) => {
   el.setAttribute('data-y', y);
 };
 
-export default class Ruler extends React.Component<Props, State> {
+interface Props {
+  remove: () => void;
+}
+
+export default class Ruler extends React.Component<IRuler & Props, State> {
   private el: HTMLDivElement;
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -81,6 +87,7 @@ export default class Ruler extends React.Component<Props, State> {
   }
 
   render() {
+    const { remove } = this.props;
     const { x, y, width, height, color } = this.state;
     return (
       <RulerWrapper
@@ -91,6 +98,7 @@ export default class Ruler extends React.Component<Props, State> {
         <Coords x={x} y={y} />
         <Size width={width} height={height} />
         <RulerElement width={width} height={height} color={color} />
+        <RulerToolbox remove={remove} />
       </RulerWrapper>
     );
   }

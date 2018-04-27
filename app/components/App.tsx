@@ -49,8 +49,12 @@ class App extends React.Component<{}, State> {
         });
         break;
       case Tool.RULER:
+        const newRuler: IRuler = {
+          ...ruler,
+          id: uuid()
+        };
         this.setState({
-          rulers: [...this.state.rulers, { ...ruler }]
+          rulers: [...this.state.rulers, newRuler]
         });
         break;
       case Tool.ONION:
@@ -76,6 +80,15 @@ class App extends React.Component<{}, State> {
     });
   };
 
+  removeRuler = (id: string) => {
+    const filtered: IRuler[] = this.state.rulers.filter(
+      (ruler: IOnionImage) => ruler.id !== id
+    );
+    this.setState({
+      rulers: filtered
+    });
+  };
+
   removeOnion = (id: string) => {
     const filtered: IOnionImage[] = this.state.onions.filter(
       (onion: IOnionImage) => onion.id !== id
@@ -92,7 +105,9 @@ class App extends React.Component<{}, State> {
         {isStuffVisible && (
           <>
             {grids.map((props) => <Grid {...props} />)}
-            {rulers.map((props) => <Ruler {...props} />)}
+            {rulers.map((props: IRuler) => (
+              <Ruler {...props} remove={() => this.removeRuler(props.id)} />
+            ))}
             {onions.map((props: IOnionImage) => (
               <OnionImage
                 {...props}

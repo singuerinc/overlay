@@ -1,10 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { IGuideDirection, GuideDirection } from '../guide/IGuideDirection';
 
 interface Props {
   x: number;
   y: number;
-  type: string;
+  type: IGuideDirection;
   color: string;
 }
 
@@ -20,13 +21,13 @@ const PositionElement = styled.div.attrs<PositionElementProps>({
   position: relative;
   top: ${({ type }) => (type === 'h' ? '-8px' : '0')};
   left: ${({ type }) => (type === 'h' ? '0' : '-25px')};
-  width: 51px;
-  height: 16px;
+  top: 0;
+  left: 0;
   background: ${({ color }) => color};
-  font-family: sans-serif;
-  font-size: 12px;
   font-weight: normal;
   text-align: center;
+  padding: 6px 10px;
+  display: inline-block;
 `;
 
 const Text = styled.span`
@@ -41,10 +42,14 @@ export default class Position extends React.Component<Props> {
 
   render() {
     const { x, y, type, color } = this.props;
-    const value = type === 'h' ? y : x;
+    const value = type === GuideDirection.HORIZONTAL ? y : x;
+    const axis = type === GuideDirection.HORIZONTAL ? 'Y' : 'X';
+
     return (
       <PositionElement type={type} color={color}>
-        <Text>{value}</Text>
+        <Text>
+          {axis}:{value}
+        </Text>
       </PositionElement>
     );
   }

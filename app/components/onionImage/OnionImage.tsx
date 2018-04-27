@@ -5,7 +5,8 @@ import * as interactjs from 'interactjs';
 import { Coords } from '../helpers/Coords';
 import { Size } from '../helpers/Size';
 import { IOnionImage } from './IOnionImage.d';
-import { MiniToolbox } from './MiniToolbox';
+import { OnionToolbox } from './OnionToolbox';
+import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 
 interface State {
   opacity: number;
@@ -18,17 +19,12 @@ interface State {
 
 const OnionImageWrapper = styled.div.attrs({})`
   position: fixed;
-  border: 1px solid transparent;
 
-  &:hover {
-    border: 1px dashed rgba(0, 255, 255, 0.4);
-  }
-
-  & ${Coords}, & ${Size} {
+  & ${Coords}, & ${Size}, & ${MiniToolboxWrapper} {
     display: none;
   }
 
-  &:hover ${Coords}, &:hover ${Size} {
+  &:hover ${Coords}, &:hover ${Size}, &:hover ${MiniToolboxWrapper} {
     display: initial;
   }
 `;
@@ -185,7 +181,7 @@ export default class OnionImage extends React.Component<
         <OnionImageElement src={src} opacity={opacity} inverted={inverted} />
         <Coords x={x} y={y} />
         <Size width={width} height={height} />
-        <MiniToolbox
+        <OnionToolbox
           inverted={inverted}
           setInverted={this.setInverted}
           remove={remove}
