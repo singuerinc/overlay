@@ -18,7 +18,7 @@ class Element extends React.Component<Props, {}> {
   }
 }
 
-export default styled(Element)`
+export const Coords = styled(Element)`
   position: absolute;
   top: 0;
   left: 0;

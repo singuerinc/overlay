@@ -1,27 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { Tool, ToolType } from './Tool';
+import { ToolboxIcon } from './ToolboxIcon';
 
-const Item = styled.li`
-  background-color: black;
-  display: flex;
-  flex: 1 1 auto;
-  border-right: 2px solid #222;
-  border-bottom: 2px solid #222;
-  text-align: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 5px 15px;
-  font-size: 12px;
-  text-transform: uppercase;
-
-  &:hover {
-    background-color: #333;
-    border-right: 2px solid #000;
-    border-bottom: 2px solid #000;
-  }
-`;
-
-const Element = styled.ul.attrs<{
+const Wrapper = styled.ul.attrs<{
   x: number;
   y: number;
 }>({
@@ -29,7 +11,7 @@ const Element = styled.ul.attrs<{
   y: (props) => props.y
 })`
   position: fixed;
-  background-color: black;
+  background-color: transparent;
   display: flex;
   flex-direction: row;
   margin: 0;
@@ -38,23 +20,44 @@ const Element = styled.ul.attrs<{
   left: ${({ x }) => x}px;
 `;
 
-export type Tool = 'guide' | 'ruler' | 'onion' | 'grid';
+const ToolItem = styled.li`
+  background-color: #111;
+  color: #f4f4f4;
+  display: flex;
+  flex: 1 1 auto;
+  text-align: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 5px 15px;
+  margin: 0 1px;
+  font-size: 12px;
+  text-transform: uppercase;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #333;
+  }
+`;
 
 interface Props {
-  create: Function;
+  x: number;
+  y: number;
+  create: (tool: ToolType) => void;
 }
 
-class Toolbox extends React.Component<Props> {
-  render() {
-    return (
-      <Element x={0} y={0}>
-        <Item onClick={() => this.props.create('guide')}>Guide</Item>
-        <Item onClick={() => this.props.create('guide')}>Ruler</Item>
-        <Item onClick={() => this.props.create('guide')}>Onion</Item>
-        <Item onClick={() => this.props.create('guide')}>Grid</Item>
-      </Element>
-    );
-  }
-}
-
-export default Toolbox;
+export const Toolbox = ({ x, y, create }: Props) => (
+  <Wrapper x={x} y={y}>
+    <ToolItem onClick={() => create(Tool.GUIDE)}>
+      <ToolboxIcon icon="layout" />
+    </ToolItem>
+    <ToolItem onClick={() => create(Tool.RULER)}>
+      <ToolboxIcon icon="credit-card" />
+    </ToolItem>
+    <ToolItem onClick={() => create(Tool.ONION)}>
+      <ToolboxIcon icon="layers" />
+    </ToolItem>
+    <ToolItem onClick={() => create(Tool.GRID)}>
+      <ToolboxIcon icon="grid" />
+    </ToolItem>
+  </Wrapper>
+);

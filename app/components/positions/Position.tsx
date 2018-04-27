@@ -44,7 +44,7 @@ export default class Position extends React.Component<Props> {
     const value = type === 'h' ? y : x;
     return (
       <PositionElement type={type} color={color}>
-        <Text>{value}px</Text>
+        <Text>{value}</Text>
       </PositionElement>
     );
   }

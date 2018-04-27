@@ -3,12 +3,17 @@ import OnionImage from '../components/onionImage/OnionImage';
 import Guide from '../components/guide/Guide';
 import Ruler from '../components/ruler/Ruler';
 import Grid from '../components/grid/Grid';
-import Toolbox, { Tool } from '../components/toolbox/Toolbox';
+import { Toolbox } from '../components/toolbox/Toolbox';
 import { IRuler } from './ruler/IRuler';
 import { IOnionImage } from './onionImage/IOnionImage';
 import { IGuide } from './guide/IGuide';
 import { IGrid } from './grid/IGrid';
+import { ToolType, Tool } from './toolbox/Tool';
 import { injectGlobal } from 'styled-components';
+import { default as guide } from './guide/guideObj';
+import { default as ruler } from './ruler/rulerObj';
+import { default as grid } from './grid/gridObj';
+import { default as onion } from './onionImage/onionObj';
 
 injectGlobal`
   * {
@@ -19,80 +24,58 @@ injectGlobal`
 `;
 
 interface State {
-  grids: IGrid[];
-  images: IOnionImage[];
-  rulers: IRuler[];
   guides: IGuide[];
+  grids: IGrid[];
+  onions: IOnionImage[];
+  rulers: IRuler[];
 }
 
 class App extends React.Component<{}, State> {
   state = {
     guides: [],
-    grids: [{ size: 10, color: 'red', type: 'solid', opacity: 0.3 }],
-
-    images: [
-      {
-        src: require('./screen1.png'),
-        x: 500,
-        y: 100,
-        width: 50,
-        height: 50
-      },
-      {
-        src: require('./screen2.jpg'),
-        x: 800,
-        y: 500,
-        width: 50,
-        height: 50
-      }
-    ],
-
-    rulers: [
-      {
-        x: 100,
-        y: 100,
-        width: 250,
-        height: 250,
-        color: 'orange'
-      },
-      {
-        x: 200,
-        y: 200,
-        width: 200,
-        height: 200,
-        color: 'purple'
-      }
-    ]
+    grids: [],
+    onions: [],
+    rulers: []
   };
 
-  create(tool: Tool) {
+  create(tool: ToolType) {
     switch (tool) {
-      case 'guide':
+      case Tool.GUIDE:
         this.setState({
           ...this.state,
-          guides: [
-            ...this.state.guides,
-            {
-              x: 0,
-              y: 102,
-              type: 'h',
-              color: 'green'
-            }
-          ]
+          guides: [...this.state.guides, { ...guide }]
+        });
+        break;
+      case Tool.RULER:
+        this.setState({
+          ...this.state,
+          rulers: [...this.state.rulers, { ...ruler }]
+        });
+        break;
+      case Tool.ONION:
+        this.setState({
+          ...this.state,
+          onions: [...this.state.onions, { ...onion }]
+        });
+        break;
+      case Tool.GRID:
+        this.setState({
+          ...this.state,
+          grids: [...this.state.grids, { ...grid }]
         });
         break;
     }
   }
 
   render() {
-    const { grids, rulers, images, guides } = this.state;
+    const { grids, rulers, onions, guides } = this.state;
     return (
       <>
         {grids.map((props) => <Grid {...props} />)}
         {rulers.map((props) => <Ruler {...props} />)}
-        {images.map((props) => <OnionImage {...props} />)}
+        {onions.map((props) => <OnionImage {...props} />)}
         {guides.map((props) => <Guide {...props} />)}
-        <Toolbox create={() => this.create('guide')} />
+        <Toolbox x={20} y={20} create={(tool: Tool) => this.create(tool)} />
       </>
     );
   }

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import * as interactjs from 'interactjs';
-import Coords from '../coords/Coords';
-import Size from '../coords/Size';
+import { Coords } from '../helpers/Coords';
+import { Size } from '../helpers/Size';
 import { IRuler as Props } from './IRuler.d';
 import { createGrid } from '../grid/utils';
 import * as chroma from 'chroma-js';

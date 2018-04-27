@@ -4,13 +4,12 @@ import styled from 'styled-components';
 import * as interactjs from 'interactjs';
 import Position from '../positions/Position';
 import { IGuide as Props } from './IGuide.d';
-
-type Direction = 'h' | 'v';
+import { IGuideDirection } from './IGuideDirection';
 
 interface State {
   x: number;
   y: number;
-  type: Direction;
+  type: IGuideDirection;
   color: 'red' | 'green' | 'blue' | 'yellow' | 'black';
 }
 
@@ -138,7 +137,7 @@ export default class Guide extends React.Component<Props, State> {
         this.setState(
           {
             ...this.state,
-            type: key as Direction,
+            type: key as IGuideDirection,
             x: y,
             y: x
           },

@@ -18,7 +18,7 @@ class Element extends React.Component<Props, {}> {
   }
 }
 
-export default styled(Element)`
+export const Size = styled(Element)`
   position: absolute;
   bottom: 0;
   right: 0;

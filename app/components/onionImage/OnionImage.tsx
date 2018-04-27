@@ -2,8 +2,8 @@ import * as React from 'react';
 import * as mousetrap from 'mousetrap';
 import styled from 'styled-components';
 import * as interactjs from 'interactjs';
-import Coords from '../coords/Coords';
-import Size from '../coords/Size';
+import { Coords } from '../helpers/Coords';
+import { Size } from '../helpers/Size';
 import { IOnionImage as Props } from './IOnionImage.d';
 
 interface State {
