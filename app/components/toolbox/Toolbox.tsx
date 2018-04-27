@@ -51,7 +51,7 @@ export const Toolbox = ({ x, y, create }: Props) => (
       <ToolboxIcon icon="layout" />
     </ToolItem>
     <ToolItem onClick={() => create(Tool.RULER)}>
-      <ToolboxIcon icon="credit-card" />
+      <ToolboxIcon icon="square" />
     </ToolItem>
     <ToolItem onClick={() => create(Tool.ONION)}>
       <ToolboxIcon icon="layers" />
