@@ -80,7 +80,7 @@ export default class Guide extends React.Component<IGuide & Props, State> {
   private el: HTMLDivElement;
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    return { ...nextProps };
+    return { ...nextProps, ...prevState };
   }
 
   rotate = (type?: IGuideDirection) => {

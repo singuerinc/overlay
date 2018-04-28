@@ -68,7 +68,7 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
   private el: HTMLDivElement;
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    return { ...nextProps };
+    return { ...nextProps, ...prevState };
   }
 
   componentDidMount() {

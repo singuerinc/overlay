@@ -146,7 +146,7 @@ export default class OnionImage extends React.Component<
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    return { ...nextProps };
+    return { ...nextProps, ...prevState };
   }
 
   componentDidMount() {
