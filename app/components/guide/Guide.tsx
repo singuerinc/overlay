@@ -2,9 +2,10 @@ import * as React from 'react';
 import * as mousetrap from 'mousetrap';
 import styled from 'styled-components';
 import * as interactjs from 'interactjs';
-import Position from '../positions/Position';
-import { IGuide as Props } from './IGuide.d';
+import { IGuide } from './IGuide.d';
 import { IGuideDirection, GuideDirection } from './IGuideDirection';
+import { GuideToolbox } from './GuideToolbox';
+import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 
 interface State {
   x: number;
@@ -19,8 +20,8 @@ interface GuideElementProps {
 }
 
 const GuideElement = styled.div.attrs<GuideElementProps>({
-  color: (props: GuideElementProps) => props.color,
-  type: (props: GuideElementProps) => props.type
+  color: (props) => props.color,
+  type: (props) => props.type
 })`
   position: fixed;
   width: ${({ type }) => (type === 'h' ? '100vw' : '1px')};
@@ -39,14 +40,16 @@ const GuideElement = styled.div.attrs<GuideElementProps>({
     background: ${({ color }) => color};
     opacity: 0;
   }
+
   &:hover {
     opacity: 1;
   }
-  & div {
+
+  & ${MiniToolboxWrapper} {
     opacity: 0;
-    transition: opacity 0.1s ease-in-out;
   }
-  &:hover div {
+
+  &:hover ${MiniToolboxWrapper} {
     opacity: 1;
   }
 `;
@@ -69,12 +72,31 @@ const setPosition = (el, x, y) => {
   el.style.webkitTransform = el.style.transform = `translate(${x}px,${y}px)`;
 };
 
-export default class Guide extends React.Component<Props, State> {
+interface Props {
+  remove: () => void;
+}
+
+export default class Guide extends React.Component<IGuide & Props, State> {
   private el: HTMLDivElement;
 
   static getDerivedStateFromProps(nextProps, prevState) {
     return { ...nextProps };
   }
+
+  rotate = (type?: IGuideDirection) => {
+    const { x, y } = this.state;
+    // x and y are inverted
+    if (!type) {
+      type =
+        this.state.type === GuideDirection.HORIZONTAL
+          ? GuideDirection.VERTICAL
+          : GuideDirection.HORIZONTAL;
+    }
+
+    this.setState({ type, x: y, y: x }, () =>
+      setPosition(this.el, this.state.x, this.state.y)
+    );
+  };
 
   bindKeys() {
     mousetrap.bind(arrowKeys, ({ shiftKey, key }) => {
@@ -105,13 +127,8 @@ export default class Guide extends React.Component<Props, State> {
     });
 
     mousetrap.bind(horizontalVerticalKeys, ({ key }) => {
-      const { x, y } = this.state;
-
       if (key !== this.state.type) {
-        // x and y are inverted
-        this.setState({ type: key as IGuideDirection, x: y, y: x }, () =>
-          setPosition(this.el, this.state.x, this.state.y)
-        );
+        this.rotate(key as IGuideDirection);
       }
     });
 
@@ -134,9 +151,7 @@ export default class Guide extends React.Component<Props, State> {
           color = 'black';
       }
 
-      this.setState({
-        color
-      });
+      this.setState({ color });
     });
   }
 
@@ -166,7 +181,8 @@ export default class Guide extends React.Component<Props, State> {
   }
 
   render() {
-    const { x, y, type, color } = this.state;
+    const { remove } = this.props;
+    const { type, color } = this.state;
     return (
       <div
         ref={(el) => {
@@ -174,7 +190,7 @@ export default class Guide extends React.Component<Props, State> {
         }}
       >
         <GuideElement type={type} color={color}>
-          <Position x={x} y={y} type={type} color={color} />
+          <GuideToolbox remove={remove} rotate={this.rotate} />
         </GuideElement>
       </div>
     );

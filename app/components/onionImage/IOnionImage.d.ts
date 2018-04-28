@@ -5,4 +5,7 @@ export interface IOnionImage {
   y: number;
   width: number;
   height: number;
+  opacity: number;
+  inverted: boolean;
+  visible: boolean;
 }

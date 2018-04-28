@@ -44,8 +44,12 @@ class App extends React.Component<{}, State> {
   create(tool: ToolType) {
     switch (tool) {
       case Tool.GUIDE:
+        const newGuide: IGuide = {
+          ...guide,
+          id: uuid()
+        };
         this.setState({
-          guides: [...this.state.guides, { ...guide }]
+          guides: [...this.state.guides, newGuide]
         });
         break;
       case Tool.RULER:
@@ -77,6 +81,15 @@ class App extends React.Component<{}, State> {
   setVisibility = (value: boolean) => {
     this.setState({
       isStuffVisible: value
+    });
+  };
+
+  removeGuide = (id: string) => {
+    const filtered: IGuide[] = this.state.guides.filter(
+      (guide: IGuide) => guide.id !== id
+    );
+    this.setState({
+      guides: filtered
     });
   };
 
@@ -114,7 +127,9 @@ class App extends React.Component<{}, State> {
                 remove={() => this.removeOnion(props.id)}
               />
             ))}
-            {guides.map((props) => <Guide {...props} />)}
+            {guides.map((props: IGuide) => (
+              <Guide {...props} remove={() => this.removeGuide(props.id)} />
+            ))}
           </>
         )}
         <Toolbox

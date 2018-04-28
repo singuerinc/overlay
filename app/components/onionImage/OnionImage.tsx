@@ -11,13 +11,14 @@ import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 interface State {
   opacity: number;
   inverted: boolean;
+  visible: boolean;
   x: number;
   y: number;
   width: number;
   height: number;
 }
 
-const OnionImageWrapper = styled.div.attrs({})`
+const OnionImageWrapper = styled.div`
   position: fixed;
 
   & ${Coords}, & ${Size}, & ${MiniToolboxWrapper} {
@@ -25,21 +26,18 @@ const OnionImageWrapper = styled.div.attrs({})`
   }
 
   &:hover ${Coords}, &:hover ${Size}, &:hover ${MiniToolboxWrapper} {
-    display: initial;
+    display: flex;
   }
 `;
 
-interface OnionImageElementProps {
-  opacity: number;
-  inverted: boolean;
-}
-
-const OnionImageElement = styled.img.attrs<OnionImageElementProps>({
-  opacity: (props: OnionImageElementProps) => props.opacity,
-  inverted: (props: OnionImageElementProps) => props.inverted
+const OnionImageElement = styled.img.attrs<{ opacity; inverted; visible }>({
+  opacity: (props) => props.opacity,
+  inverted: (props) => props.inverted,
+  visible: (props) => props.visible
 })`
   opacity: ${({ opacity }) => opacity};
   filter: invert(${({ inverted }) => (inverted ? '100%' : '0%')});
+  display: ${({ visible }) => (visible ? 'block' : 'none')};
 `;
 
 const setPosition = (el, x, y) => {
@@ -71,18 +69,22 @@ export default class OnionImage extends React.Component<
   State
 > {
   private el: HTMLDivElement;
-  state = {
-    opacity: 1,
-    inverted: false,
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0
-  };
 
   setInverted = (value: boolean) => {
     this.setState({
       inverted: value
+    });
+  };
+
+  setVisibility = (value: boolean) => {
+    this.setState({
+      visible: value
+    });
+  };
+
+  setOpacity = (value: number) => {
+    this.setState({
+      opacity: value
     });
   };
 
@@ -91,7 +93,7 @@ export default class OnionImage extends React.Component<
       const val = parseInt(key, 10) * 0.1;
       this.setState({
         ...this.state,
-        opacity: val === 0 ? 1 : val
+        opacity: parseFloat((val === 0 ? 1 : val).toFixed(1))
       });
     });
 
@@ -106,7 +108,9 @@ export default class OnionImage extends React.Component<
       }
 
       const { opacity } = this.state;
-      const newOpacity = Math.max(0, Math.min(1, opacity + value));
+      const newOpacity: number = parseFloat(
+        Math.max(0, Math.min(1, opacity + value)).toFixed(1)
+      );
 
       this.setState({
         opacity: newOpacity
@@ -142,13 +146,7 @@ export default class OnionImage extends React.Component<
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    return {
-      ...prevState,
-      x: nextProps.x,
-      y: nextProps.y,
-      width: nextProps.width,
-      height: nextProps.height
-    };
+    return { ...nextProps };
   }
 
   componentDidMount() {
@@ -170,20 +168,29 @@ export default class OnionImage extends React.Component<
   }
 
   render() {
-    const { src, remove } = this.props;
-    const { opacity, inverted, x, y, width, height } = this.state;
+    const { src, remove, height, width } = this.props;
+    const { opacity, visible, inverted, x, y } = this.state;
     return (
       <OnionImageWrapper
         innerRef={(el: HTMLDivElement) => {
           this.el = el;
         }}
       >
-        <OnionImageElement src={src} opacity={opacity} inverted={inverted} />
+        <OnionImageElement
+          src={src}
+          visible={visible}
+          opacity={opacity}
+          inverted={inverted}
+        />
         <Coords x={x} y={y} />
         <Size width={width} height={height} />
         <OnionToolbox
+          opacity={opacity}
           inverted={inverted}
+          visible={visible}
           setInverted={this.setInverted}
+          setOpacity={this.setOpacity}
+          setVisibility={this.setVisibility}
           remove={remove}
           x={100}
           y={100}

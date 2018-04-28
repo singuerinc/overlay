@@ -37,7 +37,7 @@ const Text = styled.span`
   user-select: none;
 `;
 
-export default class Position extends React.Component<Props> {
+export class Position extends React.Component<Props> {
   props: Props;
 
   render() {

@@ -109,7 +109,7 @@ export class Toolbox extends React.Component<Props, State> {
                 <ToolboxIcon icon="square" />
               </ToolItem>
               <ToolItem onClick={() => create(Tool.ONION)}>
-                <ToolboxIcon icon="layers" />
+                <ToolboxIcon icon="image" />
               </ToolItem>
               <ToolItem onClick={() => create(Tool.GRID)}>
                 <ToolboxIcon icon="grid" />

@@ -28,7 +28,7 @@ const RulerWrapper = styled.div.attrs({})`
   }
 
   &:hover ${Coords}, &:hover ${Size}, &:hover ${MiniToolboxWrapper} {
-    display: initial;
+    display: flex;
   }
 `;
 
