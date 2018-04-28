@@ -41,6 +41,18 @@ class App extends React.Component<{}, State> {
     isStuffVisible: true
   };
 
+  toggle(tool: ToolType) {
+    if (this.state.grids.length > 0) {
+      this.setState({
+        grids: []
+      });
+    } else {
+      this.setState({
+        grids: [...this.state.grids, { ...grid }]
+      });
+    }
+  }
+
   create(tool: ToolType) {
     switch (tool) {
       case Tool.GUIDE:
@@ -68,11 +80,6 @@ class App extends React.Component<{}, State> {
         };
         this.setState({
           onions: [...this.state.onions, newOnion]
-        });
-        break;
-      case Tool.GRID:
-        this.setState({
-          grids: [...this.state.grids, { ...grid }]
         });
         break;
     }
@@ -138,6 +145,7 @@ class App extends React.Component<{}, State> {
           setVisibility={(visible: boolean) => this.setVisibility(visible)}
           isStuffVisible={isStuffVisible}
           create={(tool: Tool) => this.create(tool)}
+          toggle={(tool: Tool) => this.toggle(tool)}
         />
       </>
     );

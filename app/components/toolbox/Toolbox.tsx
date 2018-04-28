@@ -56,6 +56,7 @@ interface Props {
   isStuffVisible: boolean;
   setVisibility: (visible: boolean) => void;
   create: (tool: ToolType) => void;
+  toggle: (tool: ToolType) => void;
 }
 
 interface State {
@@ -84,7 +85,7 @@ export class Toolbox extends React.Component<Props, State> {
   };
 
   render() {
-    const { isStuffVisible, x, y, create } = this.props;
+    const { isStuffVisible, x, y, create, toggle } = this.props;
     const { onTop, isMenuOpen } = this.state;
     return (
       <Wrapper x={x} y={y}>
@@ -111,7 +112,7 @@ export class Toolbox extends React.Component<Props, State> {
               <ToolItem onClick={() => create(Tool.ONION)}>
                 <ToolboxIcon icon="image" />
               </ToolItem>
-              <ToolItem onClick={() => create(Tool.GRID)}>
+              <ToolItem onClick={() => toggle(Tool.GRID)}>
                 <ToolboxIcon icon="grid" />
               </ToolItem>
               <ToolSpace />
