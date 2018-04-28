@@ -84,8 +84,8 @@ export default class Guide extends React.Component<IGuide & Props, State> {
   }
 
   rotate = (type?: IGuideDirection) => {
-    const { x, y } = this.state;
-    // x and y are inverted
+    let { x, y } = this.state;
+
     if (!type) {
       type =
         this.state.type === GuideDirection.HORIZONTAL
@@ -93,7 +93,15 @@ export default class Guide extends React.Component<IGuide & Props, State> {
           : GuideDirection.HORIZONTAL;
     }
 
-    this.setState({ type, x: y, y: x }, () =>
+    if (type === GuideDirection.HORIZONTAL) {
+      y = Math.floor(window.screen.height * 0.5);
+      x = 0;
+    } else {
+      x = Math.floor(window.screen.width * 0.5);
+      y = 0;
+    }
+
+    this.setState({ type, x, y }, () =>
       setPosition(this.el, this.state.x, this.state.y)
     );
   };
