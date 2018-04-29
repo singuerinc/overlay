@@ -13,12 +13,6 @@ interface Props {
 
 export const GuideToolbox = ({ remove, rotate, setColor }: Props) => (
   <MiniToolboxWrapper>
-    <MiniToolboxItem onClick={() => rotate()}>
-      <MiniToolboxIcon icon="rotate-cw" />
-    </MiniToolboxItem>
-    <MiniToolboxItem onClick={() => remove()}>
-      <MiniToolboxIcon icon="trash-2" />
-    </MiniToolboxItem>
     <MiniToolboxItem onClick={() => setColor(Color.RED)}>
       <MiniToolboxColor color={Color.RED} />
     </MiniToolboxItem>
@@ -33,6 +27,12 @@ export const GuideToolbox = ({ remove, rotate, setColor }: Props) => (
     </MiniToolboxItem>
     <MiniToolboxItem onClick={() => setColor(Color.YELLOW)}>
       <MiniToolboxColor color={Color.YELLOW} />
+    </MiniToolboxItem>
+    <MiniToolboxItem onClick={() => rotate()}>
+      <MiniToolboxIcon icon="rotate-cw" />
+    </MiniToolboxItem>
+    <MiniToolboxItem onClick={() => remove()}>
+      <MiniToolboxIcon icon="trash-2" />
     </MiniToolboxItem>
   </MiniToolboxWrapper>
 );

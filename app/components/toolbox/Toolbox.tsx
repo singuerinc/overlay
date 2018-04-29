@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Tool, ToolType } from './Tool';
 import { ToolboxIcon } from './ToolboxIcon';
+import { Color } from '../../utils/Color';
 
 const Wrapper = styled.ul.attrs<{
   x: number;
@@ -28,7 +29,7 @@ const ToolSpace = styled.li`
 `;
 
 const ToolItem = styled.li`
-  background-color: #607d8b;
+  background-color: ${Color.GRAY};
   display: flex;
   flex: 1 1 auto;
   text-align: center;
@@ -39,7 +40,7 @@ const ToolItem = styled.li`
 
   &:hover {
     cursor: pointer;
-    background-color: orange;
+    background-color: ${Color.ORANGE};
   }
 `;
 

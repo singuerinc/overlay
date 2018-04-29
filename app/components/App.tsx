@@ -47,8 +47,13 @@ class App extends React.Component<{}, State> {
         grids: []
       });
     } else {
+      const newGrid: IGrid = {
+        ...grid,
+        id: uuid()
+      };
+
       this.setState({
-        grids: [...this.state.grids, { ...grid }]
+        grids: [newGrid]
       });
     }
   }
@@ -124,18 +129,27 @@ class App extends React.Component<{}, State> {
       <>
         {isStuffVisible && (
           <>
-            {grids.map((props) => <Grid {...props} />)}
+            {grids.map((props: IGrid) => <Grid key={props.id} {...props} />)}
             {rulers.map((props: IRuler) => (
-              <Ruler {...props} remove={() => this.removeRuler(props.id)} />
+              <Ruler
+                key={props.id}
+                {...props}
+                remove={() => this.removeRuler(props.id)}
+              />
             ))}
             {onions.map((props: IOnionImage) => (
               <OnionImage
+                key={props.id}
                 {...props}
                 remove={() => this.removeOnion(props.id)}
               />
             ))}
             {guides.map((props: IGuide) => (
-              <Guide {...props} remove={() => this.removeGuide(props.id)} />
+              <Guide
+                key={props.id}
+                {...props}
+                remove={() => this.removeGuide(props.id)}
+              />
             ))}
           </>
         )}

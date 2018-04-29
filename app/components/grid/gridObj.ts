@@ -2,6 +2,7 @@ import { IGrid } from './IGrid';
 import { Color } from '../../utils/Color';
 
 const grid: IGrid = {
+  id: '',
   size: 10,
   color: Color.CYAN,
   type: 'solid',

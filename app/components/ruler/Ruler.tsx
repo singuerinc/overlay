@@ -8,6 +8,7 @@ import { createGrid } from '../grid/utils';
 import * as chroma from 'chroma-js';
 import { RulerToolbox } from './RulerToolbox';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
+import { Color } from '../../utils/Color';
 
 interface State {
   x: number;
@@ -86,6 +87,10 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
     });
   }
 
+  setColor(color: Color) {
+    this.setState({ color });
+  }
+
   render() {
     const { remove } = this.props;
     const { x, y, width, height, color } = this.state;
@@ -98,7 +103,10 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
         <Coords x={x} y={y} />
         <Size width={width} height={height} />
         <RulerElement width={width} height={height} color={color} />
-        <RulerToolbox remove={remove} />
+        <RulerToolbox
+          remove={remove}
+          setColor={(color: Color) => this.setColor(color)}
+        />
       </RulerWrapper>
     );
   }
