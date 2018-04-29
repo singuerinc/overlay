@@ -4,6 +4,7 @@ import Guide from '../components/guide/Guide';
 import Ruler from '../components/ruler/Ruler';
 import Grid from '../components/grid/Grid';
 import { Toolbox } from '../components/toolbox/Toolbox';
+import { Help } from './help/Help';
 import { IRuler } from './ruler/IRuler';
 import { IOnionImage } from './onionImage/IOnionImage';
 import { IGuide } from './guide/IGuide';
@@ -30,6 +31,7 @@ interface State {
   onions: IOnionImage[];
   rulers: IRuler[];
   isStuffVisible: boolean;
+  helpVisible: boolean;
 }
 
 class App extends React.Component<{}, State> {
@@ -38,7 +40,8 @@ class App extends React.Component<{}, State> {
     grids: [],
     onions: [],
     rulers: [],
-    isStuffVisible: true
+    isStuffVisible: true,
+    helpVisible: false
   };
 
   toggle(tool: ToolType) {
@@ -96,6 +99,12 @@ class App extends React.Component<{}, State> {
     });
   };
 
+  toggleHelp() {
+    this.setState({
+      helpVisible: !this.state.helpVisible
+    });
+  }
+
   removeGuide = (id: string) => {
     const filtered: IGuide[] = this.state.guides.filter(
       (guide: IGuide) => guide.id !== id
@@ -124,9 +133,17 @@ class App extends React.Component<{}, State> {
   };
 
   render() {
-    const { grids, rulers, onions, guides, isStuffVisible } = this.state;
+    const {
+      grids,
+      rulers,
+      onions,
+      guides,
+      isStuffVisible,
+      helpVisible
+    } = this.state;
     return (
       <>
+        {helpVisible && <Help />}
         {isStuffVisible && (
           <>
             {grids.map((props: IGrid) => <Grid key={props.id} {...props} />)}
@@ -160,6 +177,7 @@ class App extends React.Component<{}, State> {
           isStuffVisible={isStuffVisible}
           create={(tool: Tool) => this.create(tool)}
           toggle={(tool: Tool) => this.toggle(tool)}
+          toggleHelp={() => this.toggleHelp()}
         />
       </>
     );

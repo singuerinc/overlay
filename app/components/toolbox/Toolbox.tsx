@@ -58,6 +58,7 @@ interface Props {
   setVisibility: (visible: boolean) => void;
   create: (tool: ToolType) => void;
   toggle: (tool: ToolType) => void;
+  toggleHelp: () => void;
 }
 
 interface State {
@@ -86,7 +87,15 @@ export class Toolbox extends React.Component<Props, State> {
   };
 
   render() {
-    const { isStuffVisible, x, y, create, toggle } = this.props;
+    const {
+      isStuffVisible,
+      x,
+      y,
+      create,
+      toggle,
+      setVisibility,
+      toggleHelp
+    } = this.props;
     const { onTop, isMenuOpen } = this.state;
     return (
       <Wrapper x={x} y={y}>
@@ -99,25 +108,26 @@ export class Toolbox extends React.Component<Props, State> {
             <ToolItem onClick={() => this.setOnTop(!onTop)}>
               <ToolboxIcon icon={onTop ? 'zap' : 'zap-off'} />
             </ToolItem>
-            <ToolItem onClick={() => this.props.setVisibility(!isStuffVisible)}>
+            <ToolItem onClick={() => setVisibility(!isStuffVisible)}>
               <ToolboxIcon icon={isStuffVisible ? 'eye' : 'eye-off'} />
             </ToolItem>
             <ToolSpace />
-            <MenuWrapper>
-              <ToolItem onClick={() => create(Tool.GUIDE)}>
-                <ToolboxIcon icon="layout" />
-              </ToolItem>
-              <ToolItem onClick={() => create(Tool.RULER)}>
-                <ToolboxIcon icon="square" />
-              </ToolItem>
-              <ToolItem onClick={() => create(Tool.ONION)}>
-                <ToolboxIcon icon="image" />
-              </ToolItem>
-              <ToolItem onClick={() => toggle(Tool.GRID)}>
-                <ToolboxIcon icon="grid" />
-              </ToolItem>
-              <ToolSpace />
-            </MenuWrapper>
+            <ToolItem onClick={() => create(Tool.GUIDE)}>
+              <ToolboxIcon icon="layout" />
+            </ToolItem>
+            <ToolItem onClick={() => create(Tool.RULER)}>
+              <ToolboxIcon icon="square" />
+            </ToolItem>
+            <ToolItem onClick={() => create(Tool.ONION)}>
+              <ToolboxIcon icon="image" />
+            </ToolItem>
+            <ToolItem onClick={() => toggle(Tool.GRID)}>
+              <ToolboxIcon icon="grid" />
+            </ToolItem>
+            <ToolSpace />
+            <ToolItem onClick={() => toggleHelp()}>
+              <ToolboxIcon icon="help-circle" />
+            </ToolItem>
           </MenuWrapper>
         )}
       </Wrapper>
