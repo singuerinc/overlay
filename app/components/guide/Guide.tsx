@@ -6,12 +6,13 @@ import { IGuide } from './IGuide.d';
 import { IGuideDirection, GuideDirection } from './IGuideDirection';
 import { GuideToolbox } from './GuideToolbox';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
+import { Color } from '../../utils/Color';
 
 interface State {
   x: number;
   y: number;
   type: IGuideDirection;
-  color: 'red' | 'green' | 'blue' | 'yellow' | 'black';
+  color: Color;
 }
 
 interface GuideElementProps {
@@ -106,6 +107,10 @@ export default class Guide extends React.Component<IGuide & Props, State> {
     );
   };
 
+  setColor(color: Color) {
+    this.setState({ color });
+  }
+
   bindKeys() {
     mousetrap.bind(arrowKeys, ({ shiftKey, key }) => {
       const { type, x, y } = this.state;
@@ -141,25 +146,18 @@ export default class Guide extends React.Component<IGuide & Props, State> {
     });
 
     mousetrap.bind(colorKeys, ({ key }) => {
-      let color;
       switch (key) {
         case 'r':
-          color = 'red';
-          break;
+          return this.setState({ color: Color.RED });
         case 'g':
-          color = 'green';
-          break;
+          return this.setState({ color: Color.GREEN });
         case 'b':
-          color = 'blue';
-          break;
+          return this.setState({ color: Color.BLUE });
         case 'y':
-          color = 'yellow';
-          break;
+          return this.setState({ color: Color.YELLOW });
         default:
-          color = 'black';
+          return this.setState({ color: Color.RED });
       }
-
-      this.setState({ color });
     });
   }
 
@@ -198,7 +196,11 @@ export default class Guide extends React.Component<IGuide & Props, State> {
         }}
       >
         <GuideElement type={type} color={color}>
-          <GuideToolbox remove={remove} rotate={this.rotate} />
+          <GuideToolbox
+            remove={remove}
+            rotate={this.rotate}
+            setColor={(color: Color) => this.setColor(color)}
+          />
         </GuideElement>
       </div>
     );

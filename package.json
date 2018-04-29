@@ -8,18 +8,13 @@
     "test": "cross-env NODE_ENV=test node --trace-warnings ./test/runTests.js",
     "test-all": "npm run test && npm run build && npm run test-e2e",
     "test-watch": "npm test -- --watch",
-    "test-e2e":
-      "cross-env NODE_ENV=test node --trace-warnings ./test/runTests.js e2e",
-    "hot-server":
-      "cross-env NODE_ENV=development node --max_old_space_size=2096 server.js",
-    "build-main":
-      "cross-env NODE_ENV=production node ./node_modules/webpack/bin/webpack --config webpack.config.electron.js --progress --profile --colors",
-    "build-renderer":
-      "cross-env NODE_ENV=production node ./node_modules/webpack/bin/webpack --config webpack.config.production.js --progress --profile --colors",
+    "test-e2e": "cross-env NODE_ENV=test node --trace-warnings ./test/runTests.js e2e",
+    "hot-server": "cross-env NODE_ENV=development node --max_old_space_size=2096 server.js",
+    "build-main": "cross-env NODE_ENV=production node ./node_modules/webpack/bin/webpack --config webpack.config.electron.js --progress --profile --colors",
+    "build-renderer": "cross-env NODE_ENV=production node ./node_modules/webpack/bin/webpack --config webpack.config.production.js --progress --profile --colors",
     "build": "npm run build-main && npm run build-renderer",
     "start": "cross-env NODE_ENV=production electron ./app/",
-    "start-hot":
-      "cross-env HOT=1 NODE_ENV=development electron ./app/main.development",
+    "start-hot": "cross-env HOT=1 NODE_ENV=development electron ./app/main.development",
     "postinstall": "npm run build",
     "dev": "npm run hot-server -- --start-hot",
     "package": "npm run build && build --publish never",
@@ -30,16 +25,24 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
-        "<rootDir>/internals/mocks/fileMock.js",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/internals/mocks/fileMock.js",
       "\\.(css|less|sass|scss)$": "identity-obj-proxy"
     },
-    "moduleFileExtensions": ["ts", "tsx", "js"],
-    "moduleDirectories": ["node_modules", "app/node_modules"],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "app/node_modules"
+    ],
     "transform": {
       "^.+\\.(ts|tsx)$": "<rootDir>/test/preprocessor.js"
     },
-    "testMatch": ["**/?(*.)(spec|test).ts?(x)"]
+    "testMatch": [
+      "**/?(*.)(spec|test).ts?(x)"
+    ]
   },
   "build": {
     "productName": "Overlay",
@@ -75,7 +78,10 @@
       "target": "nsis"
     },
     "linux": {
-      "target": ["deb", "AppImage"]
+      "target": [
+        "deb",
+        "AppImage"
+      ]
     }
   },
   "bin": {
@@ -83,8 +89,7 @@
   },
   "repository": {
     "type": "git",
-    "url":
-      "git+https://github.com/irath96/electron-react-typescript-boilerplate.git"
+    "url": "git+https://github.com/irath96/electron-react-typescript-boilerplate.git"
   },
   "author": {
     "name": "Alexander Rath",
@@ -93,8 +98,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url":
-      "https://github.com/irath96/electron-react-typescript-boilerplate/issues"
+    "url": "https://github.com/irath96/electron-react-typescript-boilerplate/issues"
   },
   "keywords": [
     "electron",
@@ -105,8 +109,7 @@
     "webpack",
     "react-hot"
   ],
-  "homepage":
-    "https://github.com/irath96/electron-react-typescript-boilerplate#readme",
+  "homepage": "https://github.com/irath96/electron-react-typescript-boilerplate#readme",
   "devDependencies": {
     "@types/enzyme": "^3.1.1",
     "@types/history": "^4.5.2",

@@ -1,12 +1,13 @@
 import { IGuide } from './IGuide';
 import { GuideDirection } from './IGuideDirection';
+import { Color } from '../../utils/Color';
 
 const guide: IGuide = {
   id: '',
   x: 0,
   y: 100,
   type: GuideDirection.HORIZONTAL,
-  color: 'red'
+  color: Color.RED
 };
 
 export default guide;
