@@ -16,6 +16,7 @@ import { default as ruler } from './ruler/rulerObj';
 import { default as grid } from './grid/gridObj';
 import { default as onion } from './onionImage/onionObj';
 import * as uuid from 'uuid/v1';
+import * as ipc from 'electron-better-ipc';
 
 injectGlobal`
   * {
@@ -65,7 +66,12 @@ class App extends React.Component<{}, State> {
     }
   }
 
-  create(tool: ToolType) {
+  async showOpenDialogImage(): Promise<string[]> {
+    const filePaths = await ipc.callMain('show-open-dialog-image');
+    return filePaths;
+  }
+
+  async create(tool: ToolType) {
     switch (tool) {
       case Tool.GUIDE:
         const newGuide: IGuide = {
@@ -86,12 +92,18 @@ class App extends React.Component<{}, State> {
         });
         break;
       case Tool.ONION:
-        const newOnion: IOnionImage = {
-          ...onion,
-          id: uuid()
-        };
+        const paths: string[] = await this.showOpenDialogImage();
+
+        const onions: IOnionImage[] = paths.map((path: string) => {
+          return {
+            ...onion,
+            src: path,
+            id: uuid()
+          }
+        });
+
         this.setState({
-          onions: [...this.state.onions, newOnion]
+          onions: [...this.state.onions, ...onions]
         });
         break;
     }

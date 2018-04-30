@@ -1,4 +1,5 @@
-const { app, BrowserWindow, Menu, shell } = require('electron');
+const { app, dialog, BrowserWindow, Menu, shell } = require('electron');
+const ipc = require('electron-better-ipc');
 
 let menu;
 let template;
@@ -36,6 +37,19 @@ const installExtensions = () => {
   return Promise.resolve([]);
 };
 
+const showOpenDialogImage = () => {
+  return new Promise((resolve, reject) => {
+    dialog.showOpenDialog({
+      properties: ['openFile', 'multiSelections'],
+      filters: [
+        { name: 'Images', extensions: ['jpg', 'png', 'gif'] }
+      ]
+    }, (filePaths) => {
+      resolve(filePaths);
+    });
+  });
+};
+
 app.on('ready', () =>
   installExtensions().then(() => {
     const { screen } = require('electron');
@@ -51,6 +65,11 @@ app.on('ready', () =>
     });
 
     mainWindow.loadURL(`file://${__dirname}/app.html`);
+
+    ipc.answerRenderer('show-open-dialog-image', async () => {
+        const filePaths = await showOpenDialogImage();
+        return filePaths;
+    });
 
     mainWindow.webContents.on('did-finish-load', () => {
       mainWindow.show();
@@ -80,10 +99,10 @@ app.on('ready', () =>
     if (process.platform === 'darwin') {
       template = [
         {
-          label: 'Electron',
+          label: 'Overlay',
           submenu: [
             {
-              label: 'About ElectronReact',
+              label: 'About Overlay',
               selector: 'orderFrontStandardAboutPanel:'
             },
             {
@@ -97,7 +116,7 @@ app.on('ready', () =>
               type: 'separator'
             },
             {
-              label: 'Hide ElectronReact',
+              label: 'Hide Overlay',
               accelerator: 'Command+H',
               selector: 'hide:'
             },
