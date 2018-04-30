@@ -35,14 +35,18 @@ interface State {
 }
 
 class App extends React.Component<{}, State> {
-  state = {
-    guides: [],
-    grids: [],
-    onions: [],
-    rulers: [],
-    isStuffVisible: true,
-    helpVisible: false
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      guides: [],
+      grids: [],
+      onions: [],
+      rulers: [],
+      isStuffVisible: true,
+      helpVisible: false
+    };
+  }
 
   toggle(tool: ToolType) {
     if (this.state.grids.length > 0) {
@@ -114,9 +118,15 @@ class App extends React.Component<{}, State> {
     });
   };
 
+  duplicateRuler = (ruler: IRuler) => {
+    this.setState({
+      rulers: [...this.state.rulers, ruler]
+    });
+  };
+
   removeRuler = (id: string) => {
     const filtered: IRuler[] = this.state.rulers.filter(
-      (ruler: IOnionImage) => ruler.id !== id
+      (ruler: IRuler) => ruler.id !== id
     );
     this.setState({
       rulers: filtered
@@ -151,6 +161,7 @@ class App extends React.Component<{}, State> {
               <Ruler
                 key={props.id}
                 {...props}
+                duplicate={this.duplicateRuler}
                 remove={() => this.removeRuler(props.id)}
               />
             ))}

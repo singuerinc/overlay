@@ -7,6 +7,7 @@ const ruler: IRuler = {
   y: 250,
   width: 400,
   height: 400,
+  opacity: 0.5,
   color: Color.ORANGE
 };
 

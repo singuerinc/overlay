@@ -9,6 +9,7 @@ import * as chroma from 'chroma-js';
 import { RulerToolbox } from './RulerToolbox';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { Color } from '../../utils/Color';
+import * as uuid from 'uuid/v1';
 
 interface State {
   x: number;
@@ -16,8 +17,7 @@ interface State {
   width: number;
   height: number;
   opacity: number;
-  inverted: boolean;
-  color: string;
+  color: Color;
 }
 
 const RulerWrapper = styled.div.attrs({})`
@@ -36,11 +36,13 @@ const RulerWrapper = styled.div.attrs({})`
 const RulerElement = styled.div.attrs<{
   width: number;
   height: number;
+  opacity: number;
   color: string;
 }>({
   width: (props) => props.width,
   height: (props) => props.height,
-  color: (props) => props.color
+  color: (props) => props.color,
+  opacity: (props) => props.opacity
 })`
   position: relative;
   top: 0;
@@ -49,9 +51,9 @@ const RulerElement = styled.div.attrs<{
   height: ${({ height }) => height}px;
   background-image: url(${({ color }) => createGrid(10, color, 'solid')});
   background-repeat: repeat;
-  background-color: ${({ color }) =>
+  background-color: ${({ color, opacity }) =>
     chroma(color)
-      .alpha(0.6)
+      .alpha(opacity)
       .css()};
 `;
 
@@ -62,6 +64,7 @@ const setPosition = (el, x, y) => {
 };
 
 interface Props {
+  duplicate: (ruler: IRuler) => void;
   remove: () => void;
 }
 
@@ -92,8 +95,8 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
   }
 
   render() {
-    const { remove } = this.props;
-    const { x, y, width, height, color } = this.state;
+    const { duplicate, remove } = this.props;
+    const { x, y, width, height, opacity, color } = this.state;
     return (
       <RulerWrapper
         innerRef={(el: HTMLDivElement) => {
@@ -102,8 +105,19 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
       >
         <Coords x={x} y={y} />
         <Size width={width} height={height} />
-        <RulerElement width={width} height={height} color={color} />
+        <RulerElement
+          width={width}
+          height={height}
+          color={color}
+          opacity={opacity}
+        />
         <RulerToolbox
+          duplicate={() =>
+            duplicate({
+              ...this.state,
+              id: uuid()
+            })
+          }
           remove={remove}
           setColor={(color: Color) => this.setColor(color)}
         />

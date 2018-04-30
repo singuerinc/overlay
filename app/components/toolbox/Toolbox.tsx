@@ -100,7 +100,7 @@ export class Toolbox extends React.Component<Props, State> {
     return (
       <Wrapper x={x} y={y}>
         <ToolItem onClick={() => this.setMenuOpen(!isMenuOpen)}>
-          <ToolboxIcon icon={isMenuOpen ? 'x' : 'more-vertical'} />
+          <ToolboxIcon icon={isMenuOpen ? 'x' : 'menu'} />
         </ToolItem>
         {isMenuOpen && (
           <MenuWrapper>

@@ -6,5 +6,6 @@ export interface IRuler {
   y: number;
   width: number;
   height: number;
+  opacity: number;
   color: Color;
 }
