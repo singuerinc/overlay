@@ -1,7 +1,7 @@
 {
   "name": "overlay",
   "productName": "Overlay",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "",
   "main": "main.js",
   "scripts": {
@@ -21,6 +21,7 @@
     "package-win": "npm run build && build --win --x64",
     "package-linux": "npm run build && build --linux",
     "package-all": "npm run build && build -mwl",
+    "publish": "build --mac -p always",
     "cleanup": "mop -v"
   },
   "jest": {
@@ -45,6 +46,11 @@
     ]
   },
   "build": {
+    "publish": [{
+      "provider": "github",
+      "owner": "singuerinc",
+      "repo": "overlay"
+    }],
     "productName": "Overlay",
     "appId": "io.github.singuerinc.Overlay",
     "dmg": {
@@ -74,6 +80,13 @@
       "buildResources": "resources",
       "output": "release"
     },
+    "mac": {
+      "category": "Utilities",
+      "target": [
+        "zip",
+        "dmg"
+      ]
+    },
     "win": {
       "target": "nsis"
     },
@@ -89,16 +102,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/irath96/electron-react-typescript-boilerplate.git"
+    "url": "git+https://github.com/singuerinc/overlay.git"
   },
   "author": {
-    "name": "Alexander Rath",
-    "email": "irath96@gmail.com",
-    "url": "https://github.com/irath96"
+    "name": "Nahuel Scotti",
+    "email": "nahuel.scotti@gmail.com",
+    "url": "https://github.com/singuerinc"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/irath96/electron-react-typescript-boilerplate/issues"
+    "url": "https://github.com/singuerinc/overlay/issues"
   },
   "keywords": [
     "electron",
@@ -109,7 +122,7 @@
     "webpack",
     "react-hot"
   ],
-  "homepage": "https://github.com/irath96/electron-react-typescript-boilerplate#readme",
+  "homepage": "https://github.com/singuerinc/overlay#readme",
   "devDependencies": {
     "@types/enzyme": "^3.1.1",
     "@types/history": "^4.5.2",
@@ -167,6 +180,7 @@
     "chroma-js": "^1.3.6",
     "electron-better-ipc": "^0.1.0",
     "electron-debug": "^1.1.0",
+    "electron-updater": "^2.21.8",
     "feather-icons": "^4.7.0",
     "font-awesome": "^4.7.0",
     "history": "^4.6.1",
