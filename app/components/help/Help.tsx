@@ -1,41 +1,64 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Color } from '../../utils/Color';
 
-const Shortcut = styled.span`
-  background-color: #999;
-  color: navajowhite;
-  border-radius: 4px;
-  padding: 2px 4px;
-  font-size: 12px;
-  border: 1px solid #777;
+const Table = styled.table`
+  kbd {
+    display: inline-block;
+    padding: 3px 5px;
+    font-size: 12px;
+    line-height: 10px;
+    color: #444d56;
+    vertical-align: middle;
+    background-color: #fafbfc;
+    border: solid 1px #c6cbd1;
+    border-bottom-color: #959da5;
+    border-radius: 3px;
+    box-shadow: inset 0 -1px 0 #959da5;
+  }
 `;
 
 const Element = ({ className }: { className?: string }) => (
   <div className={className}>
     <h1>Keyboard shortcuts</h1>
     <div className="ruler">
+      <h2>Global</h2>
+      <Table>
+        <tbody>
+          <tr>
+            <td>Change color</td>
+            <td>
+              <kbd>b</kbd>
+              <kbd>g</kbd>
+              <kbd>o</kbd>
+              <kbd>r</kbd>
+              <kbd>y</kbd>
+            </td>
+          </tr>
+        </tbody>
+      </Table>
       <h2>Ruler</h2>
-      <table>
-        <tr>
-          <td>
-            <Shortcut>backspace</Shortcut>
-          </td>
-          <td>Remove</td>
-        </tr>
-        <tr>
-          <td>
-            <Shortcut>b/g/o/r/y</Shortcut>
-          </td>
-          <td>Change color: blue, green, orange, red, yellow</td>
-        </tr>
-        <tr>
-          <td>
-            <Shortcut>0-9</Shortcut>
-          </td>
-          <td>Change opacity</td>
-        </tr>
-      </table>
+      <Table>
+        <tbody>
+          <tr>
+            <td>Duplicate</td>
+            <td>
+              <kbd>Cmd/Ctrl</kbd> <kbd>d</kbd>
+            </td>
+          </tr>
+          <tr>
+            <td>Horizontal mode</td>
+            <td>
+              <kbd>h</kbd>
+            </td>
+          </tr>
+          <tr>
+            <td>Vertical mode</td>
+            <td>
+              <kbd>v</kbd>
+            </td>
+          </tr>
+        </tbody>
+      </Table>
     </div>
   </div>
 );
@@ -50,7 +73,7 @@ export const Help = styled(Element)`
   display: block;
   align-items: center;
   justify-content: center;
-  background-color: ${Color.GRAY};
+  background-color: white;
   padding: 20px 40px;
   color: #111;
 `;

@@ -165,7 +165,6 @@ class App extends React.Component<{}, State> {
     } = this.state;
     return (
       <>
-        {helpVisible && <Help />}
         {isStuffVisible && (
           <>
             {grids.map((props: IGrid) => <Grid key={props.id} {...props} />)}
@@ -193,6 +192,7 @@ class App extends React.Component<{}, State> {
             ))}
           </>
         )}
+        {helpVisible && <Help />}
         <Toolbox
           x={20}
           y={20}
