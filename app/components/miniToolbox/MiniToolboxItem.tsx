@@ -7,7 +7,7 @@ export const MiniToolboxItem = styled.li`
   text-align: center;
   justify-content: center;
   padding: 6px 8px;
-  margin: 0 1px;
+  margin: 0;
 
   &:hover {
     cursor: pointer;
