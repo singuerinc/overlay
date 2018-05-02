@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as mousetrap from 'mousetrap';
 import styled from 'styled-components';
 import { Coords } from '../helpers/Coords';
 import { Size } from '../helpers/Size';
@@ -11,6 +12,7 @@ import { Color } from '../../utils/Color';
 import * as uuid from 'uuid/v1';
 import { setPosition } from '../helpers/setPosition';
 import { draggable } from '../helpers/draggable';
+import { getPositionByKey, ARROW_KEYS } from '../helpers/getPositionByKey';
 
 interface State {
   x: number;
@@ -78,7 +80,32 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
   componentDidMount() {
     setPosition(this.el.current, this.state.x, this.state.y);
     draggable(this.el.current, this.setState.bind(this));
+
+    this.el.current.addEventListener('mouseover', this.bindKeys);
+    this.el.current.addEventListener('mouseout', this.unbindKeys);
   }
+
+  componentWillUnmount() {
+    this.unbindKeys();
+
+    this.el.current.removeEventListener('mouseover', this.bindKeys);
+    this.el.current.removeEventListener('mouseout', this.unbindKeys);
+  }
+
+  bindKeys = () => {
+    mousetrap.bind(ARROW_KEYS, ({ shiftKey, key }) => {
+      const { x, y } = this.state;
+      const value = shiftKey ? 10 : 1;
+
+      this.setState(getPositionByKey(key, x, y, value), () => {
+        setPosition(this.el.current, this.state.x, this.state.y);
+      });
+    });
+  };
+
+  unbindKeys = () => {
+    mousetrap.unbind(ARROW_KEYS);
+  };
 
   setColor(color: Color) {
     this.setState({ color });
