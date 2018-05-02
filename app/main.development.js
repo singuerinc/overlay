@@ -5,12 +5,13 @@ let menu;
 let template;
 let mainWindow = null;
 
+require('update-electron-app')({
+  repo: 'singuerinc/overlay',
+  updateInterval: '10 minutes',
+  logger: require('electron-log')
+});
+
 if (process.env.NODE_ENV === 'production') {
-  require('update-electron-app')({
-    repo: 'singuerinc/overlay',
-    updateInterval: '10 minutes',
-    logger: require('electron-log')
-  });
   const sourceMapSupport = require('source-map-support'); // eslint-disable-line
   sourceMapSupport.install();
 }
