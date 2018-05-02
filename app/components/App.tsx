@@ -24,6 +24,11 @@ injectGlobal`
     -moz-osx-font-smoothing: grayscale;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
+
+  ul {
+    margin: 0;
+    padding: 0;
+  }
 `;
 
 interface State {
@@ -99,7 +104,7 @@ class App extends React.Component<{}, State> {
             ...onion,
             src: path,
             id: uuid()
-          }
+          };
         });
 
         this.setState({
@@ -115,11 +120,11 @@ class App extends React.Component<{}, State> {
     });
   };
 
-  toggleHelp() {
+  toggleHelp = () => {
     this.setState({
       helpVisible: !this.state.helpVisible
     });
-  }
+  };
 
   removeGuide = (id: string) => {
     const filtered: IGuide[] = this.state.guides.filter(
@@ -192,7 +197,7 @@ class App extends React.Component<{}, State> {
             ))}
           </>
         )}
-        {helpVisible && <Help />}
+        {helpVisible && <Help close={this.toggleHelp} />}
         <Toolbox
           x={20}
           y={20}

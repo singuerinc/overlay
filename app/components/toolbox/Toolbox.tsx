@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Tool, ToolType } from './Tool';
 import { ToolboxIcon } from './ToolboxIcon';
-import { Color } from '../../utils/Color';
+import { ToolItem } from './ToolboxItem';
 
 const Wrapper = styled.ul.attrs<{
   x: number;
@@ -25,23 +25,7 @@ const ToolSpace = styled.li`
   background-color: transparent;
   display: flex;
   width: 5px;
-  margin: 0 1px;
-`;
-
-const ToolItem = styled.li`
-  background-color: ${Color.GRAY};
-  display: flex;
-  flex: 1 1 auto;
-  text-align: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 6px 8px;
-  margin: 0 1px;
-
-  &:hover {
-    cursor: pointer;
-    background-color: ${Color.ORANGE};
-  }
+  margin: 0;
 `;
 
 const MenuWrapper = styled.ul`
