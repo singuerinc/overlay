@@ -1,12 +1,13 @@
 import * as React from 'react';
 import * as mousetrap from 'mousetrap';
 import styled from 'styled-components';
-import * as interactjs from 'interactjs';
 import { Coords } from '../helpers/Coords';
 import { Size } from '../helpers/Size';
 import { IOnionImage } from './IOnionImage.d';
 import { OnionToolbox } from './OnionToolbox';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
+import { draggable } from '../helpers/draggable';
+import { setPosition } from '../helpers/setPosition';
 
 interface State {
   opacity: number;
@@ -40,12 +41,6 @@ const OnionImageElement = styled.img.attrs<{ opacity; inverted; visible }>({
   display: ${({ visible }) => (visible ? 'block' : 'none')};
 `;
 
-const setPosition = (el, x, y) => {
-  el.style.webkitTransform = el.style.transform = `translate(${x}px,${y}px)`;
-  el.setAttribute('data-x', x);
-  el.setAttribute('data-y', y);
-};
-
 const opacityNumberKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
 const opacityLettersKeys = ['=', '+', '-', '_'];
 const invertKeys = 'i';
@@ -68,8 +63,14 @@ export default class OnionImage extends React.Component<
   IOnionImage & Props,
   State
 > {
-  private el: HTMLDivElement;
-  private image: HTMLImageElement;
+  private el;
+  private image;
+
+  constructor(props) {
+    super(props);
+    this.el = React.createRef();
+    this.image = React.createRef();
+  }
 
   setInverted = (value: boolean) => {
     this.setState({
@@ -123,7 +124,7 @@ export default class OnionImage extends React.Component<
     });
 
     mousetrap.bind(arrowKeys, ({ shiftKey, key }) => {
-      const el = this.el;
+      const el = this.el.current;
       const { x, y } = this.state;
       const value = shiftKey ? 10 : 1;
 
@@ -151,43 +152,28 @@ export default class OnionImage extends React.Component<
   }
 
   componentDidMount() {
-    setPosition(this.el, this.state.x, this.state.y);
+    setPosition(this.el.current, this.state.x, this.state.y);
 
-    this.image.onload = (() => {
+    this.image.current.onload = (() => {
       this.setState({
-        width: this.image.width,
-        height: this.image.height
+        width: this.image.current.width,
+        height: this.image.current.height
       });
     }).bind(this);
 
-    this.el.addEventListener('mouseover', () => this.bindKeys());
-    this.el.addEventListener('mouseout', () => this.unbindKeys());
+    this.el.current.addEventListener('mouseover', () => this.bindKeys());
+    this.el.current.addEventListener('mouseout', () => this.unbindKeys());
 
-    interactjs(this.el).draggable({
-      onmove: ({ dx, dy, target }) => {
-        const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
-        const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
-
-        setPosition(target, x, y);
-
-        this.setState({ x, y });
-      }
-    });
+    draggable(this.el.current, this.setState.bind(this));
   }
 
   render() {
     const { src, remove } = this.props;
     const { opacity, visible, inverted, x, y, height, width } = this.state;
     return (
-      <OnionImageWrapper
-        innerRef={(el: HTMLDivElement) => {
-          this.el = el;
-        }}
-      >
+      <OnionImageWrapper innerRef={this.el}>
         <OnionImageElement
-          innerRef={(image: HTMLImageElement) => {
-            this.image = image;
-          }}
+          innerRef={this.image}
           src={src}
           visible={visible}
           opacity={opacity}
