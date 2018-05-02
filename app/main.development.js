@@ -6,6 +6,11 @@ let template;
 let mainWindow = null;
 
 if (process.env.NODE_ENV === 'production') {
+  require('update-electron-app')({
+    repo: 'singuerinc/overlay',
+    updateInterval: '10 minutes',
+    logger: require('electron-log')
+  });
   const sourceMapSupport = require('source-map-support'); // eslint-disable-line
   sourceMapSupport.install();
 }
@@ -39,14 +44,15 @@ const installExtensions = () => {
 
 const showOpenDialogImage = () => {
   return new Promise((resolve, reject) => {
-    dialog.showOpenDialog({
-      properties: ['openFile', 'multiSelections'],
-      filters: [
-        { name: 'Images', extensions: ['jpg', 'png', 'gif'] }
-      ]
-    }, (filePaths) => {
-      resolve(filePaths);
-    });
+    dialog.showOpenDialog(
+      {
+        properties: ['openFile', 'multiSelections'],
+        filters: [{ name: 'Images', extensions: ['jpg', 'png', 'gif'] }]
+      },
+      (filePaths) => {
+        resolve(filePaths);
+      }
+    );
   });
 };
 
@@ -67,8 +73,8 @@ app.on('ready', () =>
     mainWindow.loadURL(`file://${__dirname}/app.html`);
 
     ipc.answerRenderer('show-open-dialog-image', async () => {
-        const filePaths = await showOpenDialogImage();
-        return filePaths;
+      const filePaths = await showOpenDialogImage();
+      return filePaths;
     });
 
     mainWindow.webContents.on('did-finish-load', () => {
