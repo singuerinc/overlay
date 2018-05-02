@@ -2,7 +2,8 @@
   "name": "overlay",
   "productName": "Overlay",
   "version": "0.0.3",
-  "description": "",
+  "description":
+    "A set of tools for devs and designers to measure, align and overlay on-screen graphics and layouts.",
   "main": "main.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test node --trace-warnings ./test/runTests.js",

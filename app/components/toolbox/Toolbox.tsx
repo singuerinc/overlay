@@ -1,8 +1,10 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import * as interactjs from 'interactjs';
 import { Tool, ToolType } from './Tool';
 import { ToolboxIcon } from './ToolboxIcon';
-import { ToolItem } from './ToolboxItem';
+import { ToolboxItem } from './ToolboxItem';
+import { ToolboxItemDumb } from './ToolboxItemDumb';
 
 const Wrapper = styled.ul.attrs<{
   x: number;
@@ -49,13 +51,29 @@ interface State {
   visible: boolean;
   onTop: boolean;
   isMenuOpen: boolean;
+  x: number;
+  y: number;
 }
 
+const setPosition = (el, x, y) => {
+  el.style.webkitTransform = el.style.transform = `translate(${x}px,${y}px)`;
+  el.setAttribute('data-x', x);
+  el.setAttribute('data-y', y);
+};
+
 export class Toolbox extends React.Component<Props, State> {
+  private el: HTMLDivElement;
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return { ...nextProps, ...prevState };
+  }
+
   state = {
     visible: true,
     onTop: true,
-    isMenuOpen: false
+    isMenuOpen: true,
+    x: 0,
+    y: 0
   };
 
   setOnTop = (value: boolean) => {
@@ -70,6 +88,25 @@ export class Toolbox extends React.Component<Props, State> {
     });
   };
 
+  componentDidMount() {
+    setPosition(this.el, this.state.x, this.state.y);
+
+    interactjs(this.el).draggable({
+      onmove: (event) => {
+        const { dx, dy, target } = event;
+
+        event.preventDefault();
+
+        const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
+        const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
+
+        setPosition(target, x, y);
+
+        this.setState({ x, y });
+      }
+    });
+  }
+
   render() {
     const {
       isStuffVisible,
@@ -80,38 +117,45 @@ export class Toolbox extends React.Component<Props, State> {
       setVisibility,
       toggleHelp
     } = this.props;
-    const { onTop, isMenuOpen } = this.state;
+    const { isMenuOpen } = this.state;
     return (
-      <Wrapper x={x} y={y}>
-        <ToolItem onClick={() => this.setMenuOpen(!isMenuOpen)}>
-          <ToolboxIcon icon={isMenuOpen ? 'x' : 'menu'} />
-        </ToolItem>
+      <Wrapper
+        x={x}
+        y={y}
+        innerRef={(el: HTMLDivElement) => {
+          this.el = el;
+        }}
+      >
+        {/* <ToolItem onClick={() => this.setMenuOpen(!isMenuOpen)}> */}
+        <ToolboxItemDumb>
+          <ToolboxIcon icon={isMenuOpen ? 'more-vertical' : 'menu'} />
+        </ToolboxItemDumb>
         {isMenuOpen && (
           <MenuWrapper>
             <ToolSpace />
-            <ToolItem onClick={() => this.setOnTop(!onTop)}>
+            {/* <ToolItem onClick={() => this.setOnTop(!onTop)}>
               <ToolboxIcon icon={onTop ? 'zap' : 'zap-off'} />
-            </ToolItem>
-            <ToolItem onClick={() => setVisibility(!isStuffVisible)}>
+            </ToolItem> */}
+            <ToolboxItem onClick={() => setVisibility(!isStuffVisible)}>
               <ToolboxIcon icon={isStuffVisible ? 'eye' : 'eye-off'} />
-            </ToolItem>
+            </ToolboxItem>
             <ToolSpace />
-            <ToolItem onClick={() => create(Tool.GUIDE)}>
+            <ToolboxItem onClick={() => create(Tool.GUIDE)}>
               <ToolboxIcon icon="layout" />
-            </ToolItem>
-            <ToolItem onClick={() => create(Tool.RULER)}>
+            </ToolboxItem>
+            {/* <ToolboxItem onClick={() => create(Tool.RULER)}>
               <ToolboxIcon icon="square" />
-            </ToolItem>
-            <ToolItem onClick={() => create(Tool.ONION)}>
+            </ToolboxItem> */}
+            <ToolboxItem onClick={() => create(Tool.ONION)}>
               <ToolboxIcon icon="image" />
-            </ToolItem>
-            <ToolItem onClick={() => toggle(Tool.GRID)}>
+            </ToolboxItem>
+            <ToolboxItem onClick={() => toggle(Tool.GRID)}>
               <ToolboxIcon icon="grid" />
-            </ToolItem>
+            </ToolboxItem>
             <ToolSpace />
-            <ToolItem onClick={() => toggleHelp()}>
+            <ToolboxItem onClick={() => toggleHelp()}>
               <ToolboxIcon icon="help-circle" />
-            </ToolItem>
+            </ToolboxItem>
           </MenuWrapper>
         )}
       </Wrapper>
