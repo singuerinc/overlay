@@ -17,7 +17,7 @@ const Element = ({
       </ToolItem>
     </ul>
     <h1>Keyboard shortcuts</h1>
-    <div className="ruler">
+    <div>
       <h2>Global</h2>
       <table>
         <tbody>
@@ -105,6 +105,14 @@ const Element = ({
             <td>
               <kbd>0</kbd> - <kbd>9</kbd>
             </td>
+          </tr>
+        </tbody>
+      </table>
+      <h2>Ruler</h2>
+      <table>
+        <tbody>
+          <tr>
+            <td>a</td>
           </tr>
         </tbody>
       </table>
