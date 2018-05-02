@@ -69,6 +69,7 @@ export default class OnionImage extends React.Component<
   State
 > {
   private el: HTMLDivElement;
+  private image: HTMLImageElement;
 
   setInverted = (value: boolean) => {
     this.setState({
@@ -152,6 +153,13 @@ export default class OnionImage extends React.Component<
   componentDidMount() {
     setPosition(this.el, this.state.x, this.state.y);
 
+    this.image.onload = (() => {
+      this.setState({
+        width: this.image.width,
+        height: this.image.height
+      });
+    }).bind(this);
+
     this.el.addEventListener('mouseover', () => this.bindKeys());
     this.el.addEventListener('mouseout', () => this.unbindKeys());
 
@@ -168,8 +176,8 @@ export default class OnionImage extends React.Component<
   }
 
   render() {
-    const { src, remove, height, width } = this.props;
-    const { opacity, visible, inverted, x, y } = this.state;
+    const { src, remove } = this.props;
+    const { opacity, visible, inverted, x, y, height, width } = this.state;
     return (
       <OnionImageWrapper
         innerRef={(el: HTMLDivElement) => {
@@ -177,6 +185,9 @@ export default class OnionImage extends React.Component<
         }}
       >
         <OnionImageElement
+          innerRef={(image: HTMLImageElement) => {
+            this.image = image;
+          }}
           src={src}
           visible={visible}
           opacity={opacity}
