@@ -8,6 +8,7 @@ import { GuideToolbox } from './GuideToolbox';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { Color } from '../../utils/Color';
 import { setPosition } from '../helpers/setPosition';
+import { getPositionByKey } from '../helpers/getPositionByKey';
 
 interface State {
   x: number;
@@ -113,31 +114,21 @@ export default class Guide extends React.Component<IGuide & Props, State> {
     this.setState({ color });
   }
 
-  bindKeys() {
+  bindKeys = () => {
     mousetrap.bind(arrowKeys, ({ shiftKey, key }) => {
       const { type, x, y } = this.state;
       const value = shiftKey ? 10 : 1;
 
+      const { x: nx, y: ny } = getPositionByKey(key, x, y, value);
+
       if (type === GuideDirection.HORIZONTAL) {
-        if (key === 'ArrowUp') {
-          this.setState({ y: y - value, x: 0 }, () =>
-            setPosition(this.el, this.state.x, this.state.y)
-          );
-        } else if (key === 'ArrowDown') {
-          this.setState({ y: y + value, x: 0 }, () =>
-            setPosition(this.el, this.state.x, this.state.y)
-          );
-        }
+        this.setState({ y: ny, x: 0 }, () =>
+          setPosition(this.el.current, this.state.x, this.state.y)
+        );
       } else if (type === GuideDirection.VERTICAL) {
-        if (key === 'ArrowLeft') {
-          this.setState({ x: x - value, y: 0 }, () =>
-            setPosition(this.el, this.state.x, this.state.y)
-          );
-        } else if (key === 'ArrowRight') {
-          this.setState({ x: x + value, y: 0 }, () =>
-            setPosition(this.el, this.state.x, this.state.y)
-          );
-        }
+        this.setState({ x: nx, y: 0 }, () =>
+          setPosition(this.el.current, this.state.x, this.state.y)
+        );
       }
     });
 
@@ -161,13 +152,13 @@ export default class Guide extends React.Component<IGuide & Props, State> {
           return this.setState({ color: Color.RED });
       }
     });
-  }
+  };
 
-  unbindKeys() {
+  unbindKeys = () => {
     mousetrap.unbind(arrowKeys);
     mousetrap.unbind(horizontalVerticalKeys);
     mousetrap.unbind(colorKeys);
-  }
+  };
 
   componentDidMount() {
     setPosition(this.el.current, this.state.x, this.state.y);
@@ -184,8 +175,15 @@ export default class Guide extends React.Component<IGuide & Props, State> {
       }
     });
 
-    this.el.current.addEventListener('mouseover', () => this.bindKeys());
-    this.el.current.addEventListener('mouseout', () => this.unbindKeys());
+    this.el.current.addEventListener('mouseover', this.bindKeys);
+    this.el.current.addEventListener('mouseout', this.unbindKeys);
+  }
+
+  componentWillUnmount() {
+    this.unbindKeys();
+
+    this.el.current.removeEventListener('mouseover', this.bindKeys);
+    this.el.current.removeEventListener('mouseout', this.unbindKeys);
   }
 
   render() {

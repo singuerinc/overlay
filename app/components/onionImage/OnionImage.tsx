@@ -8,6 +8,7 @@ import { OnionToolbox } from './OnionToolbox';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { draggable } from '../helpers/draggable';
 import { setPosition } from '../helpers/setPosition';
+import { getPositionByKey, ARROW_KEYS } from '../helpers/getPositionByKey';
 
 interface State {
   opacity: number;
@@ -44,16 +45,6 @@ const OnionImageElement = styled.img.attrs<{ opacity; inverted; visible }>({
 const opacityNumberKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
 const opacityLettersKeys = ['=', '+', '-', '_'];
 const invertKeys = 'i';
-const arrowKeys = [
-  'up',
-  'shift+up',
-  'down',
-  'shift+down',
-  'left',
-  'shift+left',
-  'right',
-  'shift+right'
-];
 
 interface Props {
   remove: () => void;
@@ -73,24 +64,18 @@ export default class OnionImage extends React.Component<
   }
 
   setInverted = (value: boolean) => {
-    this.setState({
-      inverted: value
-    });
+    this.setState({ inverted: value });
   };
 
   setVisibility = (value: boolean) => {
-    this.setState({
-      visible: value
-    });
+    this.setState({ visible: value });
   };
 
   setOpacity = (value: number) => {
-    this.setState({
-      opacity: value
-    });
+    this.setState({ opacity: value });
   };
 
-  bindKeys() {
+  bindKeys = () => {
     mousetrap.bind(opacityNumberKeys, ({ key }) => {
       const val = parseInt(key, 10) * 0.1;
       this.setState({
@@ -123,29 +108,22 @@ export default class OnionImage extends React.Component<
       this.setInverted(!this.state.inverted);
     });
 
-    mousetrap.bind(arrowKeys, ({ shiftKey, key }) => {
-      const el = this.el.current;
+    mousetrap.bind(ARROW_KEYS, ({ shiftKey, key }) => {
       const { x, y } = this.state;
       const value = shiftKey ? 10 : 1;
 
-      if (key === 'ArrowUp') {
-        this.setState({ y: y - value }, () => setPosition(el, x, y));
-      } else if (key === 'ArrowDown') {
-        this.setState({ y: y + value }, () => setPosition(el, x, y));
-      } else if (key === 'ArrowLeft') {
-        this.setState({ x: x - value }, () => setPosition(el, x, y));
-      } else if (key === 'ArrowRight') {
-        this.setState({ x: x + value }, () => setPosition(el, x, y));
-      }
+      this.setState(getPositionByKey(key, x, y, value), () => {
+        setPosition(this.el.current, this.state.x, this.state.y);
+      });
     });
-  }
+  };
 
-  unbindKeys() {
+  unbindKeys = () => {
     mousetrap.unbind(opacityLettersKeys);
     mousetrap.unbind(opacityNumberKeys);
     mousetrap.unbind(invertKeys);
-    mousetrap.unbind(arrowKeys);
-  }
+    mousetrap.unbind(ARROW_KEYS);
+  };
 
   static getDerivedStateFromProps(nextProps, prevState) {
     return { ...nextProps, ...prevState };
@@ -161,10 +139,17 @@ export default class OnionImage extends React.Component<
       });
     }).bind(this);
 
-    this.el.current.addEventListener('mouseover', () => this.bindKeys());
-    this.el.current.addEventListener('mouseout', () => this.unbindKeys());
+    this.el.current.addEventListener('mouseover', this.bindKeys);
+    this.el.current.addEventListener('mouseout', this.unbindKeys);
 
     draggable(this.el.current, this.setState.bind(this));
+  }
+
+  componentWillUnmount() {
+    this.unbindKeys();
+
+    this.el.current.removeEventListener('mouseover', this.bindKeys);
+    this.el.current.removeEventListener('mouseout', this.unbindKeys);
   }
 
   render() {
