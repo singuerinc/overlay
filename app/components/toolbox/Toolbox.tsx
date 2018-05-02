@@ -1,10 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import * as interactjs from 'interactjs';
 import { Tool, ToolType } from './Tool';
 import { ToolboxIcon } from './ToolboxIcon';
 import { ToolboxItem } from './ToolboxItem';
 import { ToolboxItemDumb } from './ToolboxItemDumb';
+import { setPosition } from '../helpers/setPosition';
+import { draggable } from '../helpers/draggable';
 
 const Wrapper = styled.ul.attrs<{
   x: number;
@@ -55,17 +56,16 @@ interface State {
   y: number;
 }
 
-const setPosition = (el, x, y) => {
-  el.style.webkitTransform = el.style.transform = `translate(${x}px,${y}px)`;
-  el.setAttribute('data-x', x);
-  el.setAttribute('data-y', y);
-};
-
 export class Toolbox extends React.Component<Props, State> {
-  private el: HTMLDivElement;
+  private el;
 
   static getDerivedStateFromProps(nextProps, prevState) {
     return { ...nextProps, ...prevState };
+  }
+
+  constructor(props) {
+    super(props);
+    this.el = React.createRef();
   }
 
   state = {
@@ -89,22 +89,8 @@ export class Toolbox extends React.Component<Props, State> {
   };
 
   componentDidMount() {
-    setPosition(this.el, this.state.x, this.state.y);
-
-    interactjs(this.el).draggable({
-      onmove: (event) => {
-        const { dx, dy, target } = event;
-
-        event.preventDefault();
-
-        const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
-        const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
-
-        setPosition(target, x, y);
-
-        this.setState({ x, y });
-      }
-    });
+    setPosition(this.el.current, this.state.x, this.state.y);
+    draggable(this.el.current, this.setState.bind(this));
   }
 
   render() {
@@ -119,13 +105,7 @@ export class Toolbox extends React.Component<Props, State> {
     } = this.props;
     const { isMenuOpen } = this.state;
     return (
-      <Wrapper
-        x={x}
-        y={y}
-        innerRef={(el: HTMLDivElement) => {
-          this.el = el;
-        }}
-      >
+      <Wrapper x={x} y={y} innerRef={this.el}>
         {/* <ToolItem onClick={() => this.setMenuOpen(!isMenuOpen)}> */}
         <ToolboxItemDumb>
           <ToolboxIcon icon={isMenuOpen ? 'more-vertical' : 'menu'} />
@@ -143,9 +123,9 @@ export class Toolbox extends React.Component<Props, State> {
             <ToolboxItem onClick={() => create(Tool.GUIDE)}>
               <ToolboxIcon icon="layout" />
             </ToolboxItem>
-            {/* <ToolboxItem onClick={() => create(Tool.RULER)}>
+            <ToolboxItem onClick={() => create(Tool.RULER)}>
               <ToolboxIcon icon="square" />
-            </ToolboxItem> */}
+            </ToolboxItem>
             <ToolboxItem onClick={() => create(Tool.ONION)}>
               <ToolboxIcon icon="image" />
             </ToolboxItem>

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import * as interactjs from 'interactjs';
 import { Coords } from '../helpers/Coords';
 import { Size } from '../helpers/Size';
 import { IRuler } from './IRuler.d';
@@ -10,6 +9,8 @@ import { RulerToolbox } from './RulerToolbox';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { Color } from '../../utils/Color';
 import * as uuid from 'uuid/v1';
+import { setPosition } from '../helpers/setPosition';
+import { draggable } from '../helpers/draggable';
 
 interface State {
   x: number;
@@ -57,37 +58,26 @@ const RulerElement = styled.div.attrs<{
       .css()};
 `;
 
-const setPosition = (el, x, y) => {
-  el.style.webkitTransform = el.style.transform = `translate(${x}px,${y}px)`;
-  el.setAttribute('data-x', x);
-  el.setAttribute('data-y', y);
-};
-
 interface Props {
   duplicate: (ruler: IRuler) => void;
   remove: () => void;
 }
 
 export default class Ruler extends React.Component<IRuler & Props, State> {
-  private el: HTMLDivElement;
+  private el;
 
   static getDerivedStateFromProps(nextProps, prevState) {
     return { ...nextProps, ...prevState };
   }
 
+  constructor(props) {
+    super(props);
+    this.el = React.createRef();
+  }
+
   componentDidMount() {
-    setPosition(this.el, this.state.x, this.state.y);
-
-    interactjs(this.el).draggable({
-      onmove: ({ dx, dy, target }) => {
-        const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
-        const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
-
-        setPosition(target, x, y);
-
-        this.setState({ x, y });
-      }
-    });
+    setPosition(this.el.current, this.state.x, this.state.y);
+    draggable(this.el.current, this.setState.bind(this));
   }
 
   setColor(color: Color) {
@@ -98,11 +88,7 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
     const { duplicate, remove } = this.props;
     const { x, y, width, height, opacity, color } = this.state;
     return (
-      <RulerWrapper
-        innerRef={(el: HTMLDivElement) => {
-          this.el = el;
-        }}
-      >
+      <RulerWrapper innerRef={this.el}>
         <Coords x={x} y={y} />
         <Size width={width} height={height} />
         <RulerElement

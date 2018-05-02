@@ -7,6 +7,7 @@ import { IGuideDirection, GuideDirection } from './IGuideDirection';
 import { GuideToolbox } from './GuideToolbox';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { Color } from '../../utils/Color';
+import { setPosition } from '../helpers/setPosition';
 
 interface State {
   x: number;
@@ -69,16 +70,17 @@ const arrowKeys = [
 const horizontalVerticalKeys = ['v', 'h'];
 const colorKeys = ['r', 'g', 'b', 'y'];
 
-const setPosition = (el, x, y) => {
-  el.style.webkitTransform = el.style.transform = `translate(${x}px,${y}px)`;
-};
-
 interface Props {
   remove: () => void;
 }
 
 export default class Guide extends React.Component<IGuide & Props, State> {
-  private el: HTMLDivElement;
+  private el;
+
+  constructor(props) {
+    super(props);
+    this.el = React.createRef();
+  }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     return { ...nextProps, ...prevState };
@@ -103,7 +105,7 @@ export default class Guide extends React.Component<IGuide & Props, State> {
     }
 
     this.setState({ type, x, y }, () =>
-      setPosition(this.el, this.state.x, this.state.y)
+      setPosition(this.el.current, this.state.x, this.state.y)
     );
   };
 
@@ -168,9 +170,9 @@ export default class Guide extends React.Component<IGuide & Props, State> {
   }
 
   componentDidMount() {
-    setPosition(this.el, this.state.x, this.state.y);
+    setPosition(this.el.current, this.state.x, this.state.y);
 
-    interactjs(this.el).draggable({
+    interactjs(this.el.current).draggable({
       onmove: ({ dx, dy, target }) => {
         const { x, y, type } = this.state;
         const newX = type === 'h' ? 0 : x + dx;
@@ -182,19 +184,15 @@ export default class Guide extends React.Component<IGuide & Props, State> {
       }
     });
 
-    this.el.addEventListener('mouseover', () => this.bindKeys());
-    this.el.addEventListener('mouseout', () => this.unbindKeys());
+    this.el.current.addEventListener('mouseover', () => this.bindKeys());
+    this.el.current.addEventListener('mouseout', () => this.unbindKeys());
   }
 
   render() {
     const { remove } = this.props;
     const { type, color } = this.state;
     return (
-      <div
-        ref={(el) => {
-          this.el = el as HTMLDivElement;
-        }}
-      >
+      <div ref={this.el}>
         <GuideElement type={type} color={color}>
           <GuideToolbox
             remove={remove}
