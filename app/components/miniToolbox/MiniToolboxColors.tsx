@@ -17,16 +17,42 @@ interface Props {
 
 interface State {
   isOpen: boolean;
-  colorList: { color: Color; label: string }[];
+  colorList: ColorWithLabel[];
+}
+
+interface ColorWithLabel {
+  color: Color;
+  label: string;
 }
 
 export class MiniToolboxColors extends React.Component<Props, State> {
   state = {
     isOpen: false,
-    colorList: [{ color: Color.RED, label: 'Red' }]
+    colorList: [
+      { color: Color.RED, label: 'Red' },
+      { color: Color.ORANGE, label: 'Orange' },
+      { color: Color.INDIGO, label: 'Blue' },
+      { color: Color.LIME, label: 'Green' },
+      { color: Color.YELLOW, label: 'Yellow' }
+    ]
   };
+
+  setMainColor = (color: Color) => {
+    const selected: ColorWithLabel = this.state.colorList.find(
+      (c) => c.color === color
+    ) as ColorWithLabel;
+    const filtered: ColorWithLabel[] = this.state.colorList.filter(
+      (c) => c.color !== color
+    );
+
+    this.setState({
+      colorList: [selected, ...filtered]
+    });
+  };
+
   render() {
     const { setColor } = this.props;
+    const [first, ...others] = this.state.colorList;
     return (
       <ColorsGroupIcon
         onMouseEnter={() => this.setState({ isOpen: true })}
@@ -34,42 +60,29 @@ export class MiniToolboxColors extends React.Component<Props, State> {
       >
         <ColorsList>
           <MiniToolboxItem
-            title="Red"
+            title={first.label}
             placement="left"
-            onClick={() => setColor(Color.RED)}
+            onClick={() => {
+              setColor(first.color);
+              this.setMainColor(first.color);
+            }}
           >
-            <MiniToolboxColor color={Color.RED} />
+            <MiniToolboxColor color={first.color} />
           </MiniToolboxItem>
           {this.state.isOpen && (
             <>
-              <MiniToolboxItem
-                title="Orange"
-                placement="left"
-                onClick={() => setColor(Color.ORANGE)}
-              >
-                <MiniToolboxColor color={Color.ORANGE} />
-              </MiniToolboxItem>
-              <MiniToolboxItem
-                title="Blue"
-                placement="left"
-                onClick={() => setColor(Color.INDIGO)}
-              >
-                <MiniToolboxColor color={Color.INDIGO} />
-              </MiniToolboxItem>
-              <MiniToolboxItem
-                title="Green"
-                placement="left"
-                onClick={() => setColor(Color.LIME)}
-              >
-                <MiniToolboxColor color={Color.LIME} />
-              </MiniToolboxItem>
-              <MiniToolboxItem
-                title="Yellow"
-                placement="left"
-                onClick={() => setColor(Color.YELLOW)}
-              >
-                <MiniToolboxColor color={Color.YELLOW} />
-              </MiniToolboxItem>
+              {others.map((c) => (
+                <MiniToolboxItem
+                  title={c.label}
+                  placement="left"
+                  onClick={() => {
+                    setColor(c.color);
+                    this.setMainColor(c.color);
+                  }}
+                >
+                  <MiniToolboxColor color={c.color} />
+                </MiniToolboxItem>
+              ))}
             </>
           )}
         </ColorsList>
