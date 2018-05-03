@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as interactjs from 'interactjs';
 import * as mousetrap from 'mousetrap';
 import styled from 'styled-components';
 import { Coords } from '../helpers/Coords';
@@ -69,6 +70,7 @@ interface Props {
 
 export default class Ruler extends React.Component<IRuler & Props, State> {
   private el;
+  private ruler;
 
   static getDerivedStateFromProps(nextProps, prevState) {
     return { ...nextProps, ...prevState };
@@ -77,11 +79,41 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
   constructor(props) {
     super(props);
     this.el = React.createRef();
+    this.ruler = React.createRef();
   }
 
   componentDidMount() {
     setPosition(this.el.current, this.state.x, this.state.y);
     draggable(this.el.current, this.setState.bind(this));
+
+    interactjs(this.ruler.current)
+      .resizable({
+        edges: { left: true, right: true, bottom: true, top: true },
+        restrictSize: {
+          min: { width: 10, height: 10 }
+        }
+      })
+      .on('resizemove', ({ dx, dy, rect, target, deltaRect }) => {
+        let x = parseFloat(target.getAttribute('data-x')) || 0;
+        let y = parseFloat(target.getAttribute('data-y')) || 0;
+
+        target.style.width = rect.width + 'px';
+        target.style.height = rect.height + 'px';
+
+        x += deltaRect.left;
+        y += deltaRect.top;
+
+        target.style.webkitTransform = target.style.transform =
+          'translate(' + x + 'px,' + y + 'px)';
+
+        target.setAttribute('data-x', x);
+        target.setAttribute('data-y', y);
+
+        this.setState({
+          width: rect.width,
+          height: rect.height
+        });
+      });
 
     this.el.current.addEventListener('mouseover', this.bindKeys);
     this.el.current.addEventListener('mouseout', this.unbindKeys);
@@ -133,6 +165,7 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
         <Coords x={x} y={y} />
         <Size width={width} height={height} />
         <RulerElement
+          innerRef={this.ruler}
           width={width}
           height={height}
           color={color}
