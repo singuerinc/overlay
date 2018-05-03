@@ -7,7 +7,6 @@ let mainWindow = null;
 
 require('update-electron-app')({
   repo: 'singuerinc/overlay',
-  updateInterval: '10 minutes',
   logger: require('electron-log')
 });
 
