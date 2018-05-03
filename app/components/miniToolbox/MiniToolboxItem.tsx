@@ -1,5 +1,5 @@
-import styled, { injectGlobal } from 'styled-components';
 import * as React from 'react';
+import styled, { injectGlobal } from 'styled-components';
 import Tooltip from 'tooltip.js';
 
 injectGlobal`
@@ -13,6 +13,7 @@ injectGlobal`
     font-size: 12px;
     text-align: center;
   }
+
   .tooltip[x-placement^='bottom'] .tooltip-arrow {
     border-width: 0 5px 5px 5px;
     border-left-color: transparent;
@@ -22,6 +23,17 @@ injectGlobal`
     left: calc(50% - 5px);
     margin-top: 0;
     margin-bottom: 0;
+  }
+
+  .tooltip[x-placement^='left'] .tooltip-arrow {
+    border-width: 5px 0 5px 5px;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    right: -5px;
+    top: calc(50% - 5px);
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .tooltip .tooltip-arrow {
@@ -51,7 +63,8 @@ export const Element = styled.li`
 
 interface Props {
   title: string;
-  onClick: () => void;
+  placement?: string;
+  onClick?: () => void;
 }
 
 export class MiniToolboxItem extends React.Component<Props> {
@@ -65,10 +78,10 @@ export class MiniToolboxItem extends React.Component<Props> {
 
   componentDidMount() {
     this.tooltip = new Tooltip(this.el.current, {
-      placement: 'bottom',
+      placement: this.props.placement || 'bottom',
       container: this.el.current,
       title: this.props.title,
-      offset: '0, 5'
+      offset: this.props.placement === 'bottom' ? '0, 5' : '0, 5'
     });
   }
 
