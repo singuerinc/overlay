@@ -9,9 +9,17 @@ interface Props {
   rotate: () => void;
   remove: () => void;
   setColor: (color: Color) => void;
+  toggleLock: () => void;
+  locked: boolean;
 }
 
-export const GuideToolbox = ({ remove, rotate, setColor }: Props) => (
+export const GuideToolbox = ({
+  remove,
+  rotate,
+  setColor,
+  toggleLock,
+  locked
+}: Props) => (
   <MiniToolboxWrapper>
     <MiniToolboxItem onClick={() => setColor(Color.RED)}>
       <MiniToolboxColor color={Color.RED} />
@@ -30,6 +38,9 @@ export const GuideToolbox = ({ remove, rotate, setColor }: Props) => (
     </MiniToolboxItem>
     <MiniToolboxItem onClick={() => rotate()}>
       <MiniToolboxIcon icon="rotate-cw" />
+    </MiniToolboxItem>
+    <MiniToolboxItem onClick={() => toggleLock()}>
+      <MiniToolboxIcon icon={locked ? 'lock' : 'unlock'} />
     </MiniToolboxItem>
     <MiniToolboxItem onClick={() => remove()}>
       <MiniToolboxIcon icon="trash-2" />

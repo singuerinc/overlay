@@ -8,4 +8,5 @@ export interface IRuler {
   height: number;
   opacity: number;
   color: Color;
+  locked: boolean;
 }

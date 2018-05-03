@@ -6,12 +6,20 @@ import { Color } from '../../utils/Color';
 import { MiniToolboxColor } from '../miniToolbox/MiniToolboxColor';
 
 interface Props {
+  locked: boolean;
   duplicate: () => void;
   remove: () => void;
+  toggleLock: () => void;
   setColor: (color: Color) => void;
 }
 
-export const RulerToolbox = ({ remove, duplicate, setColor }: Props) => (
+export const RulerToolbox = ({
+  locked,
+  remove,
+  duplicate,
+  setColor,
+  toggleLock
+}: Props) => (
   <MiniToolboxWrapper>
     <MiniToolboxItem onClick={() => setColor(Color.RED)}>
       <MiniToolboxColor color={Color.RED} />
@@ -30,6 +38,9 @@ export const RulerToolbox = ({ remove, duplicate, setColor }: Props) => (
     </MiniToolboxItem>
     <MiniToolboxItem onClick={() => duplicate()}>
       <MiniToolboxIcon icon="copy" />
+    </MiniToolboxItem>
+    <MiniToolboxItem onClick={() => toggleLock()}>
+      <MiniToolboxIcon icon={locked ? 'lock' : 'unlock'} />
     </MiniToolboxItem>
     <MiniToolboxItem onClick={() => remove()}>
       <MiniToolboxIcon icon="trash-2" />

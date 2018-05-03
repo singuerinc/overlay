@@ -22,6 +22,7 @@ interface State {
   height: number;
   opacity: number;
   color: Color;
+  locked: boolean;
 }
 
 const RulerWrapper = styled.div.attrs({})`
@@ -95,6 +96,10 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
 
   bindKeys = () => {
     mousetrap.bind(ARROW_KEYS, ({ shiftKey, key }) => {
+      if (this.state.locked) {
+        return;
+      }
+
       const { x, y } = this.state;
       const value = shiftKey ? 10 : 1;
 
@@ -112,13 +117,17 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
     mousetrap.unbind(ARROW_KEYS);
   };
 
-  setColor(color: Color) {
+  toggleLock = () => {
+    this.setState({ locked: !this.state.locked });
+  };
+
+  setColor = (color: Color) => {
     this.setState({ color });
-  }
+  };
 
   render() {
     const { duplicate, remove } = this.props;
-    const { x, y, width, height, opacity, color } = this.state;
+    const { x, y, width, height, opacity, color, locked } = this.state;
     return (
       <RulerWrapper innerRef={this.el}>
         <Coords x={x} y={y} />
@@ -137,7 +146,9 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
             })
           }
           remove={remove}
-          setColor={(color: Color) => this.setColor(color)}
+          locked={locked}
+          toggleLock={this.toggleLock}
+          setColor={this.setColor}
         />
       </RulerWrapper>
     );

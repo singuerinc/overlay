@@ -7,7 +7,8 @@ const guide: IGuide = {
   x: 0,
   y: 100,
   type: GuideDirection.HORIZONTAL,
-  color: Color.RED
+  color: Color.RED,
+  locked: false
 };
 
 export default guide;
