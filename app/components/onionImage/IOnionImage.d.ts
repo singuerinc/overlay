@@ -8,4 +8,5 @@ export interface IOnionImage {
   opacity: number;
   inverted: boolean;
   visible: boolean;
+  locked: boolean;
 }

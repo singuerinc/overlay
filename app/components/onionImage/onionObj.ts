@@ -9,7 +9,8 @@ const onion: IOnionImage = {
   height: 410,
   opacity: 1,
   inverted: false,
-  visible: true
+  visible: true,
+  locked: false
 };
 
 export default onion;

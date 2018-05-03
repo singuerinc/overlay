@@ -7,4 +7,5 @@ export interface IGuide {
   type: IGuideDirection;
   x: number;
   y: number;
+  locked: boolean;
 }

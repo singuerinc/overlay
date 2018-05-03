@@ -18,6 +18,7 @@ interface State {
   y: number;
   width: number;
   height: number;
+  locked: boolean;
 }
 
 const OnionImageWrapper = styled.div`
@@ -75,6 +76,10 @@ export default class OnionImage extends React.Component<
     this.setState({ opacity: value });
   };
 
+  toggleLock = () => {
+    this.setState({ locked: !this.state.locked });
+  };
+
   bindKeys = () => {
     mousetrap.bind(opacityNumberKeys, ({ key }) => {
       const val = parseInt(key, 10) * 0.1;
@@ -109,6 +114,10 @@ export default class OnionImage extends React.Component<
     });
 
     mousetrap.bind(ARROW_KEYS, ({ shiftKey, key }) => {
+      if (this.state.locked) {
+        return;
+      }
+
       const { x, y } = this.state;
       const value = shiftKey ? 10 : 1;
 
@@ -154,7 +163,16 @@ export default class OnionImage extends React.Component<
 
   render() {
     const { src, remove } = this.props;
-    const { opacity, visible, inverted, x, y, height, width } = this.state;
+    const {
+      opacity,
+      visible,
+      inverted,
+      x,
+      y,
+      height,
+      width,
+      locked
+    } = this.state;
     return (
       <OnionImageWrapper innerRef={this.el}>
         <OnionImageElement
@@ -173,7 +191,9 @@ export default class OnionImage extends React.Component<
           setInverted={this.setInverted}
           setOpacity={this.setOpacity}
           setVisibility={this.setVisibility}
+          toggleLock={this.toggleLock}
           remove={remove}
+          locked={locked}
           x={100}
           y={100}
         />

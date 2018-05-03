@@ -16,6 +16,7 @@ interface State {
   y: number;
   type: IGuideDirection;
   color: Color;
+  locked: boolean;
 }
 
 interface GuideElementProps {
@@ -99,12 +100,20 @@ export default class Guide extends React.Component<IGuide & Props, State> {
     );
   };
 
-  setColor(color: Color) {
+  setColor = (color: Color) => {
     this.setState({ color });
-  }
+  };
+
+  toggleLock = () => {
+    this.setState({ locked: !this.state.locked });
+  };
 
   bindKeys = () => {
     mousetrap.bind(ARROW_KEYS, ({ shiftKey, key }) => {
+      if (this.state.locked) {
+        return;
+      }
+
       const { type, x, y } = this.state;
       const value = shiftKey ? 10 : 1;
 
@@ -166,13 +175,15 @@ export default class Guide extends React.Component<IGuide & Props, State> {
 
   render() {
     const { remove } = this.props;
-    const { type, color } = this.state;
+    const { type, color, locked } = this.state;
     return (
       <div ref={this.el}>
         <GuideElement type={type} color={color}>
           <GuideToolbox
             remove={remove}
             rotate={this.rotate}
+            locked={locked}
+            toggleLock={this.toggleLock}
             setColor={(color: Color) => this.setColor(color)}
           />
         </GuideElement>
