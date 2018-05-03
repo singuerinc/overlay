@@ -12,7 +12,6 @@ import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { Color } from '../../utils/Color';
 import * as uuid from 'uuid/v1';
 import { setPosition } from '../helpers/setPosition';
-import { draggable } from '../helpers/draggable';
 import { getPositionByKey, ARROW_KEYS } from '../helpers/getPositionByKey';
 import { COLOR_KEYS, getColorByKey } from '../helpers/getColorByKey';
 
@@ -84,7 +83,21 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
 
   componentDidMount() {
     setPosition(this.el.current, this.state.x, this.state.y);
-    draggable(this.el.current, this.setState.bind(this));
+
+    interactjs(this.el.current).draggable({
+      onmove: ({ dx, dy, target }) => {
+        if (this.state.locked) {
+          return;
+        }
+
+        const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
+        const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
+
+        setPosition(this.el.current, x, y);
+
+        this.setState({ x, y });
+      }
+    });
 
     interactjs(this.ruler.current)
       .resizable({
@@ -93,7 +106,11 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
           min: { width: 10, height: 10 }
         }
       })
-      .on('resizemove', ({ dx, dy, rect, target, deltaRect }) => {
+      .on('resizemove', ({ rect, target, deltaRect }) => {
+        if (this.state.locked) {
+          return;
+        }
+
         let x = parseFloat(target.getAttribute('data-x')) || 0;
         let y = parseFloat(target.getAttribute('data-y')) || 0;
 
@@ -103,11 +120,7 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
         x += deltaRect.left;
         y += deltaRect.top;
 
-        target.style.webkitTransform = target.style.transform =
-          'translate(' + x + 'px,' + y + 'px)';
-
-        target.setAttribute('data-x', x);
-        target.setAttribute('data-y', y);
+        setPosition(target, x, y);
 
         this.setState({
           width: rect.width,

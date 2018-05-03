@@ -152,6 +152,10 @@ export default class Guide extends React.Component<IGuide & Props, State> {
 
     interactjs(this.el.current).draggable({
       onmove: ({ dx, dy, target }) => {
+        if (this.state.locked) {
+          return;
+        }
+
         const { x, y, type } = this.state;
         const newX = type === 'h' ? 0 : x + dx;
         const newY = type === 'h' ? y + dy : 0;

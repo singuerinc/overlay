@@ -6,7 +6,7 @@ import { Size } from '../helpers/Size';
 import { IOnionImage } from './IOnionImage.d';
 import { OnionToolbox } from './OnionToolbox';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
-import { draggable } from '../helpers/draggable';
+import * as interactjs from 'interactjs';
 import { setPosition } from '../helpers/setPosition';
 import { getPositionByKey, ARROW_KEYS } from '../helpers/getPositionByKey';
 
@@ -151,7 +151,20 @@ export default class OnionImage extends React.Component<
     this.el.current.addEventListener('mouseover', this.bindKeys);
     this.el.current.addEventListener('mouseout', this.unbindKeys);
 
-    draggable(this.el.current, this.setState.bind(this));
+    interactjs(this.el.current).draggable({
+      onmove: ({ dx, dy, target }) => {
+        if (this.state.locked) {
+          return;
+        }
+
+        const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
+        const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
+
+        setPosition(target, x, y);
+
+        this.setState({ x, y });
+      }
+    });
   }
 
   componentWillUnmount() {
