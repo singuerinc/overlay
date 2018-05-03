@@ -13,6 +13,7 @@ import * as uuid from 'uuid/v1';
 import { setPosition } from '../helpers/setPosition';
 import { draggable } from '../helpers/draggable';
 import { getPositionByKey, ARROW_KEYS } from '../helpers/getPositionByKey';
+import { COLOR_KEYS, getColorByKey } from '../helpers/getColorByKey';
 
 interface State {
   x: number;
@@ -100,6 +101,10 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
       this.setState(getPositionByKey(key, x, y, value), () => {
         setPosition(this.el.current, this.state.x, this.state.y);
       });
+    });
+
+    mousetrap.bind(COLOR_KEYS, ({ key }) => {
+      this.setColor(getColorByKey(key));
     });
   };
 

@@ -8,7 +8,8 @@ import { GuideToolbox } from './GuideToolbox';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { Color } from '../../utils/Color';
 import { setPosition } from '../helpers/setPosition';
-import { getPositionByKey } from '../helpers/getPositionByKey';
+import { getPositionByKey, ARROW_KEYS } from '../helpers/getPositionByKey';
+import { COLOR_KEYS, getColorByKey } from '../helpers/getColorByKey';
 
 interface State {
   x: number;
@@ -57,19 +58,7 @@ const GuideElement = styled.div.attrs<GuideElementProps>({
   }
 `;
 
-const arrowKeys = [
-  'up',
-  'shift+up',
-  'down',
-  'shift+down',
-  'left',
-  'shift+left',
-  'right',
-  'shift+right'
-];
-
 const horizontalVerticalKeys = ['v', 'h'];
-const colorKeys = ['r', 'g', 'b', 'y'];
 
 interface Props {
   remove: () => void;
@@ -115,7 +104,7 @@ export default class Guide extends React.Component<IGuide & Props, State> {
   }
 
   bindKeys = () => {
-    mousetrap.bind(arrowKeys, ({ shiftKey, key }) => {
+    mousetrap.bind(ARROW_KEYS, ({ shiftKey, key }) => {
       const { type, x, y } = this.state;
       const value = shiftKey ? 10 : 1;
 
@@ -138,26 +127,15 @@ export default class Guide extends React.Component<IGuide & Props, State> {
       }
     });
 
-    mousetrap.bind(colorKeys, ({ key }) => {
-      switch (key) {
-        case 'r':
-          return this.setState({ color: Color.RED });
-        case 'g':
-          return this.setState({ color: Color.GREEN });
-        case 'b':
-          return this.setState({ color: Color.BLUE });
-        case 'y':
-          return this.setState({ color: Color.YELLOW });
-        default:
-          return this.setState({ color: Color.RED });
-      }
+    mousetrap.bind(COLOR_KEYS, ({ key }) => {
+      this.setState({ color: getColorByKey(key) });
     });
   };
 
   unbindKeys = () => {
-    mousetrap.unbind(arrowKeys);
+    mousetrap.unbind(ARROW_KEYS);
     mousetrap.unbind(horizontalVerticalKeys);
-    mousetrap.unbind(colorKeys);
+    mousetrap.unbind(COLOR_KEYS);
   };
 
   componentDidMount() {
