@@ -205,7 +205,7 @@ app.on('ready', () =>
                     }
                   },
                   {
-                    label: 'Toggle Developer Tools',
+                    label: `Toggle Developer Tools (${process.env.NODE_ENV})`,
                     accelerator: 'Alt+Command+I',
                     click() {
                       mainWindow.toggleDevTools();
@@ -218,6 +218,13 @@ app.on('ready', () =>
                     accelerator: 'Ctrl+Command+F',
                     click() {
                       mainWindow.setFullScreen(!mainWindow.isFullScreen());
+                    }
+                  },
+                  {
+                    label: `Toggle Developer Tools (${process.env.NODE_ENV})`,
+                    accelerator: 'Alt+Command+I',
+                    click() {
+                      mainWindow.toggleDevTools();
                     }
                   }
                 ]
