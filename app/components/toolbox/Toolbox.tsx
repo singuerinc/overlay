@@ -1,11 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { Tool, ToolType } from './Tool';
-import { ToolboxIcon } from './ToolboxIcon';
-import { ToolboxItem } from './ToolboxItem';
 import { ToolboxItemDumb } from './ToolboxItemDumb';
 import { setPosition } from '../helpers/setPosition';
 import { draggable } from '../helpers/draggable';
+import { MiniToolboxItem } from '../miniToolbox/MiniToolboxItem';
+import { MiniToolboxIcon } from '../miniToolbox/MiniToolboxIcon';
 
 const Wrapper = styled.ul.attrs<{
   x: number;
@@ -42,6 +42,7 @@ interface Props {
   x: number;
   y: number;
   isStuffVisible: boolean;
+  isGridVisible: boolean;
   setVisibility: (visible: boolean) => void;
   create: (tool: ToolType) => void;
   toggle: (tool: ToolType) => void;
@@ -96,6 +97,7 @@ export class Toolbox extends React.Component<Props, State> {
   render() {
     const {
       isStuffVisible,
+      isGridVisible,
       x,
       y,
       create,
@@ -108,34 +110,49 @@ export class Toolbox extends React.Component<Props, State> {
       <Wrapper x={x} y={y} innerRef={this.el}>
         {/* <ToolItem onClick={() => this.setMenuOpen(!isMenuOpen)}> */}
         <ToolboxItemDumb>
-          <ToolboxIcon icon={isMenuOpen ? 'more-vertical' : 'menu'} />
+          <MiniToolboxIcon icon={isMenuOpen ? 'more-vertical' : 'menu'} />
         </ToolboxItemDumb>
         {isMenuOpen && (
           <MenuWrapper>
             <ToolSpace />
             {/* <ToolItem onClick={() => this.setOnTop(!onTop)}>
-              <ToolboxIcon icon={onTop ? 'zap' : 'zap-off'} />
+              <MiniToolboxIcon icon={onTop ? 'zap' : 'zap-off'} />
             </ToolItem> */}
-            <ToolboxItem onClick={() => setVisibility(!isStuffVisible)}>
-              <ToolboxIcon icon={isStuffVisible ? 'eye' : 'eye-off'} />
-            </ToolboxItem>
+            <MiniToolboxItem
+              title={`${isStuffVisible ? 'Hide' : 'Show'} all`}
+              onClick={() => setVisibility(!isStuffVisible)}
+            >
+              <MiniToolboxIcon icon={isStuffVisible ? 'eye' : 'eye-off'} />
+            </MiniToolboxItem>
             <ToolSpace />
-            <ToolboxItem onClick={() => create(Tool.GUIDE)}>
-              <ToolboxIcon icon="layout" />
-            </ToolboxItem>
-            <ToolboxItem onClick={() => create(Tool.RULER)}>
-              <ToolboxIcon icon="square" />
-            </ToolboxItem>
-            <ToolboxItem onClick={() => create(Tool.ONION)}>
-              <ToolboxIcon icon="image" />
-            </ToolboxItem>
-            <ToolboxItem onClick={() => toggle(Tool.GRID)}>
-              <ToolboxIcon icon="grid" />
-            </ToolboxItem>
+            <MiniToolboxItem
+              title="New guide"
+              onClick={() => create(Tool.GUIDE)}
+            >
+              <MiniToolboxIcon icon="layout" />
+            </MiniToolboxItem>
+            <MiniToolboxItem
+              title="New ruler"
+              onClick={() => create(Tool.RULER)}
+            >
+              <MiniToolboxIcon icon="square" />
+            </MiniToolboxItem>
+            <MiniToolboxItem
+              title="New onion image"
+              onClick={() => create(Tool.ONION)}
+            >
+              <MiniToolboxIcon icon="image" />
+            </MiniToolboxItem>
+            <MiniToolboxItem
+              title={isGridVisible ? 'Hide grid' : 'Show grid'}
+              onClick={() => toggle(Tool.GRID)}
+            >
+              <MiniToolboxIcon icon="grid" />
+            </MiniToolboxItem>
             <ToolSpace />
-            <ToolboxItem onClick={() => toggleHelp()}>
-              <ToolboxIcon icon="help-circle" />
-            </ToolboxItem>
+            <MiniToolboxItem title="Show help" onClick={() => toggleHelp()}>
+              <MiniToolboxIcon icon="help-circle" />
+            </MiniToolboxItem>
           </MenuWrapper>
         )}
       </Wrapper>

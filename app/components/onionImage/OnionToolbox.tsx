@@ -27,16 +27,22 @@ export const OnionToolbox = ({
   remove
 }: Props) => (
   <MiniToolboxWrapper>
-    <MiniToolboxItem onClick={() => setOpacity(opacity !== 1 ? 1 : 0.5)}>
+    <MiniToolboxItem
+      title={`Set opacity to ${opacity !== 1 ? '1' : '0.5'}`}
+      onClick={() => setOpacity(opacity !== 1 ? 1 : 0.5)}
+    >
       <MiniToolboxIcon icon="percent" />
     </MiniToolboxItem>
-    {/* <MiniToolboxItem onClick={() => setVisibility(!visible)}>
+    {/* <MiniToolboxItem title="" onClick={() => setVisibility(!visible)}>
       <MiniToolboxIcon icon={visible ? 'eye' : 'eye-off'} />
     </MiniToolboxItem> */}
-    <MiniToolboxItem onClick={() => setInverted(!inverted)}>
+    <MiniToolboxItem
+      title="Invert colors"
+      onClick={() => setInverted(!inverted)}
+    >
       <MiniToolboxIcon icon={inverted ? 'sun' : 'moon'} />
     </MiniToolboxItem>
-    <MiniToolboxItem onClick={() => remove()}>
+    <MiniToolboxItem title="Remove" onClick={() => remove()}>
       <MiniToolboxIcon icon="trash-2" />
     </MiniToolboxItem>
   </MiniToolboxWrapper>

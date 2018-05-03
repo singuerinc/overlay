@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { ToolboxIcon } from '../toolbox/ToolboxIcon';
-import { ToolboxItem } from '../toolbox/ToolboxItem';
+import { MiniToolboxIcon } from '../miniToolbox/MiniToolboxIcon';
+import { MiniToolboxItem } from '../miniToolbox/MiniToolboxItem';
 
 const Element = ({
   className,
@@ -12,9 +12,9 @@ const Element = ({
 }) => (
   <div className={className}>
     <ul>
-      <ToolboxItem onClick={close}>
-        <ToolboxIcon icon="x" />
-      </ToolboxItem>
+      <MiniToolboxItem title="" onClick={close}>
+        <MiniToolboxIcon icon="x" />
+      </MiniToolboxItem>
     </ul>
     <h1>Keyboard shortcuts</h1>
     <div>
