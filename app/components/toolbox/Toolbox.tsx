@@ -150,7 +150,7 @@ export class Toolbox extends React.Component<Props, State> {
               <MiniToolboxIcon icon="grid" />
             </MiniToolboxItem>
             <ToolSpace />
-            <MiniToolboxItem title="Show help" onClick={() => toggleHelp()}>
+            <MiniToolboxItem title="Show help" onClick={toggleHelp}>
               <MiniToolboxIcon icon="help-circle" />
             </MiniToolboxItem>
           </MenuWrapper>

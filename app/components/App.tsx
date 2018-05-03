@@ -74,8 +74,7 @@ class App extends React.Component<{}, State> {
   };
 
   async showOpenDialogImage(): Promise<string[]> {
-    const filePaths = await ipc.callMain('show-open-dialog-image');
-    return filePaths;
+    return await ipc.callMain('show-open-dialog-image');
   }
 
   create = async (tool: ToolType) => {
@@ -99,19 +98,21 @@ class App extends React.Component<{}, State> {
         });
         break;
       case Tool.ONION:
-        const paths: string[] = await this.showOpenDialogImage();
+        const paths: string[] | null = await this.showOpenDialogImage();
 
-        const onions: IOnionImage[] = paths.map((path: string) => {
-          return {
-            ...onion,
-            src: path,
-            id: uuid()
-          };
-        });
+        if (paths) {
+          const onions: IOnionImage[] = paths.map((path: string) => {
+            return {
+              ...onion,
+              src: path,
+              id: uuid()
+            };
+          });
 
-        this.setState({
-          onions: [...this.state.onions, ...onions]
-        });
+          this.setState({
+            onions: [...this.state.onions, ...onions]
+          });
+        }
         break;
     }
   };

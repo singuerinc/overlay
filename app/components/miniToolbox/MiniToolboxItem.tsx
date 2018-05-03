@@ -66,19 +66,26 @@ export class MiniToolboxItem extends React.Component<Props> {
   componentDidMount() {
     this.tooltip = new Tooltip(this.el.current, {
       placement: 'bottom',
+      container: this.el.current,
       title: this.props.title,
       offset: '0, 5'
     });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    this.tooltip.updateTitleContent(this.props.title);
+  componentWillUpdate(nextProps, nextState) {
+    this.tooltip.updateTitleContent(nextProps.title);
+  }
+
+  componentWillUnmount() {
+    this.tooltip.dispose();
   }
 
   render() {
+    const { onClick, children } = this.props;
+
     return (
-      <Element innerRef={this.el} onClick={this.props.onClick}>
-        {this.props.children}
+      <Element innerRef={this.el} onClick={onClick}>
+        {children}
       </Element>
     );
   }
