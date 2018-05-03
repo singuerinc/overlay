@@ -1,7 +1,7 @@
 {
   "name": "overlay",
   "productName": "Overlay",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description":
     "A set of tools for devs and designers to measure, align and overlay on-screen graphics and layouts.",
   "main": "main.js",
@@ -191,6 +191,7 @@
     "redux-thunk": "^2.1.0",
     "source-map-support": "^0.5.0",
     "styled-components": "^3.2.6",
+    "tooltip.js": "^1.2.0",
     "update-electron-app": "^1.1.2",
     "uuid": "^3.2.1"
   },

@@ -2,8 +2,8 @@ import * as React from 'react';
 import { MiniToolboxIcon } from '../miniToolbox/MiniToolboxIcon';
 import { MiniToolboxItem } from '../miniToolbox/MiniToolboxItem';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
-import { MiniToolboxColor } from '../miniToolbox/MiniToolboxColor';
 import { Color } from '../../utils/Color';
+import { MiniToolboxColors } from '../miniToolbox/MiniToolboxColors';
 
 interface Props {
   rotate: () => void;
@@ -21,28 +21,14 @@ export const GuideToolbox = ({
   locked
 }: Props) => (
   <MiniToolboxWrapper>
-    <MiniToolboxItem onClick={() => setColor(Color.RED)}>
-      <MiniToolboxColor color={Color.RED} />
-    </MiniToolboxItem>
-    <MiniToolboxItem onClick={() => setColor(Color.ORANGE)}>
-      <MiniToolboxColor color={Color.ORANGE} />
-    </MiniToolboxItem>
-    <MiniToolboxItem onClick={() => setColor(Color.INDIGO)}>
-      <MiniToolboxColor color={Color.INDIGO} />
-    </MiniToolboxItem>
-    <MiniToolboxItem onClick={() => setColor(Color.LIME)}>
-      <MiniToolboxColor color={Color.LIME} />
-    </MiniToolboxItem>
-    <MiniToolboxItem onClick={() => setColor(Color.YELLOW)}>
-      <MiniToolboxColor color={Color.YELLOW} />
-    </MiniToolboxItem>
-    <MiniToolboxItem onClick={() => rotate()}>
+    <MiniToolboxColors setColor={setColor} />
+    <MiniToolboxItem title="Rotate" onClick={rotate}>
       <MiniToolboxIcon icon="rotate-cw" />
     </MiniToolboxItem>
-    <MiniToolboxItem onClick={() => toggleLock()}>
+    <MiniToolboxItem title={locked ? 'Lock' : 'Unlock'} onClick={toggleLock}>
       <MiniToolboxIcon icon={locked ? 'lock' : 'unlock'} />
     </MiniToolboxItem>
-    <MiniToolboxItem onClick={() => remove()}>
+    <MiniToolboxItem title="Remove" onClick={remove}>
       <MiniToolboxIcon icon="trash-2" />
     </MiniToolboxItem>
   </MiniToolboxWrapper>

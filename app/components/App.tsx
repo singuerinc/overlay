@@ -37,6 +37,7 @@ interface State {
   onions: IOnionImage[];
   rulers: IRuler[];
   isStuffVisible: boolean;
+  isGridVisible: boolean;
   helpVisible: boolean;
 }
 
@@ -50,11 +51,12 @@ class App extends React.Component<{}, State> {
       onions: [],
       rulers: [],
       isStuffVisible: true,
+      isGridVisible: false,
       helpVisible: false
     };
   }
 
-  toggle(tool: ToolType) {
+  toggle = (tool: ToolType) => {
     if (this.state.grids.length > 0) {
       this.setState({
         grids: []
@@ -69,14 +71,14 @@ class App extends React.Component<{}, State> {
         grids: [newGrid]
       });
     }
-  }
+  };
 
   async showOpenDialogImage(): Promise<string[]> {
     const filePaths = await ipc.callMain('show-open-dialog-image');
     return filePaths;
   }
 
-  async create(tool: ToolType) {
+  create = async (tool: ToolType) => {
     switch (tool) {
       case Tool.GUIDE:
         const newGuide: IGuide = {
@@ -112,7 +114,7 @@ class App extends React.Component<{}, State> {
         });
         break;
     }
-  }
+  };
 
   setVisibility = (value: boolean) => {
     this.setState({
@@ -168,6 +170,8 @@ class App extends React.Component<{}, State> {
       isStuffVisible,
       helpVisible
     } = this.state;
+    const isGridVisible = grids.length > 0;
+
     return (
       <>
         {isStuffVisible && (
@@ -201,11 +205,12 @@ class App extends React.Component<{}, State> {
         <Toolbox
           x={20}
           y={20}
-          setVisibility={(visible: boolean) => this.setVisibility(visible)}
+          setVisibility={this.setVisibility}
           isStuffVisible={isStuffVisible}
-          create={(tool: Tool) => this.create(tool)}
-          toggle={(tool: Tool) => this.toggle(tool)}
-          toggleHelp={() => this.toggleHelp()}
+          isGridVisible={isGridVisible}
+          create={this.create}
+          toggle={this.toggle}
+          toggleHelp={this.toggleHelp}
         />
       </>
     );
