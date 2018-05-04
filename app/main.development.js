@@ -257,27 +257,23 @@ app.on('ready', () =>
             {
               label: 'Learn More',
               click() {
-                shell.openExternal('http://electron.atom.io');
+                shell.openExternal('https://github.com/singuerinc/overlay');
               }
             },
             {
               label: 'Documentation',
               click() {
                 shell.openExternal(
-                  'https://github.com/atom/electron/tree/master/docs#readme'
+                  'https://github.com/singuerinc/overlay/blob/master/README.md'
                 );
-              }
-            },
-            {
-              label: 'Community Discussions',
-              click() {
-                shell.openExternal('https://discuss.atom.io/c/electron');
               }
             },
             {
               label: 'Search Issues',
               click() {
-                shell.openExternal('https://github.com/atom/electron/issues');
+                shell.openExternal(
+                  'https://github.com/singuerinc/overlay/issues'
+                );
               }
             }
           ]
