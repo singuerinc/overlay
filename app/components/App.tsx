@@ -1,22 +1,22 @@
-import * as React from 'react';
-import OnionImage from '../components/onionImage/OnionImage';
-import Guide from '../components/guide/Guide';
-import Ruler from '../components/ruler/Ruler';
-import Grid from '../components/grid/Grid';
-import { Toolbox } from '../components/toolbox/Toolbox';
-import { Help } from './help/Help';
-import { IRuler } from './ruler/IRuler';
-import { IOnionImage } from './onionImage/IOnionImage';
-import { IGuide } from './guide/IGuide';
-import { IGrid } from './grid/IGrid';
-import { ToolType, Tool } from './toolbox/Tool';
-import { injectGlobal } from 'styled-components';
-import { default as guide } from './guide/guideObj';
-import { default as ruler } from './ruler/rulerObj';
-import { default as grid } from './grid/gridObj';
-import { default as onion } from './onionImage/onionObj';
-import * as uuid from 'uuid/v1';
 import * as ipc from 'electron-better-ipc';
+import * as React from 'react';
+import { injectGlobal } from 'styled-components';
+import * as uuid from 'uuid/v1';
+import Grid from '../components/grid/Grid';
+import Guide from '../components/guide/Guide';
+import OnionImage from '../components/onionImage/OnionImage';
+import Ruler from '../components/ruler/Ruler';
+import { Toolbox } from '../components/toolbox/Toolbox';
+import { IGrid } from './grid/IGrid';
+import { default as grid } from './grid/gridObj';
+import { IGuide } from './guide/IGuide';
+import { default as guide } from './guide/guideObj';
+import { Help } from './help/Help';
+import { IOnionImage } from './onionImage/IOnionImage';
+import { default as onion } from './onionImage/onionObj';
+import { IRuler } from './ruler/IRuler';
+import { default as ruler } from './ruler/rulerObj';
+import { Tool, ToolType } from './toolbox/Tool';
 
 injectGlobal`
   * {
@@ -204,8 +204,8 @@ class App extends React.Component<{}, State> {
         )}
         {helpVisible && <Help close={this.toggleHelp} />}
         <Toolbox
-          x={20}
-          y={20}
+          x={0}
+          y={0}
           setVisibility={this.setVisibility}
           isStuffVisible={isStuffVisible}
           isGridVisible={isGridVisible}
