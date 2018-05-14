@@ -4,8 +4,6 @@ import { MiniToolboxItem } from '../miniToolbox/MiniToolboxItem';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 
 interface Props {
-  x: number;
-  y: number;
   opacity: number;
   visible: boolean;
   inverted: boolean;
@@ -18,8 +16,6 @@ interface Props {
 }
 
 export const OnionToolbox = ({
-  x,
-  y,
   inverted,
   opacity,
   visible,

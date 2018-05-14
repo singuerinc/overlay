@@ -1,14 +1,14 @@
-import * as React from 'react';
+import * as interactjs from 'interactjs';
 import * as mousetrap from 'mousetrap';
+import * as React from 'react';
 import styled from 'styled-components';
 import { Coords } from '../helpers/Coords';
 import { Size } from '../helpers/Size';
+import { ARROW_KEYS, getPositionByKey } from '../helpers/getPositionByKey';
+import { setPosition } from '../helpers/setPosition';
+import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { IOnionImage } from './IOnionImage.d';
 import { OnionToolbox } from './OnionToolbox';
-import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
-import * as interactjs from 'interactjs';
-import { setPosition } from '../helpers/setPosition';
-import { getPositionByKey, ARROW_KEYS } from '../helpers/getPositionByKey';
 
 interface State {
   opacity: number;
@@ -207,8 +207,6 @@ export default class OnionImage extends React.Component<
           toggleLock={this.toggleLock}
           remove={remove}
           locked={locked}
-          x={100}
-          y={100}
         />
       </OnionImageWrapper>
     );

@@ -1,19 +1,19 @@
-import * as React from 'react';
+import * as chroma from 'chroma-js';
 import * as interactjs from 'interactjs';
 import * as mousetrap from 'mousetrap';
+import * as React from 'react';
 import styled from 'styled-components';
+import * as uuid from 'uuid/v1';
+import { Color } from '../../utils/Color';
+import { createGrid } from '../grid/utils';
 import { Coords } from '../helpers/Coords';
 import { Size } from '../helpers/Size';
-import { IRuler } from './IRuler.d';
-import { createGrid } from '../grid/utils';
-import * as chroma from 'chroma-js';
-import { RulerToolbox } from './RulerToolbox';
-import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
-import { Color } from '../../utils/Color';
-import * as uuid from 'uuid/v1';
-import { setPosition } from '../helpers/setPosition';
-import { getPositionByKey, ARROW_KEYS } from '../helpers/getPositionByKey';
 import { COLOR_KEYS, getColorByKey } from '../helpers/getColorByKey';
+import { ARROW_KEYS, getPositionByKey } from '../helpers/getPositionByKey';
+import { setPosition } from '../helpers/setPosition';
+import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
+import { IRuler } from './IRuler.d';
+import { RulerToolbox } from './RulerToolbox';
 
 interface State {
   x: number;
@@ -170,8 +170,16 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
     this.setState({ color });
   };
 
+  duplicate = () => {
+    const ruler: IRuler = {
+      ...this.state,
+      id: uuid()
+    };
+    this.props.duplicate(ruler);
+  };
+
   render() {
-    const { duplicate, remove } = this.props;
+    const { remove } = this.props;
     const { x, y, width, height, opacity, color, locked } = this.state;
     return (
       <RulerWrapper innerRef={this.el}>
@@ -185,12 +193,7 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
           opacity={opacity}
         />
         <RulerToolbox
-          duplicate={() =>
-            duplicate({
-              ...this.state,
-              id: uuid()
-            })
-          }
+          duplicate={this.duplicate}
           remove={remove}
           locked={locked}
           toggleLock={this.toggleLock}

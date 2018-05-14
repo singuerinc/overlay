@@ -7,8 +7,7 @@ export const MiniToolboxWrapper = styled.ul`
   flex-direction: row;
   margin: 0;
   padding: 0;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  bottom: -36px;
+  left: 0;
   width: auto;
 `;
