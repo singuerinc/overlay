@@ -15,7 +15,9 @@ Overlay is a set of tools for developers and designers to measure, align and ove
 
 ![](resources/images/toolbox.png)
 
-From the toolbox you can manage add tools, display the help page and show or hide all the items in the screen.
+From the toolbox you can manage, add tools, display the help page, and show or hide all the items in the screen.
+
+## Tools
 
 ### Guide
 
@@ -39,7 +41,7 @@ The onion image serve as a visual guide to match a layout. Opacity and inverted 
 
 ### Grid
 
-The grid is similar to the ruler but covers the whole screen. It is a 10x10 pixels fixed grid but that value can be defined in the settings.
+The grid is similar to the ruler but covers the whole screen and has no background color. It is a 10x10 pixels fixed grid but that value can be defined in the settings.
 
 ![](resources/images/grid.png)
 
@@ -47,10 +49,8 @@ The grid is similar to the ruler but covers the whole screen. It is a 10x10 pixe
 
 In progress. Not ready yet.
 
-## Keyboard shortcuts
-
 ## Known issues
 
-1. There is a bug in Electron (you cannot click through the transparent background) that renders the application a bit annoying, since we need to cover the whole screen, anytime you click on any point, the application gains focus.
+1. There is a bug in Electron (you cannot click through the transparent background) that renders the application a bit annoying, since we need to cover the whole screen the application gains focus anytime you click on any point of the screen.
 
 > We are working on addressing this issue by creating several windows for each tool.
