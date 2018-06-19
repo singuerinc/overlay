@@ -2,8 +2,7 @@
   "name": "overlay",
   "productName": "Overlay",
   "version": "0.1.1",
-  "description":
-    "A set of tools for devs and designers to measure, align and overlay on-screen graphics and layouts.",
+  "description": "A set of tools for devs and designers to measure, align and overlay on-screen graphics and layouts.",
   "main": "./main.js",
   "author": {
     "name": "Nahuel Scotti",
@@ -11,8 +10,7 @@
     "url": "https://github.com/singuerinc"
   },
   "scripts": {
-    "postinstall":
-      "npm rebuild --runtime=electron --target=1.6.6 --disturl=https://atom.io/download/atom-shell --build-from-source"
+    "postinstall": "npm rebuild --runtime=electron --target=1.6.6 --disturl=https://atom.io/download/atom-shell --build-from-source"
   },
   "license": "MIT",
   "dependencies": {}
