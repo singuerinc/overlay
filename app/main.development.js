@@ -63,9 +63,11 @@ const createWindow = () => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
     show: false,
-    useContentSize: true,
+    // useContentSize: true,
     width,
     height,
+    backgroundColor: '#00000000',
+    opacity: 1,
     resizable: false,
     transparent: true,
     frame: false,
