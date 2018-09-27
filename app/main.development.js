@@ -378,6 +378,8 @@ const createWindow = () => {
   }
 };
 
+app.on('browser-window-blur', ()  => { chat_window.setIgnoreMouseEvents(true); });
+app.on('browser-window-focus', () => { chat_window.setIgnoreMouseEvents(false); });
 app.on('ready', async () => {
   await installExtensions();
   await createWindow();
