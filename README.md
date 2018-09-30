@@ -48,9 +48,3 @@ The grid is similar to the ruler but covers the whole screen and has no backgrou
 ### Columns
 
 In progress. Not ready yet.
-
-## Known issues
-
-1. There is a bug in Electron (you cannot click through the transparent background) that renders the application a bit annoying, since we need to cover the whole screen the application gains focus anytime you click on any point of the screen.
-
-> We are working on addressing this issue by creating several windows for each tool.

@@ -1,18 +1,22 @@
-import * as React from 'react';
-import styled from 'styled-components';
-import { Tool, ToolType } from './Tool';
-import { ToolboxItemDumb } from './ToolboxItemDumb';
-import { setPosition } from '../helpers/setPosition';
-import { draggable } from '../helpers/draggable';
-import { MiniToolboxItem } from '../miniToolbox/MiniToolboxItem';
-import { MiniToolboxIcon } from '../miniToolbox/MiniToolboxIcon';
+import * as React from "react";
+import styled from "styled-components";
+import { draggable } from "../helpers/draggable";
+import {
+  startListeningToIgnoreMouseEvents,
+  stopListeningToIgnoreMouseEvents
+} from "../helpers/ignoreMouse";
+import { setPosition } from "../helpers/setPosition";
+import { MiniToolboxIcon } from "../miniToolbox/MiniToolboxIcon";
+import { MiniToolboxItem } from "../miniToolbox/MiniToolboxItem";
+import { Tool, ToolType } from "./Tool";
+import { ToolboxItemDumb } from "./ToolboxItemDumb";
 
 const Wrapper = styled.ul.attrs<{
   x: number;
   y: number;
 }>({
-  x: (props) => props.x,
-  y: (props) => props.y
+  x: props => props.x,
+  y: props => props.y
 })`
   position: fixed;
   background-color: transparent;
@@ -90,8 +94,13 @@ export class Toolbox extends React.Component<Props, State> {
   };
 
   componentDidMount() {
+    startListeningToIgnoreMouseEvents(this.el.current);
     setPosition(this.el.current, this.state.x, this.state.y);
     draggable(this.el.current, this.setState.bind(this));
+  }
+
+  componentWillUnmount() {
+    stopListeningToIgnoreMouseEvents(this.el.current);
   }
 
   render() {
@@ -110,7 +119,7 @@ export class Toolbox extends React.Component<Props, State> {
       <Wrapper x={x} y={y} innerRef={this.el}>
         {/* <ToolItem onClick={() => this.setMenuOpen(!isMenuOpen)}> */}
         <ToolboxItemDumb>
-          <MiniToolboxIcon icon={isMenuOpen ? 'more-vertical' : 'menu'} />
+          <MiniToolboxIcon icon={isMenuOpen ? "more-vertical" : "menu"} />
         </ToolboxItemDumb>
         {isMenuOpen && (
           <MenuWrapper>
@@ -119,10 +128,10 @@ export class Toolbox extends React.Component<Props, State> {
               <MiniToolboxIcon icon={onTop ? 'zap' : 'zap-off'} />
             </ToolItem> */}
             <MiniToolboxItem
-              title={`${isStuffVisible ? 'Hide' : 'Show'} all`}
+              title={`${isStuffVisible ? "Hide" : "Show"} all`}
               onClick={() => setVisibility(!isStuffVisible)}
             >
-              <MiniToolboxIcon icon={isStuffVisible ? 'eye' : 'eye-off'} />
+              <MiniToolboxIcon icon={isStuffVisible ? "eye" : "eye-off"} />
             </MiniToolboxItem>
             <ToolSpace />
             <MiniToolboxItem
@@ -144,7 +153,7 @@ export class Toolbox extends React.Component<Props, State> {
               <MiniToolboxIcon icon="image" />
             </MiniToolboxItem>
             <MiniToolboxItem
-              title={isGridVisible ? 'Hide grid' : 'Show grid'}
+              title={isGridVisible ? "Hide grid" : "Show grid"}
               onClick={() => toggle(Tool.GRID)}
             >
               <MiniToolboxIcon icon="grid" />

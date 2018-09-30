@@ -1,124 +1,147 @@
-import * as React from 'react';
-import styled from 'styled-components';
-import { MiniToolboxIcon } from '../miniToolbox/MiniToolboxIcon';
-import { MiniToolboxItem } from '../miniToolbox/MiniToolboxItem';
+import * as React from "react";
+import styled from "styled-components";
+import {
+  startListeningToIgnoreMouseEvents,
+  stopListeningToIgnoreMouseEvents
+} from "../helpers/ignoreMouse";
+import { MiniToolboxIcon } from "../miniToolbox/MiniToolboxIcon";
+import { MiniToolboxItem } from "../miniToolbox/MiniToolboxItem";
 
-const Element = ({
-  className,
-  close
-}: {
+interface IProps {
   className?: string;
   close: () => void;
-}) => (
-  <div className={className}>
-    <ul>
-      <MiniToolboxItem title="" onClick={close}>
-        <MiniToolboxIcon icon="x" />
-      </MiniToolboxItem>
-    </ul>
-    <h1>Keyboard shortcuts</h1>
-    <div>
-      <h2>Global</h2>
-      <table>
-        <tbody>
-          <tr>
-            <td>Show/Hide tools</td>
-            <td>
-              <kbd>unassigned</kbd>
-            </td>
-          </tr>
-          <tr>
-            <td>Show/Hide all</td>
-            <td>
-              <kbd>unassigned</kbd>
-            </td>
-          </tr>
-          <tr>
-            <td>Always on top on/off</td>
-            <td>
-              <kbd>unassigned</kbd>
-            </td>
-          </tr>
-          <tr>
-            <td>Change tool color (when hover)</td>
-            <td>
-              <kbd>b</kbd>
-              <kbd>g</kbd>
-              <kbd>o</kbd>
-              <kbd>r</kbd>
-              <kbd>y</kbd>
-            </td>
-          </tr>
-          <tr>
-            <td>Delete</td>
-            <td>
-              <kbd>unassigned</kbd>
-            </td>
-          </tr>
-          <tr>
-            <td>Duplicate</td>
-            <td>
-              <kbd>unassigned</kbd>
-            </td>
-          </tr>{' '}
-        </tbody>
-      </table>
-      <h2>Grid</h2>
-      <table>
-        <tbody>
-          <tr>
-            <td>Add column</td>
-            <td>
-              <kbd>unassigned</kbd>
-            </td>
-          </tr>
-          <tr>
-            <td>Remove column</td>
-            <td>
-              <kbd>unassigned</kbd>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <h2>Guide</h2>
-      <table>
-        <tbody>
-          <tr>
-            <td>Rotate</td>
-            <td>
-              <kbd>unassigned</kbd>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <h2>Image</h2>
-      <table>
-        <tbody>
-          <tr>
-            <td>Invert colors</td>
-            <td>
-              <kbd>i</kbd>
-            </td>
-          </tr>
-          <tr>
-            <td>Change opacity 0% to 100%</td>
-            <td>
-              <kbd>0</kbd> - <kbd>9</kbd>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <h2>Ruler</h2>
-      <table>
-        <tbody>
-          <tr>
-            <td>a</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-);
+}
+
+class Element extends React.Component<IProps> {
+  private el: React.RefObject<HTMLDivElement>;
+
+  constructor(props: IProps) {
+    super(props);
+    this.el = React.createRef();
+  }
+
+  componentDidMount() {
+    startListeningToIgnoreMouseEvents(this.el.current);
+  }
+
+  componentWillUnmount() {
+    stopListeningToIgnoreMouseEvents(this.el.current);
+  }
+
+  render() {
+    const { className, close } = this.props;
+    return (
+      <div ref={this.el} className={className}>
+        <ul>
+          <MiniToolboxItem title="" onClick={close}>
+            <MiniToolboxIcon icon="x" />
+          </MiniToolboxItem>
+        </ul>
+        <h1>Keyboard shortcuts</h1>
+        <div>
+          <h2>Global</h2>
+          <table>
+            <tbody>
+              <tr>
+                <td>Show/Hide tools</td>
+                <td>
+                  <kbd>unassigned</kbd>
+                </td>
+              </tr>
+              <tr>
+                <td>Show/Hide all</td>
+                <td>
+                  <kbd>unassigned</kbd>
+                </td>
+              </tr>
+              <tr>
+                <td>Always on top on/off</td>
+                <td>
+                  <kbd>unassigned</kbd>
+                </td>
+              </tr>
+              <tr>
+                <td>Change tool color (when hover)</td>
+                <td>
+                  <kbd>b</kbd>
+                  <kbd>g</kbd>
+                  <kbd>o</kbd>
+                  <kbd>r</kbd>
+                  <kbd>y</kbd>
+                </td>
+              </tr>
+              <tr>
+                <td>Delete</td>
+                <td>
+                  <kbd>unassigned</kbd>
+                </td>
+              </tr>
+              <tr>
+                <td>Duplicate</td>
+                <td>
+                  <kbd>unassigned</kbd>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <h2>Grid</h2>
+          <table>
+            <tbody>
+              <tr>
+                <td>Add column</td>
+                <td>
+                  <kbd>unassigned</kbd>
+                </td>
+              </tr>
+              <tr>
+                <td>Remove column</td>
+                <td>
+                  <kbd>unassigned</kbd>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <h2>Guide</h2>
+          <table>
+            <tbody>
+              <tr>
+                <td>Rotate</td>
+                <td>
+                  <kbd>unassigned</kbd>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <h2>Image</h2>
+          <table>
+            <tbody>
+              <tr>
+                <td>Invert colors</td>
+                <td>
+                  <kbd>i</kbd>
+                </td>
+              </tr>
+              <tr>
+                <td>Change opacity 0% to 100%</td>
+                <td>
+                  <kbd>0</kbd> - <kbd>9</kbd>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <h2>Ruler</h2>
+          <table>
+            <tbody>
+              <tr>
+                <td>a</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
+  }
+}
 
 export const Help = styled(Element)`
   position: fixed;
