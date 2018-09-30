@@ -1,22 +1,22 @@
-import * as ipc from 'electron-better-ipc';
-import * as React from 'react';
-import { injectGlobal } from 'styled-components';
-import * as uuid from 'uuid/v1';
-import Grid from '../components/grid/Grid';
-import Guide from '../components/guide/Guide';
-import OnionImage from '../components/onionImage/OnionImage';
-import Ruler from '../components/ruler/Ruler';
-import { Toolbox } from '../components/toolbox/Toolbox';
-import { IGrid } from './grid/IGrid';
-import { default as grid } from './grid/gridObj';
-import { IGuide } from './guide/IGuide';
-import { default as guide } from './guide/guideObj';
-import { Help } from './help/Help';
-import { IOnionImage } from './onionImage/IOnionImage';
-import { default as onion } from './onionImage/onionObj';
-import { IRuler } from './ruler/IRuler';
-import { default as ruler } from './ruler/rulerObj';
-import { Tool, ToolType } from './toolbox/Tool';
+import * as ipc from "electron-better-ipc";
+import * as React from "react";
+import { injectGlobal } from "styled-components";
+import * as uuid from "uuid/v1";
+import Grid from "../components/grid/Grid";
+import Guide from "../components/guide/Guide";
+import OnionImage from "../components/onionImage/OnionImage";
+import Ruler from "../components/ruler/Ruler";
+import { Toolbox } from "../components/toolbox/Toolbox";
+import { IGrid } from "./grid/IGrid";
+import { default as grid } from "./grid/gridObj";
+import { IGuide } from "./guide/IGuide";
+import { default as guide } from "./guide/guideObj";
+import { Help } from "./help/Help";
+import { IOnionImage } from "./onionImage/IOnionImage";
+import { default as onion } from "./onionImage/onionObj";
+import { IRuler } from "./ruler/IRuler";
+import { default as ruler } from "./ruler/rulerObj";
+import { Tool, ToolType } from "./toolbox/Tool";
 
 injectGlobal`
   * {
@@ -74,7 +74,7 @@ class App extends React.Component<{}, State> {
   };
 
   async showOpenDialogImage(): Promise<string[]> {
-    return await ipc.callMain('show-open-dialog-image');
+    return await ipc.callMain("show-open-dialog-image");
   }
 
   create = async (tool: ToolType) => {
@@ -177,7 +177,9 @@ class App extends React.Component<{}, State> {
       <>
         {isStuffVisible && (
           <>
-            {grids.map((props: IGrid) => <Grid key={props.id} {...props} />)}
+            {grids.map((props: IGrid) => (
+              <Grid key={props.id} {...props} />
+            ))}
             {rulers.map((props: IRuler) => (
               <Ruler
                 key={props.id}
