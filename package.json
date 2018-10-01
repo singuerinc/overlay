@@ -1,7 +1,7 @@
 {
   "name": "overlay",
   "productName": "Overlay",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A set of tools for devs and designers to measure, align and overlay on-screen graphics and layouts.",
   "main": "main.js",
   "scripts": {
@@ -50,6 +50,7 @@
       ]
     },
     "files": [
+      "icon.icns",
       "dist/",
       "node_modules/",
       "app.html",
