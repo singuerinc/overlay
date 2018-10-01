@@ -1,5 +1,7 @@
 # Overlay
 
+![](resources/icons/128x128.png)
+
 Overlay is a set of tools for developers and designers to measure, align and overlay on-screen graphics and layouts. Similar to [xScope](https://xscopeapp.com/) but with a simple interface, limited functionality and open source.
 
 [Download](https://github.com/singuerinc/overlay/releases) (Mac only)
