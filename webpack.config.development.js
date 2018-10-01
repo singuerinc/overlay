@@ -4,19 +4,19 @@
  * https://webpack.github.io/docs/hot-module-replacement-with-webpack.html
  */
 
-const webpack = require('webpack');
-const merge = require('webpack-merge');
-const baseConfig = require('./webpack.config.base');
+const webpack = require("webpack");
+const merge = require("webpack-merge");
+const baseConfig = require("./webpack.config.base");
 
 const port = process.env.PORT || 3000;
 
 module.exports = merge(baseConfig, {
-  devtool: 'inline-source-map',
+  devtool: "inline-source-map",
 
   entry: [
-    'react-hot-loader/patch',
+    "react-hot-loader/patch",
     `webpack-hot-middleware/client?path=http://localhost:${port}/__webpack_hmr&reload=true`,
-    './app/index'
+    "./app/index"
   ],
 
   output: {
@@ -34,14 +34,14 @@ module.exports = merge(baseConfig, {
     loaders: [
       {
         test: /\.global\.css$/,
-        loaders: ['style-loader', 'css-loader?sourceMap']
+        loaders: ["style-loader", "css-loader?sourceMap"]
       },
 
       {
         test: /^((?!\.global).)*\.css$/,
         loaders: [
-          'style-loader',
-          'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
+          "style-loader",
+          "css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]"
         ]
       },
 
@@ -49,10 +49,10 @@ module.exports = merge(baseConfig, {
       {
         test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
         use: {
-          loader: 'url-loader',
+          loader: "url-loader",
           options: {
             limit: 10000,
-            mimetype: 'application/font-woff'
+            mimetype: "application/font-woff"
           }
         }
       },
@@ -60,10 +60,10 @@ module.exports = merge(baseConfig, {
       {
         test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
         use: {
-          loader: 'url-loader',
+          loader: "url-loader",
           options: {
             limit: 10000,
-            mimetype: 'application/font-woff'
+            mimetype: "application/font-woff"
           }
         }
       },
@@ -71,33 +71,33 @@ module.exports = merge(baseConfig, {
       {
         test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
         use: {
-          loader: 'url-loader',
+          loader: "url-loader",
           options: {
             limit: 10000,
-            mimetype: 'application/octet-stream'
+            mimetype: "application/octet-stream"
           }
         }
       },
       // EOT Font
       {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        use: 'file-loader'
+        use: "file-loader"
       },
       // SVG Font
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
         use: {
-          loader: 'url-loader',
+          loader: "url-loader",
           options: {
             limit: 10000,
-            mimetype: 'image/svg+xml'
+            mimetype: "image/svg+xml"
           }
         }
       },
       // Common Image Formats
       {
         test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
-        use: 'url-loader'
+        use: "url-loader"
       }
     ]
   },
@@ -110,7 +110,7 @@ module.exports = merge(baseConfig, {
 
     // NODE_ENV should be production so that modules do not perform certain development checks
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development')
+      "process.env.NODE_ENV": JSON.stringify("development")
     }),
 
     new webpack.LoaderOptionsPlugin({
@@ -119,5 +119,5 @@ module.exports = merge(baseConfig, {
   ],
 
   // https://github.com/chentsulin/webpack-target-electron-renderer#how-this-module-works
-  target: 'electron-renderer'
+  target: "electron-renderer"
 });
