@@ -1,23 +1,23 @@
-import * as chroma from "chroma-js";
-import * as interactjs from "interactjs";
-import * as mousetrap from "mousetrap";
-import * as React from "react";
-import styled from "styled-components";
-import * as uuid from "uuid/v1";
-import { Color } from "../../utils/Color";
-import { createGrid } from "../grid/utils";
-import { Coords } from "../helpers/Coords";
-import { COLOR_KEYS, getColorByKey } from "../helpers/getColorByKey";
-import { ARROW_KEYS, getPositionByKey } from "../helpers/getPositionByKey";
+import * as chroma from 'chroma-js';
+import * as interactjs from 'interactjs';
+import * as mousetrap from 'mousetrap';
+import * as React from 'react';
+import styled from 'styled-components';
+import * as uuid from 'uuid/v1';
+import { Color } from '../../utils/Color';
+import { createGrid } from '../grid/utils';
+import { Coords } from '../helpers/Coords';
+import { COLOR_KEYS, getColorByKey } from '../helpers/getColorByKey';
+import { ARROW_KEYS, getPositionByKey } from '../helpers/getPositionByKey';
 import {
   startListeningToIgnoreMouseEvents,
   stopListeningToIgnoreMouseEvents
-} from "../helpers/ignoreMouse";
-import { setPosition } from "../helpers/setPosition";
-import { Size } from "../helpers/Size";
-import { MiniToolboxWrapper } from "../miniToolbox/MiniToolboxWrapper";
-import { IRuler } from "./IRuler.d";
-import { RulerToolbox } from "./RulerToolbox";
+} from '../helpers/ignoreMouse';
+import { setPosition } from '../helpers/setPosition';
+import { Size } from '../helpers/Size';
+import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
+import { IRuler } from './IRuler.d';
+import { RulerToolbox } from './RulerToolbox';
 
 interface State {
   x: number;
@@ -48,17 +48,17 @@ const RulerElement = styled.div.attrs<{
   opacity: number;
   color: string;
 }>({
-  width: props => props.width,
-  height: props => props.height,
-  color: props => props.color,
-  opacity: props => props.opacity
+  width: (props) => props.width,
+  height: (props) => props.height,
+  color: (props) => props.color,
+  opacity: (props) => props.opacity
 })`
   position: relative;
   top: 0;
   left: 0;
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
-  background-image: url(${({ color }) => createGrid(10, color, "solid")});
+  background-image: url(${({ color }) => createGrid(10, color, 'solid')});
   background-repeat: repeat;
   background-color: ${({ color, opacity }) =>
     chroma(color)
@@ -95,8 +95,8 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
           return;
         }
 
-        const x = (parseFloat(target.getAttribute("data-x")) || 0) + dx;
-        const y = (parseFloat(target.getAttribute("data-y")) || 0) + dy;
+        const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
+        const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
 
         setPosition(this.el.current, x, y);
 
@@ -106,21 +106,21 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
 
     interactjs(this.ruler.current)
       .resizable({
-        edges: { left: true, right: true, bottom: true, top: true },
+        edges: { left: false, right: true, bottom: true, top: false },
         restrictSize: {
           min: { width: 10, height: 10 }
         }
       })
-      .on("resizemove", ({ rect, target, deltaRect }) => {
+      .on('resizemove', ({ rect, target, deltaRect }) => {
         if (this.state.locked) {
           return;
         }
 
-        let x = parseFloat(target.getAttribute("data-x")) || 0;
-        let y = parseFloat(target.getAttribute("data-y")) || 0;
+        let x = parseFloat(target.getAttribute('data-x')) || 0;
+        let y = parseFloat(target.getAttribute('data-y')) || 0;
 
-        target.style.width = rect.width + "px";
-        target.style.height = rect.height + "px";
+        target.style.width = rect.width + 'px';
+        target.style.height = rect.height + 'px';
 
         x += deltaRect.left;
         y += deltaRect.top;
@@ -133,16 +133,16 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
         });
       });
 
-    this.el.current.addEventListener("mouseover", this.bindKeys);
-    this.el.current.addEventListener("mouseout", this.unbindKeys);
+    this.el.current.addEventListener('mouseover', this.bindKeys);
+    this.el.current.addEventListener('mouseout', this.unbindKeys);
   }
 
   componentWillUnmount() {
     stopListeningToIgnoreMouseEvents(this.el.current);
     this.unbindKeys();
 
-    this.el.current.removeEventListener("mouseover", this.bindKeys);
-    this.el.current.removeEventListener("mouseout", this.unbindKeys);
+    this.el.current.removeEventListener('mouseover', this.bindKeys);
+    this.el.current.removeEventListener('mouseout', this.unbindKeys);
   }
 
   bindKeys = () => {
