@@ -12,7 +12,7 @@ class Element extends React.Component<Props, {}> {
     const { width, height } = this.props;
     return (
       <span className={this.props.className}>
-        {width}x{height}
+        {width.toFixed(0)}x{height.toFixed(0)}
       </span>
     );
   }

@@ -12,7 +12,7 @@ class Element extends React.Component<Props, {}> {
     const { x, y } = this.props;
     return (
       <span className={this.props.className}>
-        {x}:{y}
+        {x.toFixed(0)}:{y.toFixed(0)}
       </span>
     );
   }
