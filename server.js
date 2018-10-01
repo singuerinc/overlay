@@ -9,7 +9,7 @@ const webpackDevMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
 const { spawn } = require("child_process");
 
-const config = require("./config/webpack.config.development");
+const config = require("./webpack.config.development");
 
 const argv = require("minimist")(process.argv.slice(2));
 
