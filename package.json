@@ -1,7 +1,7 @@
 {
   "name": "overlay",
   "productName": "Overlay",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A set of tools for devs and designers to measure, align and overlay on-screen graphics and layouts.",
   "main": "main.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "package-win": "npm run build && build --win --x64",
     "package-linux": "npm run build && build --linux",
     "package-all": "npm run build && build -mwl",
-    "publish": "build --mac -p always",
+    "publish": "npm run build && build --mac -p always",
     "cleanup": "mop -v"
   },
   "build": {
