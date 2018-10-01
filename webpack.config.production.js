@@ -2,21 +2,21 @@
  * Build config for electron 'Renderer Process' file
  */
 
-const path = require("path");
-const webpack = require("webpack");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const merge = require("webpack-merge");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const baseConfig = require("./webpack.config.base");
+const path = require('path');
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const merge = require('webpack-merge');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const baseConfig = require('./webpack.config.base');
 
 module.exports = merge(baseConfig, {
-  devtool: "cheap-module-source-map",
+  devtool: 'cheap-module-source-map',
 
-  entry: ["./app/index"],
+  entry: ['./app/index'],
 
   output: {
-    path: path.join(__dirname, "app/dist"),
-    publicPath: "../dist/"
+    path: path.join(__dirname, 'app/dist'),
+    publicPath: '../dist/'
   },
 
   module: {
@@ -25,10 +25,10 @@ module.exports = merge(baseConfig, {
       {
         test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
         use: {
-          loader: "url-loader",
+          loader: 'url-loader',
           options: {
             limit: 10000,
-            mimetype: "application/font-woff"
+            mimetype: 'application/font-woff'
           }
         }
       },
@@ -36,10 +36,10 @@ module.exports = merge(baseConfig, {
       {
         test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
         use: {
-          loader: "url-loader",
+          loader: 'url-loader',
           options: {
             limit: 10000,
-            mimetype: "application/font-woff"
+            mimetype: 'application/font-woff'
           }
         }
       },
@@ -47,33 +47,33 @@ module.exports = merge(baseConfig, {
       {
         test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
         use: {
-          loader: "url-loader",
+          loader: 'url-loader',
           options: {
             limit: 10000,
-            mimetype: "application/octet-stream"
+            mimetype: 'application/octet-stream'
           }
         }
       },
       // EOT Font
       {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        use: "file-loader"
+        use: 'file-loader'
       },
       // SVG Font
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
         use: {
-          loader: "url-loader",
+          loader: 'url-loader',
           options: {
             limit: 10000,
-            mimetype: "image/svg+xml"
+            mimetype: 'image/svg+xml'
           }
         }
       },
       // Common Image Formats
       {
         test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
-        use: "url-loader"
+        use: 'url-loader'
       }
     ]
   },
@@ -85,18 +85,18 @@ module.exports = merge(baseConfig, {
 
     // NODE_ENV should be production so that modules do not perform certain development checks
     new webpack.DefinePlugin({
-      "process.env.NODE_ENV": JSON.stringify("production")
+      'process.env.NODE_ENV': JSON.stringify('production')
     }),
 
-    new ExtractTextPlugin("style.css"),
+    new ExtractTextPlugin('style.css'),
 
     new HtmlWebpackPlugin({
-      filename: "../app.html",
-      template: "app/app.html",
+      filename: '../app.html',
+      template: 'app/app.html',
       inject: false
     })
   ],
 
   // https://github.com/chentsulin/webpack-target-electron-renderer#how-this-module-works
-  target: "electron-renderer"
+  target: 'electron-renderer'
 });
