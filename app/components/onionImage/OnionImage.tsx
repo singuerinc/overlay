@@ -2,15 +2,23 @@ import * as interactjs from 'interactjs';
 import * as mousetrap from 'mousetrap';
 import * as React from 'react';
 import styled from 'styled-components';
+import {
+  move,
+  setInverted,
+  setOpacity,
+  setVisibility,
+  toggleInverted,
+  toggleLock
+} from '../core/reducer';
 import { Coords } from '../helpers/Coords';
 import { ARROW_KEYS, getPositionByKey } from '../helpers/getPositionByKey';
+import { setPositionInDOM } from '../helpers/impure';
 import {
   startListeningAndSwapZIndex,
   startListeningToIgnoreMouseEvents,
   stopListeningAndSwapZIndex,
   stopListeningToIgnoreMouseEvents
 } from '../helpers/mouseEvents';
-import { setPositionInDOM } from '../helpers/impure';
 import { Size } from '../helpers/Size';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { IOnionImage } from './IOnionImage.d';
@@ -39,11 +47,13 @@ const OnionImageWrapper = styled.div`
   }
 `;
 
-const OnionImageElement = styled.img.attrs<{ opacity; inverted; visible }>({
-  opacity: (props) => props.opacity,
-  inverted: (props) => props.inverted,
-  visible: (props) => props.visible
-})`
+interface OnionImageElementProps {
+  opacity: number;
+  inverted: boolean;
+  visible: boolean;
+}
+
+const OnionImageElement = styled.img<OnionImageElementProps>`
   opacity: ${({ opacity }) => opacity};
   filter: invert(${({ inverted }) => (inverted ? '100%' : '0%')});
   display: ${({ visible }) => (visible ? 'block' : 'none')};
@@ -69,22 +79,6 @@ export default class OnionImage extends React.Component<
     this.el = React.createRef();
     this.image = React.createRef();
   }
-
-  setInverted = (value: boolean) => {
-    this.setState({ inverted: value });
-  };
-
-  setVisibility = (value: boolean) => {
-    this.setState({ visible: value });
-  };
-
-  setOpacity = (value: number) => {
-    this.setState({ opacity: value });
-  };
-
-  toggleLock = () => {
-    this.setState({ locked: !this.state.locked });
-  };
 
   bindKeys = () => {
     mousetrap.bind(opacityNumberKeys, ({ key }) => {
@@ -116,7 +110,7 @@ export default class OnionImage extends React.Component<
     });
 
     mousetrap.bind(invertKeys, () => {
-      this.setInverted(!this.state.inverted);
+      this.setState(toggleInverted);
     });
 
     mousetrap.bind(ARROW_KEYS, ({ shiftKey, key }) => {
@@ -173,7 +167,7 @@ export default class OnionImage extends React.Component<
 
         setPositionInDOM(target, x, y);
 
-        this.setState({ x, y });
+        this.setState(move(x, y));
       }
     });
   }
@@ -216,10 +210,10 @@ export default class OnionImage extends React.Component<
           opacity={opacity}
           inverted={inverted}
           visible={visible}
-          setInverted={this.setInverted}
-          setOpacity={this.setOpacity}
-          setVisibility={this.setVisibility}
-          toggleLock={this.toggleLock}
+          setInverted={(inverted) => this.setState(setInverted(inverted))}
+          setOpacity={(opacity) => this.setState(setOpacity(opacity))}
+          setVisibility={(visible) => this.setState(setVisibility(visible))}
+          toggleLock={() => this.setState(toggleLock)}
           remove={remove}
           locked={locked}
         />

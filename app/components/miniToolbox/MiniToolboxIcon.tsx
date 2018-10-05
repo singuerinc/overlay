@@ -6,12 +6,10 @@ const Wrapper = styled.span`
   display: flex;
 `;
 
-export const MiniToolboxIcon = ({ icon }: { icon: string }) => {
-  return (
-    <Wrapper
-      dangerouslySetInnerHTML={{
-        __html: icons[icon].toSvg()
-      }}
-    />
-  );
-};
+export const MiniToolboxIcon = ({ icon }: { icon: string }) => (
+  <Wrapper
+    dangerouslySetInnerHTML={{
+      __html: icons[icon].toSvg()
+    }}
+  />
+);

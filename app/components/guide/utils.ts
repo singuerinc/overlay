@@ -1,5 +1,4 @@
 import { GuideOrientation } from './GuideOrientation';
-import { Color } from '../../utils/Color';
 
 export const rotate = (orientation: GuideOrientation) => ({
   x,
@@ -24,14 +23,3 @@ export const rotate = (orientation: GuideOrientation) => ({
 
   return { x, y, orientation: newType };
 };
-
-export const move = (x: number, y: number) => () => ({
-  x,
-  y
-});
-
-export const setColor = (color: Color) => () => ({ color });
-
-export const toggleLock = (state) => ({
-  locked: !state.locked
-});

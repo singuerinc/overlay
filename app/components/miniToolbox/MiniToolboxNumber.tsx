@@ -5,6 +5,6 @@ const Wrapper = styled.span`
   display: flex;
 `;
 
-export const MiniToolboxNumber = ({ value }: { value: number }) => {
-  return <Wrapper>{value}</Wrapper>;
-};
+export const MiniToolboxNumber = ({ value }: { value: number }) => (
+  <Wrapper>{value}</Wrapper>
+);

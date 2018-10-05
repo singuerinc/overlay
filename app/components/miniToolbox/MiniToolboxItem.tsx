@@ -68,13 +68,8 @@ interface Props {
 }
 
 export class MiniToolboxItem extends React.Component<Props> {
-  private el;
+  private el: React.RefObject<HTMLLIElement> = React.createRef();
   private tooltip: Tooltip;
-
-  constructor(props) {
-    super(props);
-    this.el = React.createRef();
-  }
 
   componentDidMount() {
     this.tooltip = new Tooltip(this.el.current, {
@@ -95,7 +90,6 @@ export class MiniToolboxItem extends React.Component<Props> {
 
   render() {
     const { onClick, children } = this.props;
-
     return (
       <Element innerRef={this.el} onClick={onClick}>
         {children}

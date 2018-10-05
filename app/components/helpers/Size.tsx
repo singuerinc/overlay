@@ -7,16 +7,11 @@ interface Props {
   height: number;
 }
 
-class Element extends React.Component<Props, {}> {
-  render() {
-    const { width, height } = this.props;
-    return (
-      <span className={this.props.className}>
-        {width.toFixed(0)}x{height.toFixed(0)}
-      </span>
-    );
-  }
-}
+const Element = ({ width, height, className }: Props) => (
+  <span className={className}>
+    {width.toFixed(0)}x{height.toFixed(0)}
+  </span>
+);
 
 export const Size = styled(Element)`
   position: absolute;

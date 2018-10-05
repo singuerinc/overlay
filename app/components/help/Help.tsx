@@ -13,12 +13,7 @@ interface IProps {
 }
 
 class Element extends React.Component<IProps> {
-  private el: React.RefObject<HTMLDivElement>;
-
-  constructor(props: IProps) {
-    super(props);
-    this.el = React.createRef();
-  }
+  private el: React.RefObject<HTMLDivElement> = React.createRef();
 
   componentDidMount() {
     startListeningToIgnoreMouseEvents(this.el.current);

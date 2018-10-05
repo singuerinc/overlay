@@ -3,19 +3,19 @@ import * as interactjs from 'interactjs';
 import * as mousetrap from 'mousetrap';
 import * as React from 'react';
 import styled from 'styled-components';
-import * as uuid from 'uuid/v1';
 import { Color } from '../../utils/Color';
+import { setColor, toggleLock } from '../core/reducer';
 import { createGrid } from '../grid/utils';
 import { Coords } from '../helpers/Coords';
 import { COLOR_KEYS, getColorByKey } from '../helpers/getColorByKey';
 import { ARROW_KEYS, getPositionByKey } from '../helpers/getPositionByKey';
+import { setPositionInDOM } from '../helpers/impure';
 import {
   startListeningAndSwapZIndex,
   startListeningToIgnoreMouseEvents,
   stopListeningAndSwapZIndex,
   stopListeningToIgnoreMouseEvents
 } from '../helpers/mouseEvents';
-import { setPositionInDOM } from '../helpers/impure';
 import { Size } from '../helpers/Size';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { IRuler } from './IRuler.d';
@@ -69,7 +69,7 @@ const RulerElement = styled.div.attrs<{
 `;
 
 interface Props {
-  duplicate: (ruler: IRuler) => void;
+  duplicate: (rulerInfo: object) => void;
   remove: () => void;
 }
 
@@ -171,7 +171,7 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
     });
 
     mousetrap.bind(COLOR_KEYS, ({ key }) => {
-      this.setColor(getColorByKey(key));
+      this.setState(setColor(getColorByKey(key)));
     });
   };
 
@@ -179,21 +179,23 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
     mousetrap.unbind(ARROW_KEYS);
   };
 
-  toggleLock = () => {
-    this.setState({ locked: !this.state.locked });
-  };
+  // toggleLock = () => {
+  //   this.setState({ locked: !this.state.locked });
+  // };
 
-  setColor = (color: Color) => {
-    this.setState({ color });
-  };
+  // setColor = (color: Color) => {
+  //   this.setState({ color });
+  // };
 
-  duplicate = () => {
-    const ruler: IRuler = {
-      ...this.state,
-      id: uuid()
-    };
-    this.props.duplicate(ruler);
-  };
+  // duplicate = () => {
+  //   const id = uuid();
+  //   const ruler: IRuler = {
+  //     ...factory(id),
+  //     ...this.state,
+  //     id
+  //   };
+  //   this.props.duplicate(ruler);
+  // };
 
   render() {
     const { remove } = this.props;
@@ -210,11 +212,21 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
           opacity={opacity}
         />
         <RulerToolbox
-          duplicate={this.duplicate}
+          duplicate={() =>
+            this.props.duplicate({
+              x,
+              y,
+              width,
+              height,
+              opacity,
+              color,
+              locked
+            })
+          }
           remove={remove}
           locked={locked}
-          toggleLock={this.toggleLock}
-          setColor={this.setColor}
+          toggleLock={() => this.setState(toggleLock)}
+          setColor={(color: Color) => this.setState(setColor(color))}
         />
       </RulerWrapper>
     );
