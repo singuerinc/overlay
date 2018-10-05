@@ -72,7 +72,7 @@ interface Props {
 }
 
 export default class Guide extends React.Component<IGuide & Props, State> {
-  private el;
+  private el: React.RefObject<HTMLDivElement>;
 
   constructor(props) {
     super(props);
@@ -154,11 +154,13 @@ export default class Guide extends React.Component<IGuide & Props, State> {
   };
 
   componentDidMount() {
-    startListeningToIgnoreMouseEvents(this.el.current);
-    startListeningAndSwapZIndex(this.el.current);
-    setPosition(this.el.current, this.state.x, this.state.y);
+    const el = this.el.current as HTMLDivElement;
 
-    interactjs(this.el.current).draggable({
+    startListeningToIgnoreMouseEvents(el);
+    startListeningAndSwapZIndex(el);
+    setPosition(el, this.state.x, this.state.y);
+
+    interactjs(el).draggable({
       onmove: ({ dx, dy, target }) => {
         if (this.state.locked) {
           return;
@@ -174,17 +176,19 @@ export default class Guide extends React.Component<IGuide & Props, State> {
       }
     });
 
-    this.el.current.addEventListener('mouseover', this.bindKeys);
-    this.el.current.addEventListener('mouseout', this.unbindKeys);
+    el.addEventListener('mouseover', this.bindKeys);
+    el.addEventListener('mouseout', this.unbindKeys);
   }
 
   componentWillUnmount() {
-    stopListeningToIgnoreMouseEvents(this.el.current);
-    stopListeningAndSwapZIndex(this.el.current);
+    const el = this.el.current as HTMLDivElement;
+
+    stopListeningToIgnoreMouseEvents(el);
+    stopListeningAndSwapZIndex(el);
     this.unbindKeys();
 
-    this.el.current.removeEventListener('mouseover', this.bindKeys);
-    this.el.current.removeEventListener('mouseout', this.unbindKeys);
+    el.removeEventListener('mouseover', this.bindKeys);
+    el.removeEventListener('mouseout', this.unbindKeys);
   }
 
   render() {
