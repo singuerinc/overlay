@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import * as uuid from 'uuid/v1';
 import { Color } from '../../utils/Color';
 import { GuideOrientation } from './GuideOrientation';
@@ -16,4 +17,13 @@ const addGuide = ({ guides }) => ({
   guides: [...guides, factory(uuid())]
 });
 
-export { addGuide };
+const removeGuide = (id: string) => ({ guides }: { guides: IGuide[] }) => {
+  const hasSameId = (id: string) => (x: IGuide) => x.id !== id;
+  const filtered: IGuide[] = R.reject(hasSameId(id), guides);
+
+  return {
+    guides: filtered
+  };
+};
+
+export { addGuide, removeGuide };

@@ -6,15 +6,15 @@ import Guide from '../components/guide/Guide';
 import OnionImage from '../components/onionImage/OnionImage';
 import Ruler from '../components/ruler/Ruler';
 import { Toolbox } from '../components/toolbox/Toolbox';
-import { setVisibility, toggleHelp } from './core/reducer';
+import { toggleHelp } from './core/reducer';
 import { addGrid, removeGrid } from './grid/factory';
 import { IGrid } from './grid/IGrid';
-import { addGuide } from './guide/factory';
+import { addGuide, removeGuide } from './guide/factory';
 import { IGuide } from './guide/IGuide';
 import { Help } from './help/Help';
+import { addOnionImage, removeOnionImage } from './onionImage/factory';
 import { IOnionImage } from './onionImage/IOnionImage';
-import { addOnionImage } from './onionImage/onionObj';
-import { addRuler } from './ruler/factory';
+import { addRuler, duplicateRuler, removeRuler } from './ruler/factory';
 import { IRuler } from './ruler/IRuler';
 import { Tool, ToolType } from './toolbox/Tool';
 
@@ -64,39 +64,6 @@ class App extends React.Component<{}, State> {
     }
   };
 
-  removeGuide = (id: string) => {
-    const filtered: IGuide[] = this.state.guides.filter(
-      (guide: IGuide) => guide.id !== id
-    );
-    this.setState({
-      guides: filtered
-    });
-  };
-
-  duplicateRuler = (ruler: IRuler) => {
-    this.setState({
-      rulers: [...this.state.rulers, ruler]
-    });
-  };
-
-  removeRuler = (id: string) => {
-    const filtered: IRuler[] = this.state.rulers.filter(
-      (ruler: IRuler) => ruler.id !== id
-    );
-    this.setState({
-      rulers: filtered
-    });
-  };
-
-  removeOnion = (id: string) => {
-    const filtered: IOnionImage[] = this.state.onions.filter(
-      (onion: IOnionImage) => onion.id !== id
-    );
-    this.setState({
-      onions: filtered
-    });
-  };
-
   render() {
     const {
       grids,
@@ -119,40 +86,46 @@ class App extends React.Component<{}, State> {
               <Ruler
                 key={props.id}
                 {...props}
-                duplicate={this.duplicateRuler}
-                remove={() => this.removeRuler(props.id)}
+                duplicate={(rulerInfo) =>
+                  this.setState(duplicateRuler(rulerInfo))
+                }
+                remove={() => this.setState(removeRuler(props.id))}
               />
             ))}
             {onions.map((props: IOnionImage) => (
               <OnionImage
                 key={props.id}
                 {...props}
-                remove={() => this.removeOnion(props.id)}
+                remove={() => this.setState(removeOnionImage(props.id))}
               />
             ))}
             {guides.map((props: IGuide) => (
               <Guide
                 key={props.id}
                 {...props}
-                remove={() => this.removeGuide(props.id)}
+                remove={() => this.setState(removeGuide(props.id))}
               />
             ))}
           </div>
         )}
-        {helpVisible && <Help close={() => this.setState(toggleHelp)} />}
+        {helpVisible && <Help close={this._toggleHelp} />}
         <Toolbox
           x={10}
           y={10}
-          setVisibility={(isVisible) => this.setState(setVisibility(isVisible))}
+          setVisibility={this._setVisible}
           isStuffVisible={isStuffVisible}
           isGridVisible={isGridVisible}
           create={this.create}
           toggle={this.toggleGrid}
-          toggleHelp={() => this.setState(toggleHelp)}
+          toggleHelp={this._toggleHelp}
         />
       </>
     );
   }
+
+  // FIXME: use function
+  private _setVisible = (visible) => this.setState({ isStuffVisible: visible });
+  private _toggleHelp = () => this.setState(toggleHelp);
 }
 
 export { App };

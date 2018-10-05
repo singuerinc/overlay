@@ -7,16 +7,11 @@ interface Props {
   y: number;
 }
 
-class Element extends React.Component<Props, {}> {
-  render() {
-    const { x, y } = this.props;
-    return (
-      <span className={this.props.className}>
-        {x.toFixed(0)}:{y.toFixed(0)}
-      </span>
-    );
-  }
-}
+const Element = ({ x, y, className }: Props) => (
+  <span className={className}>
+    {x.toFixed(0)}:{y.toFixed(0)}
+  </span>
+);
 
 export const Coords = styled(Element)`
   position: absolute;

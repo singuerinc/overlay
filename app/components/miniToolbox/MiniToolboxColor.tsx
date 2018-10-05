@@ -18,10 +18,8 @@ const ColorItem = styled.div`
   border: 2px solid #f4f4f4;
 `;
 
-export const MiniToolboxColor = ({ color }: { color: Color }) => {
-  return (
-    <Wrapper>
-      <ColorItem color={color} />
-    </Wrapper>
-  );
-};
+export const MiniToolboxColor = ({ color }: { color: Color }) => (
+  <Wrapper>
+    <ColorItem color={color} />
+  </Wrapper>
+);

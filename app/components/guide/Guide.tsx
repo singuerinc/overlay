@@ -3,6 +3,7 @@ import * as mousetrap from 'mousetrap';
 import * as React from 'react';
 import styled from 'styled-components';
 import { Color } from '../../utils/Color';
+import { move, setColor, toggleLock } from '../core/reducer';
 import { COLOR_KEYS, getColorByKey } from '../helpers/getColorByKey';
 import { ARROW_KEYS, getPositionByKey } from '../helpers/getPositionByKey';
 import { setPositionInDOM } from '../helpers/impure';
@@ -17,7 +18,7 @@ import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { GuideOrientation } from './GuideOrientation';
 import { GuideToolbox } from './GuideToolbox';
 import { IGuide } from './IGuide.d';
-import { move, rotate, setColor, toggleLock } from './utils';
+import { rotate } from './utils';
 
 const isLocked = (state) => state.locked === true;
 
@@ -36,12 +37,7 @@ interface Props {
 }
 
 export default class Guide extends React.Component<IGuide & Props, State> {
-  private el: React.RefObject<HTMLDivElement>;
-
-  constructor(props) {
-    super(props);
-    this.el = React.createRef();
-  }
+  private el: React.RefObject<HTMLDivElement> = React.createRef();
 
   static getDerivedStateFromProps(nextProps, prevState) {
     return { ...nextProps, ...prevState };
@@ -75,7 +71,7 @@ export default class Guide extends React.Component<IGuide & Props, State> {
     });
 
     mousetrap.bind(COLOR_KEYS, ({ key }) => {
-      this.setState({ color: getColorByKey(key) });
+      this.setState(setColor(getColorByKey(key)));
     });
   };
 
