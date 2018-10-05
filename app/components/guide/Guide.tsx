@@ -11,11 +11,12 @@ import {
   startListeningAndSwapZIndex,
   stopListeningAndSwapZIndex
 } from '../helpers/mouseEvents';
-import { setPosition } from '../helpers/setPosition';
+import { setPositionInDOM } from '../helpers/setPosition';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { GuideToolbox } from './GuideToolbox';
 import { IGuide } from './IGuide.d';
 import { GuideDirection, IGuideDirection } from './IGuideDirection';
+import { rotate, move, setColor, toggleLock } from './utils';
 
 interface State {
   x: number;
@@ -23,6 +24,130 @@ interface State {
   type: IGuideDirection;
   color: Color;
   locked: boolean;
+}
+
+const horizontalVerticalKeys = ['v', 'h'];
+
+interface Props {
+  remove: () => void;
+}
+
+export default class Guide extends React.Component<IGuide & Props, State> {
+  private el: React.RefObject<HTMLDivElement>;
+
+  constructor(props) {
+    super(props);
+    this.el = React.createRef();
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return { ...nextProps, ...prevState };
+  }
+
+  bindKeys = () => {
+    mousetrap.bind(ARROW_KEYS, ({ shiftKey, key }) => {
+      if (this.state.locked) {
+        return;
+      }
+
+      const { type, x, y } = this.state;
+      const value = shiftKey ? 10 : 1;
+
+      const { x: nx, y: ny } = getPositionByKey(key, x, y, value);
+
+      if (type === GuideDirection.HORIZONTAL) {
+        this.setState(move(0, ny), () =>
+          setPositionInDOM(this.el.current, this.state.x, this.state.y)
+        );
+      } else if (type === GuideDirection.VERTICAL) {
+        this.setState(move(nx, 0), () =>
+          setPositionInDOM(this.el.current, this.state.x, this.state.y)
+        );
+      }
+    });
+
+    mousetrap.bind(horizontalVerticalKeys, ({ key }) => {
+      if (key !== this.state.type) {
+        const type: IGuideDirection = key as IGuideDirection;
+
+        this.setState(rotate(type), () => {
+          setPositionInDOM(this.el.current, this.state.x, this.state.y);
+        });
+      }
+    });
+
+    mousetrap.bind(COLOR_KEYS, ({ key }) => {
+      this.setState({ color: getColorByKey(key) });
+    });
+  };
+
+  unbindKeys = () => {
+    mousetrap.unbind(ARROW_KEYS);
+    mousetrap.unbind(horizontalVerticalKeys);
+    mousetrap.unbind(COLOR_KEYS);
+  };
+
+  componentDidMount() {
+    const el = this.el.current as HTMLDivElement;
+
+    startListeningToIgnoreMouseEvents(el);
+    startListeningAndSwapZIndex(el);
+    setPositionInDOM(el, this.state.x, this.state.y);
+
+    interactjs(el).draggable({
+      onmove: ({ dx, dy, target }) => {
+        if (this.state.locked) {
+          return;
+        }
+
+        const { x, y, type } = this.state;
+        const newX = type === GuideDirection.HORIZONTAL ? 0 : x + dx;
+        const newY = type === GuideDirection.HORIZONTAL ? y + dy : 0;
+
+        setPositionInDOM(target, newX, newY);
+
+        this.setState(move(newX, newY));
+      }
+    });
+
+    el.addEventListener('mouseover', this.bindKeys);
+    el.addEventListener('mouseout', this.unbindKeys);
+  }
+
+  componentWillUnmount() {
+    const el = this.el.current as HTMLDivElement;
+
+    stopListeningToIgnoreMouseEvents(el);
+    stopListeningAndSwapZIndex(el);
+    this.unbindKeys();
+
+    el.removeEventListener('mouseover', this.bindKeys);
+    el.removeEventListener('mouseout', this.unbindKeys);
+  }
+
+  render() {
+    const { remove } = this.props;
+    const { type, color, locked } = this.state;
+    return (
+      <div ref={this.el}>
+        <GuideElement type={type} color={color}>
+          <GuideToolbox
+            remove={remove}
+            rotate={() =>
+              this.setState(rotate(type), () => {
+                setPositionInDOM(this.el.current, this.state.x, this.state.y);
+              })
+            }
+            locked={locked}
+            toggleLock={() => this.setState(toggleLock)}
+            setColor={(color: Color) => {
+              this.setState(setColor(color));
+            }}
+          />
+        </GuideElement>
+      </div>
+    );
+  }
 }
 
 interface GuideElementProps {
@@ -64,148 +189,3 @@ const GuideElement = styled.div.attrs<GuideElementProps>({
     opacity: 1;
   }
 `;
-
-const horizontalVerticalKeys = ['v', 'h'];
-
-interface Props {
-  remove: () => void;
-}
-
-export default class Guide extends React.Component<IGuide & Props, State> {
-  private el: React.RefObject<HTMLDivElement>;
-
-  constructor(props) {
-    super(props);
-    this.el = React.createRef();
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return { ...nextProps, ...prevState };
-  }
-
-  rotate = (type?: IGuideDirection) => {
-    let { x, y } = this.state;
-
-    if (!type) {
-      type =
-        this.state.type === GuideDirection.HORIZONTAL
-          ? GuideDirection.VERTICAL
-          : GuideDirection.HORIZONTAL;
-    }
-
-    if (type === GuideDirection.HORIZONTAL) {
-      y = Math.floor(window.screen.height * 0.5);
-      x = 0;
-    } else {
-      x = Math.floor(window.screen.width * 0.5);
-      y = 0;
-    }
-
-    this.setState({ type, x, y }, () =>
-      setPosition(this.el.current, this.state.x, this.state.y)
-    );
-  };
-
-  setColor = (color: Color) => {
-    this.setState({ color });
-  };
-
-  toggleLock = () => {
-    this.setState({ locked: !this.state.locked });
-  };
-
-  bindKeys = () => {
-    mousetrap.bind(ARROW_KEYS, ({ shiftKey, key }) => {
-      if (this.state.locked) {
-        return;
-      }
-
-      const { type, x, y } = this.state;
-      const value = shiftKey ? 10 : 1;
-
-      const { x: nx, y: ny } = getPositionByKey(key, x, y, value);
-
-      if (type === GuideDirection.HORIZONTAL) {
-        this.setState({ y: ny, x: 0 }, () =>
-          setPosition(this.el.current, this.state.x, this.state.y)
-        );
-      } else if (type === GuideDirection.VERTICAL) {
-        this.setState({ x: nx, y: 0 }, () =>
-          setPosition(this.el.current, this.state.x, this.state.y)
-        );
-      }
-    });
-
-    mousetrap.bind(horizontalVerticalKeys, ({ key }) => {
-      if (key !== this.state.type) {
-        this.rotate(key as IGuideDirection);
-      }
-    });
-
-    mousetrap.bind(COLOR_KEYS, ({ key }) => {
-      this.setState({ color: getColorByKey(key) });
-    });
-  };
-
-  unbindKeys = () => {
-    mousetrap.unbind(ARROW_KEYS);
-    mousetrap.unbind(horizontalVerticalKeys);
-    mousetrap.unbind(COLOR_KEYS);
-  };
-
-  componentDidMount() {
-    const el = this.el.current as HTMLDivElement;
-
-    startListeningToIgnoreMouseEvents(el);
-    startListeningAndSwapZIndex(el);
-    setPosition(el, this.state.x, this.state.y);
-
-    interactjs(el).draggable({
-      onmove: ({ dx, dy, target }) => {
-        if (this.state.locked) {
-          return;
-        }
-
-        const { x, y, type } = this.state;
-        const newX = type === 'h' ? 0 : x + dx;
-        const newY = type === 'h' ? y + dy : 0;
-
-        setPosition(target, newX, newY);
-
-        this.setState({ y: newY, x: newX });
-      }
-    });
-
-    el.addEventListener('mouseover', this.bindKeys);
-    el.addEventListener('mouseout', this.unbindKeys);
-  }
-
-  componentWillUnmount() {
-    const el = this.el.current as HTMLDivElement;
-
-    stopListeningToIgnoreMouseEvents(el);
-    stopListeningAndSwapZIndex(el);
-    this.unbindKeys();
-
-    el.removeEventListener('mouseover', this.bindKeys);
-    el.removeEventListener('mouseout', this.unbindKeys);
-  }
-
-  render() {
-    const { remove } = this.props;
-    const { type, color, locked } = this.state;
-    return (
-      <div ref={this.el}>
-        <GuideElement type={type} color={color}>
-          <GuideToolbox
-            remove={remove}
-            rotate={this.rotate}
-            locked={locked}
-            toggleLock={this.toggleLock}
-            setColor={(color: Color) => this.setColor(color)}
-          />
-        </GuideElement>
-      </div>
-    );
-  }
-}

@@ -1,5 +1,5 @@
 import * as interactjs from 'interactjs';
-import { setPosition } from './setPosition';
+import { setPositionInDOM } from './setPosition';
 
 export const draggable = (
   el: HTMLElement,
@@ -15,7 +15,7 @@ export const draggable = (
       x = Math.min(Math.max(0, x), innerWidth - el.clientWidth);
       y = Math.min(Math.max(0, y), innerHeight - el.clientHeight);
 
-      setPosition(el, x, y);
+      setPositionInDOM(el, x, y);
 
       callback({ x, y });
     }
