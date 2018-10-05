@@ -1,0 +1,68 @@
+0.3.2
+==================
+
+  * fix: not possible to click on the mini-toolbox if another tools is on top #39
+
+0.3.1
+==================
+
+  * fix: now the ruler can be resized only from right+bottom
+
+0.3.0
+==================
+
+  * feat: new icon / #24
+  * fix: coords not rounded
+  * refactor: remove unused files (redux, etc)
+
+0.2.0
+==================
+
+  * ?
+
+0.1.1
+==================
+
+  * fix: the toolbox now is a position that doesn't interfere with the rest of the elements
+
+0.1.0
+==================
+
+  * fix: toolbox can be dragged out of the screen
+
+0.0.6
+==================
+
+  * feat: Grouped colors
+
+0.0.5
+==================
+
+  * feat: tooltips on all tools
+  * feat: lock/Unlock guides, rulers, and images
+  * feat: set guides, and rulers colors with the keyboard
+  * feat: move guides, rulers, and images with the keyboard arrows +1px and w/ shift +10px
+  * fix: display image size
+  * fix: remove toolbox icons margin
+
+0.0.4
+==================
+
+  * feat: auto-update
+
+0.0.3
+==================
+
+  * chore: testing auto-update
+
+0.0.2
+==================
+
+  * chore: testing auto-update
+
+0.0.1
+==================
+
+  * feat: init
+
+
