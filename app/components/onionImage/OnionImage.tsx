@@ -7,7 +7,8 @@ import {
   setInverted,
   setOpacity,
   toggleInverted,
-  toggleLock
+  toggleLock,
+  resize
 } from '../core/reducer';
 import { Coords } from '../helpers/Coords';
 import { ARROW_KEYS, getPositionByKey } from '../helpers/getPositionByKey';
@@ -135,10 +136,7 @@ export default class OnionImage extends React.Component<
     setPositionInDOM(this.el.current, this.state.x, this.state.y);
 
     image.onload = (() => {
-      this.setState({
-        width: image.width,
-        height: image.height
-      });
+      this.setState(resize(image.width, image.height));
     }).bind(this);
 
     el.addEventListener('mouseover', this.bindKeys);
