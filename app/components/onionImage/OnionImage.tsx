@@ -1,18 +1,20 @@
-import * as interactjs from "interactjs";
-import * as mousetrap from "mousetrap";
-import * as React from "react";
-import styled from "styled-components";
-import { Coords } from "../helpers/Coords";
-import { ARROW_KEYS, getPositionByKey } from "../helpers/getPositionByKey";
+import * as interactjs from 'interactjs';
+import * as mousetrap from 'mousetrap';
+import * as React from 'react';
+import styled from 'styled-components';
+import { Coords } from '../helpers/Coords';
+import { ARROW_KEYS, getPositionByKey } from '../helpers/getPositionByKey';
 import {
+  startListeningAndSwapZIndex,
   startListeningToIgnoreMouseEvents,
+  stopListeningAndSwapZIndex,
   stopListeningToIgnoreMouseEvents
-} from "../helpers/ignoreMouse";
-import { setPosition } from "../helpers/setPosition";
-import { Size } from "../helpers/Size";
-import { MiniToolboxWrapper } from "../miniToolbox/MiniToolboxWrapper";
-import { IOnionImage } from "./IOnionImage.d";
-import { OnionToolbox } from "./OnionToolbox";
+} from '../helpers/mouseEvents';
+import { setPosition } from '../helpers/setPosition';
+import { Size } from '../helpers/Size';
+import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
+import { IOnionImage } from './IOnionImage.d';
+import { OnionToolbox } from './OnionToolbox';
 
 interface State {
   opacity: number;
@@ -38,18 +40,18 @@ const OnionImageWrapper = styled.div`
 `;
 
 const OnionImageElement = styled.img.attrs<{ opacity; inverted; visible }>({
-  opacity: props => props.opacity,
-  inverted: props => props.inverted,
-  visible: props => props.visible
+  opacity: (props) => props.opacity,
+  inverted: (props) => props.inverted,
+  visible: (props) => props.visible
 })`
   opacity: ${({ opacity }) => opacity};
-  filter: invert(${({ inverted }) => (inverted ? "100%" : "0%")});
-  display: ${({ visible }) => (visible ? "block" : "none")};
+  filter: invert(${({ inverted }) => (inverted ? '100%' : '0%')});
+  display: ${({ visible }) => (visible ? 'block' : 'none')};
 `;
 
-const opacityNumberKeys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
-const opacityLettersKeys = ["=", "+", "-", "_"];
-const invertKeys = "i";
+const opacityNumberKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+const opacityLettersKeys = ['=', '+', '-', '_'];
+const invertKeys = 'i';
 
 interface Props {
   remove: () => void;
@@ -144,6 +146,7 @@ export default class OnionImage extends React.Component<
 
   componentDidMount() {
     startListeningToIgnoreMouseEvents(this.el.current);
+    startListeningAndSwapZIndex(this.el.current);
     setPosition(this.el.current, this.state.x, this.state.y);
 
     this.image.current.onload = (() => {
@@ -153,8 +156,8 @@ export default class OnionImage extends React.Component<
       });
     }).bind(this);
 
-    this.el.current.addEventListener("mouseover", this.bindKeys);
-    this.el.current.addEventListener("mouseout", this.unbindKeys);
+    this.el.current.addEventListener('mouseover', this.bindKeys);
+    this.el.current.addEventListener('mouseout', this.unbindKeys);
 
     interactjs(this.el.current).draggable({
       onmove: ({ dx, dy, target }) => {
@@ -162,8 +165,8 @@ export default class OnionImage extends React.Component<
           return;
         }
 
-        const x = (parseFloat(target.getAttribute("data-x")) || 0) + dx;
-        const y = (parseFloat(target.getAttribute("data-y")) || 0) + dy;
+        const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
+        const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
 
         setPosition(target, x, y);
 
@@ -174,10 +177,11 @@ export default class OnionImage extends React.Component<
 
   componentWillUnmount() {
     stopListeningToIgnoreMouseEvents(this.el.current);
+    stopListeningAndSwapZIndex(this.el.current);
     this.unbindKeys();
 
-    this.el.current.removeEventListener("mouseover", this.bindKeys);
-    this.el.current.removeEventListener("mouseout", this.unbindKeys);
+    this.el.current.removeEventListener('mouseover', this.bindKeys);
+    this.el.current.removeEventListener('mouseout', this.unbindKeys);
   }
 
   render() {

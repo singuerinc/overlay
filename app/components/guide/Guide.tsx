@@ -1,19 +1,21 @@
-import * as interactjs from "interactjs";
-import * as mousetrap from "mousetrap";
-import * as React from "react";
-import styled from "styled-components";
-import { Color } from "../../utils/Color";
-import { COLOR_KEYS, getColorByKey } from "../helpers/getColorByKey";
-import { ARROW_KEYS, getPositionByKey } from "../helpers/getPositionByKey";
+import * as interactjs from 'interactjs';
+import * as mousetrap from 'mousetrap';
+import * as React from 'react';
+import styled from 'styled-components';
+import { Color } from '../../utils/Color';
+import { COLOR_KEYS, getColorByKey } from '../helpers/getColorByKey';
+import { ARROW_KEYS, getPositionByKey } from '../helpers/getPositionByKey';
 import {
   startListeningToIgnoreMouseEvents,
-  stopListeningToIgnoreMouseEvents
-} from "../helpers/ignoreMouse";
-import { setPosition } from "../helpers/setPosition";
-import { MiniToolboxWrapper } from "../miniToolbox/MiniToolboxWrapper";
-import { GuideToolbox } from "./GuideToolbox";
-import { IGuide } from "./IGuide.d";
-import { GuideDirection, IGuideDirection } from "./IGuideDirection";
+  stopListeningToIgnoreMouseEvents,
+  startListeningAndSwapZIndex,
+  stopListeningAndSwapZIndex
+} from '../helpers/mouseEvents';
+import { setPosition } from '../helpers/setPosition';
+import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
+import { GuideToolbox } from './GuideToolbox';
+import { IGuide } from './IGuide.d';
+import { GuideDirection, IGuideDirection } from './IGuideDirection';
 
 interface State {
   x: number;
@@ -29,23 +31,23 @@ interface GuideElementProps {
 }
 
 const GuideElement = styled.div.attrs<GuideElementProps>({
-  color: props => props.color,
-  type: props => props.type
+  color: (props) => props.color,
+  type: (props) => props.type
 })`
   position: fixed;
-  width: ${({ type }) => (type === "h" ? "100vw" : "1px")};
-  height: ${({ type }) => (type === "h" ? "1px" : "100vh")};
+  width: ${({ type }) => (type === 'h' ? '100vw' : '1px')};
+  height: ${({ type }) => (type === 'h' ? '1px' : '100vh')};
   background: ${({ color }) => color};
   opacity: 0.6;
   &::after {
-    content: "";
+    content: '';
     display: block;
     position: absolute;
     z-index: -1;
-    top: ${({ type }) => (type === "h" ? "-4px" : "0")};
-    left: ${({ type }) => (type === "h" ? "0" : "-4px")};
-    width: ${({ type }) => (type === "h" ? "100vw" : "9px")};
-    height: ${({ type }) => (type === "h" ? "9px" : "100vh")};
+    top: ${({ type }) => (type === 'h' ? '-4px' : '0')};
+    left: ${({ type }) => (type === 'h' ? '0' : '-4px')};
+    width: ${({ type }) => (type === 'h' ? '100vw' : '9px')};
+    height: ${({ type }) => (type === 'h' ? '9px' : '100vh')};
     background: ${({ color }) => color};
     opacity: 0;
   }
@@ -63,7 +65,7 @@ const GuideElement = styled.div.attrs<GuideElementProps>({
   }
 `;
 
-const horizontalVerticalKeys = ["v", "h"];
+const horizontalVerticalKeys = ['v', 'h'];
 
 interface Props {
   remove: () => void;
@@ -153,6 +155,7 @@ export default class Guide extends React.Component<IGuide & Props, State> {
 
   componentDidMount() {
     startListeningToIgnoreMouseEvents(this.el.current);
+    startListeningAndSwapZIndex(this.el.current);
     setPosition(this.el.current, this.state.x, this.state.y);
 
     interactjs(this.el.current).draggable({
@@ -162,8 +165,8 @@ export default class Guide extends React.Component<IGuide & Props, State> {
         }
 
         const { x, y, type } = this.state;
-        const newX = type === "h" ? 0 : x + dx;
-        const newY = type === "h" ? y + dy : 0;
+        const newX = type === 'h' ? 0 : x + dx;
+        const newY = type === 'h' ? y + dy : 0;
 
         setPosition(target, newX, newY);
 
@@ -171,16 +174,17 @@ export default class Guide extends React.Component<IGuide & Props, State> {
       }
     });
 
-    this.el.current.addEventListener("mouseover", this.bindKeys);
-    this.el.current.addEventListener("mouseout", this.unbindKeys);
+    this.el.current.addEventListener('mouseover', this.bindKeys);
+    this.el.current.addEventListener('mouseout', this.unbindKeys);
   }
 
   componentWillUnmount() {
     stopListeningToIgnoreMouseEvents(this.el.current);
+    stopListeningAndSwapZIndex(this.el.current);
     this.unbindKeys();
 
-    this.el.current.removeEventListener("mouseover", this.bindKeys);
-    this.el.current.removeEventListener("mouseout", this.unbindKeys);
+    this.el.current.removeEventListener('mouseover', this.bindKeys);
+    this.el.current.removeEventListener('mouseout', this.unbindKeys);
   }
 
   render() {

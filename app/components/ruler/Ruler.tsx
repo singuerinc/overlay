@@ -10,9 +10,11 @@ import { Coords } from '../helpers/Coords';
 import { COLOR_KEYS, getColorByKey } from '../helpers/getColorByKey';
 import { ARROW_KEYS, getPositionByKey } from '../helpers/getPositionByKey';
 import {
+  startListeningAndSwapZIndex,
   startListeningToIgnoreMouseEvents,
+  stopListeningAndSwapZIndex,
   stopListeningToIgnoreMouseEvents
-} from '../helpers/ignoreMouse';
+} from '../helpers/mouseEvents';
 import { setPosition } from '../helpers/setPosition';
 import { Size } from '../helpers/Size';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
@@ -87,6 +89,7 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
 
   componentDidMount() {
     startListeningToIgnoreMouseEvents(this.el.current);
+    startListeningAndSwapZIndex(this.el.current);
     setPosition(this.el.current, this.state.x, this.state.y);
 
     interactjs(this.el.current).draggable({
@@ -139,6 +142,7 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
 
   componentWillUnmount() {
     stopListeningToIgnoreMouseEvents(this.el.current);
+    stopListeningAndSwapZIndex(this.el.current);
     this.unbindKeys();
 
     this.el.current.removeEventListener('mouseover', this.bindKeys);

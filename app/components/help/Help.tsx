@@ -1,11 +1,11 @@
-import * as React from "react";
-import styled from "styled-components";
+import * as React from 'react';
+import styled from 'styled-components';
 import {
   startListeningToIgnoreMouseEvents,
   stopListeningToIgnoreMouseEvents
-} from "../helpers/ignoreMouse";
-import { MiniToolboxIcon } from "../miniToolbox/MiniToolboxIcon";
-import { MiniToolboxItem } from "../miniToolbox/MiniToolboxItem";
+} from '../helpers/mouseEvents';
+import { MiniToolboxIcon } from '../miniToolbox/MiniToolboxIcon';
+import { MiniToolboxItem } from '../miniToolbox/MiniToolboxItem';
 
 interface IProps {
   className?: string;
