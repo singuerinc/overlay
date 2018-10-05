@@ -1,7 +1,9 @@
 import { IOnionImage } from './IOnionImage';
+import * as uuid from 'uuid/v1';
+import * as R from 'ramda';
 
-const template: IOnionImage = {
-  id: '',
+const factory = (id: string): IOnionImage => ({
+  id,
   src: '',
   x: 500,
   y: 100,
@@ -11,6 +13,25 @@ const template: IOnionImage = {
   inverted: false,
   visible: true,
   locked: false
+});
+
+interface State {
+  onions: IOnionImage[];
+}
+
+const addOnionImage = (paths: string[]) => ({ onions }: State) => {
+  if (paths) {
+    const images = R.map((path) => {
+      return {
+        ...factory(uuid()),
+        src: path
+      };
+    }, paths);
+
+    return { onions: [...onions, ...images] };
+  }
+
+  return { onions };
 };
 
-export { template };
+export { addOnionImage };
