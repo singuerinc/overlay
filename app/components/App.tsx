@@ -8,14 +8,14 @@ import OnionImage from '../components/onionImage/OnionImage';
 import Ruler from '../components/ruler/Ruler';
 import { Toolbox } from '../components/toolbox/Toolbox';
 import { IGrid } from './grid/IGrid';
-import { default as grid } from './grid/gridObj';
+import { template as gridTpl } from './grid/gridObj';
 import { IGuide } from './guide/IGuide';
-import { default as guide } from './guide/guideObj';
+import { template as guideTpl } from './guide/guideObj';
 import { Help } from './help/Help';
 import { IOnionImage } from './onionImage/IOnionImage';
-import { default as onion } from './onionImage/onionObj';
+import { template as onionTpl } from './onionImage/onionObj';
 import { IRuler } from './ruler/IRuler';
-import { default as ruler } from './ruler/rulerObj';
+import { template as rulerTpl } from './ruler/rulerObj';
 import { Tool, ToolType } from './toolbox/Tool';
 
 injectGlobal`
@@ -63,7 +63,7 @@ class App extends React.Component<{}, State> {
       });
     } else {
       const newGrid: IGrid = {
-        ...grid,
+        ...gridTpl,
         id: uuid()
       };
 
@@ -81,7 +81,7 @@ class App extends React.Component<{}, State> {
     switch (tool) {
       case Tool.GUIDE:
         const newGuide: IGuide = {
-          ...guide,
+          ...guideTpl,
           id: uuid()
         };
         this.setState({
@@ -90,7 +90,7 @@ class App extends React.Component<{}, State> {
         break;
       case Tool.RULER:
         const newRuler: IRuler = {
-          ...ruler,
+          ...rulerTpl,
           id: uuid()
         };
         this.setState({
@@ -103,7 +103,7 @@ class App extends React.Component<{}, State> {
         if (paths) {
           const onions: IOnionImage[] = paths.map((path: string) => {
             return {
-              ...onion,
+              ...onionTpl,
               src: path,
               id: uuid()
             };

@@ -2,7 +2,7 @@ import { IGuide } from './IGuide';
 import { GuideDirection } from './IGuideDirection';
 import { Color } from '../../utils/Color';
 
-const guide: IGuide = {
+const template: IGuide = {
   id: '',
   x: 0,
   y: 100,
@@ -11,4 +11,4 @@ const guide: IGuide = {
   locked: false
 };
 
-export default guide;
+export { template };

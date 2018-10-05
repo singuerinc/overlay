@@ -1,6 +1,6 @@
 import { IOnionImage } from './IOnionImage';
 
-const onion: IOnionImage = {
+const template: IOnionImage = {
   id: '',
   src: '',
   x: 500,
@@ -13,4 +13,4 @@ const onion: IOnionImage = {
   locked: false
 };
 
-export default onion;
+export { template };

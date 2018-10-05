@@ -1,7 +1,7 @@
 import { IRuler } from './IRuler';
 import { Color } from '../../utils/Color';
 
-const ruler: IRuler = {
+const template: IRuler = {
   id: '',
   x: 250,
   y: 250,
@@ -12,4 +12,4 @@ const ruler: IRuler = {
   locked: false
 };
 
-export default ruler;
+export { template };
