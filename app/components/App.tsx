@@ -7,10 +7,10 @@ import Guide from '../components/guide/Guide';
 import OnionImage from '../components/onionImage/OnionImage';
 import Ruler from '../components/ruler/Ruler';
 import { Toolbox } from '../components/toolbox/Toolbox';
+import { addGrid, removeGrid } from './grid/factory';
 import { IGrid } from './grid/IGrid';
-import { template as gridTpl } from './grid/gridObj';
-import { IGuide } from './guide/IGuide';
 import { template as guideTpl } from './guide/guideObj';
+import { IGuide } from './guide/IGuide';
 import { Help } from './help/Help';
 import { IOnionImage } from './onionImage/IOnionImage';
 import { template as onionTpl } from './onionImage/onionObj';
@@ -56,21 +56,10 @@ class App extends React.Component<{}, State> {
     };
   }
 
-  toggle = (tool: ToolType) => {
-    if (this.state.grids.length > 0) {
-      this.setState({
-        grids: []
-      });
-    } else {
-      const newGrid: IGrid = {
-        ...gridTpl,
-        id: uuid()
-      };
-
-      this.setState({
-        grids: [newGrid]
-      });
-    }
+  toggleGrid = () => {
+    const hasGrid = this.state.grids.length > 0;
+    const action = hasGrid ? removeGrid : addGrid;
+    this.setState(action);
   };
 
   async showOpenDialogImage(): Promise<string[]> {
@@ -212,7 +201,7 @@ class App extends React.Component<{}, State> {
           isStuffVisible={isStuffVisible}
           isGridVisible={isGridVisible}
           create={this.create}
-          toggle={this.toggle}
+          toggle={this.toggleGrid}
           toggleHelp={this.toggleHelp}
         />
       </>
