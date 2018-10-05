@@ -15,7 +15,7 @@ import {
   stopListeningAndSwapZIndex,
   stopListeningToIgnoreMouseEvents
 } from '../helpers/mouseEvents';
-import { setPosition } from '../helpers/setPosition';
+import { setPositionInDOM } from '../helpers/setPosition';
 import { Size } from '../helpers/Size';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { IRuler } from './IRuler.d';
@@ -93,7 +93,7 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
 
     startListeningToIgnoreMouseEvents(el);
     startListeningAndSwapZIndex(el);
-    setPosition(el, this.state.x, this.state.y);
+    setPositionInDOM(el, this.state.x, this.state.y);
 
     interactjs(el).draggable({
       onmove: ({ dx, dy, target }) => {
@@ -104,7 +104,7 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
         const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
         const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
 
-        setPosition(el, x, y);
+        setPositionInDOM(el, x, y);
 
         this.setState({ x, y });
       }
@@ -131,7 +131,7 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
         x += deltaRect.left;
         y += deltaRect.top;
 
-        setPosition(target, x, y);
+        setPositionInDOM(target, x, y);
 
         this.setState({
           width: rect.width,
@@ -166,7 +166,7 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
       const value = shiftKey ? 10 : 1;
 
       this.setState(getPositionByKey(key, x, y, value), () => {
-        setPosition(el, this.state.x, this.state.y);
+        setPositionInDOM(el, this.state.x, this.state.y);
       });
     });
 

@@ -10,7 +10,7 @@ import {
   stopListeningAndSwapZIndex,
   stopListeningToIgnoreMouseEvents
 } from '../helpers/mouseEvents';
-import { setPosition } from '../helpers/setPosition';
+import { setPositionInDOM } from '../helpers/setPosition';
 import { Size } from '../helpers/Size';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { IOnionImage } from './IOnionImage.d';
@@ -128,7 +128,7 @@ export default class OnionImage extends React.Component<
       const value = shiftKey ? 10 : 1;
 
       this.setState(getPositionByKey(key, x, y, value), () => {
-        setPosition(this.el.current, this.state.x, this.state.y);
+        setPositionInDOM(this.el.current, this.state.x, this.state.y);
       });
     });
   };
@@ -150,7 +150,7 @@ export default class OnionImage extends React.Component<
 
     startListeningToIgnoreMouseEvents(this.el.current);
     startListeningAndSwapZIndex(this.el.current);
-    setPosition(this.el.current, this.state.x, this.state.y);
+    setPositionInDOM(this.el.current, this.state.x, this.state.y);
 
     image.onload = (() => {
       this.setState({
@@ -171,7 +171,7 @@ export default class OnionImage extends React.Component<
         const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
         const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
 
-        setPosition(target, x, y);
+        setPositionInDOM(target, x, y);
 
         this.setState({ x, y });
       }

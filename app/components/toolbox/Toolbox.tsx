@@ -5,7 +5,7 @@ import {
   startListeningToIgnoreMouseEvents,
   stopListeningToIgnoreMouseEvents
 } from '../helpers/mouseEvents';
-import { setPosition } from '../helpers/setPosition';
+import { setPositionInDOM } from '../helpers/setPosition';
 import { MiniToolboxIcon } from '../miniToolbox/MiniToolboxIcon';
 import { MiniToolboxItem } from '../miniToolbox/MiniToolboxItem';
 import { Tool, ToolType } from './Tool';
@@ -97,7 +97,7 @@ export class Toolbox extends React.Component<Props, State> {
     const el = this.el.current as HTMLUListElement;
 
     startListeningToIgnoreMouseEvents(el);
-    setPosition(el, this.state.x, this.state.y);
+    setPositionInDOM(el, this.state.x, this.state.y);
     draggable(el, this.setState.bind(this));
   }
 
