@@ -61,8 +61,8 @@ export default class OnionImage extends React.Component<
   IOnionImage & Props,
   State
 > {
-  private el;
-  private image;
+  private el: React.RefObject<HTMLDivElement>;
+  private image: React.RefObject<HTMLImageElement>;
 
   constructor(props) {
     super(props);
@@ -145,21 +145,24 @@ export default class OnionImage extends React.Component<
   }
 
   componentDidMount() {
+    const el = this.el.current as HTMLDivElement;
+    const image = this.image.current as HTMLImageElement;
+
     startListeningToIgnoreMouseEvents(this.el.current);
     startListeningAndSwapZIndex(this.el.current);
     setPosition(this.el.current, this.state.x, this.state.y);
 
-    this.image.current.onload = (() => {
+    image.onload = (() => {
       this.setState({
-        width: this.image.current.width,
-        height: this.image.current.height
+        width: image.width,
+        height: image.height
       });
     }).bind(this);
 
-    this.el.current.addEventListener('mouseover', this.bindKeys);
-    this.el.current.addEventListener('mouseout', this.unbindKeys);
+    el.addEventListener('mouseover', this.bindKeys);
+    el.addEventListener('mouseout', this.unbindKeys);
 
-    interactjs(this.el.current).draggable({
+    interactjs(el).draggable({
       onmove: ({ dx, dy, target }) => {
         if (this.state.locked) {
           return;
@@ -176,12 +179,14 @@ export default class OnionImage extends React.Component<
   }
 
   componentWillUnmount() {
-    stopListeningToIgnoreMouseEvents(this.el.current);
-    stopListeningAndSwapZIndex(this.el.current);
+    const el = this.el.current as HTMLDivElement;
+
+    stopListeningToIgnoreMouseEvents(el);
+    stopListeningAndSwapZIndex(el);
     this.unbindKeys();
 
-    this.el.current.removeEventListener('mouseover', this.bindKeys);
-    this.el.current.removeEventListener('mouseout', this.unbindKeys);
+    el.removeEventListener('mouseover', this.bindKeys);
+    el.removeEventListener('mouseout', this.unbindKeys);
   }
 
   render() {

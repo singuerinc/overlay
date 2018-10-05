@@ -74,8 +74,8 @@ interface Props {
 }
 
 export default class Ruler extends React.Component<IRuler & Props, State> {
-  private el;
-  private ruler;
+  private el: React.RefObject<HTMLDivElement>;
+  private ruler: React.RefObject<HTMLDivElement>;
 
   static getDerivedStateFromProps(nextProps, prevState) {
     return { ...nextProps, ...prevState };
@@ -88,11 +88,14 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
   }
 
   componentDidMount() {
-    startListeningToIgnoreMouseEvents(this.el.current);
-    startListeningAndSwapZIndex(this.el.current);
-    setPosition(this.el.current, this.state.x, this.state.y);
+    const el = this.el.current as HTMLDivElement;
+    const ruler = this.ruler.current as HTMLDivElement;
 
-    interactjs(this.el.current).draggable({
+    startListeningToIgnoreMouseEvents(el);
+    startListeningAndSwapZIndex(el);
+    setPosition(el, this.state.x, this.state.y);
+
+    interactjs(el).draggable({
       onmove: ({ dx, dy, target }) => {
         if (this.state.locked) {
           return;
@@ -101,13 +104,13 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
         const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
         const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
 
-        setPosition(this.el.current, x, y);
+        setPosition(el, x, y);
 
         this.setState({ x, y });
       }
     });
 
-    interactjs(this.ruler.current)
+    interactjs(ruler)
       .resizable({
         edges: { left: false, right: true, bottom: true, top: false },
         restrictSize: {
@@ -136,20 +139,24 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
         });
       });
 
-    this.el.current.addEventListener('mouseover', this.bindKeys);
-    this.el.current.addEventListener('mouseout', this.unbindKeys);
+    el.addEventListener('mouseover', this.bindKeys);
+    el.addEventListener('mouseout', this.unbindKeys);
   }
 
   componentWillUnmount() {
-    stopListeningToIgnoreMouseEvents(this.el.current);
-    stopListeningAndSwapZIndex(this.el.current);
+    const el = this.el.current as HTMLDivElement;
+
+    stopListeningToIgnoreMouseEvents(el);
+    stopListeningAndSwapZIndex(el);
     this.unbindKeys();
 
-    this.el.current.removeEventListener('mouseover', this.bindKeys);
-    this.el.current.removeEventListener('mouseout', this.unbindKeys);
+    el.removeEventListener('mouseover', this.bindKeys);
+    el.removeEventListener('mouseout', this.unbindKeys);
   }
 
   bindKeys = () => {
+    const el = this.el.current as HTMLDivElement;
+
     mousetrap.bind(ARROW_KEYS, ({ shiftKey, key }) => {
       if (this.state.locked) {
         return;
@@ -159,7 +166,7 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
       const value = shiftKey ? 10 : 1;
 
       this.setState(getPositionByKey(key, x, y, value), () => {
-        setPosition(this.el.current, this.state.x, this.state.y);
+        setPosition(el, this.state.x, this.state.y);
       });
     });
 

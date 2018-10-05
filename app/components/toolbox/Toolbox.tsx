@@ -62,7 +62,7 @@ interface State {
 }
 
 export class Toolbox extends React.Component<Props, State> {
-  private el;
+  private el: React.RefObject<HTMLUListElement>;
 
   static getDerivedStateFromProps(nextProps, prevState) {
     return { ...nextProps, ...prevState };
@@ -94,13 +94,17 @@ export class Toolbox extends React.Component<Props, State> {
   };
 
   componentDidMount() {
-    startListeningToIgnoreMouseEvents(this.el.current);
-    setPosition(this.el.current, this.state.x, this.state.y);
-    draggable(this.el.current, this.setState.bind(this));
+    const el = this.el.current as HTMLUListElement;
+
+    startListeningToIgnoreMouseEvents(el);
+    setPosition(el, this.state.x, this.state.y);
+    draggable(el, this.setState.bind(this));
   }
 
   componentWillUnmount() {
-    stopListeningToIgnoreMouseEvents(this.el.current);
+    const el = this.el.current as HTMLUListElement;
+
+    stopListeningToIgnoreMouseEvents(el);
   }
 
   render() {
