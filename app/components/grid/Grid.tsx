@@ -3,11 +3,16 @@ import styled from 'styled-components';
 import { IGrid } from './IGrid.d';
 import { createGrid } from './utils';
 
-const Element = styled.div.attrs({
-  //@ts-ignore
-  data: (props) => props.data,
-  opacity: (props) => props.opacity
-})`
+export const Grid = ({ size, color, type, opacity }: IGrid) => (
+  <Element data={createGrid(size, color, type)} opacity={opacity} />
+);
+
+interface Props {
+  data: string;
+  opacity: number;
+}
+
+const Element = styled.div<Props>`
   position: fixed;
   top: 0;
   left: 0;
@@ -17,8 +22,3 @@ const Element = styled.div.attrs({
   background-repeat: repeat;
   opacity: ${({ opacity }) => opacity};
 `;
-
-export default ({ size, color, type, opacity }: IGrid) => {
-  const data: string = createGrid(size, color, type);
-  return <Element data={data} opacity={opacity} />;
-};

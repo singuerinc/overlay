@@ -2,7 +2,7 @@ import * as ipc from 'electron-better-ipc';
 import * as React from 'react';
 import { injectGlobal } from 'styled-components';
 import * as uuid from 'uuid/v1';
-import Grid from '../components/grid/Grid';
+import { Grid } from '../components/grid/Grid';
 import Guide from '../components/guide/Guide';
 import OnionImage from '../components/onionImage/OnionImage';
 import Ruler from '../components/ruler/Ruler';
