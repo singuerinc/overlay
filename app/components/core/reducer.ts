@@ -32,3 +32,8 @@ export const move = (x: number, y: number) => () => ({
   x,
   y
 });
+
+export const resize = (width: number, height: number) => () => ({
+  width,
+  height
+});

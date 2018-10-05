@@ -4,7 +4,7 @@ import * as mousetrap from 'mousetrap';
 import * as React from 'react';
 import styled from 'styled-components';
 import { Color } from '../../utils/Color';
-import { setColor, toggleLock } from '../core/reducer';
+import { setColor, toggleLock, resize, move } from '../core/reducer';
 import { createGrid } from '../grid/utils';
 import { Coords } from '../helpers/Coords';
 import { COLOR_KEYS, getColorByKey } from '../helpers/getColorByKey';
@@ -63,7 +63,7 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
 
         setPositionInDOM(el, x, y);
 
-        this.setState({ x, y });
+        this.setState(move(x, y));
       }
     });
 
@@ -90,10 +90,7 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
 
         setPositionInDOM(target, x, y);
 
-        this.setState({
-          width: rect.width,
-          height: rect.height
-        });
+        this.setState(resize(rect.width, rect.height));
       });
 
     el.addEventListener('mouseover', this.bindKeys);

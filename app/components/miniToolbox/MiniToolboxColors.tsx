@@ -30,6 +30,9 @@ interface State {
   colorList: ColorWithLabel[];
 }
 
+const open = () => ({ isOpen: true });
+const close = () => ({ isOpen: false });
+
 export class MiniToolboxColors extends React.Component<Props, State> {
   state = {
     isOpen: false,
@@ -48,8 +51,8 @@ export class MiniToolboxColors extends React.Component<Props, State> {
     const [first, ...others] = colorList;
     return (
       <ColorsGroupIcon
-        onMouseEnter={() => this.setState({ isOpen: true })}
-        onMouseLeave={() => this.setState({ isOpen: false })}
+        onMouseEnter={() => this.setState(open)}
+        onMouseLeave={() => this.setState(close)}
       >
         <ColorsList>
           <MiniToolboxItem
