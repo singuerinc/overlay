@@ -1,7 +1,7 @@
 import { IGrid } from './IGrid';
 import { Color } from '../../utils/Color';
 
-const grid: IGrid = {
+const template: IGrid = {
   id: '',
   size: 10,
   color: Color.CYAN,
@@ -9,4 +9,4 @@ const grid: IGrid = {
   opacity: 0.4
 };
 
-export default grid;
+export { template };
