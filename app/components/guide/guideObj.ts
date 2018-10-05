@@ -1,12 +1,12 @@
 import { IGuide } from './IGuide';
-import { GuideDirection } from './IGuideDirection';
+import { GuideOrientation } from './GuideOrientation';
 import { Color } from '../../utils/Color';
 
 const template: IGuide = {
   id: '',
   x: 0,
   y: 100,
-  type: GuideDirection.HORIZONTAL,
+  type: GuideOrientation.HORIZONTAL,
   color: Color.RED,
   locked: false
 };

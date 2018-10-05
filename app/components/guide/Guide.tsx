@@ -11,17 +11,19 @@ import {
   startListeningAndSwapZIndex,
   stopListeningAndSwapZIndex
 } from '../helpers/mouseEvents';
-import { setPositionInDOM } from '../helpers/setPosition';
+import { setPositionInDOM } from '../helpers/impure';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { GuideToolbox } from './GuideToolbox';
 import { IGuide } from './IGuide.d';
-import { GuideDirection, IGuideDirection } from './IGuideDirection';
+import { GuideOrientation } from './GuideOrientation';
 import { rotate, move, setColor, toggleLock } from './utils';
+
+const isLocked = (state) => state.locked === true;
 
 interface State {
   x: number;
   y: number;
-  type: IGuideDirection;
+  type: GuideOrientation;
   color: Color;
   locked: boolean;
 }
@@ -46,29 +48,24 @@ export default class Guide extends React.Component<IGuide & Props, State> {
 
   bindKeys = () => {
     mousetrap.bind(ARROW_KEYS, ({ shiftKey, key }) => {
-      if (this.state.locked) {
+      if (isLocked(this.state)) {
         return;
       }
 
       const { type, x, y } = this.state;
+      const isHorizontal = type === GuideOrientation.HORIZONTAL;
       const value = shiftKey ? 10 : 1;
-
       const { x: nx, y: ny } = getPositionByKey(key, x, y, value);
+      const moveTo = isHorizontal ? move(0, ny) : move(nx, 0);
 
-      if (type === GuideDirection.HORIZONTAL) {
-        this.setState(move(0, ny), () =>
-          setPositionInDOM(this.el.current, this.state.x, this.state.y)
-        );
-      } else if (type === GuideDirection.VERTICAL) {
-        this.setState(move(nx, 0), () =>
-          setPositionInDOM(this.el.current, this.state.x, this.state.y)
-        );
-      }
+      this.setState(moveTo, () =>
+        setPositionInDOM(this.el.current, this.state.x, this.state.y)
+      );
     });
 
     mousetrap.bind(horizontalVerticalKeys, ({ key }) => {
       if (key !== this.state.type) {
-        const type: IGuideDirection = key as IGuideDirection;
+        const type: GuideOrientation = key as GuideOrientation;
 
         this.setState(rotate(type), () => {
           setPositionInDOM(this.el.current, this.state.x, this.state.y);
@@ -96,13 +93,13 @@ export default class Guide extends React.Component<IGuide & Props, State> {
 
     interactjs(el).draggable({
       onmove: ({ dx, dy, target }) => {
-        if (this.state.locked) {
+        if (isLocked(this.state)) {
           return;
         }
 
         const { x, y, type } = this.state;
-        const newX = type === GuideDirection.HORIZONTAL ? 0 : x + dx;
-        const newY = type === GuideDirection.HORIZONTAL ? y + dy : 0;
+        const newX = type === GuideOrientation.HORIZONTAL ? 0 : x + dx;
+        const newY = type === GuideOrientation.HORIZONTAL ? y + dy : 0;
 
         setPositionInDOM(target, newX, newY);
 
@@ -119,6 +116,7 @@ export default class Guide extends React.Component<IGuide & Props, State> {
 
     stopListeningToIgnoreMouseEvents(el);
     stopListeningAndSwapZIndex(el);
+
     this.unbindKeys();
 
     el.removeEventListener('mouseover', this.bindKeys);

@@ -1,7 +1,7 @@
-import { IGuideDirection, GuideDirection } from './IGuideDirection';
+import { GuideOrientation } from './GuideOrientation';
 import { Color } from '../../utils/Color';
 
-export const rotate = (type: IGuideDirection) => ({
+export const rotate = (type: GuideOrientation) => ({
   x,
   y
 }: {
@@ -9,12 +9,12 @@ export const rotate = (type: IGuideDirection) => ({
   y: number;
 }) => {
   const newType =
-    type === GuideDirection.HORIZONTAL
-      ? GuideDirection.VERTICAL
-      : GuideDirection.HORIZONTAL;
+    type === GuideOrientation.HORIZONTAL
+      ? GuideOrientation.VERTICAL
+      : GuideOrientation.HORIZONTAL;
 
   // FIXME: it should be inverted, not centered
-  if (type === GuideDirection.VERTICAL) {
+  if (type === GuideOrientation.VERTICAL) {
     y = Math.floor(window.screen.height * 0.5);
     x = 0;
   } else {

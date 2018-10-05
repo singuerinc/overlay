@@ -5,7 +5,7 @@ import {
   startListeningToIgnoreMouseEvents,
   stopListeningToIgnoreMouseEvents
 } from '../helpers/mouseEvents';
-import { setPositionInDOM } from '../helpers/setPosition';
+import { setPositionInDOM } from '../helpers/impure';
 import { MiniToolboxIcon } from '../miniToolbox/MiniToolboxIcon';
 import { MiniToolboxItem } from '../miniToolbox/MiniToolboxItem';
 import { Tool, ToolType } from './Tool';
