@@ -33,7 +33,7 @@ const duplicateRuler = (rulerInfo: object) => ({ rulers }: State) => ({
 });
 
 const removeRuler = (id: string) => ({ rulers }: { rulers: IRuler[] }) => {
-  const hasSameId = (id: string) => (x: IRuler) => x.id !== id;
+  const hasSameId = (id: string) => (x: IRuler) => x.id === id;
   const filtered: IRuler[] = R.reject(hasSameId(id), rulers);
 
   return {

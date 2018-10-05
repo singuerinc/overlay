@@ -6,7 +6,6 @@ import {
   move,
   setInverted,
   setOpacity,
-  setVisibility,
   toggleInverted,
   toggleLock
 } from '../core/reducer';
@@ -71,22 +70,14 @@ export default class OnionImage extends React.Component<
   IOnionImage & Props,
   State
 > {
-  private el: React.RefObject<HTMLDivElement>;
-  private image: React.RefObject<HTMLImageElement>;
-
-  constructor(props) {
-    super(props);
-    this.el = React.createRef();
-    this.image = React.createRef();
-  }
+  private el: React.RefObject<HTMLDivElement> = React.createRef();
+  private image: React.RefObject<HTMLImageElement> = React.createRef();
 
   bindKeys = () => {
     mousetrap.bind(opacityNumberKeys, ({ key }) => {
       const val = parseInt(key, 10) * 0.1;
-      this.setState({
-        ...this.state,
-        opacity: parseFloat((val === 0 ? 1 : val).toFixed(1))
-      });
+      const opacity = parseFloat((val === 0 ? 1 : val).toFixed(1));
+      this.setState(setOpacity(opacity));
     });
 
     mousetrap.bind(opacityLettersKeys, ({ keyCode }) => {
@@ -99,14 +90,11 @@ export default class OnionImage extends React.Component<
         value *= 1;
       }
 
-      const { opacity } = this.state;
-      const newOpacity: number = parseFloat(
-        Math.max(0, Math.min(1, opacity + value)).toFixed(1)
+      const opacity: number = parseFloat(
+        Math.max(0, Math.min(1, this.state.opacity + value)).toFixed(1)
       );
 
-      this.setState({
-        opacity: newOpacity
-      });
+      this.setState(setOpacity(opacity));
     });
 
     mousetrap.bind(invertKeys, () => {
@@ -209,10 +197,8 @@ export default class OnionImage extends React.Component<
         <OnionToolbox
           opacity={opacity}
           inverted={inverted}
-          visible={visible}
           setInverted={(inverted) => this.setState(setInverted(inverted))}
           setOpacity={(opacity) => this.setState(setOpacity(opacity))}
-          setVisibility={(visible) => this.setState(setVisibility(visible))}
           toggleLock={() => this.setState(toggleLock)}
           remove={remove}
           locked={locked}

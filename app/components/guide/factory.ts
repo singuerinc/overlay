@@ -18,7 +18,7 @@ const addGuide = ({ guides }) => ({
 });
 
 const removeGuide = (id: string) => ({ guides }: { guides: IGuide[] }) => {
-  const hasSameId = (id: string) => (x: IGuide) => x.id !== id;
+  const hasSameId = (id: string) => (x: IGuide) => x.id === id;
   const filtered: IGuide[] = R.reject(hasSameId(id), guides);
 
   return {

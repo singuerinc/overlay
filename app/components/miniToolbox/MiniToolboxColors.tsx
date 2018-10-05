@@ -1,28 +1,33 @@
+import * as R from 'ramda';
 import * as React from 'react';
 import styled from 'styled-components';
 import { Color } from '../../utils/Color';
 import { MiniToolboxColor } from './MiniToolboxColor';
 import { MiniToolboxItem } from './MiniToolboxItem';
 
-const ColorsGroupIcon = styled.li`
-  list-style-type: none;
-  width: 40px;
-  height: 36px;
-`;
-const ColorsList = styled.ul``;
+const updateColorList = (color: Color) => ({ colorList }) => {
+  const sameColor = R.curry((color, c) => c.color === color);
+  const diffColor = R.curry((color, c) => c.color !== color);
+  const selected: ColorWithLabel = R.find(sameColor(color), colorList);
+  const filtered: ColorWithLabel[] = R.filter(diffColor(color), colorList);
+
+  return {
+    colorList: [selected, ...filtered]
+  };
+};
 
 interface Props {
   setColor: (color: Color) => void;
 }
 
-interface State {
-  isOpen: boolean;
-  colorList: ColorWithLabel[];
-}
-
 interface ColorWithLabel {
   color: Color;
   label: string;
+}
+
+interface State {
+  isOpen: boolean;
+  colorList: ColorWithLabel[];
 }
 
 export class MiniToolboxColors extends React.Component<Props, State> {
@@ -37,22 +42,10 @@ export class MiniToolboxColors extends React.Component<Props, State> {
     ]
   };
 
-  setMainColor = (color: Color) => {
-    const selected: ColorWithLabel = this.state.colorList.find(
-      (c) => c.color === color
-    ) as ColorWithLabel;
-    const filtered: ColorWithLabel[] = this.state.colorList.filter(
-      (c) => c.color !== color
-    );
-
-    this.setState({
-      colorList: [selected, ...filtered]
-    });
-  };
-
   render() {
     const { setColor } = this.props;
-    const [first, ...others] = this.state.colorList;
+    const { colorList } = this.state;
+    const [first, ...others] = colorList;
     return (
       <ColorsGroupIcon
         onMouseEnter={() => this.setState({ isOpen: true })}
@@ -64,7 +57,7 @@ export class MiniToolboxColors extends React.Component<Props, State> {
             placement="left"
             onClick={() => {
               setColor(first.color);
-              this.setMainColor(first.color);
+              this.setState(updateColorList(first.color));
             }}
           >
             <MiniToolboxColor color={first.color} />
@@ -77,7 +70,7 @@ export class MiniToolboxColors extends React.Component<Props, State> {
                   placement="left"
                   onClick={() => {
                     setColor(c.color);
-                    this.setMainColor(c.color);
+                    this.setState(updateColorList(c.color));
                   }}
                 >
                   <MiniToolboxColor color={c.color} />
@@ -90,3 +83,11 @@ export class MiniToolboxColors extends React.Component<Props, State> {
     );
   }
 }
+
+const ColorsGroupIcon = styled.li`
+  list-style-type: none;
+  width: 40px;
+  height: 36px;
+`;
+
+const ColorsList = styled.ul``;
