@@ -5,25 +5,26 @@ import styled from 'styled-components';
 import { Color } from '../../utils/Color';
 import { COLOR_KEYS, getColorByKey } from '../helpers/getColorByKey';
 import { ARROW_KEYS, getPositionByKey } from '../helpers/getPositionByKey';
-import {
-  startListeningToIgnoreMouseEvents,
-  stopListeningToIgnoreMouseEvents,
-  startListeningAndSwapZIndex,
-  stopListeningAndSwapZIndex
-} from '../helpers/mouseEvents';
 import { setPositionInDOM } from '../helpers/impure';
+import {
+  startListeningAndSwapZIndex,
+  startListeningToIgnoreMouseEvents,
+  stopListeningAndSwapZIndex,
+  stopListeningToIgnoreMouseEvents
+} from '../helpers/mouseEvents';
+import { isHorizontalOrientation } from '../helpers/orientation';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
+import { GuideOrientation } from './GuideOrientation';
 import { GuideToolbox } from './GuideToolbox';
 import { IGuide } from './IGuide.d';
-import { GuideOrientation } from './GuideOrientation';
-import { rotate, move, setColor, toggleLock } from './utils';
+import { move, rotate, setColor, toggleLock } from './utils';
 
 const isLocked = (state) => state.locked === true;
 
 interface State {
   x: number;
   y: number;
-  type: GuideOrientation;
+  orientation: GuideOrientation;
   color: Color;
   locked: boolean;
 }
@@ -52,8 +53,8 @@ export default class Guide extends React.Component<IGuide & Props, State> {
         return;
       }
 
-      const { type, x, y } = this.state;
-      const isHorizontal = type === GuideOrientation.HORIZONTAL;
+      const { orientation, x, y } = this.state;
+      const isHorizontal = orientation === GuideOrientation.HORIZONTAL;
       const value = shiftKey ? 10 : 1;
       const { x: nx, y: ny } = getPositionByKey(key, x, y, value);
       const moveTo = isHorizontal ? move(0, ny) : move(nx, 0);
@@ -64,10 +65,10 @@ export default class Guide extends React.Component<IGuide & Props, State> {
     });
 
     mousetrap.bind(horizontalVerticalKeys, ({ key }) => {
-      if (key !== this.state.type) {
-        const type: GuideOrientation = key as GuideOrientation;
+      if (key !== this.state.orientation) {
+        const orientation: GuideOrientation = key as GuideOrientation;
 
-        this.setState(rotate(type), () => {
+        this.setState(rotate(orientation), () => {
           setPositionInDOM(this.el.current, this.state.x, this.state.y);
         });
       }
@@ -97,9 +98,10 @@ export default class Guide extends React.Component<IGuide & Props, State> {
           return;
         }
 
-        const { x, y, type } = this.state;
-        const newX = type === GuideOrientation.HORIZONTAL ? 0 : x + dx;
-        const newY = type === GuideOrientation.HORIZONTAL ? y + dy : 0;
+        const { x, y, orientation } = this.state;
+        const isHorizontal = isHorizontalOrientation(orientation);
+        const newX = isHorizontal ? 0 : x + dx;
+        const newY = isHorizontal ? y + dy : 0;
 
         setPositionInDOM(target, newX, newY);
 
@@ -125,14 +127,15 @@ export default class Guide extends React.Component<IGuide & Props, State> {
 
   render() {
     const { remove } = this.props;
-    const { type, color, locked } = this.state;
+    const { orientation, color, locked } = this.state;
+    const isHorizontal = isHorizontalOrientation(orientation);
     return (
       <div ref={this.el}>
-        <GuideElement type={type} color={color}>
+        <GuideElement isHorizontal={isHorizontal} color={color}>
           <GuideToolbox
             remove={remove}
             rotate={() =>
-              this.setState(rotate(type), () => {
+              this.setState(rotate(orientation), () => {
                 setPositionInDOM(this.el.current, this.state.x, this.state.y);
               })
             }
@@ -150,16 +153,13 @@ export default class Guide extends React.Component<IGuide & Props, State> {
 
 interface GuideElementProps {
   color: string;
-  type: string;
+  isHorizontal: boolean;
 }
 
-const GuideElement = styled.div.attrs<GuideElementProps>({
-  color: (props) => props.color,
-  type: (props) => props.type
-})`
+const GuideElement = styled.div<GuideElementProps>`
   position: fixed;
-  width: ${({ type }) => (type === 'h' ? '100vw' : '1px')};
-  height: ${({ type }) => (type === 'h' ? '1px' : '100vh')};
+  width: ${({ isHorizontal }) => (isHorizontal ? '100vw' : '1px')};
+  height: ${({ isHorizontal }) => (isHorizontal ? '1px' : '100vh')};
   background: ${({ color }) => color};
   opacity: 0.6;
   &::after {
@@ -167,10 +167,10 @@ const GuideElement = styled.div.attrs<GuideElementProps>({
     display: block;
     position: absolute;
     z-index: -1;
-    top: ${({ type }) => (type === 'h' ? '-4px' : '0')};
-    left: ${({ type }) => (type === 'h' ? '0' : '-4px')};
-    width: ${({ type }) => (type === 'h' ? '100vw' : '9px')};
-    height: ${({ type }) => (type === 'h' ? '9px' : '100vh')};
+    top: ${({ isHorizontal }) => (isHorizontal ? '-4px' : '0')};
+    left: ${({ isHorizontal }) => (isHorizontal ? '0' : '-4px')};
+    width: ${({ isHorizontal }) => (isHorizontal ? '100vw' : '9px')};
+    height: ${({ isHorizontal }) => (isHorizontal ? '9px' : '100vh')};
     background: ${({ color }) => color};
     opacity: 0;
   }

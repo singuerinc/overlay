@@ -1,9 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { GuideOrientation } from '../guide/GuideOrientation';
-
-const isHorizontalOrientation = (orientation) =>
-  orientation === GuideOrientation.HORIZONTAL;
+import { isHorizontalOrientation } from '../helpers/orientation';
 
 interface Props {
   x: number;
