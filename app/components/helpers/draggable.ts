@@ -1,5 +1,5 @@
 import * as interactjs from 'interactjs';
-import { setPositionInDOM } from './setPosition';
+import { setPositionInDOM } from './impure';
 
 export const draggable = (
   el: HTMLElement,

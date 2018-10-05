@@ -206,8 +206,8 @@ class App extends React.Component<{}, State> {
         )}
         {helpVisible && <Help close={this.toggleHelp} />}
         <Toolbox
-          x={0}
-          y={0}
+          x={10}
+          y={10}
           setVisibility={this.setVisibility}
           isStuffVisible={isStuffVisible}
           isGridVisible={isGridVisible}

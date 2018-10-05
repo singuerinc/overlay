@@ -15,7 +15,7 @@ import {
   stopListeningAndSwapZIndex,
   stopListeningToIgnoreMouseEvents
 } from '../helpers/mouseEvents';
-import { setPositionInDOM } from '../helpers/setPosition';
+import { setPositionInDOM } from '../helpers/impure';
 import { Size } from '../helpers/Size';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { IRuler } from './IRuler.d';
