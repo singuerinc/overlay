@@ -31,60 +31,17 @@ interface State {
   locked: boolean;
 }
 
-const RulerWrapper = styled.div.attrs({})`
-  position: fixed;
-  display: block;
-
-  & ${Coords}, & ${Size}, & ${MiniToolboxWrapper} {
-    display: none;
-  }
-
-  &:hover ${Coords}, &:hover ${Size}, &:hover ${MiniToolboxWrapper} {
-    display: flex;
-  }
-`;
-
-const RulerElement = styled.div.attrs<{
-  width: number;
-  height: number;
-  opacity: number;
-  color: string;
-}>({
-  width: (props) => props.width,
-  height: (props) => props.height,
-  color: (props) => props.color,
-  opacity: (props) => props.opacity
-})`
-  position: relative;
-  top: 0;
-  left: 0;
-  width: ${({ width }) => width}px;
-  height: ${({ height }) => height}px;
-  background-image: url(${({ color }) => createGrid(10, color, 'solid')});
-  background-repeat: repeat;
-  background-color: ${({ color, opacity }) =>
-    chroma(color)
-      .alpha(opacity)
-      .css()};
-`;
-
 interface Props {
   duplicate: (rulerInfo: object) => void;
   remove: () => void;
 }
 
 export default class Ruler extends React.Component<IRuler & Props, State> {
-  private el: React.RefObject<HTMLDivElement>;
-  private ruler: React.RefObject<HTMLDivElement>;
+  private el: React.RefObject<HTMLDivElement> = React.createRef();
+  private ruler: React.RefObject<HTMLDivElement> = React.createRef();
 
   static getDerivedStateFromProps(nextProps, prevState) {
     return { ...nextProps, ...prevState };
-  }
-
-  constructor(props) {
-    super(props);
-    this.el = React.createRef();
-    this.ruler = React.createRef();
   }
 
   componentDidMount() {
@@ -179,24 +136,6 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
     mousetrap.unbind(ARROW_KEYS);
   };
 
-  // toggleLock = () => {
-  //   this.setState({ locked: !this.state.locked });
-  // };
-
-  // setColor = (color: Color) => {
-  //   this.setState({ color });
-  // };
-
-  // duplicate = () => {
-  //   const id = uuid();
-  //   const ruler: IRuler = {
-  //     ...factory(id),
-  //     ...this.state,
-  //     id
-  //   };
-  //   this.props.duplicate(ruler);
-  // };
-
   render() {
     const { remove } = this.props;
     const { x, y, width, height, opacity, color, locked } = this.state;
@@ -232,3 +171,37 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
     );
   }
 }
+
+const RulerWrapper = styled.div`
+  position: fixed;
+  display: block;
+
+  & ${Coords}, & ${Size}, & ${MiniToolboxWrapper} {
+    display: none;
+  }
+
+  &:hover ${Coords}, &:hover ${Size}, &:hover ${MiniToolboxWrapper} {
+    display: flex;
+  }
+`;
+
+interface RulerElementProps {
+  width: number;
+  height: number;
+  opacity: number;
+  color: string;
+}
+
+const RulerElement = styled.div<RulerElementProps>`
+  position: relative;
+  top: 0;
+  left: 0;
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
+  background-image: url(${({ color }) => createGrid(10, color, 'solid')});
+  background-repeat: repeat;
+  background-color: ${({ color, opacity }) =>
+    chroma(color)
+      .alpha(opacity)
+      .css()};
+`;

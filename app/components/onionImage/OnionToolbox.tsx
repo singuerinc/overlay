@@ -5,10 +5,8 @@ import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 
 interface Props {
   opacity: number;
-  visible: boolean;
   inverted: boolean;
   locked: boolean;
-  setVisibility: (value: boolean) => void;
   setInverted: (value: boolean) => void;
   setOpacity: (value: number) => void;
   toggleLock: () => void;
@@ -18,11 +16,9 @@ interface Props {
 export const OnionToolbox = ({
   inverted,
   opacity,
-  visible,
   locked,
   setInverted,
   setOpacity,
-  setVisibility,
   toggleLock,
   remove
 }: Props) => (
@@ -33,9 +29,6 @@ export const OnionToolbox = ({
     >
       <MiniToolboxIcon icon="percent" />
     </MiniToolboxItem>
-    {/* <MiniToolboxItem title="" onClick={() => setVisibility(!visible)}>
-      <MiniToolboxIcon icon={visible ? 'eye' : 'eye-off'} />
-    </MiniToolboxItem> */}
     <MiniToolboxItem
       title="Invert colors"
       onClick={() => setInverted(!inverted)}

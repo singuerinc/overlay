@@ -35,7 +35,7 @@ const addOnionImage = (paths: string[]) => ({ onions }: State) => {
 };
 
 const removeOnionImage = (id: string) => ({ onions }: State) => {
-  const hasSameId = (id: string) => (x: IOnionImage) => x.id !== id;
+  const hasSameId = (id: string) => (x: IOnionImage) => x.id === id;
   const filtered: IOnionImage[] = R.reject(hasSameId(id), onions);
 
   return {

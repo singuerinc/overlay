@@ -6,7 +6,7 @@ import Guide from '../components/guide/Guide';
 import OnionImage from '../components/onionImage/OnionImage';
 import Ruler from '../components/ruler/Ruler';
 import { Toolbox } from '../components/toolbox/Toolbox';
-import { toggleHelp } from './core/reducer';
+import { setStuffVisibility, toggleHelp } from './core/reducer';
 import { addGrid, removeGrid } from './grid/factory';
 import { IGrid } from './grid/IGrid';
 import { addGuide, removeGuide } from './guide/factory';
@@ -16,7 +16,7 @@ import { addOnionImage, removeOnionImage } from './onionImage/factory';
 import { IOnionImage } from './onionImage/IOnionImage';
 import { addRuler, duplicateRuler, removeRuler } from './ruler/factory';
 import { IRuler } from './ruler/IRuler';
-import { Tool, ToolType } from './toolbox/Tool';
+import { Tool } from './toolbox/Tool';
 
 interface State {
   guides: IGuide[];
@@ -49,7 +49,7 @@ class App extends React.Component<{}, State> {
     return await ipc.callMain('show-open-dialog-image');
   }
 
-  create = async (tool: ToolType) => {
+  create = async (tool: Tool) => {
     switch (tool) {
       case Tool.GUIDE:
         this.setState(addGuide);
@@ -124,7 +124,7 @@ class App extends React.Component<{}, State> {
   }
 
   // FIXME: use function
-  private _setVisible = (visible) => this.setState({ isStuffVisible: visible });
+  private _setVisible = (visible) => this.setState(setStuffVisibility(visible));
   private _toggleHelp = () => this.setState(toggleHelp);
 }
 
