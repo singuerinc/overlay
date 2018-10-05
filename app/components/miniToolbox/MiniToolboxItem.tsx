@@ -1,6 +1,6 @@
-import * as React from "react";
-import styled, { injectGlobal } from "styled-components";
-import Tooltip from "tooltip.js";
+import * as React from 'react';
+import styled, { injectGlobal } from 'styled-components';
+import Tooltip from 'tooltip.js';
 
 injectGlobal`
   .tooltip {
@@ -78,10 +78,10 @@ export class MiniToolboxItem extends React.Component<Props> {
 
   componentDidMount() {
     this.tooltip = new Tooltip(this.el.current, {
-      placement: this.props.placement || "bottom",
+      placement: this.props.placement || 'bottom',
       container: this.el.current,
       title: this.props.title,
-      offset: this.props.placement === "bottom" ? "0, 5" : "0, 5"
+      offset: this.props.placement === 'bottom' ? '0, 5' : '0, 5'
     });
   }
 
