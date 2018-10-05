@@ -10,8 +10,7 @@ Overlay is a set of tools for developers and designers to measure, align and ove
 
 - Minimal interface
 - Simple to use
-- Extensible via plugins (not implemented)
-- Free always
+- Free - always
 
 ## Toolbox
 
@@ -21,19 +20,19 @@ From the toolbox you can manage, add tools, display the help page, and show or h
 
 ## Tools
 
-### Guide
+### Guides
 
 Horizontal and vertical guides are useful when you need to align several items in the same axis.
 
 ![](resources/images/guides.png)
 
-### Ruler
+### Rulers
 
 Rulers are great to measure objects, they are semi-transparent, in different colors, and can be cloned.
 
 ![](resources/images/rulers.png)
 
-### Onion image
+### Onion images
 
 The onion image serve as a visual guide to match a layout. Opacity and inverted colors can be applied.
 
@@ -41,7 +40,7 @@ The onion image serve as a visual guide to match a layout. Opacity and inverted 
 
 ![](resources/images/inverted-browser.png)
 
-### Grid
+### The Grid
 
 The grid is similar to the ruler but covers the whole screen and has no background color. It is a 10x10 pixels fixed grid but that value can be defined in the settings.
 
