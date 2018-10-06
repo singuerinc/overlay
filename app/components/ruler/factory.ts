@@ -10,7 +10,7 @@ const factory = (id: string): IRuler => ({
   width: 400,
   height: 400,
   opacity: 0.5,
-  color: Color.ORANGE,
+  color: Color.RED,
   locked: false
 });
 
