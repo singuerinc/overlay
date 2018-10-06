@@ -10,12 +10,10 @@ const factory = (id: string): IGrid => ({
   opacity: 0.4
 });
 
-const addGrid = () => ({
+export const addGrid = () => ({
   grids: [factory(uuid())]
 });
 
-const removeGrid = () => ({
+export const removeGrid = () => ({
   grids: []
 });
-
-export { addGrid, removeGrid };

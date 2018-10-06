@@ -21,7 +21,7 @@ import {
 } from '../helpers/mouseEvents';
 import { Size } from '../helpers/Size';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
-import { IOnionImage } from './IOnionImage.d';
+import { IOnionImage } from './IOnionImage';
 import { OnionToolbox } from './OnionToolbox';
 
 interface State {

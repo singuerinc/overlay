@@ -19,7 +19,7 @@ interface State {
   onions: IOnionImage[];
 }
 
-const addOnionImage = (paths: string[]) => ({ onions }: State) => {
+export const addOnionImage = (paths: string[]) => ({ onions }: State) => {
   if (paths) {
     const images = R.map((path) => {
       return {
@@ -34,13 +34,12 @@ const addOnionImage = (paths: string[]) => ({ onions }: State) => {
   return { onions };
 };
 
-const removeOnionImage = (id: string) => ({ onions }: State) => {
-  const hasSameId = (id: string) => (x: IOnionImage) => x.id === id;
+const hasSameId = R.curry((id: string, x: IOnionImage) => x.id === id);
+
+export const removeOnionImage = (id: string) => ({ onions }: State) => {
   const filtered: IOnionImage[] = R.reject(hasSameId(id), onions);
 
   return {
     onions: filtered
   };
 };
-
-export { addOnionImage, removeOnionImage };

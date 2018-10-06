@@ -6,8 +6,8 @@ export const toggleLock = ({ locked }: { locked: boolean }) => ({
   locked: !locked
 });
 
-export const setStuffVisibility = (value: boolean) => () => ({
-  isStuffVisible: value
+export const setStuffVisibility = (isStuffVisible: boolean) => () => ({
+  isStuffVisible
 });
 
 export const toggleHelp = ({ helpVisible }: { helpVisible: boolean }) => ({
@@ -19,7 +19,7 @@ export const toggleInverted = ({ inverted }: { inverted: boolean }) => ({
 });
 
 export const setInverted = (inverted: boolean) => () => ({
-  inverted: inverted
+  inverted
 });
 
 export const setVisibility = (visible: boolean) => () => ({

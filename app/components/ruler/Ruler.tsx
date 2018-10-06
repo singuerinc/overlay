@@ -18,7 +18,7 @@ import {
 } from '../helpers/mouseEvents';
 import { Size } from '../helpers/Size';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
-import { IRuler } from './IRuler.d';
+import { IRuler } from './IRuler';
 import { RulerToolbox } from './RulerToolbox';
 
 interface State {
