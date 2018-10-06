@@ -209,7 +209,13 @@ export default class OnionImage extends React.Component<
           inverted={inverted}
           setInverted={(inverted) => this.setState(setInverted(inverted))}
           setOpacity={(opacity) => this.setState(setOpacity(opacity))}
-          toggleLock={() => this.setState(toggleLock)}
+          toggleLock={() =>
+            this.setState(toggleLock, () => {
+              interactjs(this.el.current as HTMLDivElement).styleCursor(
+                !this.state.locked
+              );
+            })
+          }
           remove={remove}
           locked={locked}
         />

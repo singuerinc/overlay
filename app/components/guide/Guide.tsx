@@ -140,7 +140,13 @@ export default class Guide extends React.Component<IGuide & Props, State> {
               });
             }}
             locked={locked}
-            toggleLock={() => this.setState(toggleLock)}
+            toggleLock={() =>
+              this.setState(toggleLock, () => {
+                interactjs(this.el.current as HTMLDivElement).styleCursor(
+                  !this.state.locked
+                );
+              })
+            }
             setColor={(color: Color) => {
               this.setState(setColor(color));
             }}

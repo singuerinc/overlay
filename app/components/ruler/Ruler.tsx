@@ -161,7 +161,13 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
           }
           remove={remove}
           locked={locked}
-          toggleLock={() => this.setState(toggleLock)}
+          toggleLock={() => {
+            this.setState(toggleLock, () => {
+              interactjs(this.el.current as HTMLDivElement).styleCursor(
+                !this.state.locked
+              );
+            });
+          }}
           setColor={(color: Color) => this.setState(setColor(color))}
         />
       </RulerWrapper>
