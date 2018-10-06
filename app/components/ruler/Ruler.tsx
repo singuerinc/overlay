@@ -174,11 +174,23 @@ const RulerWrapper = styled.div`
   display: block;
 
   & ${Coords}, & ${Size}, & ${MiniToolboxWrapper} {
-    display: none;
+    opacity: 0;
+    transition: opacity 300ms ease;
   }
 
-  &:hover ${Coords}, &:hover ${Size}, &:hover ${MiniToolboxWrapper} {
-    display: flex;
+  &:hover ${Coords}, &:hover ${Size} {
+    opacity: 1;
+  }
+
+  & ${MiniToolboxWrapper} {
+    bottom: -18px;
+    opacity: 0;
+    transition: all 300ms ease;
+  }
+
+  &:hover ${MiniToolboxWrapper} {
+    bottom: -36px;
+    opacity: 1;
   }
 `;
 

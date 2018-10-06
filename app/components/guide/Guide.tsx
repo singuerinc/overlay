@@ -181,6 +181,7 @@ const GuideElement = styled.div<GuideElementProps>`
 
   & ${MiniToolboxWrapper} {
     opacity: 0;
+    transition: opacity 300ms ease;
   }
 
   &:hover ${MiniToolboxWrapper} {
