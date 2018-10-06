@@ -4,7 +4,7 @@ import { Color } from '../../utils/Color';
 export interface IGuide {
   id: string;
   color: Color;
-  type: GuideOrientation;
+  orientation: GuideOrientation;
   x: number;
   y: number;
   locked: boolean;

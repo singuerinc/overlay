@@ -8,7 +8,7 @@ const factory = (id: string): IGuide => ({
   id,
   x: 0,
   y: 100,
-  type: GuideOrientation.HORIZONTAL,
+  orientation: GuideOrientation.HORIZONTAL,
   color: Color.RED,
   locked: false
 });
