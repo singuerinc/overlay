@@ -1,19 +1,15 @@
 import { GuideOrientation } from './GuideOrientation';
+import { isHorizontalOrientation } from '../helpers/orientation';
 
-export const rotate = (orientation: GuideOrientation) => ({
-  x,
-  y
-}: {
+interface State {
   x: number;
   y: number;
-}) => {
-  const newType =
-    orientation === GuideOrientation.HORIZONTAL
-      ? GuideOrientation.VERTICAL
-      : GuideOrientation.HORIZONTAL;
+}
 
-  // FIXME: it should be inverted, not centered
-  if (orientation === GuideOrientation.VERTICAL) {
+export const rotate = (orientation: GuideOrientation) => ({ x, y }: State) => {
+  const isHorizontal = isHorizontalOrientation(orientation);
+
+  if (isHorizontal) {
     y = Math.floor(window.screen.height * 0.5);
     x = 0;
   } else {
@@ -21,5 +17,5 @@ export const rotate = (orientation: GuideOrientation) => ({
     y = 0;
   }
 
-  return { x, y, orientation: newType };
+  return { x, y, orientation };
 };
