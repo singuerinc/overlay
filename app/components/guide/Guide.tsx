@@ -86,6 +86,7 @@ export default class Guide extends React.Component<IGuide & Props, State> {
 
     startListeningToIgnoreMouseEvents(el);
     startListeningAndSwapZIndex(el);
+
     setPositionInDOM(el, this.state.x, this.state.y);
 
     interactjs(el).draggable({
