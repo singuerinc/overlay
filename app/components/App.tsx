@@ -17,6 +17,7 @@ import { IOnionImage } from './onionImage/IOnionImage';
 import { addRuler, duplicateRuler, removeRuler } from './ruler/factory';
 import { IRuler } from './ruler/IRuler';
 import { Tool } from './toolbox/Tool';
+import { trackEvent } from './core/analytics';
 
 interface State {
   guides: IGuide[];
@@ -42,6 +43,12 @@ class App extends React.Component<{}, State> {
   toggleGrid = () => {
     const hasGrid = this.state.grids.length > 0;
     const action = hasGrid ? removeGrid : addGrid;
+    trackEvent(
+      'user-interaction',
+      hasGrid ? 'remove-tool' : 'add-tool',
+      'tool',
+      'grid'
+    );
     this.setState(action);
   };
 
@@ -52,12 +59,15 @@ class App extends React.Component<{}, State> {
   create = async (tool: Tool) => {
     switch (tool) {
       case Tool.GUIDE:
+        trackEvent('user-interaction', 'add-tool', 'tool', 'guide');
         this.setState(addGuide);
         break;
       case Tool.RULER:
+        trackEvent('user-interaction', 'add-tool', 'tool', 'ruler');
         this.setState(addRuler);
         break;
       case Tool.ONION:
+        trackEvent('user-interaction', 'add-tool', 'tool', 'onion');
         const paths: string[] | null = await this.showOpenDialogImage();
         this.setState(addOnionImage(paths));
         break;
