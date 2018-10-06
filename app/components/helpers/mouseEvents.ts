@@ -22,7 +22,6 @@ export function onMouseDown(e: MouseEvent) {
   const maxIndex = Math.max.apply(
     Math,
     tools.map(function(t: HTMLElement) {
-      console.log('zIndex', t.style.zIndex);
       return parseInt(t.style.zIndex || '0', 10);
     })
   );

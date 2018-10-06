@@ -46,8 +46,7 @@ export class MiniToolboxColors extends React.Component<Props, State> {
   };
 
   render() {
-    const { setColor } = this.props;
-    const { colorList } = this.state;
+    const { colorList, isOpen } = this.state;
     const [first, ...others] = colorList;
     return (
       <ColorsGroupIcon
@@ -58,23 +57,18 @@ export class MiniToolboxColors extends React.Component<Props, State> {
           <MiniToolboxItem
             title={first.label}
             placement="left"
-            onClick={() => {
-              setColor(first.color);
-              this.setState(updateColorList(first.color));
-            }}
+            onClick={this._onClickOnColor(first.color)}
           >
             <MiniToolboxColor color={first.color} />
           </MiniToolboxItem>
-          {this.state.isOpen && (
+          {isOpen && (
             <>
-              {others.map((c) => (
+              {others.map((c, i) => (
                 <MiniToolboxItem
+                  key={i}
                   title={c.label}
                   placement="left"
-                  onClick={() => {
-                    setColor(c.color);
-                    this.setState(updateColorList(c.color));
-                  }}
+                  onClick={this._onClickOnColor(c.color)}
                 >
                   <MiniToolboxColor color={c.color} />
                 </MiniToolboxItem>
@@ -85,6 +79,11 @@ export class MiniToolboxColors extends React.Component<Props, State> {
       </ColorsGroupIcon>
     );
   }
+
+  private _onClickOnColor = (color: Color) => () => {
+    this.props.setColor(color);
+    this.setState(updateColorList(color));
+  };
 }
 
 const ColorsGroupIcon = styled.li`
