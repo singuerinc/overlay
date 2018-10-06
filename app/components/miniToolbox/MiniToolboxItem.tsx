@@ -54,6 +54,7 @@ export const Element = styled.li`
   justify-content: center;
   padding: 6px 8px;
   margin: 0;
+  transition: background-color 300ms ease;
 
   &:hover {
     cursor: pointer;
