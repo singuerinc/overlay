@@ -131,11 +131,14 @@ export default class Guide extends React.Component<IGuide & Props, State> {
         <GuideElement isHorizontal={isHorizontal} color={color}>
           <GuideToolbox
             remove={remove}
-            rotate={() =>
-              this.setState(rotate(orientation), () => {
+            rotate={() => {
+              const next = isHorizontal
+                ? GuideOrientation.VERTICAL
+                : GuideOrientation.HORIZONTAL;
+              this.setState(rotate(next), () => {
                 setPositionInDOM(this.el.current, this.state.x, this.state.y);
-              })
-            }
+              });
+            }}
             locked={locked}
             toggleLock={() => this.setState(toggleLock)}
             setColor={(color: Color) => {
