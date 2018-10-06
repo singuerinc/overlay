@@ -17,7 +17,7 @@ import { isHorizontalOrientation } from '../helpers/orientation';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { GuideOrientation } from './GuideOrientation';
 import { GuideToolbox } from './GuideToolbox';
-import { IGuide } from './IGuide.d';
+import { IGuide } from './IGuide';
 import { rotate } from './utils';
 
 const isLocked = (state) => state.locked === true;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { IGrid } from './IGrid.d';
+import { IGrid } from './IGrid';
 import { createGrid } from './utils';
 
 export const Grid = ({ size, color, type, opacity }: IGrid) => (

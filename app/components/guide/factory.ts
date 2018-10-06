@@ -13,17 +13,20 @@ const factory = (id: string): IGuide => ({
   locked: false
 });
 
-const addGuide = ({ guides }) => ({
+interface State {
+  guides: IGuide[];
+}
+
+export const addGuide = ({ guides }: State) => ({
   guides: [...guides, factory(uuid())]
 });
 
-const removeGuide = (id: string) => ({ guides }: { guides: IGuide[] }) => {
-  const hasSameId = (id: string) => (x: IGuide) => x.id === id;
+const hasSameId = R.curry((id: string, x: IGuide) => x.id === id);
+
+export const removeGuide = (id: string) => ({ guides }: State) => {
   const filtered: IGuide[] = R.reject(hasSameId(id), guides);
 
   return {
     guides: filtered
   };
 };
-
-export { addGuide, removeGuide };
