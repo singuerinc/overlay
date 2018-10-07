@@ -2,6 +2,7 @@ import * as ipc from 'electron-better-ipc';
 import * as R from 'ramda';
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { addGrid, removeGrid } from '../actions/grids';
 import { addGuide, removeGuide } from '../actions/guides';
 import { addOnion, removeOnion } from '../actions/onions';
 import { addRuler, removeRuler } from '../actions/rulers';
@@ -10,9 +11,10 @@ import Guide from '../components/guide/Guide';
 import OnionImage from '../components/onionImage/OnionImage';
 import Ruler from '../components/ruler/Ruler';
 import { Toolbox } from '../components/toolbox/Toolbox';
+import { AppStore } from '../reducers';
 import { initializeAnalytics, track } from './core/analytics';
 import { setStuffVisibility, toggleHelp } from './core/reducer';
-import { addGrid, removeGrid } from './grid/factory';
+import { factory as GridFactory } from './grid/factory';
 import { IGrid } from './grid/IGrid';
 import { factory as GuideFactory } from './guide/factory';
 import { IGuide } from './guide/IGuide';
@@ -24,16 +26,17 @@ import { IRuler } from './ruler/IRuler';
 import { Tool } from './toolbox/Tool';
 
 interface State {
-  grids: IGrid[];
   isStuffVisible: boolean;
-  isGridVisible: boolean;
   helpVisible: boolean;
 }
 
 interface Props {
+  grids: IGrid[];
   guides: IGuide[];
   onions: IOnionImage[];
   rulers: IRuler[];
+  addGrid: (grid: IGrid) => void;
+  removeGrid: (grid: IGrid) => void;
   addGuide: (guide: IGuide) => void;
   removeGuide: (guide: IGuide) => void;
   addOnion: (onion: IOnionImage) => void;
@@ -44,9 +47,7 @@ interface Props {
 
 class AppView extends React.Component<Props, State> {
   public state = {
-    grids: [],
     isStuffVisible: true,
-    isGridVisible: false,
     helpVisible: false
   };
 
@@ -85,16 +86,16 @@ class AppView extends React.Component<Props, State> {
   };
 
   render() {
-    const { grids, isStuffVisible, helpVisible } = this.state;
-    const { guides, onions, rulers } = this.props;
-    const isGridVisible = grids.length > 0;
+    const { isStuffVisible, helpVisible } = this.state;
+    const { grids, guides, onions, rulers } = this.props;
+    const isGridVisible = R.gt(R.length(grids), 0);
 
     return (
       <>
         {isStuffVisible && (
           <div>
-            {grids.map((props: IGrid) => (
-              <Grid key={props.id} {...props} />
+            {grids.map((grid: IGrid) => (
+              <Grid key={grid.id} {...grid} />
             ))}
             {rulers.map((ruler: IRuler) => (
               <Ruler
@@ -144,11 +145,14 @@ class AppView extends React.Component<Props, State> {
   }
 
   private _toggleGrid = () => {
-    const hasGrid = this.state.grids.length > 0;
-    const action = hasGrid ? removeGrid : addGrid;
-    this.setState(action, () => {
-      track('tool', 'grid', hasGrid ? 'remove' : 'add');
-    });
+    const isGridVisible = R.gt(R.length(this.props.grids), 0);
+    if (isGridVisible) {
+      this.props.removeGrid(this.props.grids[0]);
+      track('tool', 'grid', 'remove');
+    } else {
+      this.props.addGrid(GridFactory());
+      track('tool', 'grid', 'add');
+    }
   };
 
   private _setVisible = (visible) =>
@@ -162,19 +166,17 @@ class AppView extends React.Component<Props, State> {
 }
 
 const App = connect(
-  (
-    {
-      guides,
-      onions,
-      rulers
-    }: { guides: IGuide[]; onions: IOnionImage[]; rulers: IRuler[] },
-    ownProps
-  ) => ({
-    guides,
-    onions,
-    rulers
-  }),
-  { addGuide, removeGuide, addOnion, removeOnion, addRuler, removeRuler }
+  (store: AppStore, ownProps) => store,
+  {
+    addGrid,
+    removeGrid,
+    addGuide,
+    removeGuide,
+    addOnion,
+    removeOnion,
+    addRuler,
+    removeRuler
+  }
 )(AppView);
 
 export { App };

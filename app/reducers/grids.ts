@@ -1,19 +1,20 @@
 import * as R from 'ramda';
 import { AnyAction } from 'redux';
-import { ADD_RULER, REMOVE_RULER } from '../actions/rulers';
-import { IRuler } from '../components/ruler/IRuler';
+import { ADD_GRID, REMOVE_GRID } from '../actions/grids';
+import { IGrid } from '../components/grid/IGrid';
 
-const initialStore: IRuler[] = [];
+const initialStore: IGrid[] = [];
 
-export const rulers = (
+export const grids = (
   store = initialStore,
   { type, payload }: AnyAction
-): IRuler[] => {
+): IGrid[] => {
   switch (type) {
-    case ADD_RULER:
+    case ADD_GRID:
       return R.append(payload, store);
-    case REMOVE_RULER:
+    case REMOVE_GRID:
       return R.reject(R.equals(payload), store);
   }
+
   return store;
 };

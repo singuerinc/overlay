@@ -1,19 +1,12 @@
-import { IGrid } from './IGrid';
-import { Color } from '../../utils/Color';
 import * as uuid from 'uuid/v1';
+import { Color } from '../../utils/Color';
+import { IGrid } from './IGrid';
 
-const factory = (id: string): IGrid => ({
+export const factory = (id: string = uuid(), props = {}): IGrid => ({
   id,
   size: 10,
   color: Color.CYAN,
   type: 'solid',
-  opacity: 0.4
-});
-
-export const addGrid = () => ({
-  grids: [factory(uuid())]
-});
-
-export const removeGrid = () => ({
-  grids: []
+  opacity: 0.4,
+  ...props
 });
