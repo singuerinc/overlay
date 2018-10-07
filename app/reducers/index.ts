@@ -1,10 +1,8 @@
 import { combineReducers } from 'redux';
-import { routerReducer as router } from 'react-router-redux';
-import app from './app';
+import { guides } from './guides';
 
 const rootReducer = combineReducers({
-  app,
-  router
+  guides
 });
 
 export default rootReducer;
