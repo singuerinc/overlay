@@ -24,6 +24,7 @@ import { IOnionImage } from './onionImage/IOnionImage';
 import { factory as RulerFactory } from './ruler/factory';
 import { IRuler } from './ruler/IRuler';
 import { Tool } from './toolbox/Tool';
+import styled from 'styled-components';
 
 interface State {
   isStuffVisible: boolean;
@@ -92,43 +93,42 @@ class AppView extends React.Component<Props, State> {
 
     return (
       <>
-        {isStuffVisible && (
-          <div>
-            {grids.map((grid: IGrid) => (
-              <Grid key={grid.id} {...grid} />
-            ))}
-            {rulers.map((ruler: IRuler) => (
-              <Ruler
-                key={ruler.id}
-                {...ruler}
-                remove={() => {
-                  this.props.removeRuler(ruler);
-                  track('tool', 'ruler', 'remove');
-                }}
-              />
-            ))}
-            {onions.map((onion: IOnionImage) => (
-              <OnionImage
-                key={onion.id}
-                {...onion}
-                remove={() => {
-                  this.props.removeOnion(onion);
-                  track('tool', 'onion', 'remove');
-                }}
-              />
-            ))}
-            {guides.map((guide: IGuide) => (
-              <Guide
-                key={guide.id}
-                {...guide}
-                remove={() => {
-                  this.props.removeGuide(guide);
-                  track('tool', 'guide', 'remove');
-                }}
-              />
-            ))}
-          </div>
-        )}
+        <ToolsWrapper visible={isStuffVisible}>
+          {grids.map((grid: IGrid) => (
+            <Grid key={grid.id} {...grid} />
+          ))}
+          {rulers.map((ruler: IRuler) => (
+            <Ruler
+              key={ruler.id}
+              {...ruler}
+              remove={() => {
+                this.props.removeRuler(ruler);
+                track('tool', 'ruler', 'remove');
+              }}
+            />
+          ))}
+          {onions.map((onion: IOnionImage) => (
+            <OnionImage
+              key={onion.id}
+              {...onion}
+              remove={() => {
+                this.props.removeOnion(onion);
+                track('tool', 'onion', 'remove');
+              }}
+            />
+          ))}
+          {guides.map((guide: IGuide) => (
+            <Guide
+              key={guide.id}
+              {...guide}
+              remove={() => {
+                this.props.removeGuide(guide);
+                track('tool', 'guide', 'remove');
+              }}
+            />
+          ))}
+        </ToolsWrapper>
+
         {helpVisible && <Help close={this._toggleHelp} />}
         <Toolbox
           x={10}
@@ -180,3 +180,7 @@ const App = connect(
 )(AppView);
 
 export { App };
+
+const ToolsWrapper = styled.div<{ visible }>`
+  display: ${({ visible }) => (visible ? 'block' : 'none')};
+`;
