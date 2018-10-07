@@ -2,25 +2,23 @@ import * as React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { Root } from './components/Root';
-import { App } from './components/App';
+import { configureStore } from './store/configureStore';
+
+const store = configureStore({});
 
 render(
   <AppContainer>
-    <Root>
-      <App />
-    </Root>
+    <Root store={store} />
   </AppContainer>,
   document.getElementById('root')
 );
 
 if ((module as any).hot) {
   (module as any).hot.accept('./components/Root', () => {
-    const NextRoot = require('./components/Root').default;
+    const NextRoot = require('./components/Root'); // eslint-disable-line global-require
     render(
       <AppContainer>
-        <NextRoot>
-          <App />
-        </NextRoot>
+        <NextRoot store={store} />
       </AppContainer>,
       document.getElementById('root')
     );

@@ -1,15 +1,15 @@
 import * as R from 'ramda';
 
 export function onMouseEnter() {
-  const win = require('electron').remote.getCurrentWindow();
-  win.setIgnoreMouseEvents(false);
+  // const win = require('electron').remote.getCurrentWindow();
+  // win.setIgnoreMouseEvents(false);
 }
 
 export function onMouseLeave() {
-  const win = require('electron').remote.getCurrentWindow();
-  win.setIgnoreMouseEvents(true, {
-    forward: true
-  });
+  // const win = require('electron').remote.getCurrentWindow();
+  // win.setIgnoreMouseEvents(true, {
+  //   forward: true
+  // });
 }
 
 export function onMouseDown(e: MouseEvent) {
