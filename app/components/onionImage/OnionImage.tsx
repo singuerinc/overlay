@@ -210,14 +210,12 @@ export default class OnionImage extends React.Component<
           inverted={inverted}
           setInverted={(inverted) =>
             this.setState(setInverted(inverted), () => {
-              track(
-                `user-interaction/onion/set-inverted/${this.state.inverted}`
-              );
+              track('tool', 'onion', `inverted/${this.state.inverted}`);
             })
           }
           setOpacity={(opacity) =>
             this.setState(setOpacity(opacity), () => {
-              track(`user-interaction/onion/set-opacity/${this.state.opacity}`);
+              track('tool', 'onion', `opacity/${this.state.opacity}`);
             })
           }
           toggleLock={() =>
@@ -225,7 +223,7 @@ export default class OnionImage extends React.Component<
               interactjs(this.el.current as HTMLDivElement).styleCursor(
                 !this.state.locked
               );
-              track(`user-interaction/onion/set-locked/${this.state.locked}`);
+              track('tool', 'onion', `locked/${this.state.locked}`);
             })
           }
           remove={remove}

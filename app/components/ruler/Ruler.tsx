@@ -167,7 +167,7 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
               interactjs(this.el.current as HTMLDivElement).styleCursor(
                 !this.state.locked
               );
-              track(`user-interaction/ruler/set-locked/${this.state.locked}`);
+              track('tool', 'ruler', `locked/${this.state.locked}`);
             });
           }}
           setColor={this._setColor}
@@ -178,7 +178,7 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
 
   private _setColor = (color: Color) => {
     this.setState(setColor(color), () => {
-      track(`user-interaction/ruler/set-color/${color}`);
+      track('tool', 'ruler', `color/${this.state.color}`);
     });
   };
 }
