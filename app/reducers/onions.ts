@@ -5,13 +5,15 @@ import { IOnionImage } from '../components/onionImage/IOnionImage';
 
 const initialStore: IOnionImage[] = [];
 
-export const onions = (store = initialStore, { type, payload }: AnyAction) => {
+export const onions = (
+  store = initialStore,
+  { type, payload }: AnyAction
+): IOnionImage[] => {
   switch (type) {
     case ADD_ONION:
       return R.append(payload, store);
     case REMOVE_ONION:
       return R.reject(R.equals(payload), store);
-    default:
-      return store;
   }
+  return store;
 };
