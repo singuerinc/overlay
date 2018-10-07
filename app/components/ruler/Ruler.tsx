@@ -33,7 +33,6 @@ interface State {
 }
 
 interface Props {
-  duplicate: (rulerInfo: object) => void;
   remove: () => void;
 }
 
@@ -149,17 +148,6 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
           opacity={opacity}
         />
         <RulerToolbox
-          duplicate={() =>
-            this.props.duplicate({
-              x,
-              y,
-              width,
-              height,
-              opacity,
-              color,
-              locked
-            })
-          }
           remove={remove}
           locked={locked}
           toggleLock={() => {

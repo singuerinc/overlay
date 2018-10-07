@@ -7,7 +7,6 @@ import { MiniToolboxColors } from '../miniToolbox/MiniToolboxColors';
 
 interface Props {
   locked: boolean;
-  duplicate: () => void;
   remove: () => void;
   toggleLock: () => void;
   setColor: (color: Color) => void;
@@ -16,15 +15,11 @@ interface Props {
 export const RulerToolbox = ({
   locked,
   remove,
-  duplicate,
   setColor,
   toggleLock
 }: Props) => (
   <MiniToolboxWrapper>
     <MiniToolboxColors setColor={setColor} />
-    <MiniToolboxItem title="Duplicate" onClick={duplicate}>
-      <MiniToolboxIcon icon="copy" />
-    </MiniToolboxItem>
     <MiniToolboxItem title={locked ? 'Lock' : 'Unlock'} onClick={toggleLock}>
       <MiniToolboxIcon icon={locked ? 'lock' : 'unlock'} />
     </MiniToolboxItem>

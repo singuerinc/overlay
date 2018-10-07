@@ -4,6 +4,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { addGuide, removeGuide } from '../actions/guides';
 import { addOnion, removeOnion } from '../actions/onions';
+import { addRuler, removeRuler } from '../actions/rulers';
 import { Grid } from '../components/grid/Grid';
 import Guide from '../components/guide/Guide';
 import OnionImage from '../components/onionImage/OnionImage';
@@ -18,13 +19,12 @@ import { IGuide } from './guide/IGuide';
 import { Help } from './help/Help';
 import { factory as OnionFactory } from './onionImage/factory';
 import { IOnionImage } from './onionImage/IOnionImage';
-import { addRuler, duplicateRuler, removeRuler } from './ruler/factory';
+import { factory as RulerFactory } from './ruler/factory';
 import { IRuler } from './ruler/IRuler';
 import { Tool } from './toolbox/Tool';
 
 interface State {
   grids: IGrid[];
-  rulers: IRuler[];
   isStuffVisible: boolean;
   isGridVisible: boolean;
   helpVisible: boolean;
@@ -33,16 +33,18 @@ interface State {
 interface Props {
   guides: IGuide[];
   onions: IOnionImage[];
+  rulers: IRuler[];
   addGuide: (guide: IGuide) => void;
   removeGuide: (guide: IGuide) => void;
   addOnion: (onion: IOnionImage) => void;
   removeOnion: (onion: IOnionImage) => void;
+  addRuler: (ruler: IRuler) => void;
+  removeRuler: (ruler: IRuler) => void;
 }
 
 class AppView extends React.Component<Props, State> {
   public state = {
     grids: [],
-    rulers: [],
     isStuffVisible: true,
     isGridVisible: false,
     helpVisible: false
@@ -65,9 +67,8 @@ class AppView extends React.Component<Props, State> {
         track('tool', 'guide', 'add');
         break;
       case Tool.RULER:
-        this.setState(addRuler, () => {
-          track('tool', 'ruler', 'add');
-        });
+        this.props.addRuler(RulerFactory());
+        track('tool', 'ruler', 'add');
         break;
       case Tool.ONION:
         const paths: string[] | null = await this.showOpenDialogImage();
@@ -84,8 +85,8 @@ class AppView extends React.Component<Props, State> {
   };
 
   render() {
-    const { grids, rulers, isStuffVisible, helpVisible } = this.state;
-    const { guides, onions } = this.props;
+    const { grids, isStuffVisible, helpVisible } = this.state;
+    const { guides, onions, rulers } = this.props;
     const isGridVisible = grids.length > 0;
 
     return (
@@ -95,20 +96,14 @@ class AppView extends React.Component<Props, State> {
             {grids.map((props: IGrid) => (
               <Grid key={props.id} {...props} />
             ))}
-            {rulers.map((props: IRuler) => (
+            {rulers.map((ruler: IRuler) => (
               <Ruler
-                key={props.id}
-                {...props}
-                duplicate={(rulerInfo) =>
-                  this.setState(duplicateRuler(rulerInfo), () => {
-                    track('tool', 'ruler', 'duplicate');
-                  })
-                }
-                remove={() =>
-                  this.setState(removeRuler(props.id), () => {
-                    track('tool', 'ruler', 'remove');
-                  })
-                }
+                key={ruler.id}
+                {...ruler}
+                remove={() => {
+                  this.props.removeRuler(ruler);
+                  track('tool', 'ruler', 'remove');
+                }}
               />
             ))}
             {onions.map((onion: IOnionImage) => (
@@ -168,13 +163,18 @@ class AppView extends React.Component<Props, State> {
 
 const App = connect(
   (
-    { guides, onions }: { guides: IGuide[]; onions: IOnionImage[] },
+    {
+      guides,
+      onions,
+      rulers
+    }: { guides: IGuide[]; onions: IOnionImage[]; rulers: IRuler[] },
     ownProps
   ) => ({
     guides,
-    onions
+    onions,
+    rulers
   }),
-  { addGuide, removeGuide, addOnion, removeOnion }
+  { addGuide, removeGuide, addOnion, removeOnion, addRuler, removeRuler }
 )(AppView);
 
 export { App };
