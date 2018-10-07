@@ -1,8 +1,7 @@
-import * as R from 'ramda';
 import * as ipc from 'electron-better-ipc';
+import * as R from 'ramda';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { injectGlobal } from 'styled-components';
 import { addGuide, removeGuide } from '../actions/guides';
 import { addOnion, removeOnion } from '../actions/onions';
 import { Grid } from '../components/grid/Grid';
@@ -179,16 +178,3 @@ const App = connect(
 )(AppView);
 
 export { App };
-
-injectGlobal`
-  * {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  }
-
-  ul {
-    margin: 0;
-    padding: 0;
-  }
-`;
