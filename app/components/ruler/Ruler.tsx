@@ -4,7 +4,8 @@ import * as mousetrap from 'mousetrap';
 import * as React from 'react';
 import styled from 'styled-components';
 import { Color } from '../../utils/Color';
-import { setColor, toggleLock, resize, move } from '../core/reducer';
+import { track } from '../core/analytics';
+import { move, resize, setColor, toggleLock } from '../core/reducer';
 import { createGrid } from '../grid/utils';
 import { Coords } from '../helpers/Coords';
 import { COLOR_KEYS, getColorByKey } from '../helpers/getColorByKey';
@@ -125,7 +126,7 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
     });
 
     mousetrap.bind(COLOR_KEYS, ({ key }) => {
-      this.setState(setColor(getColorByKey(key)));
+      this._setColor(getColorByKey(key));
     });
   };
 
@@ -166,13 +167,20 @@ export default class Ruler extends React.Component<IRuler & Props, State> {
               interactjs(this.el.current as HTMLDivElement).styleCursor(
                 !this.state.locked
               );
+              track(`user-interaction/ruler/set-locked/${this.state.locked}`);
             });
           }}
-          setColor={(color: Color) => this.setState(setColor(color))}
+          setColor={this._setColor}
         />
       </RulerWrapper>
     );
   }
+
+  private _setColor = (color: Color) => {
+    this.setState(setColor(color), () => {
+      track(`user-interaction/ruler/set-color/${color}`);
+    });
+  };
 }
 
 const RulerWrapper = styled.div`

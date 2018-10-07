@@ -17,7 +17,7 @@ import { IOnionImage } from './onionImage/IOnionImage';
 import { addRuler, duplicateRuler, removeRuler } from './ruler/factory';
 import { IRuler } from './ruler/IRuler';
 import { Tool } from './toolbox/Tool';
-import { trackEvent } from './core/analytics';
+import { track } from './core/analytics';
 
 interface State {
   guides: IGuide[];
@@ -40,36 +40,30 @@ class App extends React.Component<{}, State> {
     helpVisible: false
   };
 
-  toggleGrid = () => {
-    const hasGrid = this.state.grids.length > 0;
-    const action = hasGrid ? removeGrid : addGrid;
-    trackEvent(
-      'user-interaction',
-      hasGrid ? 'remove-tool' : 'add-tool',
-      'tool',
-      'grid'
-    );
-    this.setState(action);
-  };
-
   async showOpenDialogImage(): Promise<string[]> {
+    track('user-interaction/dialog/open-onion-image');
     return await ipc.callMain('show-open-dialog-image');
   }
 
   create = async (tool: Tool) => {
     switch (tool) {
       case Tool.GUIDE:
-        trackEvent('user-interaction', 'add-tool', 'tool', 'guide');
-        this.setState(addGuide);
+        this.setState(addGuide, () => {
+          track('user-interaction/add-tool/guide');
+        });
         break;
       case Tool.RULER:
-        trackEvent('user-interaction', 'add-tool', 'tool', 'ruler');
-        this.setState(addRuler);
+        this.setState(addRuler, () => {
+          track('user-interaction/add-tool/ruler');
+        });
         break;
       case Tool.ONION:
-        trackEvent('user-interaction', 'add-tool', 'tool', 'onion');
         const paths: string[] | null = await this.showOpenDialogImage();
-        this.setState(addOnionImage(paths));
+        if (paths) {
+          this.setState(addOnionImage(paths), () => {
+            track('user-interaction/add-tool/onion');
+          });
+        }
         break;
     }
   };
@@ -97,23 +91,37 @@ class App extends React.Component<{}, State> {
                 key={props.id}
                 {...props}
                 duplicate={(rulerInfo) =>
-                  this.setState(duplicateRuler(rulerInfo))
+                  this.setState(duplicateRuler(rulerInfo), () => {
+                    track('user-interaction/duplicate-tool/ruler');
+                  })
                 }
-                remove={() => this.setState(removeRuler(props.id))}
+                remove={() =>
+                  this.setState(removeRuler(props.id), () => {
+                    track('user-interaction/remove-tool/ruler');
+                  })
+                }
               />
             ))}
             {onions.map((props: IOnionImage) => (
               <OnionImage
                 key={props.id}
                 {...props}
-                remove={() => this.setState(removeOnionImage(props.id))}
+                remove={() =>
+                  this.setState(removeOnionImage(props.id), () => {
+                    track('user-interaction/remove-tool/onion');
+                  })
+                }
               />
             ))}
             {guides.map((props: IGuide) => (
               <Guide
                 key={props.id}
                 {...props}
-                remove={() => this.setState(removeGuide(props.id))}
+                remove={() =>
+                  this.setState(removeGuide(props.id), () => {
+                    track('user-interaction/remove-tool/guide');
+                  })
+                }
               />
             ))}
           </div>
@@ -126,16 +134,29 @@ class App extends React.Component<{}, State> {
           isStuffVisible={isStuffVisible}
           isGridVisible={isGridVisible}
           create={this.create}
-          toggle={this.toggleGrid}
+          toggle={this._toggleGrid}
           toggleHelp={this._toggleHelp}
         />
       </>
     );
   }
 
-  // FIXME: use function
-  private _setVisible = (visible) => this.setState(setStuffVisibility(visible));
-  private _toggleHelp = () => this.setState(toggleHelp);
+  private _toggleGrid = () => {
+    const hasGrid = this.state.grids.length > 0;
+    const action = hasGrid ? removeGrid : addGrid;
+    this.setState(action, () => {
+      track(`user-interaction/${hasGrid ? 'remove-tool' : 'add-tool'}/grid`);
+    });
+  };
+
+  private _setVisible = (visible) =>
+    this.setState(setStuffVisibility(visible), () => {
+      track('user-interaction/toogle-visibility/' + this.state.isStuffVisible);
+    });
+  private _toggleHelp = () =>
+    this.setState(toggleHelp, () => {
+      track('user-interaction/toogle-help/' + this.state.helpVisible);
+    });
 }
 
 export { App };

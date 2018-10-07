@@ -1,34 +1,6 @@
 const { app, dialog, BrowserWindow } = require('electron');
 const ipc = require('electron-better-ipc');
-
-const ua = require('universal-analytics');
-const uuid = require('uuid/v4');
-const { JSONStorage } = require('node-localstorage');
-const nodeStorage = new JSONStorage(app.getPath('userData'));
-const userId = nodeStorage.getItem('userid') || uuid();
-nodeStorage.setItem('userid', userId);
-
-const usr = ua('UA-50962418-2', { uid: userId });
-
-function trackEvent(category, action, label, value) {
-  console.log(
-    '=> => + GA trackEvent',
-    { category },
-    { action },
-    { label },
-    { value }
-  );
-  usr
-    .event({
-      ec: category,
-      ea: action,
-      el: label,
-      ev: value
-    })
-    .send();
-}
-
-global.trackEvent = trackEvent;
+const { initializeAnalytics, track } = require('./analytics');
 
 let mainWindow = null;
 
@@ -106,17 +78,19 @@ const createWindow = () => {
     return filePaths;
   });
 
-  trackEvent('application-event', 'launched', 'version', app.getVersion());
+  initializeAnalytics();
+
+  track('application-event/init');
 
   mainWindow.webContents.on('did-finish-load', () => {
-    trackEvent(
-      'application-event',
-      'did-finish-load',
-      'version',
-      app.getVersion()
-    );
+    track('application-event/did-finish-load');
+
     mainWindow.show();
     mainWindow.focus();
+
+    mainWindow.setIgnoreMouseEvents(true, {
+      forward: true
+    });
   });
 
   mainWindow.on('closed', () => {
@@ -130,5 +104,6 @@ app.on('ready', async () => {
 });
 
 app.on('window-all-closed', () => {
+  track('application-event/window-all-closed');
   app.quit();
 });
