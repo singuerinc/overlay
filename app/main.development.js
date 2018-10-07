@@ -27,7 +27,7 @@ app.on('window-all-closed', () => {
 const installExtensions = () => {
   if (process.env.NODE_ENV === 'development') {
     const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
-    const extensions = ['REACT_DEVELOPER_TOOLS'];
+    const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
     const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
     return Promise.all(
       extensions.map((name) =>
@@ -80,9 +80,9 @@ const createWindow = () => {
     mainWindow.show();
     mainWindow.focus();
 
-    mainWindow.setIgnoreMouseEvents(true, {
-      forward: true
-    });
+    // mainWindow.setIgnoreMouseEvents(true, {
+    //   forward: true
+    // });
   });
 
   mainWindow.on('closed', () => {
