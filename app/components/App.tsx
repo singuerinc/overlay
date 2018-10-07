@@ -1,8 +1,10 @@
+import * as R from 'ramda';
 import * as ipc from 'electron-better-ipc';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { injectGlobal } from 'styled-components';
-import { addGuide, removeGuide } from '../actions/app';
+import { addGuide, removeGuide } from '../actions/guides';
+import { addOnion, removeOnion } from '../actions/onions';
 import { Grid } from '../components/grid/Grid';
 import Guide from '../components/guide/Guide';
 import OnionImage from '../components/onionImage/OnionImage';
@@ -15,16 +17,14 @@ import { IGrid } from './grid/IGrid';
 import { factory as GuideFactory } from './guide/factory';
 import { IGuide } from './guide/IGuide';
 import { Help } from './help/Help';
-import { addOnionImage, removeOnionImage } from './onionImage/factory';
+import { factory as OnionFactory } from './onionImage/factory';
 import { IOnionImage } from './onionImage/IOnionImage';
 import { addRuler, duplicateRuler, removeRuler } from './ruler/factory';
 import { IRuler } from './ruler/IRuler';
 import { Tool } from './toolbox/Tool';
 
 interface State {
-  // guides: IGuide[];
   grids: IGrid[];
-  onions: IOnionImage[];
   rulers: IRuler[];
   isStuffVisible: boolean;
   isGridVisible: boolean;
@@ -33,15 +33,16 @@ interface State {
 
 interface Props {
   guides: IGuide[];
+  onions: IOnionImage[];
   addGuide: (guide: IGuide) => void;
   removeGuide: (guide: IGuide) => void;
+  addOnion: (onion: IOnionImage) => void;
+  removeOnion: (onion: IOnionImage) => void;
 }
 
 class AppView extends React.Component<Props, State> {
   public state = {
-    // guides: [],
     grids: [],
-    onions: [],
     rulers: [],
     isStuffVisible: true,
     isGridVisible: false,
@@ -72,17 +73,20 @@ class AppView extends React.Component<Props, State> {
       case Tool.ONION:
         const paths: string[] | null = await this.showOpenDialogImage();
         if (paths) {
-          this.setState(addOnionImage(paths), () => {
+          R.map((path: string) => {
+            const onion: IOnionImage = OnionFactory();
+            onion.src = path;
+            this.props.addOnion(onion);
             track('tool', 'onion', 'add');
-          });
+          }, paths);
         }
         break;
     }
   };
 
   render() {
-    const { grids, rulers, onions, isStuffVisible, helpVisible } = this.state;
-    const { guides } = this.props;
+    const { grids, rulers, isStuffVisible, helpVisible } = this.state;
+    const { guides, onions } = this.props;
     const isGridVisible = grids.length > 0;
 
     return (
@@ -108,15 +112,14 @@ class AppView extends React.Component<Props, State> {
                 }
               />
             ))}
-            {onions.map((props: IOnionImage) => (
+            {onions.map((onion: IOnionImage) => (
               <OnionImage
-                key={props.id}
-                {...props}
-                remove={() =>
-                  this.setState(removeOnionImage(props.id), () => {
-                    track('tool', 'onion', 'remove');
-                  })
-                }
+                key={onion.id}
+                {...onion}
+                remove={() => {
+                  this.props.removeOnion(onion);
+                  track('tool', 'onion', 'remove');
+                }}
               />
             ))}
             {guides.map((guide: IGuide) => (
@@ -165,10 +168,14 @@ class AppView extends React.Component<Props, State> {
 }
 
 const App = connect(
-  ({ guides }: { guides: IGuide[] }, ownProps) => ({
-    guides
+  (
+    { guides, onions }: { guides: IGuide[]; onions: IOnionImage[] },
+    ownProps
+  ) => ({
+    guides,
+    onions
   }),
-  { addGuide, removeGuide }
+  { addGuide, removeGuide, addOnion, removeOnion }
 )(AppView);
 
 export { App };

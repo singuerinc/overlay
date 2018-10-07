@@ -1,8 +1,7 @@
 import { IOnionImage } from './IOnionImage';
 import * as uuid from 'uuid/v1';
-import * as R from 'ramda';
 
-const factory = (id: string): IOnionImage => ({
+export const factory = (id: string = uuid(), props = {}): IOnionImage => ({
   id,
   src: '',
   x: 500,
@@ -12,34 +11,35 @@ const factory = (id: string): IOnionImage => ({
   opacity: 1,
   inverted: false,
   visible: true,
-  locked: false
+  locked: false,
+  ...props
 });
 
-interface State {
-  onions: IOnionImage[];
-}
+// interface State {
+//   onions: IOnionImage[];
+// }
 
-export const addOnionImage = (paths: string[]) => ({ onions }: State) => {
-  if (paths) {
-    const images = R.map((path) => {
-      return {
-        ...factory(uuid()),
-        src: path
-      };
-    }, paths);
+// export const addOnionImage = (paths: string[]) => ({ onions }: State) => {
+//   if (paths) {
+//     const images = R.map((path) => {
+//       return {
+//         ...factory(uuid()),
+//         src: path
+//       };
+//     }, paths);
 
-    return { onions: [...onions, ...images] };
-  }
+//     return { onions: [...onions, ...images] };
+//   }
 
-  return { onions };
-};
+//   return { onions };
+// };
 
-const hasSameId = R.curry((id: string, x: IOnionImage) => x.id === id);
+// const hasSameId = R.curry((id: string, x: IOnionImage) => x.id === id);
 
-export const removeOnionImage = (id: string) => ({ onions }: State) => {
-  const filtered: IOnionImage[] = R.reject(hasSameId(id), onions);
+// export const removeOnionImage = (id: string) => ({ onions }: State) => {
+//   const filtered: IOnionImage[] = R.reject(hasSameId(id), onions);
 
-  return {
-    onions: filtered
-  };
-};
+//   return {
+//     onions: filtered
+//   };
+// };
