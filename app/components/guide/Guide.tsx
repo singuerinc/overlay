@@ -19,6 +19,7 @@ import { GuideOrientation } from './GuideOrientation';
 import { GuideToolbox } from './GuideToolbox';
 import { IGuide } from './IGuide';
 import { rotate } from './utils';
+import { track } from '../core/analytics';
 
 const isLocked = (state) => state.locked === true;
 
@@ -62,16 +63,12 @@ export default class Guide extends React.Component<IGuide & Props, State> {
 
     mousetrap.bind(horizontalVerticalKeys, ({ key }) => {
       if (key !== this.state.orientation) {
-        const orientation: GuideOrientation = key as GuideOrientation;
-
-        this.setState(rotate(orientation), () => {
-          setPositionInDOM(this.el.current, this.state.x, this.state.y);
-        });
+        this._rotate();
       }
     });
 
     mousetrap.bind(COLOR_KEYS, ({ key }) => {
-      this.setState(setColor(getColorByKey(key)));
+      this._setColor(getColorByKey(key));
     });
   };
 
@@ -131,30 +128,38 @@ export default class Guide extends React.Component<IGuide & Props, State> {
         <GuideElement isHorizontal={isHorizontal} color={color}>
           <GuideToolbox
             remove={remove}
-            rotate={() => {
-              const next = isHorizontal
-                ? GuideOrientation.VERTICAL
-                : GuideOrientation.HORIZONTAL;
-              this.setState(rotate(next), () => {
-                setPositionInDOM(this.el.current, this.state.x, this.state.y);
-              });
-            }}
+            rotate={this._rotate}
             locked={locked}
             toggleLock={() =>
               this.setState(toggleLock, () => {
                 interactjs(this.el.current as HTMLDivElement).styleCursor(
                   !this.state.locked
                 );
+                track(`user-interaction/guide/set-locked/${this.state.locked}`);
               })
             }
-            setColor={(color: Color) => {
-              this.setState(setColor(color));
-            }}
+            setColor={this._setColor}
           />
         </GuideElement>
       </div>
     );
   }
+
+  private _setColor = (color: Color) => {
+    this.setState(setColor(color), () => {
+      track(`user-interaction/guide/set-color/${color}`);
+    });
+  };
+
+  private _rotate = () => {
+    const next = isHorizontalOrientation(this.state.orientation)
+      ? GuideOrientation.VERTICAL
+      : GuideOrientation.HORIZONTAL;
+    this.setState(rotate(next), () => {
+      setPositionInDOM(this.el.current, this.state.x, this.state.y);
+      track(`user-interaction/guide/rotate/${this.state.orientation}`);
+    });
+  };
 }
 
 interface GuideElementProps {

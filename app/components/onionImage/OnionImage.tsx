@@ -23,6 +23,7 @@ import { Size } from '../helpers/Size';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { IOnionImage } from './IOnionImage';
 import { OnionToolbox } from './OnionToolbox';
+import { track } from '../core/analytics';
 
 interface State {
   opacity: number;
@@ -207,13 +208,24 @@ export default class OnionImage extends React.Component<
         <OnionToolbox
           opacity={opacity}
           inverted={inverted}
-          setInverted={(inverted) => this.setState(setInverted(inverted))}
-          setOpacity={(opacity) => this.setState(setOpacity(opacity))}
+          setInverted={(inverted) =>
+            this.setState(setInverted(inverted), () => {
+              track(
+                `user-interaction/onion/set-inverted/${this.state.inverted}`
+              );
+            })
+          }
+          setOpacity={(opacity) =>
+            this.setState(setOpacity(opacity), () => {
+              track(`user-interaction/onion/set-opacity/${this.state.opacity}`);
+            })
+          }
           toggleLock={() =>
             this.setState(toggleLock, () => {
               interactjs(this.el.current as HTMLDivElement).styleCursor(
                 !this.state.locked
               );
+              track(`user-interaction/onion/set-locked/${this.state.locked}`);
             })
           }
           remove={remove}
