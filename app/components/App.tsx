@@ -17,7 +17,7 @@ import { IOnionImage } from './onionImage/IOnionImage';
 import { addRuler, duplicateRuler, removeRuler } from './ruler/factory';
 import { IRuler } from './ruler/IRuler';
 import { Tool } from './toolbox/Tool';
-import { track } from './core/analytics';
+import { initializeAnalytics, track } from './core/analytics';
 
 interface State {
   guides: IGuide[];
@@ -40,8 +40,13 @@ class App extends React.Component<{}, State> {
     helpVisible: false
   };
 
+  constructor(props) {
+    super(props);
+    initializeAnalytics();
+  }
+
   async showOpenDialogImage(): Promise<string[]> {
-    track('user-interaction/dialog/open-onion-image');
+    track('dialog', 'open-file', 'onion');
     return await ipc.callMain('show-open-dialog-image');
   }
 
@@ -49,19 +54,19 @@ class App extends React.Component<{}, State> {
     switch (tool) {
       case Tool.GUIDE:
         this.setState(addGuide, () => {
-          track('user-interaction/add-tool/guide');
+          track('tool', 'guide', 'add');
         });
         break;
       case Tool.RULER:
         this.setState(addRuler, () => {
-          track('user-interaction/add-tool/ruler');
+          track('tool', 'ruler', 'add');
         });
         break;
       case Tool.ONION:
         const paths: string[] | null = await this.showOpenDialogImage();
         if (paths) {
           this.setState(addOnionImage(paths), () => {
-            track('user-interaction/add-tool/onion');
+            track('tool', 'onion', 'add');
           });
         }
         break;
@@ -92,12 +97,12 @@ class App extends React.Component<{}, State> {
                 {...props}
                 duplicate={(rulerInfo) =>
                   this.setState(duplicateRuler(rulerInfo), () => {
-                    track('user-interaction/duplicate-tool/ruler');
+                    track('tool', 'ruler', 'duplicate');
                   })
                 }
                 remove={() =>
                   this.setState(removeRuler(props.id), () => {
-                    track('user-interaction/remove-tool/ruler');
+                    track('tool', 'ruler', 'remove');
                   })
                 }
               />
@@ -108,7 +113,7 @@ class App extends React.Component<{}, State> {
                 {...props}
                 remove={() =>
                   this.setState(removeOnionImage(props.id), () => {
-                    track('user-interaction/remove-tool/onion');
+                    track('tool', 'onion', 'remove');
                   })
                 }
               />
@@ -119,7 +124,7 @@ class App extends React.Component<{}, State> {
                 {...props}
                 remove={() =>
                   this.setState(removeGuide(props.id), () => {
-                    track('user-interaction/remove-tool/guide');
+                    track('tool', 'guide', 'remove');
                   })
                 }
               />
@@ -145,17 +150,17 @@ class App extends React.Component<{}, State> {
     const hasGrid = this.state.grids.length > 0;
     const action = hasGrid ? removeGrid : addGrid;
     this.setState(action, () => {
-      track(`user-interaction/${hasGrid ? 'remove-tool' : 'add-tool'}/grid`);
+      track('tool', 'grid', hasGrid ? 'remove' : 'add');
     });
   };
 
   private _setVisible = (visible) =>
     this.setState(setStuffVisibility(visible), () => {
-      track('user-interaction/toogle-visibility/' + this.state.isStuffVisible);
+      track('app', 'tools', `visibility/${this.state.isStuffVisible}`);
     });
   private _toggleHelp = () =>
     this.setState(toggleHelp, () => {
-      track('user-interaction/toogle-help/' + this.state.helpVisible);
+      track('app', 'help', `visibility/${this.state.helpVisible}`);
     });
 }
 

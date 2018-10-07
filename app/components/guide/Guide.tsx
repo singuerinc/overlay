@@ -135,7 +135,7 @@ export default class Guide extends React.Component<IGuide & Props, State> {
                 interactjs(this.el.current as HTMLDivElement).styleCursor(
                   !this.state.locked
                 );
-                track(`user-interaction/guide/set-locked/${this.state.locked}`);
+                track('tool', 'guide', `locked/${this.state.locked}`);
               })
             }
             setColor={this._setColor}
@@ -147,7 +147,7 @@ export default class Guide extends React.Component<IGuide & Props, State> {
 
   private _setColor = (color: Color) => {
     this.setState(setColor(color), () => {
-      track(`user-interaction/guide/set-color/${color}`);
+      track('tool', 'guide', `color/${this.state.color}`);
     });
   };
 
@@ -157,7 +157,7 @@ export default class Guide extends React.Component<IGuide & Props, State> {
       : GuideOrientation.HORIZONTAL;
     this.setState(rotate(next), () => {
       setPositionInDOM(this.el.current, this.state.x, this.state.y);
-      track(`user-interaction/guide/rotate/${this.state.orientation}`);
+      track('tool', 'guide', `rotate/${this.state.orientation}`);
     });
   };
 }

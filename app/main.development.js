@@ -1,6 +1,5 @@
 const { app, dialog, BrowserWindow } = require('electron');
 const ipc = require('electron-better-ipc');
-const { initializeAnalytics, track } = require('./analytics');
 
 let mainWindow = null;
 
@@ -28,7 +27,6 @@ app.on('window-all-closed', () => {
 const installExtensions = () => {
   if (process.env.NODE_ENV === 'development') {
     const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
-
     const extensions = ['REACT_DEVELOPER_TOOLS'];
     const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
     return Promise.all(
@@ -78,13 +76,7 @@ const createWindow = () => {
     return filePaths;
   });
 
-  initializeAnalytics();
-
-  track('application-event/init');
-
   mainWindow.webContents.on('did-finish-load', () => {
-    track('application-event/did-finish-load');
-
     mainWindow.show();
     mainWindow.focus();
 
@@ -104,6 +96,5 @@ app.on('ready', async () => {
 });
 
 app.on('window-all-closed', () => {
-  track('application-event/window-all-closed');
   app.quit();
 });
