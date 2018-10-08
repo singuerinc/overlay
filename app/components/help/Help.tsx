@@ -27,36 +27,18 @@ class Element extends React.Component<IProps> {
     const { className, close } = this.props;
     return (
       <div ref={this.el} className={className}>
-        <ul>
+        <CloseButton>
           <MiniToolboxItem title="" onClick={close}>
             <MiniToolboxIcon icon="x" />
           </MiniToolboxItem>
-        </ul>
+        </CloseButton>
         <h1>Keyboard shortcuts</h1>
         <div>
           <h2>Global</h2>
           <table>
             <tbody>
               <tr>
-                <td>Show/Hide tools</td>
-                <td>
-                  <kbd>unassigned</kbd>
-                </td>
-              </tr>
-              <tr>
-                <td>Show/Hide all</td>
-                <td>
-                  <kbd>unassigned</kbd>
-                </td>
-              </tr>
-              <tr>
-                <td>Always on top on/off</td>
-                <td>
-                  <kbd>unassigned</kbd>
-                </td>
-              </tr>
-              <tr>
-                <td>Change tool color (when hover)</td>
+                <td>Change tool color (when mouse over)</td>
                 <td>
                   <kbd>b</kbd>
                   <kbd>g</kbd>
@@ -66,43 +48,10 @@ class Element extends React.Component<IProps> {
                 </td>
               </tr>
               <tr>
-                <td>Delete</td>
+                <td>Delete tool (when mouse over)</td>
                 <td>
-                  <kbd>unassigned</kbd>
-                </td>
-              </tr>
-              <tr>
-                <td>Duplicate</td>
-                <td>
-                  <kbd>unassigned</kbd>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <h2>Grid</h2>
-          <table>
-            <tbody>
-              <tr>
-                <td>Add column</td>
-                <td>
-                  <kbd>unassigned</kbd>
-                </td>
-              </tr>
-              <tr>
-                <td>Remove column</td>
-                <td>
-                  <kbd>unassigned</kbd>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <h2>Guide</h2>
-          <table>
-            <tbody>
-              <tr>
-                <td>Rotate</td>
-                <td>
-                  <kbd>unassigned</kbd>
+                  <kbd>backspace</kbd>
+                  <kbd>delete</kbd>
                 </td>
               </tr>
             </tbody>
@@ -124,19 +73,17 @@ class Element extends React.Component<IProps> {
               </tr>
             </tbody>
           </table>
-          <h2>Ruler</h2>
-          <table>
-            <tbody>
-              <tr>
-                <td>a</td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       </div>
     );
   }
 }
+
+const CloseButton = styled.ul`
+  position: absolute;
+  top: -36px;
+  left: 0;
+`;
 
 export const Help = styled(Element)`
   position: fixed;
@@ -147,15 +94,16 @@ export const Help = styled(Element)`
   display: block;
   align-items: center;
   justify-content: center;
-  background-color: white;
   padding: 40px 40px;
-  color: #111;
+  background-color: #f8f9fa;
+  color: #495057;
 
   h1,
   h2,
   h3 {
     margin: 10px 0;
     padding: 0;
+    color: #495057;
   }
 
   table {

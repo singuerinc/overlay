@@ -5,6 +5,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Color } from '../../utils/Color';
 import { track } from '../core/analytics';
+import Key from '../core/Key';
 import { move, resize, setColor, toggleLock } from '../core/reducer';
 import { createGrid } from '../grid/utils';
 import { Coords } from '../helpers/Coords';
@@ -158,9 +159,14 @@ export class Ruler extends React.Component<IRuler & IProps, IState> {
     mousetrap.bind(COLOR_KEYS, ({ key }) => {
       this.updateColor(getColorByKey(key));
     });
+
+    mousetrap.bind([Key.BACKSPACE, Key.DEL], () => {
+      this.props.remove();
+    });
   }
 
   private unbindKeys = () => {
+    mousetrap.unbind([Key.BACKSPACE, Key.DEL]);
     mousetrap.unbind(ARROW_KEYS);
   }
 

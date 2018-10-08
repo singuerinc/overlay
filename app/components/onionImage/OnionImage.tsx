@@ -3,6 +3,7 @@ import * as mousetrap from 'mousetrap';
 import * as React from 'react';
 import styled from 'styled-components';
 import { track } from '../core/analytics';
+import Key from '../core/Key';
 import {
   move,
   resize,
@@ -204,6 +205,10 @@ export class OnionImage extends React.Component<IOnionImage & IProps, IState> {
       this.setState(setOpacity(opacity));
     });
 
+    mousetrap.bind([Key.BACKSPACE, Key.DEL], () => {
+      this.props.remove();
+    });
+
     mousetrap.bind(invertKeys, () => {
       this.setState(toggleInverted);
     });
@@ -223,6 +228,7 @@ export class OnionImage extends React.Component<IOnionImage & IProps, IState> {
   }
 
   private unbindKeys = () => {
+    mousetrap.unbind([Key.BACKSPACE, Key.DEL]);
     mousetrap.unbind(opacityLettersKeys);
     mousetrap.unbind(opacityNumberKeys);
     mousetrap.unbind(invertKeys);
