@@ -16,7 +16,7 @@ interface Props {
   y: number;
   isStuffVisible: boolean;
   isGridVisible: boolean;
-  setVisibility: (visible: boolean) => void;
+  toggleVisibility: () => void;
   create: (tool: Tool) => void;
   toggle: (tool: Tool) => void;
   toggleHelp: () => void;
@@ -67,7 +67,7 @@ export class Toolbox extends React.Component<Props, State> {
       y,
       create,
       toggle,
-      setVisibility,
+      toggleVisibility,
       toggleHelp
     } = this.props;
 
@@ -80,7 +80,7 @@ export class Toolbox extends React.Component<Props, State> {
           <ToolSpace />
           <MiniToolboxItem
             title={`${isStuffVisible ? 'Hide' : 'Show'} all`}
-            onClick={() => setVisibility(!isStuffVisible)}
+            onClick={() => toggleVisibility()}
           >
             <MiniToolboxIcon icon={isStuffVisible ? 'eye' : 'eye-off'} />
           </MiniToolboxItem>
