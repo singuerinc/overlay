@@ -8,15 +8,11 @@ interface Props {
   store: Store;
 }
 
-export class Root extends React.Component<Props> {
-  render() {
-    return (
-      <Provider store={this.props.store}>
-        <App />
-      </Provider>
-    );
-  }
-}
+export const Root = (props: Props) => (
+  <Provider store={props.store}>
+    <App />
+  </Provider>
+);
 
 injectGlobal`
   * {
