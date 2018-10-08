@@ -89,24 +89,26 @@ export class Guide extends React.Component<IGuide & IProps, IState> {
     const { orientation, color, locked } = this.state;
     const isHorizontal = isHorizontalOrientation(orientation);
     return (
-      <div ref={this.el}>
-        <GuideElement isHorizontal={isHorizontal} color={color}>
-          <GuideToolbox
-            remove={remove}
-            rotate={this.updateRotate}
-            locked={locked}
-            toggleLock={() =>
-              this.setState(toggleLock, () => {
-                interactjs(this.el.current as HTMLDivElement).styleCursor(
-                  !this.state.locked
-                );
-                track('tool', 'guide', `locked/${this.state.locked}`);
-              })
-            }
-            setColor={this.updateColor}
-          />
-        </GuideElement>
-      </div>
+      <GuideElement
+        innerRef={this.el}
+        isHorizontal={isHorizontal}
+        color={color}
+      >
+        <GuideToolbox
+          remove={remove}
+          rotate={this.updateRotate}
+          locked={locked}
+          toggleLock={() =>
+            this.setState(toggleLock, () => {
+              interactjs(this.el.current as HTMLDivElement).styleCursor(
+                !this.state.locked
+              );
+              track('tool', 'guide', `locked/${this.state.locked}`);
+            })
+          }
+          setColor={this.updateColor}
+        />
+      </GuideElement>
     );
   }
 
