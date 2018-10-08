@@ -8,6 +8,7 @@ import { guides } from './guides';
 import { onions } from './onions';
 import { rulers } from './rulers';
 import { tools, ToolsStore } from './tools';
+import { help, HelpStore } from './help';
 
 export interface AppStore {
   grids: IGrid[];
@@ -15,6 +16,7 @@ export interface AppStore {
   onions: IOnionImage[];
   rulers: IRuler[];
   tools: ToolsStore;
+  help: HelpStore;
 }
 
 const rootReducer = combineReducers<AppStore>({
@@ -22,7 +24,8 @@ const rootReducer = combineReducers<AppStore>({
   guides,
   onions,
   rulers,
-  tools
+  tools,
+  help
 });
 
 export default rootReducer;

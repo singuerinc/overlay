@@ -1,5 +1,5 @@
-export const TOGGLE_VISIBILITY = 'TOGGLE_VISIBILITY';
+export const TOGGLE_TOOLS_VISIBILITY = 'TOGGLE_TOOLS_VISIBILITY';
 
 export const toggleVisibility = () => ({
-  type: TOGGLE_VISIBILITY
+  type: TOGGLE_TOOLS_VISIBILITY
 });
