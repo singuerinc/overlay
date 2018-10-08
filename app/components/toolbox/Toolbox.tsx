@@ -15,6 +15,7 @@ interface Props {
   x: number;
   y: number;
   isStuffVisible: boolean;
+  isColumnVisible: boolean;
   isGridVisible: boolean;
   toggleVisibility: () => void;
   create: (tool: Tool) => void;
@@ -62,6 +63,7 @@ export class Toolbox extends React.Component<Props, State> {
   render() {
     const {
       isStuffVisible,
+      isColumnVisible,
       isGridVisible,
       x,
       y,
@@ -82,7 +84,10 @@ export class Toolbox extends React.Component<Props, State> {
             title={`${isStuffVisible ? 'Hide' : 'Show'} all`}
             onClick={() => toggleVisibility()}
           >
-            <MiniToolboxIcon icon={isStuffVisible ? 'eye' : 'eye-off'} />
+            <MiniToolboxIcon
+              active={isStuffVisible}
+              icon={isStuffVisible ? 'eye' : 'eye-off'}
+            />
           </MiniToolboxItem>
           <ToolSpace />
           <MiniToolboxItem title="New guide" onClick={() => create(Tool.GUIDE)}>
@@ -101,7 +106,13 @@ export class Toolbox extends React.Component<Props, State> {
             title={isGridVisible ? 'Hide grid' : 'Show grid'}
             onClick={() => toggle(Tool.GRID)}
           >
-            <MiniToolboxIcon icon="grid" />
+            <MiniToolboxIcon active={isGridVisible} icon="grid" />
+          </MiniToolboxItem>
+          <MiniToolboxItem
+            title={isColumnVisible ? 'Hide columns' : 'Show columns'}
+            onClick={() => toggle(Tool.COLUMN)}
+          >
+            <MiniToolboxIcon active={isColumnVisible} icon="pause" />
           </MiniToolboxItem>
           <ToolSpace />
           <MiniToolboxItem title="Show help" onClick={toggleHelp}>

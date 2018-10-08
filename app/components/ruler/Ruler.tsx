@@ -36,7 +36,7 @@ interface Props {
   remove: () => void;
 }
 
-export default class Ruler extends React.Component<IRuler & Props, State> {
+export class Ruler extends React.Component<IRuler & Props, State> {
   private el: React.RefObject<HTMLDivElement> = React.createRef();
   private ruler: React.RefObject<HTMLDivElement> = React.createRef();
 
