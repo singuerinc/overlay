@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { addGrid, removeGrid } from '../actions/grids';
 import { addGuide, removeGuide } from '../actions/guides';
+import { toggleVisibility as toggleHelpVisibility } from '../actions/help';
 import { addOnion, removeOnion } from '../actions/onions';
 import { addRuler, removeRuler } from '../actions/rulers';
 import { toggleVisibility as toggleToolsVisibility } from '../actions/tools';
@@ -14,9 +15,9 @@ import OnionImage from '../components/onionImage/OnionImage';
 import Ruler from '../components/ruler/Ruler';
 import { Toolbox } from '../components/toolbox/Toolbox';
 import { AppStore } from '../reducers';
+import { HelpStore } from '../reducers/help';
 import { ToolsStore } from '../reducers/tools';
 import { initializeAnalytics, track } from './core/analytics';
-import { toggleHelp } from './core/reducer';
 import { factory as GridFactory } from './grid/factory';
 import { IGrid } from './grid/IGrid';
 import { factory as GuideFactory } from './guide/factory';
@@ -28,11 +29,8 @@ import { factory as RulerFactory } from './ruler/factory';
 import { IRuler } from './ruler/IRuler';
 import { Tool } from './toolbox/Tool';
 
-interface State {
-  helpVisible: boolean;
-}
-
 interface Props {
+  help: HelpStore;
   tools: ToolsStore;
   grids: IGrid[];
   guides: IGuide[];
@@ -47,13 +45,10 @@ interface Props {
   addRuler: (ruler: IRuler) => void;
   removeRuler: (ruler: IRuler) => void;
   toggleToolsVisibility: () => void;
+  toggleHelpVisibility: () => void;
 }
 
-class AppView extends React.Component<Props, State> {
-  public state = {
-    helpVisible: false
-  };
-
+class AppView extends React.Component<Props> {
   constructor(props) {
     super(props);
     initializeAnalytics();
@@ -89,9 +84,9 @@ class AppView extends React.Component<Props, State> {
   };
 
   render() {
-    const { helpVisible } = this.state;
-    const { grids, guides, onions, rulers, tools } = this.props;
+    const { grids, guides, onions, rulers, tools, help } = this.props;
     const isToolsVisible = tools.visible;
+    const isHelpVisible = help.visible;
     const isGridVisible = R.gt(R.length(grids), 0);
 
     return (
@@ -132,7 +127,7 @@ class AppView extends React.Component<Props, State> {
           ))}
         </ToolsWrapper>
 
-        {helpVisible && <Help close={this._toggleHelp} />}
+        {isHelpVisible && <Help close={this._toggleHelp} />}
         <Toolbox
           x={10}
           y={10}
@@ -163,10 +158,10 @@ class AppView extends React.Component<Props, State> {
     this.props.toggleToolsVisibility();
   };
 
-  private _toggleHelp = () =>
-    this.setState(toggleHelp, () => {
-      track('app', 'help', `visibility/${this.state.helpVisible}`);
-    });
+  private _toggleHelp = () => {
+    track('app', 'help', `visibility/${this.props.help.visible}`);
+    this.props.toggleHelpVisibility();
+  };
 }
 
 const App = connect(
@@ -180,7 +175,8 @@ const App = connect(
     removeOnion,
     addRuler,
     removeRuler,
-    toggleToolsVisibility
+    toggleToolsVisibility,
+    toggleHelpVisibility
   }
 )(AppView);
 
