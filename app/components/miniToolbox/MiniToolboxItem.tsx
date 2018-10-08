@@ -3,8 +3,7 @@ import styled, { injectGlobal } from 'styled-components';
 import Tooltip from 'tooltip.js';
 
 export const Element = styled.li`
-  background-color: #111111;
-  color: #f4f4f4;
+  background-color: #111;
   display: inline-block;
   text-align: center;
   justify-content: center;

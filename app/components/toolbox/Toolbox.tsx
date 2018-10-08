@@ -102,6 +102,7 @@ export class Toolbox extends React.Component<IProps, IState> {
           >
             <MiniToolboxIcon icon="image" />
           </MiniToolboxItem>
+          <ToolSpace />
           <MiniToolboxItem
             title={isGridVisible ? 'Hide grid' : 'Show grid'}
             onClick={() => toggle(Tool.GRID)}

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const Wrapper = styled.span<{ active: boolean }>`
   display: flex;
   svg {
-    stroke: ${({ active }) => (active ? 'white !important' : '#202A2D')};
+    stroke: ${({ active }) => (active ? 'white !important' : '#444')};
   }
 `;
 
