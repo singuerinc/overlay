@@ -6,14 +6,6 @@ export const toggleLock = ({ locked }: { locked: boolean }) => ({
   locked: !locked
 });
 
-export const setStuffVisibility = (isStuffVisible: boolean) => () => ({
-  isStuffVisible
-});
-
-export const toggleHelp = ({ helpVisible }: { helpVisible: boolean }) => ({
-  helpVisible: !helpVisible
-});
-
 export const toggleInverted = ({ inverted }: { inverted: boolean }) => ({
   inverted: !inverted
 });
