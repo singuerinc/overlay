@@ -14,31 +14,4 @@ const factory = (id: string = uuid(), props = {}): IRuler => ({
   ...props
 });
 
-// interface State {
-//   rulers: IRuler[];
-// }
-
-// const addRuler = ({ rulers }: State) => ({
-//   rulers: [...rulers, factory(uuid())]
-// });
-
-// const duplicateRuler = (rulerInfo: object) => ({ rulers }: State) => ({
-//   rulers: [
-//     ...rulers,
-//     {
-//       ...rulerInfo,
-//       id: uuid()
-//     } as IRuler
-//   ]
-// });
-
-// const removeRuler = (id: string) => ({ rulers }: { rulers: IRuler[] }) => {
-//   const hasSameId = (id: string) => (x: IRuler) => x.id === id;
-//   const filtered: IRuler[] = R.reject(hasSameId(id), rulers);
-
-//   return {
-//     rulers: filtered
-//   };
-// };
-
 export { factory };
