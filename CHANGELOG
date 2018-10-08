@@ -1,3 +1,9 @@
+0.5.1 (unreleased)
+==================
+
+  * chore: tslint config
+  * fix: ruler doesn't change z-index
+
 0.5.0
 ==================
 
