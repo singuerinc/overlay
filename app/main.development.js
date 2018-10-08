@@ -80,9 +80,9 @@ const createWindow = () => {
     mainWindow.show();
     mainWindow.focus();
 
-    // mainWindow.setIgnoreMouseEvents(true, {
-    //   forward: true
-    // });
+    mainWindow.setIgnoreMouseEvents(true, {
+      forward: true
+    });
   });
 
   mainWindow.on('closed', () => {
