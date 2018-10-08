@@ -5,7 +5,7 @@ import Tooltip from 'tooltip.js';
 injectGlobal`
   .tooltip {
     position: absolute;
-    background: #111;
+    background: #030F12;
     color: #eee;
     width: auto;
     border-radius: 3px;
@@ -47,18 +47,20 @@ injectGlobal`
 `;
 
 export const Element = styled.li`
-  background-color: #111;
+  background-color: #111111;
   color: #f4f4f4;
   display: inline-block;
   text-align: center;
   justify-content: center;
   padding: 6px 8px;
   margin: 0;
-  transition: background-color 300ms ease;
+  transition: background-color 100ms ease;
 
   &:hover {
     cursor: pointer;
-    background-color: #333;
+    svg {
+      stroke: #999;
+    }
   }
 `;
 

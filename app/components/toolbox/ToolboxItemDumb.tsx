@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const ToolboxItemDumb = styled.li`
-  background-color: #333;
+  background-color: #111;
   display: flex;
   flex: 1 1 auto;
   text-align: center;
