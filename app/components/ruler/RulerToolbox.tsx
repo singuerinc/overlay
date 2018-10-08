@@ -1,11 +1,11 @@
 import * as React from 'react';
+import { Color } from '../../utils/Color';
+import { MiniToolboxColors } from '../miniToolbox/MiniToolboxColors';
 import { MiniToolboxIcon } from '../miniToolbox/MiniToolboxIcon';
 import { MiniToolboxItem } from '../miniToolbox/MiniToolboxItem';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
-import { Color } from '../../utils/Color';
-import { MiniToolboxColors } from '../miniToolbox/MiniToolboxColors';
 
-interface Props {
+interface IProps {
   locked: boolean;
   remove: () => void;
   toggleLock: () => void;
@@ -17,7 +17,7 @@ export const RulerToolbox = ({
   remove,
   setColor,
   toggleLock
-}: Props) => (
+}: IProps) => (
   <MiniToolboxWrapper>
     <MiniToolboxColors setColor={setColor} />
     <MiniToolboxItem title={locked ? 'Lock' : 'Unlock'} onClick={toggleLock}>

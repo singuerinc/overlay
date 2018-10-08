@@ -3,7 +3,7 @@ import { MiniToolboxIcon } from '../miniToolbox/MiniToolboxIcon';
 import { MiniToolboxItem } from '../miniToolbox/MiniToolboxItem';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 
-interface Props {
+interface IProps {
   opacity: number;
   inverted: boolean;
   locked: boolean;
@@ -21,7 +21,7 @@ export const OnionToolbox = ({
   setOpacity,
   toggleLock,
   remove
-}: Props) => (
+}: IProps) => (
   <MiniToolboxWrapper>
     <MiniToolboxItem
       title={`Set opacity to ${opacity !== 1 ? '1' : '0.5'}`}

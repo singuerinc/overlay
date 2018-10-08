@@ -1,17 +1,17 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { draggable } from '../helpers/draggable';
+import { setPositionInDOM } from '../helpers/impure';
 import {
   startListeningToIgnoreMouseEvents,
   stopListeningToIgnoreMouseEvents
 } from '../helpers/mouseEvents';
-import { setPositionInDOM } from '../helpers/impure';
 import { MiniToolboxIcon } from '../miniToolbox/MiniToolboxIcon';
 import { MiniToolboxItem } from '../miniToolbox/MiniToolboxItem';
 import { Tool } from './Tool';
 import { ToolboxItemDumb } from './ToolboxItemDumb';
 
-interface Props {
+interface IProps {
   x: number;
   y: number;
   isStuffVisible: boolean;
@@ -23,7 +23,7 @@ interface Props {
   toggleHelp: () => void;
 }
 
-interface State {
+interface IState {
   visible: boolean;
   onTop: boolean;
   isMenuOpen: boolean;
@@ -31,22 +31,22 @@ interface State {
   y: number;
 }
 
-export class Toolbox extends React.Component<Props, State> {
-  private el: React.RefObject<HTMLUListElement> = React.createRef();
-
-  static getDerivedStateFromProps(nextProps, prevState) {
+export class Toolbox extends React.Component<IProps, IState> {
+  public static getDerivedStateFromProps(nextProps, prevState) {
     return { ...nextProps, ...prevState };
   }
 
-  state = {
-    visible: true,
-    onTop: true,
+  public state = {
     isMenuOpen: true,
+    onTop: true,
+    visible: true,
     x: 0,
     y: 0
   };
 
-  componentDidMount() {
+  private el: React.RefObject<HTMLUListElement> = React.createRef();
+
+  public componentDidMount() {
     const el = this.el.current as HTMLUListElement;
 
     startListeningToIgnoreMouseEvents(el);
@@ -54,13 +54,13 @@ export class Toolbox extends React.Component<Props, State> {
     draggable(el, this.setState.bind(this));
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     const el = this.el.current as HTMLUListElement;
 
     stopListeningToIgnoreMouseEvents(el);
   }
 
-  render() {
+  public render() {
     const {
       isStuffVisible,
       isColumnVisible,
@@ -124,12 +124,12 @@ export class Toolbox extends React.Component<Props, State> {
   }
 }
 
-interface ToolBoxProps {
+interface IToolBoxProps {
   x: number;
   y: number;
 }
 
-const Wrapper = styled.ul<ToolBoxProps>`
+const Wrapper = styled.ul<IToolBoxProps>`
   position: fixed;
   background-color: transparent;
   display: flex;

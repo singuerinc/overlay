@@ -4,11 +4,11 @@ export const ADD_ONION = 'ADD_ONION';
 export const REMOVE_ONION = 'REMOVE_ONION';
 
 export const addOnion = (onion: IOnionImage) => ({
-  type: ADD_ONION,
-  payload: onion
+  payload: onion,
+  type: ADD_ONION
 });
 
 export const removeOnion = (onion: IOnionImage) => ({
-  type: REMOVE_ONION,
-  payload: onion
+  payload: onion,
+  type: REMOVE_ONION
 });

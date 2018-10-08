@@ -10,11 +10,12 @@
     "build-renderer": "cross-env NODE_ENV=production node ./node_modules/webpack/bin/webpack --config webpack.config.production.js --progress --profile --colors",
     "build": "npm run build-main && npm run build-renderer",
     "format": "npx prettier --config ./.prettierrc.js --write './app/**/*.{ts,tsx}'",
+    "lint": "npx tslint -c tslint.json 'app/**/*.{ts,tsx}'",
     "start": "cross-env NODE_ENV=production electron ./app/",
     "start-hot": "cross-env HOT=1 NODE_ENV=development electron ./app/main.development",
     "dev": "npm run hot-server -- --start-hot",
-    "package": "npm run build && build --publish never",
-    "publish": "npm run build && build --mac -p always",
+    "package": "npm run lint && npm run build && build --publish never",
+    "publish": "npm run lint && npm run build && build --mac -p always",
     "cleanup": "mop -v"
   },
   "build": {

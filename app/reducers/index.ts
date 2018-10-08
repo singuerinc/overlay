@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { IColumn } from '../components/column/IColumn';
 import { IGrid } from '../components/grid/IGrid';
 import { IGuide } from '../components/guide/IGuide';
 import { IOnionImage } from '../components/onionImage/IOnionImage';
@@ -6,30 +7,29 @@ import { IRuler } from '../components/ruler/IRuler';
 import { columns } from './columns';
 import { grids } from './grids';
 import { guides } from './guides';
+import { help, IHelpStore } from './help';
 import { onions } from './onions';
 import { rulers } from './rulers';
-import { tools, ToolsStore } from './tools';
-import { help, HelpStore } from './help';
-import { IColumn } from '../components/column/IColumn';
+import { IToolsStore, tools } from './tools';
 
-export interface AppStore {
+export interface IAppStore {
   columns: IColumn[];
   grids: IGrid[];
   guides: IGuide[];
   onions: IOnionImage[];
   rulers: IRuler[];
-  tools: ToolsStore;
-  help: HelpStore;
+  tools: IToolsStore;
+  help: IHelpStore;
 }
 
-const rootReducer = combineReducers<AppStore>({
+const rootReducer = combineReducers<IAppStore>({
   columns,
   grids,
   guides,
+  help,
   onions,
   rulers,
-  tools,
-  help
+  tools
 });
 
 export default rootReducer;

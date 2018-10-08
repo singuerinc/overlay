@@ -21,9 +21,7 @@ export function onMouseDown(e: MouseEvent) {
 
   const maxIndex = Math.max.apply(
     Math,
-    tools.map(function(t: HTMLElement) {
-      return parseInt(t.style.zIndex || '0', 10);
-    })
+    tools.map((t: HTMLElement) => parseInt(t.style.zIndex || '0', 10))
   );
 
   const nextIndex = maxIndex + 1;

@@ -1,18 +1,18 @@
 import { AnyAction } from 'redux';
 import { TOGGLE_TOOLS_VISIBILITY } from '../actions/tools';
 
-export interface ToolsStore {
+export interface IToolsStore {
   visible: boolean;
 }
 
-const initialStore: ToolsStore = {
+const initialStore: IToolsStore = {
   visible: true
 };
 
 export const tools = (
   store = initialStore,
   { type, payload }: AnyAction
-): ToolsStore => {
+): IToolsStore => {
   switch (type) {
     case TOGGLE_TOOLS_VISIBILITY:
       return {

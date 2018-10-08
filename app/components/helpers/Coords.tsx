@@ -1,13 +1,13 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-interface Props {
+interface IProps {
   className?: string;
   x: number;
   y: number;
 }
 
-const Element = ({ x, y, className }: Props) => (
+const Element = ({ x, y, className }: IProps) => (
   <span className={className}>
     {x.toFixed(0)}:{y.toFixed(0)}
   </span>

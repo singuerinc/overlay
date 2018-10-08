@@ -1,11 +1,11 @@
 import * as React from 'react';
+import { Color } from '../../utils/Color';
+import { MiniToolboxColors } from '../miniToolbox/MiniToolboxColors';
 import { MiniToolboxIcon } from '../miniToolbox/MiniToolboxIcon';
 import { MiniToolboxItem } from '../miniToolbox/MiniToolboxItem';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
-import { Color } from '../../utils/Color';
-import { MiniToolboxColors } from '../miniToolbox/MiniToolboxColors';
 
-interface Props {
+interface IProps {
   rotate: () => void;
   remove: () => void;
   setColor: (color: Color) => void;
@@ -19,7 +19,7 @@ export const GuideToolbox = ({
   setColor,
   toggleLock,
   locked
-}: Props) => (
+}: IProps) => (
   <MiniToolboxWrapper>
     <MiniToolboxColors setColor={setColor} />
     <MiniToolboxItem title="Rotate" onClick={rotate}>

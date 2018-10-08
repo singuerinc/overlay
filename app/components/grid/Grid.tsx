@@ -7,12 +7,12 @@ export const Grid = ({ size, color, type, opacity }: IGrid) => (
   <Element data={createGrid(size, color, type)} opacity={opacity} />
 );
 
-interface Props {
+interface IProps {
   data: string;
   opacity: number;
 }
 
-const Element = styled.div<Props>`
+const Element = styled.div<IProps>`
   position: fixed;
   top: 0;
   left: 0;

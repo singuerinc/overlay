@@ -3,6 +3,7 @@ import * as mousetrap from 'mousetrap';
 import * as React from 'react';
 import styled from 'styled-components';
 import { Color } from '../../utils/Color';
+import { track } from '../core/analytics';
 import { move, setColor, toggleLock } from '../core/reducer';
 import { COLOR_KEYS, getColorByKey } from '../helpers/getColorByKey';
 import { ARROW_KEYS, getPositionByKey } from '../helpers/getPositionByKey';
@@ -19,11 +20,10 @@ import { GuideOrientation } from './GuideOrientation';
 import { GuideToolbox } from './GuideToolbox';
 import { IGuide } from './IGuide';
 import { rotate } from './utils';
-import { track } from '../core/analytics';
 
 const isLocked = (state) => state.locked === true;
 
-interface State {
+interface IState {
   x: number;
   y: number;
   orientation: GuideOrientation;
@@ -33,52 +33,17 @@ interface State {
 
 const horizontalVerticalKeys = ['v', 'h'];
 
-interface Props {
+interface IProps {
   remove: () => void;
 }
 
-export class Guide extends React.Component<IGuide & Props, State> {
-  private el: React.RefObject<HTMLDivElement> = React.createRef();
-
-  static getDerivedStateFromProps(nextProps, prevState) {
+export class Guide extends React.Component<IGuide & IProps, IState> {
+  public static getDerivedStateFromProps(nextProps, prevState) {
     return { ...nextProps, ...prevState };
   }
+  private el: React.RefObject<HTMLDivElement> = React.createRef();
 
-  bindKeys = () => {
-    mousetrap.bind(ARROW_KEYS, ({ shiftKey, key }) => {
-      if (isLocked(this.state)) {
-        return;
-      }
-
-      const { orientation, x, y } = this.state;
-      const isHorizontal = orientation === GuideOrientation.HORIZONTAL;
-      const value = shiftKey ? 10 : 1;
-      const { x: nx, y: ny } = getPositionByKey(key, x, y, value);
-      const moveTo = isHorizontal ? move(0, ny) : move(nx, 0);
-
-      this.setState(moveTo, () =>
-        setPositionInDOM(this.el.current, this.state.x, this.state.y)
-      );
-    });
-
-    mousetrap.bind(horizontalVerticalKeys, ({ key }) => {
-      if (key !== this.state.orientation) {
-        this._rotate();
-      }
-    });
-
-    mousetrap.bind(COLOR_KEYS, ({ key }) => {
-      this._setColor(getColorByKey(key));
-    });
-  };
-
-  unbindKeys = () => {
-    mousetrap.unbind(ARROW_KEYS);
-    mousetrap.unbind(horizontalVerticalKeys);
-    mousetrap.unbind(COLOR_KEYS);
-  };
-
-  componentDidMount() {
+  public componentDidMount() {
     const el = this.el.current as HTMLDivElement;
 
     startListeningToIgnoreMouseEvents(el);
@@ -107,7 +72,7 @@ export class Guide extends React.Component<IGuide & Props, State> {
     el.addEventListener('mouseout', this.unbindKeys);
   }
 
-  componentWillUnmount() {
+  public componentWilUnmount() {
     const el = this.el.current as HTMLDivElement;
 
     stopListeningToIgnoreMouseEvents(el);
@@ -119,7 +84,7 @@ export class Guide extends React.Component<IGuide & Props, State> {
     el.removeEventListener('mouseout', this.unbindKeys);
   }
 
-  render() {
+  public render() {
     const { remove } = this.props;
     const { orientation, color, locked } = this.state;
     const isHorizontal = isHorizontalOrientation(orientation);
@@ -128,7 +93,7 @@ export class Guide extends React.Component<IGuide & Props, State> {
         <GuideElement isHorizontal={isHorizontal} color={color}>
           <GuideToolbox
             remove={remove}
-            rotate={this._rotate}
+            rotate={this.updateRotate}
             locked={locked}
             toggleLock={() =>
               this.setState(toggleLock, () => {
@@ -138,20 +103,54 @@ export class Guide extends React.Component<IGuide & Props, State> {
                 track('tool', 'guide', `locked/${this.state.locked}`);
               })
             }
-            setColor={this._setColor}
+            setColor={this.updateColor}
           />
         </GuideElement>
       </div>
     );
   }
 
-  private _setColor = (color: Color) => {
+  private bindKeys = () => {
+    mousetrap.bind(ARROW_KEYS, ({ shiftKey, key }) => {
+      if (isLocked(this.state)) {
+        return;
+      }
+
+      const { orientation, x, y } = this.state;
+      const isHorizontal = orientation === GuideOrientation.HORIZONTAL;
+      const value = shiftKey ? 10 : 1;
+      const { x: nx, y: ny } = getPositionByKey(key, x, y, value);
+      const moveTo = isHorizontal ? move(0, ny) : move(nx, 0);
+
+      this.setState(moveTo, () =>
+        setPositionInDOM(this.el.current, this.state.x, this.state.y)
+      );
+    });
+
+    mousetrap.bind(horizontalVerticalKeys, ({ key }) => {
+      if (key !== this.state.orientation) {
+        this.updateRotate();
+      }
+    });
+
+    mousetrap.bind(COLOR_KEYS, ({ key }) => {
+      this.updateColor(getColorByKey(key));
+    });
+  }
+
+  private unbindKeys = () => {
+    mousetrap.unbind(ARROW_KEYS);
+    mousetrap.unbind(horizontalVerticalKeys);
+    mousetrap.unbind(COLOR_KEYS);
+  }
+
+  private updateColor = (color: Color) => {
     this.setState(setColor(color), () => {
       track('tool', 'guide', `color/${this.state.color}`);
     });
-  };
+  }
 
-  private _rotate = () => {
+  private updateRotate = () => {
     const next = isHorizontalOrientation(this.state.orientation)
       ? GuideOrientation.VERTICAL
       : GuideOrientation.HORIZONTAL;
@@ -159,15 +158,15 @@ export class Guide extends React.Component<IGuide & Props, State> {
       setPositionInDOM(this.el.current, this.state.x, this.state.y);
       track('tool', 'guide', `rotate/${this.state.orientation}`);
     });
-  };
+  }
 }
 
-interface GuideElementProps {
+interface IGuideElementProps {
   color: string;
   isHorizontal: boolean;
 }
 
-const GuideElement = styled.div<GuideElementProps>`
+const GuideElement = styled.div<IGuideElementProps>`
   position: fixed;
   width: ${({ isHorizontal }) => (isHorizontal ? '100vw' : '1px')};
   height: ${({ isHorizontal }) => (isHorizontal ? '1px' : '100vh')};

@@ -16,12 +16,13 @@ import { Guide } from '../components/guide/Guide';
 import { OnionImage } from '../components/onionImage/OnionImage';
 import { Ruler } from '../components/ruler/Ruler';
 import { Toolbox } from '../components/toolbox/Toolbox';
-import { AppStore } from '../reducers';
-import { HelpStore } from '../reducers/help';
-import { ToolsStore } from '../reducers/tools';
+import { IAppStore } from '../reducers';
+import { IHelpStore } from '../reducers/help';
+import { IToolsStore } from '../reducers/tools';
+import { factory as ColumnFactory } from './column/factory';
+import { IColumn } from './column/IColumn';
 import { initializeAnalytics, track } from './core/analytics';
 import { factory as GridFactory } from './grid/factory';
-import { factory as ColumnFactory } from './column/factory';
 import { IGrid } from './grid/IGrid';
 import { factory as GuideFactory } from './guide/factory';
 import { IGuide } from './guide/IGuide';
@@ -31,11 +32,10 @@ import { IOnionImage } from './onionImage/IOnionImage';
 import { factory as RulerFactory } from './ruler/factory';
 import { IRuler } from './ruler/IRuler';
 import { Tool } from './toolbox/Tool';
-import { IColumn } from './column/IColumn';
 
-interface Props {
-  help: HelpStore;
-  tools: ToolsStore;
+interface IProps {
+  help: IHelpStore;
+  tools: IToolsStore;
   columns: IColumn[];
   grids: IGrid[];
   guides: IGuide[];
@@ -55,18 +55,18 @@ interface Props {
   toggleHelpVisibility: () => void;
 }
 
-class AppView extends React.Component<Props> {
+class AppView extends React.Component<IProps> {
   constructor(props) {
     super(props);
     initializeAnalytics();
   }
 
-  async showOpenDialogImage(): Promise<string[]> {
+  public async showOpenDialogImage(): Promise<string[]> {
     track('dialog', 'open-file', 'onion');
     return await ipc.callMain('show-open-dialog-image');
   }
 
-  create = async (tool: Tool) => {
+  public create = async (tool: Tool) => {
     switch (tool) {
       case Tool.GUIDE:
         this.props.addGuide(GuideFactory());
@@ -88,9 +88,9 @@ class AppView extends React.Component<Props> {
         }
         break;
     }
-  };
+  }
 
-  render() {
+  public render() {
     const { columns, grids, guides, onions, rulers, tools, help } = this.props;
     const isToolsVisible = tools.visible;
     const isHelpVisible = help.visible;
@@ -138,23 +138,23 @@ class AppView extends React.Component<Props> {
           ))}
         </ToolsWrapper>
 
-        {isHelpVisible && <Help close={this._toggleHelp} />}
+        {isHelpVisible && <Help close={this.toggleHelp} />}
         <Toolbox
           x={10}
           y={10}
-          toggleVisibility={this._setVisible}
+          toggleVisibility={this.setVisible}
           isStuffVisible={isToolsVisible}
           isColumnVisible={isColumnVisible}
           isGridVisible={isGridVisible}
           create={this.create}
-          toggle={this._toggleTool}
-          toggleHelp={this._toggleHelp}
+          toggle={this.toggleTool}
+          toggleHelp={this.toggleHelp}
         />
       </>
     );
   }
 
-  private _toggleTool = (tool: Tool) => {
+  private toggleTool = (tool: Tool) => {
     switch (tool) {
       case Tool.GRID:
         const isGridVisible = R.gt(R.length(this.props.grids), 0);
@@ -177,34 +177,34 @@ class AppView extends React.Component<Props> {
         }
         break;
     }
-  };
+  }
 
-  private _setVisible = () => {
+  private setVisible = () => {
     track('app', 'tools', `visibility/${!this.props.tools.visible}`);
     this.props.toggleToolsVisibility();
-  };
+  }
 
-  private _toggleHelp = () => {
+  private toggleHelp = () => {
     track('app', 'help', `visibility/${this.props.help.visible}`);
     this.props.toggleHelpVisibility();
-  };
+  }
 }
 
 const App = connect(
-  (store: AppStore, ownProps) => store,
+  (store: IAppStore, ownProps) => store,
   {
-    addGrid,
-    removeGrid,
     addColumn,
-    removeColumn,
+    addGrid,
     addGuide,
-    removeGuide,
     addOnion,
-    removeOnion,
     addRuler,
+    removeColumn,
+    removeGrid,
+    removeGuide,
+    removeOnion,
     removeRuler,
-    toggleToolsVisibility,
-    toggleHelpVisibility
+    toggleHelpVisibility,
+    toggleToolsVisibility
   }
 )(AppView);
 

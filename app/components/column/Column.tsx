@@ -7,12 +7,12 @@ export const Column = ({ width, height, color, opacity }: IColumn) => (
   <Element data={createColumn(width, height, 20, color)} opacity={opacity} />
 );
 
-interface Props {
+interface IProps {
   data: string;
   opacity: number;
 }
 
-const Element = styled.div<Props>`
+const Element = styled.div<IProps>`
   position: fixed;
   top: 0;
   left: 0;

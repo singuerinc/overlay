@@ -1,5 +1,5 @@
-import { GuideOrientation } from './GuideOrientation';
 import { Color } from '../../utils/Color';
+import { GuideOrientation } from './GuideOrientation';
 
 export interface IGuide {
   id: string;

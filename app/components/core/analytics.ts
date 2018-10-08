@@ -1,6 +1,6 @@
 import Analytics from 'electron-ga';
-import * as uuid from 'uuid/v4';
 import * as store from 'store';
+import * as uuid from 'uuid/v4';
 
 const trackingCode = 'UA-50962418-2';
 const appVersion = '0.5.0';
@@ -13,9 +13,9 @@ store.set('userId', userId);
 store.set('optOut', false);
 
 const analytics = new Analytics(trackingCode, {
-  userId,
   appName: 'Overlay',
-  appVersion
+  appVersion,
+  userId
 });
 
 export const track = (
@@ -24,7 +24,7 @@ export const track = (
   label: string,
   value: number = 1
 ) => {
-  console.log('Tracking', `v${appVersion}`, category, action, label, value);
+  // console.log('Tracking', `v${appVersion}`, category, action, label, value);
   analytics.send('event', { ec: category, ea: action, el: label, ev: value });
 };
 

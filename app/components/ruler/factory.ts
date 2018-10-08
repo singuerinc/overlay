@@ -3,14 +3,14 @@ import { Color } from '../../utils/Color';
 import { IRuler } from './IRuler';
 
 const factory = (id: string = uuid(), props = {}): IRuler => ({
+  color: Color.RED,
+  height: 400,
   id,
+  locked: false,
+  opacity: 0.5,
+  width: 400,
   x: 250,
   y: 250,
-  width: 400,
-  height: 400,
-  opacity: 0.5,
-  color: Color.RED,
-  locked: false,
   ...props
 });
 

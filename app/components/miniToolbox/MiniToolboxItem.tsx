@@ -2,6 +2,62 @@ import * as React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import Tooltip from 'tooltip.js';
 
+export const Element = styled.li`
+  background-color: #111111;
+  color: #f4f4f4;
+  display: inline-block;
+  text-align: center;
+  justify-content: center;
+  padding: 6px 8px;
+  margin: 0;
+  transition: background-color 100ms ease;
+
+  &:hover {
+    cursor: pointer;
+    svg {
+      stroke: #999;
+    }
+  }
+`;
+
+interface IProps {
+  title: string;
+  placement?: string;
+  onClick?: () => void;
+}
+
+export class MiniToolboxItem extends React.Component<IProps> {
+  private el: React.RefObject<HTMLLIElement> = React.createRef();
+  private tooltip: Tooltip;
+
+  public componentDidMount() {
+    this.tooltip = new Tooltip(this.el.current, {
+      container: this.el.current,
+      offset: this.props.placement === 'bottom' ? '0, 5' : '0, 5',
+      placement: this.props.placement || 'bottom',
+      title: this.props.title
+    });
+  }
+
+  public componentWillUpdate(nextProps, nextState) {
+    this.tooltip.updateTitleContent(nextProps.title);
+  }
+
+  public componentWillUnmount() {
+    this.tooltip.dispose();
+  }
+
+  public render() {
+    const { onClick, children } = this.props;
+    return (
+      <Element innerRef={this.el} onClick={onClick}>
+        {children}
+      </Element>
+    );
+  }
+}
+
+/* tslint:disable */
 injectGlobal`
   .tooltip {
     position: absolute;
@@ -56,58 +112,3 @@ injectGlobal`
       margin: 5px;
   }
 `;
-
-export const Element = styled.li`
-  background-color: #111111;
-  color: #f4f4f4;
-  display: inline-block;
-  text-align: center;
-  justify-content: center;
-  padding: 6px 8px;
-  margin: 0;
-  transition: background-color 100ms ease;
-
-  &:hover {
-    cursor: pointer;
-    svg {
-      stroke: #999;
-    }
-  }
-`;
-
-interface Props {
-  title: string;
-  placement?: string;
-  onClick?: () => void;
-}
-
-export class MiniToolboxItem extends React.Component<Props> {
-  private el: React.RefObject<HTMLLIElement> = React.createRef();
-  private tooltip: Tooltip;
-
-  componentDidMount() {
-    this.tooltip = new Tooltip(this.el.current, {
-      placement: this.props.placement || 'bottom',
-      container: this.el.current,
-      title: this.props.title,
-      offset: this.props.placement === 'bottom' ? '0, 5' : '0, 5'
-    });
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    this.tooltip.updateTitleContent(nextProps.title);
-  }
-
-  componentWillUnmount() {
-    this.tooltip.dispose();
-  }
-
-  render() {
-    const { onClick, children } = this.props;
-    return (
-      <Element innerRef={this.el} onClick={onClick}>
-        {children}
-      </Element>
-    );
-  }
-}

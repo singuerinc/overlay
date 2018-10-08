@@ -1,12 +1,12 @@
-import { GuideOrientation } from './GuideOrientation';
 import { isHorizontalOrientation } from '../helpers/orientation';
+import { GuideOrientation } from './GuideOrientation';
 
-interface State {
+interface IState {
   x: number;
   y: number;
 }
 
-export const rotate = (orientation: GuideOrientation) => ({ x, y }: State) => {
+export const rotate = (orientation: GuideOrientation) => ({ x, y }: IState) => {
   const isHorizontal = isHorizontalOrientation(orientation);
 
   if (isHorizontal) {

@@ -3,10 +3,10 @@ import { Color } from '../../utils/Color';
 import { IColumn } from './IColumn';
 
 export const factory = (id: string = uuid(), props = {}): IColumn => ({
-  id,
-  width: 100,
-  height: 100,
   color: Color.RED,
+  height: 100,
+  id,
   opacity: 0.1,
+  width: 100,
   ...props
 });

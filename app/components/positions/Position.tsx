@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import { GuideOrientation } from '../guide/GuideOrientation';
 import { isHorizontalOrientation } from '../helpers/orientation';
 
-interface Props {
+interface IProps {
   x: number;
   y: number;
   orientation: GuideOrientation;
   color: string;
 }
 
-export const Position = ({ x, y, orientation, color }: Props) => {
+export const Position = ({ x, y, orientation, color }: IProps) => {
   const isHorizontal = isHorizontalOrientation(orientation);
   const value = isHorizontal ? y : x;
   const axis = isHorizontal ? 'Y' : 'X';
@@ -24,12 +24,12 @@ export const Position = ({ x, y, orientation, color }: Props) => {
   );
 };
 
-interface PositionElementProps {
+interface IPositionElementProps {
   isHorizontal: boolean;
   color: string;
 }
 
-const PositionElement = styled.div<PositionElementProps>`
+const PositionElement = styled.div<IPositionElementProps>`
   position: relative;
   top: ${({ isHorizontal }) => (isHorizontal ? '-8px' : '0')};
   left: ${({ isHorizontal }) => (isHorizontal ? '0' : '-25px')};

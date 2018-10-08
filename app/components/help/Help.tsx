@@ -15,15 +15,15 @@ interface IProps {
 class Element extends React.Component<IProps> {
   private el: React.RefObject<HTMLDivElement> = React.createRef();
 
-  componentDidMount() {
+  public componentDidMount() {
     startListeningToIgnoreMouseEvents(this.el.current);
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     stopListeningToIgnoreMouseEvents(this.el.current);
   }
 
-  render() {
+  public render() {
     const { className, close } = this.props;
     return (
       <div ref={this.el} className={className}>

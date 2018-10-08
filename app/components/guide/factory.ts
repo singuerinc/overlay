@@ -4,11 +4,11 @@ import { GuideOrientation } from './GuideOrientation';
 import { IGuide } from './IGuide';
 
 export const factory = (id: string = uuid(), props = {}): IGuide => ({
+  color: Color.RED,
   id,
+  locked: false,
+  orientation: GuideOrientation.HORIZONTAL,
   x: 0,
   y: 100,
-  orientation: GuideOrientation.HORIZONTAL,
-  color: Color.RED,
-  locked: false,
   ...props
 });

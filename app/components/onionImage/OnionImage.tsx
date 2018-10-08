@@ -2,13 +2,14 @@ import * as interactjs from 'interactjs';
 import * as mousetrap from 'mousetrap';
 import * as React from 'react';
 import styled from 'styled-components';
+import { track } from '../core/analytics';
 import {
   move,
+  resize,
   setInverted,
   setOpacity,
   toggleInverted,
-  toggleLock,
-  resize
+  toggleLock
 } from '../core/reducer';
 import { Coords } from '../helpers/Coords';
 import { ARROW_KEYS, getPositionByKey } from '../helpers/getPositionByKey';
@@ -23,9 +24,8 @@ import { Size } from '../helpers/Size';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { IOnionImage } from './IOnionImage';
 import { OnionToolbox } from './OnionToolbox';
-import { track } from '../core/analytics';
 
-interface State {
+interface IState {
   opacity: number;
   inverted: boolean;
   visible: boolean;
@@ -60,13 +60,13 @@ const OnionImageWrapper = styled.div`
   }
 `;
 
-interface OnionImageElementProps {
+interface IOnionImageElementProps {
   opacity: number;
   inverted: boolean;
   visible: boolean;
 }
 
-const OnionImageElement = styled.img<OnionImageElementProps>`
+const OnionImageElement = styled.img<IOnionImageElementProps>`
   opacity: ${({ opacity }) => opacity};
   filter: invert(${({ inverted }) => (inverted ? '100%' : '0%')});
   display: ${({ visible }) => (visible ? 'block' : 'none')};
@@ -76,15 +76,111 @@ const opacityNumberKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
 const opacityLettersKeys = ['=', '+', '-', '_'];
 const invertKeys = 'i';
 
-interface Props {
+interface IProps {
   remove: () => void;
 }
 
-export class OnionImage extends React.Component<IOnionImage & Props, State> {
+export class OnionImage extends React.Component<IOnionImage & IProps, IState> {
+  public static getDerivedStateFromProps(nextProps, prevState) {
+    return { ...nextProps, ...prevState };
+  }
   private el: React.RefObject<HTMLDivElement> = React.createRef();
   private image: React.RefObject<HTMLImageElement> = React.createRef();
 
-  bindKeys = () => {
+  public componentDidMount() {
+    const el = this.el.current as HTMLDivElement;
+    const image = this.image.current as HTMLImageElement;
+
+    startListeningToIgnoreMouseEvents(this.el.current);
+    startListeningAndSwapZIndex(this.el.current);
+    setPositionInDOM(this.el.current, this.state.x, this.state.y);
+
+    image.onload = (() => {
+      this.setState(resize(image.width, image.height));
+    }).bind(this);
+
+    el.addEventListener('mouseover', this.bindKeys);
+    el.addEventListener('mouseout', this.unbindKeys);
+
+    interactjs(el).draggable({
+      onmove: ({ dx, dy, target }) => {
+        if (this.state.locked) {
+          return;
+        }
+
+        const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
+        const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
+
+        setPositionInDOM(target, x, y);
+
+        this.setState(move(x, y));
+      }
+    });
+  }
+
+  public componentWillUnmount() {
+    const el = this.el.current as HTMLDivElement;
+
+    stopListeningToIgnoreMouseEvents(el);
+    stopListeningAndSwapZIndex(el);
+    this.unbindKeys();
+
+    el.removeEventListener('moseover', this.bindKeys);
+    el.removeEventListener('mouseout', this.unbindKeys);
+  }
+
+  public render() {
+    const { src, remove } = this.props;
+    const {
+      opacity,
+      visible,
+      inverted,
+      x,
+      y,
+      height,
+      width,
+      locked
+    } = this.state;
+    return (
+      <OnionImageWrapper innerRef={this.el}>
+        <OnionImageElement
+          innerRef={this.image}
+          src={src}
+          visible={visible}
+          opacity={opacity}
+          inverted={inverted}
+        />
+        <Coords x={x} y={y} />
+        <Size width={width} height={height} />
+        <OnionToolbox
+          opacity={opacity}
+          inverted={inverted}
+          setInverted={(value) =>
+            this.setState(setInverted(value), () => {
+              track('tool', 'onion', `inverted/${this.state.inverted}`);
+            })
+          }
+          setOpacity={(value) =>
+            this.setState(setOpacity(value), () => {
+              track('tool', 'onion', `opacity/${this.state.opacity}`);
+            })
+          }
+          toggleLock={() =>
+            this.setState(toggleLock, () => {
+              interactjs(this.el.current as HTMLDivElement).styleCursor(
+                !this.state.locked
+              );
+              track('tool', 'onion', `locked/${this.state.locked}`);
+            })
+          }
+          remove={remove}
+          locked={locked}
+        />
+      </OnionImageWrapper>
+    );
+  }
+
+  private bindKeys = () => {
     mousetrap.bind(opacityNumberKeys, ({ key }) => {
       const val = parseInt(key, 10) * 0.1;
       const opacity = parseFloat((val === 0 ? 1 : val).toFixed(1));
@@ -124,109 +220,12 @@ export class OnionImage extends React.Component<IOnionImage & Props, State> {
         setPositionInDOM(this.el.current, this.state.x, this.state.y);
       });
     });
-  };
+  }
 
-  unbindKeys = () => {
+  private unbindKeys = () => {
     mousetrap.unbind(opacityLettersKeys);
     mousetrap.unbind(opacityNumberKeys);
     mousetrap.unbind(invertKeys);
     mousetrap.unbind(ARROW_KEYS);
-  };
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return { ...nextProps, ...prevState };
-  }
-
-  componentDidMount() {
-    const el = this.el.current as HTMLDivElement;
-    const image = this.image.current as HTMLImageElement;
-
-    startListeningToIgnoreMouseEvents(this.el.current);
-    startListeningAndSwapZIndex(this.el.current);
-    setPositionInDOM(this.el.current, this.state.x, this.state.y);
-
-    image.onload = (() => {
-      this.setState(resize(image.width, image.height));
-    }).bind(this);
-
-    el.addEventListener('mouseover', this.bindKeys);
-    el.addEventListener('mouseout', this.unbindKeys);
-
-    interactjs(el).draggable({
-      onmove: ({ dx, dy, target }) => {
-        if (this.state.locked) {
-          return;
-        }
-
-        const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
-        const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
-
-        setPositionInDOM(target, x, y);
-
-        this.setState(move(x, y));
-      }
-    });
-  }
-
-  componentWillUnmount() {
-    const el = this.el.current as HTMLDivElement;
-
-    stopListeningToIgnoreMouseEvents(el);
-    stopListeningAndSwapZIndex(el);
-    this.unbindKeys();
-
-    el.removeEventListener('mouseover', this.bindKeys);
-    el.removeEventListener('mouseout', this.unbindKeys);
-  }
-
-  render() {
-    const { src, remove } = this.props;
-    const {
-      opacity,
-      visible,
-      inverted,
-      x,
-      y,
-      height,
-      width,
-      locked
-    } = this.state;
-    return (
-      <OnionImageWrapper innerRef={this.el}>
-        <OnionImageElement
-          innerRef={this.image}
-          src={src}
-          visible={visible}
-          opacity={opacity}
-          inverted={inverted}
-        />
-        <Coords x={x} y={y} />
-        <Size width={width} height={height} />
-        <OnionToolbox
-          opacity={opacity}
-          inverted={inverted}
-          setInverted={(inverted) =>
-            this.setState(setInverted(inverted), () => {
-              track('tool', 'onion', `inverted/${this.state.inverted}`);
-            })
-          }
-          setOpacity={(opacity) =>
-            this.setState(setOpacity(opacity), () => {
-              track('tool', 'onion', `opacity/${this.state.opacity}`);
-            })
-          }
-          toggleLock={() =>
-            this.setState(toggleLock, () => {
-              interactjs(this.el.current as HTMLDivElement).styleCursor(
-                !this.state.locked
-              );
-              track('tool', 'onion', `locked/${this.state.locked}`);
-            })
-          }
-          remove={remove}
-          locked={locked}
-        />
-      </OnionImageWrapper>
-    );
   }
 }

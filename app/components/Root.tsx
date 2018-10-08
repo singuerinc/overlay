@@ -4,16 +4,17 @@ import { Store } from 'redux';
 import { injectGlobal } from 'styled-components';
 import { App } from './App';
 
-interface Props {
+interface IProps {
   store: Store;
 }
 
-export const Root = (props: Props) => (
+export const Root = (props: IProps) => (
   <Provider store={props.store}>
     <App />
   </Provider>
 );
 
+/* tslint:disable */
 injectGlobal`
   * {
     -webkit-font-smoothing: antialiased;

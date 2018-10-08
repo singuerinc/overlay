@@ -22,7 +22,7 @@ import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { IRuler } from './IRuler';
 import { RulerToolbox } from './RulerToolbox';
 
-interface State {
+interface IState {
   x: number;
   y: number;
   width: number;
@@ -32,19 +32,19 @@ interface State {
   locked: boolean;
 }
 
-interface Props {
+interface IProps {
   remove: () => void;
 }
 
-export class Ruler extends React.Component<IRuler & Props, State> {
-  private el: React.RefObject<HTMLDivElement> = React.createRef();
-  private ruler: React.RefObject<HTMLDivElement> = React.createRef();
-
-  static getDerivedStateFromProps(nextProps, prevState) {
+export class Ruler extends React.Component<IRuler & IProps, IState> {
+  public static getDerivedStateFromProps(nextProps, prevState) {
     return { ...nextProps, ...prevState };
   }
 
-  componentDidMount() {
+  private el: React.RefObject<HTMLDivElement> = React.createRef();
+  private ruler: React.RefObject<HTMLDivElement> = React.createRef();
+
+  public componentDidMount() {
     const el = this.el.current as HTMLDivElement;
     const ruler = this.ruler.current as HTMLDivElement;
 
@@ -97,7 +97,7 @@ export class Ruler extends React.Component<IRuler & Props, State> {
     el.addEventListener('mouseout', this.unbindKeys);
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     const el = this.el.current as HTMLDivElement;
 
     stopListeningToIgnoreMouseEvents(el);
@@ -108,32 +108,7 @@ export class Ruler extends React.Component<IRuler & Props, State> {
     el.removeEventListener('mouseout', this.unbindKeys);
   }
 
-  bindKeys = () => {
-    const el = this.el.current as HTMLDivElement;
-
-    mousetrap.bind(ARROW_KEYS, ({ shiftKey, key }) => {
-      if (this.state.locked) {
-        return;
-      }
-
-      const { x, y } = this.state;
-      const value = shiftKey ? 10 : 1;
-
-      this.setState(getPositionByKey(key, x, y, value), () => {
-        setPositionInDOM(el, this.state.x, this.state.y);
-      });
-    });
-
-    mousetrap.bind(COLOR_KEYS, ({ key }) => {
-      this._setColor(getColorByKey(key));
-    });
-  };
-
-  unbindKeys = () => {
-    mousetrap.unbind(ARROW_KEYS);
-  };
-
-  render() {
+  public render() {
     const { remove } = this.props;
     const { x, y, width, height, opacity, color, locked } = this.state;
     return (
@@ -158,17 +133,42 @@ export class Ruler extends React.Component<IRuler & Props, State> {
               track('tool', 'ruler', `locked/${this.state.locked}`);
             });
           }}
-          setColor={this._setColor}
+          setColor={this.updateColor}
         />
       </RulerWrapper>
     );
   }
 
-  private _setColor = (color: Color) => {
+  private bindKeys = () => {
+    const el = this.el.current as HTMLDivElement;
+
+    mousetrap.bind(ARROW_KEYS, ({ shiftKey, key }) => {
+      if (this.state.locked) {
+        return;
+      }
+
+      const { x, y } = this.state;
+      const value = shiftKey ? 10 : 1;
+
+      this.setState(getPositionByKey(key, x, y, value), () => {
+        setPositionInDOM(el, this.state.x, this.state.y);
+      });
+    });
+
+    mousetrap.bind(COLOR_KEYS, ({ key }) => {
+      this.updateColor(getColorByKey(key));
+    });
+  }
+
+  private unbindKeys = () => {
+    mousetrap.unbind(ARROW_KEYS);
+  }
+
+  private updateColor = (color: Color) => {
     this.setState(setColor(color), () => {
       track('tool', 'ruler', `color/${this.state.color}`);
     });
-  };
+  }
 }
 
 const RulerWrapper = styled.div`
@@ -196,14 +196,14 @@ const RulerWrapper = styled.div`
   }
 `;
 
-interface RulerElementProps {
+interface IRulerElementProps {
   width: number;
   height: number;
   opacity: number;
   color: string;
 }
 
-const RulerElement = styled.div<RulerElementProps>`
+const RulerElement = styled.div<IRulerElementProps>`
   position: relative;
   top: 0;
   left: 0;
