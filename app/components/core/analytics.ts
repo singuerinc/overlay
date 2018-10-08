@@ -3,7 +3,7 @@ import * as uuid from 'uuid/v4';
 import * as store from 'store';
 
 const trackingCode = 'UA-50962418-2';
-const appVersion = '4.0.1';
+const appVersion = '0.5.0';
 
 const firstRun = store.get('firstRun') || true;
 const userId = store.get('userId') || uuid();

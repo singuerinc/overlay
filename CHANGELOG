@@ -1,3 +1,10 @@
+0.5.0
+==================
+
+  * feat: add columns tool
+  * refactor: better toolbox icon colors
+  * refactor: use redux for state
+
 0.4.1
 ==================
 
