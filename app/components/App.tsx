@@ -31,6 +31,7 @@ import { factory as OnionFactory } from './onionImage/factory';
 import { IOnionImage } from './onionImage/IOnionImage';
 import { factory as RulerFactory } from './ruler/factory';
 import { IRuler } from './ruler/IRuler';
+import { Settings } from './settings/Settings';
 import { Tool } from './toolbox/Tool';
 
 interface IProps {
@@ -139,6 +140,7 @@ class AppView extends React.Component<IProps> {
         </ToolsWrapper>
 
         {isHelpVisible && <Help close={this.toggleHelp} />}
+        {<Settings close={this.toggleHelp} />}
         <Toolbox
           x={10}
           y={10}
