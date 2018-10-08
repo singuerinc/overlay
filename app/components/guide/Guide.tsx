@@ -4,6 +4,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Color } from '../../utils/Color';
 import { track } from '../core/analytics';
+import Key from '../core/Key';
 import { move, setColor, toggleLock } from '../core/reducer';
 import { COLOR_KEYS, getColorByKey } from '../helpers/getColorByKey';
 import { ARROW_KEYS, getPositionByKey } from '../helpers/getPositionByKey';
@@ -138,9 +139,14 @@ export class Guide extends React.Component<IGuide & IProps, IState> {
     mousetrap.bind(COLOR_KEYS, ({ key }) => {
       this.updateColor(getColorByKey(key));
     });
+
+    mousetrap.bind([Key.BACKSPACE, Key.DEL], () => {
+      this.props.remove();
+    });
   }
 
   private unbindKeys = () => {
+    mousetrap.unbind([Key.BACKSPACE, Key.DEL]);
     mousetrap.unbind(ARROW_KEYS);
     mousetrap.unbind(horizontalVerticalKeys);
     mousetrap.unbind(COLOR_KEYS);
