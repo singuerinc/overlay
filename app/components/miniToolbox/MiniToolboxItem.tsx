@@ -36,6 +36,17 @@ injectGlobal`
     margin-right: 0;
   }
 
+  .tooltip[x-placement^='right'] .tooltip-arrow {
+    border-width: 5px 5px 5px 0;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+    left: -5px;
+    top: calc(50% - 5px);
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   .tooltip .tooltip-arrow {
       width: 0;
       height: 0;
