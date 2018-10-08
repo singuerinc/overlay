@@ -80,10 +80,7 @@ interface Props {
   remove: () => void;
 }
 
-export default class OnionImage extends React.Component<
-  IOnionImage & Props,
-  State
-> {
+export class OnionImage extends React.Component<IOnionImage & Props, State> {
   private el: React.RefObject<HTMLDivElement> = React.createRef();
   private image: React.RefObject<HTMLImageElement> = React.createRef();
 

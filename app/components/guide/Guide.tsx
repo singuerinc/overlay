@@ -37,7 +37,7 @@ interface Props {
   remove: () => void;
 }
 
-export default class Guide extends React.Component<IGuide & Props, State> {
+export class Guide extends React.Component<IGuide & Props, State> {
   private el: React.RefObject<HTMLDivElement> = React.createRef();
 
   static getDerivedStateFromProps(nextProps, prevState) {

@@ -3,22 +3,25 @@ import * as R from 'ramda';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { addColumn, removeColumn } from '../actions/columns';
 import { addGrid, removeGrid } from '../actions/grids';
 import { addGuide, removeGuide } from '../actions/guides';
 import { toggleVisibility as toggleHelpVisibility } from '../actions/help';
 import { addOnion, removeOnion } from '../actions/onions';
 import { addRuler, removeRuler } from '../actions/rulers';
 import { toggleVisibility as toggleToolsVisibility } from '../actions/tools';
+import { Column } from '../components/column/Column';
 import { Grid } from '../components/grid/Grid';
-import Guide from '../components/guide/Guide';
-import OnionImage from '../components/onionImage/OnionImage';
-import Ruler from '../components/ruler/Ruler';
+import { Guide } from '../components/guide/Guide';
+import { OnionImage } from '../components/onionImage/OnionImage';
+import { Ruler } from '../components/ruler/Ruler';
 import { Toolbox } from '../components/toolbox/Toolbox';
 import { AppStore } from '../reducers';
 import { HelpStore } from '../reducers/help';
 import { ToolsStore } from '../reducers/tools';
 import { initializeAnalytics, track } from './core/analytics';
 import { factory as GridFactory } from './grid/factory';
+import { factory as ColumnFactory } from './column/factory';
 import { IGrid } from './grid/IGrid';
 import { factory as GuideFactory } from './guide/factory';
 import { IGuide } from './guide/IGuide';
@@ -28,16 +31,20 @@ import { IOnionImage } from './onionImage/IOnionImage';
 import { factory as RulerFactory } from './ruler/factory';
 import { IRuler } from './ruler/IRuler';
 import { Tool } from './toolbox/Tool';
+import { IColumn } from './column/IColumn';
 
 interface Props {
   help: HelpStore;
   tools: ToolsStore;
+  columns: IColumn[];
   grids: IGrid[];
   guides: IGuide[];
   onions: IOnionImage[];
   rulers: IRuler[];
   addGrid: (grid: IGrid) => void;
   removeGrid: (grid: IGrid) => void;
+  addColumn: (column: IColumn) => void;
+  removeColumn: (column: IColumn) => void;
   addGuide: (guide: IGuide) => void;
   removeGuide: (guide: IGuide) => void;
   addOnion: (onion: IOnionImage) => void;
@@ -84,16 +91,20 @@ class AppView extends React.Component<Props> {
   };
 
   render() {
-    const { grids, guides, onions, rulers, tools, help } = this.props;
+    const { columns, grids, guides, onions, rulers, tools, help } = this.props;
     const isToolsVisible = tools.visible;
     const isHelpVisible = help.visible;
     const isGridVisible = R.gt(R.length(grids), 0);
+    const isColumnVisible = R.gt(R.length(columns), 0);
 
     return (
       <>
         <ToolsWrapper visible={isToolsVisible}>
           {grids.map((grid: IGrid) => (
             <Grid key={grid.id} {...grid} />
+          ))}
+          {columns.map((column: IColumn) => (
+            <Column key={column.id} {...column} />
           ))}
           {rulers.map((ruler: IRuler) => (
             <Ruler
@@ -133,23 +144,38 @@ class AppView extends React.Component<Props> {
           y={10}
           toggleVisibility={this._setVisible}
           isStuffVisible={isToolsVisible}
+          isColumnVisible={isColumnVisible}
           isGridVisible={isGridVisible}
           create={this.create}
-          toggle={this._toggleGrid}
+          toggle={this._toggleTool}
           toggleHelp={this._toggleHelp}
         />
       </>
     );
   }
 
-  private _toggleGrid = () => {
-    const isGridVisible = R.gt(R.length(this.props.grids), 0);
-    if (isGridVisible) {
-      this.props.removeGrid(this.props.grids[0]);
-      track('tool', 'grid', 'remove');
-    } else {
-      this.props.addGrid(GridFactory());
-      track('tool', 'grid', 'add');
+  private _toggleTool = (tool: Tool) => {
+    switch (tool) {
+      case Tool.GRID:
+        const isGridVisible = R.gt(R.length(this.props.grids), 0);
+        if (isGridVisible) {
+          this.props.removeGrid(this.props.grids[0]);
+          track('tool', 'grid', 'remove');
+        } else {
+          this.props.addGrid(GridFactory());
+          track('tool', 'grid', 'add');
+        }
+        break;
+      case Tool.COLUMN:
+        const isColumnVisible = R.gt(R.length(this.props.columns), 0);
+        if (isColumnVisible) {
+          this.props.removeColumn(this.props.columns[0]);
+          track('tool', 'grid', 'remove');
+        } else {
+          this.props.addColumn(ColumnFactory());
+          track('tool', 'grid', 'add');
+        }
+        break;
     }
   };
 
@@ -169,6 +195,8 @@ const App = connect(
   {
     addGrid,
     removeGrid,
+    addColumn,
+    removeColumn,
     addGuide,
     removeGuide,
     addOnion,
