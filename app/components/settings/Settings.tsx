@@ -1,5 +1,10 @@
+import * as R from 'ramda';
 import * as React from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { updateAllSettings } from '../../actions/settings';
+import { IAppStore } from '../../reducers';
+import { ISettingsStore } from '../../reducers/settings';
 import {
   startListeningToIgnoreMouseEvents,
   stopListeningToIgnoreMouseEvents
@@ -10,23 +15,18 @@ import { Toggle } from './Toggle';
 
 interface IProps {
   className?: string;
-  close: () => void;
+  settings: ISettingsStore;
+  // close: () => void;
+  updateAllSettings: (settings: ISettingsStore) => void;
 }
 
-interface IState {
-  var1: boolean;
-  var2: boolean;
-  var3: boolean;
-}
-
-class Element extends React.Component<IProps, IState> {
-  public state = {
-    var1: true,
-    var2: true,
-    var3: true
-  };
-
+class SettingsComponent extends React.Component<IProps> {
   private el: React.RefObject<HTMLDivElement> = React.createRef();
+
+  private saveSettings = R.curry((path: string[], value: boolean) => () => {
+    const settings = R.assocPath(path, value, this.props.settings);
+    this.props.updateAllSettings(settings);
+  });
 
   public componentDidMount() {
     startListeningToIgnoreMouseEvents(this.el.current);
@@ -37,11 +37,16 @@ class Element extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { className, close } = this.props;
+    const { className, settings } = this.props;
     return (
       <div ref={this.el} className={className}>
         <CloseButton>
-          <MiniToolboxItem title="" onClick={close}>
+          <MiniToolboxItem
+            title=""
+            onClick={() => {
+              //
+            }}
+          >
             <MiniToolboxIcon icon="x" />
           </MiniToolboxItem>
         </CloseButton>
@@ -50,15 +55,16 @@ class Element extends React.Component<IProps, IState> {
           <table>
             <tbody>
               <tr>
-                <td>Setting 1</td>
+                <td>
+                  <h3>Allow analytics</h3>
+                  <p>
+                    Help us improve Overlay by sending anonymous usage stats
+                  </p>
+                </td>
                 <td>
                   <Toggle
-                    onClick={() => {
-                      this.setState((state) => ({
-                        var1: !state.var1
-                      }));
-                    }}
-                    checked={this.state.var1}
+                    onClick={this.saveSettings(['var1'], !settings.var1)}
+                    checked={settings.var1}
                   />
                 </td>
               </tr>
@@ -66,12 +72,8 @@ class Element extends React.Component<IProps, IState> {
                 <td>Setting 2</td>
                 <td>
                   <Toggle
-                    onClick={() => {
-                      this.setState((state) => ({
-                        var2: !state.var2
-                      }));
-                    }}
-                    checked={this.state.var2}
+                    onClick={this.saveSettings(['var2'], !settings.var2)}
+                    checked={settings.var2}
                   />
                 </td>
               </tr>
@@ -79,12 +81,8 @@ class Element extends React.Component<IProps, IState> {
                 <td>Setting 3</td>
                 <td>
                   <Toggle
-                    onClick={() => {
-                      this.setState((state) => ({
-                        var3: !state.var3
-                      }));
-                    }}
-                    checked={this.state.var3}
+                    onClick={this.saveSettings(['var3'], !settings.var3)}
+                    checked={settings.var3}
                   />
                 </td>
               </tr>
@@ -102,7 +100,7 @@ const CloseButton = styled.ul`
   left: 0;
 `;
 
-export const Settings = styled(Element)`
+const SettingsView = styled(SettingsComponent)`
   position: fixed;
   top: 50%;
   left: 50%;
@@ -148,3 +146,10 @@ export const Settings = styled(Element)`
     flex: 1 0 50%;
   }
 `;
+
+export const Settings = connect(
+  (store: IAppStore, ownProps) => ({ settings: store.settings }),
+  {
+    updateAllSettings
+  }
+)(SettingsView);
