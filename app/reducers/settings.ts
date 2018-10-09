@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import {
   SET_SETTING_ALLOW_ANALYTICS,
-  TOGGLE_SETTINGS_VISIBILITY,
+  SET_SETTINGS_VISIBILITY,
   UPDATE_ALL_SETTINGS
 } from '../actions/settings';
 import { track } from '../components/core/analytics';
@@ -34,10 +34,10 @@ export const settings = (
         ...store,
         allowAnalytics: payload
       };
-    case TOGGLE_SETTINGS_VISIBILITY:
+    case SET_SETTINGS_VISIBILITY:
       return {
         ...store,
-        visible: !store.visible
+        visible: payload
       };
   }
 

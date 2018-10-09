@@ -6,11 +6,11 @@ import styled from 'styled-components';
 import { addColumn, removeColumn } from '../actions/columns';
 import { addGrid, removeGrid } from '../actions/grids';
 import { addGuide, removeGuide } from '../actions/guides';
-import { toggleVisibility as toggleHelpVisibility } from '../actions/help';
+import { setVisibility as setHelpVisibility } from '../actions/help';
 import { addOnion, removeOnion } from '../actions/onions';
 import { addRuler, removeRuler } from '../actions/rulers';
-import { toggleVisibility as toggleSettingsVisibility } from '../actions/settings';
-import { toggleVisibility as toggleToolsVisibility } from '../actions/tools';
+import { setVisibility as setSettingsVisibility } from '../actions/settings';
+import { setVisibility as setToolsVisibility } from '../actions/tools';
 import { Column } from '../components/column/Column';
 import { Grid } from '../components/grid/Grid';
 import { Guide } from '../components/guide/Guide';
@@ -55,9 +55,9 @@ interface IProps {
   removeOnion: (onion: IOnionImage) => void;
   addRuler: (ruler: IRuler) => void;
   removeRuler: (ruler: IRuler) => void;
-  toggleHelpVisibility: () => void;
-  toggleSettingsVisibility: () => void;
-  toggleToolsVisibility: () => void;
+  setHelpVisibility: (value: boolean) => void;
+  setSettingsVisibility: (value: boolean) => void;
+  setToolsVisibility: (value: boolean) => void;
 }
 
 class AppView extends React.Component<IProps> {
@@ -107,9 +107,12 @@ class AppView extends React.Component<IProps> {
     const isGridVisible = R.gt(R.length(grids), 0);
     const isColumnVisible = R.gt(R.length(columns), 0);
 
+    const shouldDisplayTools =
+      !isHelpVisible && !isSettingsVisible && isToolsVisible;
+
     return (
       <>
-        <ToolsWrapper visible={isToolsVisible}>
+        <ToolsWrapper visible={shouldDisplayTools}>
           {grids.map((grid: IGrid) => (
             <Grid key={grid.id} {...grid} />
           ))}
@@ -148,8 +151,10 @@ class AppView extends React.Component<IProps> {
           ))}
         </ToolsWrapper>
 
-        {isHelpVisible && <Help close={this.toggleHelp} />}
-        {isSettingsVisible && <Settings close={this.toggleSettings} />}
+        {isHelpVisible && <Help close={() => this.setHelpVisibility(false)} />}
+        {isSettingsVisible && (
+          <Settings close={() => this.setSettingsVisibility(false)} />
+        )}
         <Toolbox
           x={10}
           y={10}
@@ -160,9 +165,13 @@ class AppView extends React.Component<IProps> {
           isStuffVisible={isToolsVisible}
           create={this.create}
           toggle={this.toggleTool}
-          toggleHelp={this.toggleHelp}
-          toggleSettings={this.toggleSettings}
-          toggleVisibility={this.setVisible}
+          toggleHelp={() => this.setHelpVisibility(!this.props.help.visible)}
+          toggleSettings={() =>
+            this.setSettingsVisibility(!this.props.settings.visible)
+          }
+          toggleVisibility={() =>
+            this.setToolVisibility(!this.props.tools.visible)
+          }
         />
       </>
     );
@@ -193,19 +202,23 @@ class AppView extends React.Component<IProps> {
     }
   }
 
-  private setVisible = () => {
-    track('app', 'tools', `visibility/${!this.props.tools.visible}`);
-    this.props.toggleToolsVisibility();
+  private setToolVisibility = (value: boolean) => {
+    track('app', 'tools', `visibility/${value}`);
+    this.props.setToolsVisibility(value);
   }
 
-  private toggleHelp = () => {
-    track('app', 'help', `visibility/${this.props.help.visible}`);
-    this.props.toggleHelpVisibility();
+  private setHelpVisibility = (value: boolean) => {
+    track('app', 'help', `visibility/${value}`);
+    this.props.setHelpVisibility(value);
+    this.props.setToolsVisibility(!value);
+    this.props.setSettingsVisibility(false);
   }
 
-  private toggleSettings = () => {
-    track('app', 'settings', `visibility/${this.props.settings.visible}`);
-    this.props.toggleSettingsVisibility();
+  private setSettingsVisibility = (value: boolean) => {
+    track('app', 'settings', `visibility/${value}`);
+    this.props.setSettingsVisibility(value);
+    this.props.setToolsVisibility(!value);
+    this.props.setHelpVisibility(false);
   }
 }
 
@@ -222,9 +235,9 @@ const App = connect(
     removeGuide,
     removeOnion,
     removeRuler,
-    toggleHelpVisibility,
-    toggleSettingsVisibility,
-    toggleToolsVisibility
+    setHelpVisibility,
+    setSettingsVisibility,
+    setToolsVisibility
   }
 )(AppView);
 

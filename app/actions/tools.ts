@@ -1,5 +1,6 @@
-export const TOGGLE_TOOLS_VISIBILITY = 'TOGGLE_TOOLS_VISIBILITY';
+export const SET_TOOLS_VISIBILITY = 'SET_TOOLS_VISIBILITY';
 
-export const toggleVisibility = () => ({
-  type: TOGGLE_TOOLS_VISIBILITY
+export const setVisibility = (value: boolean) => ({
+  payload: value,
+  type: SET_TOOLS_VISIBILITY
 });
