@@ -8,7 +8,7 @@ const appVersion = '0.5.0';
 const firstRun = store.get('firstRun') || true;
 const userId = store.get('userId') || uuid();
 
-store.set('firstRun', firstRun);
+store.set('firstRun', false);
 store.set('userId', userId);
 store.set('optOut', false);
 
@@ -24,7 +24,7 @@ export const track = (
   label: string,
   value: number = 1
 ) => {
-  // console.log('Tracking', `v${appVersion}`, category, action, label, value);
+  console.log('Tracking', `v${appVersion}`, category, action, label, value);
   analytics.send('event', { ec: category, ea: action, el: label, ev: value });
 };
 

@@ -14,13 +14,16 @@ import { ToolboxItemDumb } from './ToolboxItemDumb';
 interface IProps {
   x: number;
   y: number;
-  isStuffVisible: boolean;
   isColumnVisible: boolean;
   isGridVisible: boolean;
+  isHelpVisible: boolean;
+  isSettingsVisible: boolean;
+  isStuffVisible: boolean;
   toggleVisibility: () => void;
   create: (tool: Tool) => void;
   toggle: (tool: Tool) => void;
   toggleHelp: () => void;
+  toggleSettings: () => void;
 }
 
 interface IState {
@@ -62,15 +65,18 @@ export class Toolbox extends React.Component<IProps, IState> {
 
   public render() {
     const {
-      isStuffVisible,
       isColumnVisible,
       isGridVisible,
+      isHelpVisible,
+      isSettingsVisible,
+      isStuffVisible,
       x,
       y,
       create,
       toggle,
       toggleVisibility,
-      toggleHelp
+      toggleHelp,
+      toggleSettings
     } = this.props;
 
     return (
@@ -116,8 +122,11 @@ export class Toolbox extends React.Component<IProps, IState> {
             <MiniToolboxIcon active={isColumnVisible} icon="pause" />
           </MiniToolboxItem>
           <ToolSpace />
-          <MiniToolboxItem title="Show help" onClick={toggleHelp}>
-            <MiniToolboxIcon icon="help-circle" />
+          <MiniToolboxItem title="Settings" onClick={toggleSettings}>
+            <MiniToolboxIcon active={isSettingsVisible} icon="settings" />
+          </MiniToolboxItem>
+          <MiniToolboxItem title="Help" onClick={toggleHelp}>
+            <MiniToolboxIcon active={isHelpVisible} icon="help-circle" />
           </MiniToolboxItem>
         </MenuWrapper>
       </Wrapper>

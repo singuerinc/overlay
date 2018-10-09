@@ -1,16 +1,18 @@
 import { AnyAction } from 'redux';
-import { UPDATE_ALL_SETTINGS } from '../actions/settings';
+import {
+  SET_SETTING_ALLOW_ANALYTICS,
+  TOGGLE_SETTINGS_VISIBILITY,
+  UPDATE_ALL_SETTINGS
+} from '../actions/settings';
 
 export interface ISettingsStore {
-  var1: boolean;
-  var2: boolean;
-  var3: boolean;
+  visible: boolean;
+  allowAnalytics: boolean;
 }
 
 const initialStore: ISettingsStore = {
-  var1: true,
-  var2: true,
-  var3: false
+  allowAnalytics: true,
+  visible: false
 };
 
 export const settings = (
@@ -19,12 +21,20 @@ export const settings = (
 ): ISettingsStore => {
   switch (type) {
     case UPDATE_ALL_SETTINGS:
-      const newStore = {
+      return {
         ...store,
         ...payload
       };
-      console.log('yay!', store, payload, newStore);
-      return newStore;
+    case SET_SETTING_ALLOW_ANALYTICS:
+      return {
+        ...store,
+        allowAnalytics: payload
+      };
+    case TOGGLE_SETTINGS_VISIBILITY:
+      return {
+        ...store,
+        visible: !store.visible
+      };
   }
 
   return store;
