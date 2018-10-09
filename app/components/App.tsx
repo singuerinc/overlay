@@ -140,7 +140,7 @@ class AppView extends React.Component<IProps> {
         </ToolsWrapper>
 
         {isHelpVisible && <Help close={this.toggleHelp} />}
-        {<Settings close={this.toggleHelp} />}
+        <Settings />
         <Toolbox
           x={10}
           y={10}

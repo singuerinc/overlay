@@ -10,6 +10,7 @@ import { guides } from './guides';
 import { help, IHelpStore } from './help';
 import { onions } from './onions';
 import { rulers } from './rulers';
+import { ISettingsStore, settings } from './settings';
 import { IToolsStore, tools } from './tools';
 
 export interface IAppStore {
@@ -19,6 +20,7 @@ export interface IAppStore {
   onions: IOnionImage[];
   rulers: IRuler[];
   tools: IToolsStore;
+  settings: ISettingsStore;
   help: IHelpStore;
 }
 
@@ -29,6 +31,7 @@ const rootReducer = combineReducers<IAppStore>({
   help,
   onions,
   rulers,
+  settings,
   tools
 });
 
