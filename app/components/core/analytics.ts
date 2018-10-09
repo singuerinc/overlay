@@ -2,13 +2,12 @@ import Analytics from 'electron-ga';
 import * as uuid from 'uuid/v4';
 import { store, StoreKey } from './AppStore';
 
-const trackingCode = 'UA-50962418-2';
-const appVersion = '0.5.0';
-
-const firstRun = store.get(StoreKey.APP_FIRST_RUN, true) === true;
-const userId = store.get(StoreKey.APP_FIRST_RUN, uuid());
 const allowAnalytics = (): boolean =>
   store.get(StoreKey.SETTING_ALLOW_ANALYTICS, true);
+
+const trackingCode = 'UA-50962418-2';
+const appVersion = '0.5.0';
+const userId = store.get(StoreKey.APP_USER_ID, uuid());
 
 store.set(StoreKey.APP_USER_ID, userId);
 
@@ -30,15 +29,9 @@ export const track = (
   }
 };
 
-export const initializeAnalytics = () => {
-  store.set(StoreKey.APP_FIRST_RUN, false);
-
+export const initAnalytics = (): boolean => {
   const allow = store.get(StoreKey.SETTING_ALLOW_ANALYTICS, true);
   store.set(StoreKey.SETTING_ALLOW_ANALYTICS, allow);
-
-  if (allow) {
-    track('app', 'first-run', String(firstRun));
-  }
 
   return allow;
 };
