@@ -1,8 +1,13 @@
-0.5.1 (unreleased)
+0.6.0
 ==================
 
-  * chore: tslint config
+  * feat: settings view
+  * feat: opt-out analytics
+  * feat: shortcut to delete guides/rulers/onions
   * fix: ruler doesn't change z-index
+  * fix: round guide & onion position
+  * chore: typescript 3
+  * chore: tslint config
 
 0.5.0
 ==================
