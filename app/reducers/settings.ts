@@ -1,11 +1,11 @@
 import { AnyAction } from 'redux';
-import * as storejs from 'store';
 import {
   SET_SETTING_ALLOW_ANALYTICS,
   TOGGLE_SETTINGS_VISIBILITY,
   UPDATE_ALL_SETTINGS
 } from '../actions/settings';
 import { track } from '../components/core/analytics';
+import { store as appStore, StoreKey } from '../components/core/AppStore';
 
 export interface ISettingsStore {
   visible: boolean;
@@ -13,7 +13,7 @@ export interface ISettingsStore {
 }
 
 const initialStore: ISettingsStore = {
-  allowAnalytics: storejs.get('allowAnalitycs') || true,
+  allowAnalytics: false,
   visible: false
 };
 
@@ -29,7 +29,7 @@ export const settings = (
       };
     case SET_SETTING_ALLOW_ANALYTICS:
       track('settings', 'allowAnalitycs', payload);
-      storejs.set('allowAnalitycs', payload);
+      appStore.set(StoreKey.SETTING_ALLOW_ANALYTICS, payload);
       return {
         ...store,
         allowAnalytics: payload

@@ -1,16 +1,16 @@
 import Analytics from 'electron-ga';
-import * as store from 'store';
 import * as uuid from 'uuid/v4';
+import { store, StoreKey } from './AppStore';
 
 const trackingCode = 'UA-50962418-2';
 const appVersion = '0.5.0';
 
-const firstRun = store.get('firstRun') || true;
-const userId = store.get('userId') || uuid();
-const allowAnalytics = (): boolean => store.get('allowAnalytics') || true;
+const firstRun = store.get(StoreKey.APP_FIRST_RUN, true) === true;
+const userId = store.get(StoreKey.APP_FIRST_RUN, uuid());
+const allowAnalytics = (): boolean =>
+  store.get(StoreKey.SETTING_ALLOW_ANALYTICS, true);
 
-store.set('firstRun', false);
-store.set('userId', userId);
+store.set(StoreKey.APP_USER_ID, userId);
 
 const analytics = new Analytics(trackingCode, {
   appName: 'Overlay',
@@ -31,5 +31,14 @@ export const track = (
 };
 
 export const initializeAnalytics = () => {
-  track('app', 'first-run', firstRun);
+  store.set(StoreKey.APP_FIRST_RUN, false);
+
+  const allow = store.get(StoreKey.SETTING_ALLOW_ANALYTICS, true);
+  store.set(StoreKey.SETTING_ALLOW_ANALYTICS, allow);
+
+  if (allow) {
+    track('app', 'first-run', String(firstRun));
+  }
+
+  return allow;
 };

@@ -1,10 +1,15 @@
 import * as React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
+import { setAllowAnalytics } from './actions/settings';
+import { initializeAnalytics } from './components/core/analytics';
 import { Root } from './components/Root';
 import { configureStore } from './store/configureStore';
 
 const store = configureStore({});
+const allow = initializeAnalytics();
+
+store.dispatch(setAllowAnalytics(allow));
 
 render(
   <AppContainer>
