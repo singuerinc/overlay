@@ -60,8 +60,8 @@ export class Guide extends React.Component<IGuide & IProps, IState> {
 
         const { x, y, orientation } = this.state;
         const isHorizontal = isHorizontalOrientation(orientation);
-        const newX = isHorizontal ? 0 : x + dx;
-        const newY = isHorizontal ? y + dy : 0;
+        const newX = Math.round(isHorizontal ? 0 : x + dx);
+        const newY = Math.round(isHorizontal ? y + dy : 0);
 
         setPositionInDOM(target, newX, newY);
 
@@ -199,7 +199,7 @@ const GuideElement = styled.div<IGuideElementProps>`
 
   & ${MiniToolboxWrapper} {
     opacity: 0;
-    transition: opacity 300ms ease;
+    transition: opacity 100ms ease;
   }
 
   &:hover ${MiniToolboxWrapper} {
