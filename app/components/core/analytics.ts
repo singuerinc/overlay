@@ -6,7 +6,7 @@ const allowAnalytics = (): boolean =>
   store.get(StoreKey.SETTING_ALLOW_ANALYTICS, true);
 
 const trackingCode = 'UA-50962418-2';
-const appVersion = '0.5.0';
+const appVersion = '0.6.0';
 const userId = store.get(StoreKey.APP_USER_ID, uuid());
 
 store.set(StoreKey.APP_USER_ID, userId);
