@@ -1,5 +1,5 @@
 import { AnyAction } from 'redux';
-import { TOGGLE_TOOLS_VISIBILITY } from '../actions/tools';
+import { SET_TOOLS_VISIBILITY } from '../actions/tools';
 
 export interface IToolsStore {
   visible: boolean;
@@ -14,10 +14,10 @@ export const tools = (
   { type, payload }: AnyAction
 ): IToolsStore => {
   switch (type) {
-    case TOGGLE_TOOLS_VISIBILITY:
+    case SET_TOOLS_VISIBILITY:
       return {
         ...store,
-        visible: !store.visible
+        visible: payload
       };
   }
 

@@ -1,5 +1,5 @@
 import { AnyAction } from 'redux';
-import { TOGGLE_HELP_VISIBILITY } from '../actions/help';
+import { SET_HELP_VISIBILITY } from '../actions/help';
 
 export interface IHelpStore {
   visible: boolean;
@@ -14,10 +14,10 @@ export const help = (
   { type, payload }: AnyAction
 ): IHelpStore => {
   switch (type) {
-    case TOGGLE_HELP_VISIBILITY:
+    case SET_HELP_VISIBILITY:
       return {
         ...store,
-        visible: !store.visible
+        visible: payload
       };
   }
 
