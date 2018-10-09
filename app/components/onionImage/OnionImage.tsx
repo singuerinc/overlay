@@ -130,7 +130,7 @@ export class OnionImage extends React.Component<IOnionImage & IProps, IState> {
         const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
         const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
 
-        setPositionInDOM(target, parseInt(x, 10), parseInt(y, 10));
+        setPositionInDOM(target, x, y);
 
         this.setState(move(x, y));
       }
