@@ -1,9 +1,7 @@
-import * as R from 'ramda';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { updateAllSettings } from '../../actions/settings';
-import { IAppStore } from '../../reducers';
+import { setAllowAnalytics } from '../../actions/settings';
 import { ISettingsStore } from '../../reducers/settings';
 import {
   startListeningToIgnoreMouseEvents,
@@ -16,17 +14,12 @@ import { Toggle } from './Toggle';
 interface IProps {
   className?: string;
   settings: ISettingsStore;
-  // close: () => void;
-  updateAllSettings: (settings: ISettingsStore) => void;
+  close: () => void;
+  setAllowAnalytics: (value: boolean) => void;
 }
 
 class SettingsComponent extends React.Component<IProps> {
   private el: React.RefObject<HTMLDivElement> = React.createRef();
-
-  private saveSettings = R.curry((path: string[], value: boolean) => () => {
-    const settings = R.assocPath(path, value, this.props.settings);
-    this.props.updateAllSettings(settings);
-  });
 
   public componentDidMount() {
     startListeningToIgnoreMouseEvents(this.el.current);
@@ -41,12 +34,7 @@ class SettingsComponent extends React.Component<IProps> {
     return (
       <div ref={this.el} className={className}>
         <CloseButton>
-          <MiniToolboxItem
-            title=""
-            onClick={() => {
-              //
-            }}
-          >
+          <MiniToolboxItem title="" onClick={this.props.close}>
             <MiniToolboxIcon icon="x" />
           </MiniToolboxItem>
         </CloseButton>
@@ -63,26 +51,10 @@ class SettingsComponent extends React.Component<IProps> {
                 </td>
                 <td>
                   <Toggle
-                    onClick={this.saveSettings(['var1'], !settings.var1)}
-                    checked={settings.var1}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>Setting 2</td>
-                <td>
-                  <Toggle
-                    onClick={this.saveSettings(['var2'], !settings.var2)}
-                    checked={settings.var2}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>Setting 3</td>
-                <td>
-                  <Toggle
-                    onClick={this.saveSettings(['var3'], !settings.var3)}
-                    checked={settings.var3}
+                    onClick={() =>
+                      this.props.setAllowAnalytics(!settings.allowAnalytics)
+                    }
+                    checked={settings.allowAnalytics}
                   />
                 </td>
               </tr>
@@ -121,6 +93,16 @@ const SettingsView = styled(SettingsComponent)`
     color: #495057;
   }
 
+  h3 {
+    margin: 0;
+    padding: 0;
+    color: #495057;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+
   table {
     width: 100%;
   }
@@ -148,8 +130,8 @@ const SettingsView = styled(SettingsComponent)`
 `;
 
 export const Settings = connect(
-  (store: IAppStore, ownProps) => ({ settings: store.settings }),
+  ({ settings }: { settings: ISettingsStore }, ownProps) => ({ settings }),
   {
-    updateAllSettings
+    setAllowAnalytics
   }
 )(SettingsView);

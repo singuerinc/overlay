@@ -9,6 +9,7 @@ import { addGuide, removeGuide } from '../actions/guides';
 import { toggleVisibility as toggleHelpVisibility } from '../actions/help';
 import { addOnion, removeOnion } from '../actions/onions';
 import { addRuler, removeRuler } from '../actions/rulers';
+import { toggleVisibility as toggleSettingsVisibility } from '../actions/settings';
 import { toggleVisibility as toggleToolsVisibility } from '../actions/tools';
 import { Column } from '../components/column/Column';
 import { Grid } from '../components/grid/Grid';
@@ -18,6 +19,7 @@ import { Ruler } from '../components/ruler/Ruler';
 import { Toolbox } from '../components/toolbox/Toolbox';
 import { IAppStore } from '../reducers';
 import { IHelpStore } from '../reducers/help';
+import { ISettingsStore } from '../reducers/settings';
 import { IToolsStore } from '../reducers/tools';
 import { factory as ColumnFactory } from './column/factory';
 import { IColumn } from './column/IColumn';
@@ -35,25 +37,27 @@ import { Settings } from './settings/Settings';
 import { Tool } from './toolbox/Tool';
 
 interface IProps {
-  help: IHelpStore;
-  tools: IToolsStore;
   columns: IColumn[];
+  help: IHelpStore;
   grids: IGrid[];
   guides: IGuide[];
   onions: IOnionImage[];
   rulers: IRuler[];
-  addGrid: (grid: IGrid) => void;
-  removeGrid: (grid: IGrid) => void;
+  settings: ISettingsStore;
+  tools: IToolsStore;
   addColumn: (column: IColumn) => void;
   removeColumn: (column: IColumn) => void;
+  addGrid: (grid: IGrid) => void;
+  removeGrid: (grid: IGrid) => void;
   addGuide: (guide: IGuide) => void;
   removeGuide: (guide: IGuide) => void;
   addOnion: (onion: IOnionImage) => void;
   removeOnion: (onion: IOnionImage) => void;
   addRuler: (ruler: IRuler) => void;
   removeRuler: (ruler: IRuler) => void;
-  toggleToolsVisibility: () => void;
   toggleHelpVisibility: () => void;
+  toggleSettingsVisibility: () => void;
+  toggleToolsVisibility: () => void;
 }
 
 class AppView extends React.Component<IProps> {
@@ -92,9 +96,19 @@ class AppView extends React.Component<IProps> {
   }
 
   public render() {
-    const { columns, grids, guides, onions, rulers, tools, help } = this.props;
+    const {
+      columns,
+      grids,
+      guides,
+      onions,
+      rulers,
+      settings,
+      tools,
+      help
+    } = this.props;
     const isToolsVisible = tools.visible;
     const isHelpVisible = help.visible;
+    const isSettingsVisible = settings.visible;
     const isGridVisible = R.gt(R.length(grids), 0);
     const isColumnVisible = R.gt(R.length(columns), 0);
 
@@ -140,17 +154,20 @@ class AppView extends React.Component<IProps> {
         </ToolsWrapper>
 
         {isHelpVisible && <Help close={this.toggleHelp} />}
-        <Settings />
+        {isSettingsVisible && <Settings close={this.toggleSettings} />}
         <Toolbox
           x={10}
           y={10}
-          toggleVisibility={this.setVisible}
-          isStuffVisible={isToolsVisible}
           isColumnVisible={isColumnVisible}
+          isHelpVisible={isHelpVisible}
           isGridVisible={isGridVisible}
+          isSettingsVisible={isSettingsVisible}
+          isStuffVisible={isToolsVisible}
           create={this.create}
           toggle={this.toggleTool}
           toggleHelp={this.toggleHelp}
+          toggleSettings={this.toggleSettings}
+          toggleVisibility={this.setVisible}
         />
       </>
     );
@@ -190,6 +207,11 @@ class AppView extends React.Component<IProps> {
     track('app', 'help', `visibility/${this.props.help.visible}`);
     this.props.toggleHelpVisibility();
   }
+
+  private toggleSettings = () => {
+    track('app', 'settings', `visibility/${this.props.settings.visible}`);
+    this.props.toggleSettingsVisibility();
+  }
 }
 
 const App = connect(
@@ -206,6 +228,7 @@ const App = connect(
     removeOnion,
     removeRuler,
     toggleHelpVisibility,
+    toggleSettingsVisibility,
     toggleToolsVisibility
   }
 )(AppView);
