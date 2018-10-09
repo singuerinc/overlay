@@ -1,9 +1,16 @@
+import { remote } from 'electron';
 import Analytics from 'electron-ga';
 import * as uuid from 'uuid/v4';
 import { store, StoreKey } from './AppStore';
 
-const allowAnalytics = (): boolean =>
-  store.get(StoreKey.SETTING_ALLOW_ANALYTICS, true);
+const isDevelopment = (r) => r.process.env.NODE_ENV === 'development';
+
+const allowAnalytics = (): boolean => {
+  if (isDevelopment(remote)) {
+    return false;
+  }
+  return store.get(StoreKey.SETTING_ALLOW_ANALYTICS, true);
+};
 
 const trackingCode = 'UA-50962418-2';
 const appVersion = '0.6.0';
@@ -24,7 +31,8 @@ export const track = (
   value: number = 1
 ) => {
   if (allowAnalytics()) {
-    // console.log('Tracking', `v${appVersion}`, category, action, label, value);
+    // tslint:disable-next-line
+    console.log('Tracking', `v${appVersion}`, category, action, label, value);
     analytics.send('event', { ec: category, ea: action, el: label, ev: value });
   }
 };
