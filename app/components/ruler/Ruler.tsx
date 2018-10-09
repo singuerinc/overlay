@@ -62,7 +62,7 @@ export class Ruler extends React.Component<IRuler & IProps, IState> {
         const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
         const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
 
-        setPositionInDOM(el, x, y);
+        setPositionInDOM(el, parseInt(x, 10), parseInt(y, 10));
 
         this.setState(move(x, y));
       }
@@ -183,7 +183,7 @@ const RulerWrapper = styled.div`
 
   & ${Coords}, & ${Size}, & ${MiniToolboxWrapper} {
     opacity: 0;
-    transition: opacity 300ms ease;
+    transition: opacity 100ms ease;
   }
 
   &:hover ${Coords}, &:hover ${Size} {
@@ -193,7 +193,7 @@ const RulerWrapper = styled.div`
   & ${MiniToolboxWrapper} {
     bottom: -18px;
     opacity: 0;
-    transition: all 300ms ease;
+    transition: all 100ms ease;
   }
 
   &:hover ${MiniToolboxWrapper} {

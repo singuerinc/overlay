@@ -42,7 +42,7 @@ const OnionImageWrapper = styled.div`
 
   & ${Coords}, & ${Size} {
     opacity: 0;
-    transition: opacity 300ms ease;
+    transition: opacity 100ms ease;
   }
 
   &:hover ${Coords}, &:hover ${Size} {
@@ -52,7 +52,7 @@ const OnionImageWrapper = styled.div`
   & ${MiniToolboxWrapper} {
     bottom: -18px;
     opacity: 0;
-    transition: all 300ms ease;
+    transition: all 100ms ease;
   }
 
   &:hover ${MiniToolboxWrapper} {
@@ -112,7 +112,7 @@ export class OnionImage extends React.Component<IOnionImage & IProps, IState> {
         const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
         const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
 
-        setPositionInDOM(target, x, y);
+        setPositionInDOM(target, parseInt(x, 10), parseInt(y, 10));
 
         this.setState(move(x, y));
       }
