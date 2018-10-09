@@ -23,7 +23,7 @@ import { ISettingsStore } from '../reducers/settings';
 import { IToolsStore } from '../reducers/tools';
 import { factory as ColumnFactory } from './column/factory';
 import { IColumn } from './column/IColumn';
-import { initializeAnalytics, track } from './core/analytics';
+import { track } from './core/analytics';
 import { factory as GridFactory } from './grid/factory';
 import { IGrid } from './grid/IGrid';
 import { factory as GuideFactory } from './guide/factory';
@@ -61,11 +61,6 @@ interface IProps {
 }
 
 class AppView extends React.Component<IProps> {
-  constructor(props) {
-    super(props);
-    initializeAnalytics();
-  }
-
   public async showOpenDialogImage(): Promise<string[]> {
     track('dialog', 'open-file', 'onion');
     return await ipc.callMain('show-open-dialog-image');
