@@ -64,7 +64,7 @@ export class Ruler extends React.Component<IRuler & IProps, IState> {
         const x = (parseFloat(target.getAttribute('data-x')) || 0) + dx;
         const y = (parseFloat(target.getAttribute('data-y')) || 0) + dy;
 
-        setPositionInDOM(el, parseInt(x, 10), parseInt(y, 10));
+        setPositionInDOM(el, x, y);
 
         this.setState(move(x, y));
       }
