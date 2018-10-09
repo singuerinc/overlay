@@ -5,7 +5,6 @@
   * feat: opt-out analytics
   * feat: shortcut to delete guides/rulers/onions
   * fix: ruler doesn't change z-index
-  * fix: round guide & onion position
   * chore: typescript 3
   * chore: tslint config
 
