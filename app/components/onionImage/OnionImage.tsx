@@ -3,7 +3,7 @@ import * as mousetrap from 'mousetrap';
 import * as React from 'react';
 import styled from 'styled-components';
 import { track } from '../core/analytics';
-import Key from '../core/Key';
+import { Key } from '../core/Key';
 import {
   move,
   resize,
@@ -25,6 +25,8 @@ import { Size } from '../helpers/Size';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { IOnionImage } from './IOnionImage';
 import { OnionToolbox } from './OnionToolbox';
+
+const REMOVE_KEYS = [Key.BACKSPACE, Key.DEL];
 
 interface IState {
   opacity: number;
@@ -73,9 +75,25 @@ const OnionImageElement = styled.img<IOnionImageElementProps>`
   display: ${({ visible }) => (visible ? 'block' : 'none')};
 `;
 
-const opacityNumberKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-const opacityLettersKeys = ['=', '+', '-', '_'];
-const invertKeys = 'i';
+const opacityNumberKeys = [
+  Key.KEY_1,
+  Key.KEY_2,
+  Key.KEY_3,
+  Key.KEY_4,
+  Key.KEY_5,
+  Key.KEY_6,
+  Key.KEY_7,
+  Key.KEY_8,
+  Key.KEY_9,
+  Key.KEY_0
+];
+const opacityLettersKeys = [
+  Key.KEY_EQUAL,
+  Key.KEY_PLUS,
+  Key.KEY_MINUS,
+  Key.KEY_UNDERSCORE
+];
+const INVERT_KEYS = Key.I;
 
 interface IProps {
   remove: () => void;
@@ -205,11 +223,11 @@ export class OnionImage extends React.Component<IOnionImage & IProps, IState> {
       this.setState(setOpacity(opacity));
     });
 
-    mousetrap.bind([Key.BACKSPACE, Key.DEL], () => {
+    mousetrap.bind(REMOVE_KEYS, () => {
       this.props.remove();
     });
 
-    mousetrap.bind(invertKeys, () => {
+    mousetrap.bind(INVERT_KEYS, () => {
       this.setState(toggleInverted);
     });
 
@@ -231,7 +249,7 @@ export class OnionImage extends React.Component<IOnionImage & IProps, IState> {
     mousetrap.unbind([Key.BACKSPACE, Key.DEL]);
     mousetrap.unbind(opacityLettersKeys);
     mousetrap.unbind(opacityNumberKeys);
-    mousetrap.unbind(invertKeys);
+    mousetrap.unbind(INVERT_KEYS);
     mousetrap.unbind(ARROW_KEYS);
   }
 }

@@ -4,7 +4,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Color } from '../../utils/Color';
 import { track } from '../core/analytics';
-import Key from '../core/Key';
+import { Key } from '../core/Key';
 import { move, setColor, toggleLock } from '../core/reducer';
 import { COLOR_KEYS, getColorByKey } from '../helpers/getColorByKey';
 import { ARROW_KEYS, getPositionByKey } from '../helpers/getPositionByKey';
@@ -32,7 +32,8 @@ interface IState {
   locked: boolean;
 }
 
-const horizontalVerticalKeys = ['v', 'h'];
+const REMOVE_KEYS = [Key.BACKSPACE, Key.DEL];
+const HORIZONTAL_VERTICAL_KEYS = [Key.V, Key.H];
 
 interface IProps {
   remove: () => void;
@@ -130,8 +131,8 @@ export class Guide extends React.Component<IGuide & IProps, IState> {
       );
     });
 
-    mousetrap.bind(horizontalVerticalKeys, ({ key }) => {
-      if (key !== this.state.orientation) {
+    mousetrap.bind(HORIZONTAL_VERTICAL_KEYS, ({ key }) => {
+      if (key !== this.state.orientation.toString()) {
         this.updateRotate();
       }
     });
@@ -140,15 +141,15 @@ export class Guide extends React.Component<IGuide & IProps, IState> {
       this.updateColor(getColorByKey(key));
     });
 
-    mousetrap.bind([Key.BACKSPACE, Key.DEL], () => {
+    mousetrap.bind(REMOVE_KEYS, () => {
       this.props.remove();
     });
   }
 
   private unbindKeys = () => {
-    mousetrap.unbind([Key.BACKSPACE, Key.DEL]);
+    mousetrap.unbind(REMOVE_KEYS);
     mousetrap.unbind(ARROW_KEYS);
-    mousetrap.unbind(horizontalVerticalKeys);
+    mousetrap.unbind(HORIZONTAL_VERTICAL_KEYS);
     mousetrap.unbind(COLOR_KEYS);
   }
 

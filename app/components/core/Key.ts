@@ -1,4 +1,31 @@
-export default {
-  BACKSPACE: 'backspace',
-  DEL: 'del'
-};
+export enum Key {
+  BACKSPACE = 'backspace',
+  DEL = 'del',
+  H = 'h',
+  V = 'v',
+  SHIFT = 'shift',
+  UP = 'up',
+  DOWN = 'down',
+  LEFT = 'left',
+  RIGHT = 'right',
+  B = 'b',
+  G = 'g',
+  O = 'o',
+  R = 'r',
+  Y = 'y',
+  I = 'i',
+  KEY_1 = '1',
+  KEY_2 = '2',
+  KEY_3 = '3',
+  KEY_4 = '4',
+  KEY_5 = '5',
+  KEY_6 = '6',
+  KEY_7 = '7',
+  KEY_8 = '8',
+  KEY_9 = '9',
+  KEY_0 = '0',
+  KEY_EQUAL = '=',
+  KEY_PLUS = '+',
+  KEY_MINUS = '-',
+  KEY_UNDERSCORE = '_'
+}

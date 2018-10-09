@@ -1,12 +1,14 @@
+import { Key } from '../core/Key';
+
 export const ARROW_KEYS = [
-  'up',
-  'shift+up',
-  'down',
-  'shift+down',
-  'left',
-  'shift+left',
-  'right',
-  'shift+right'
+  Key.UP,
+  `${Key.SHIFT}+${Key.UP}`,
+  Key.DOWN,
+  `${Key.SHIFT}+${Key.DOWN}`,
+  Key.LEFT,
+  `${Key.SHIFT}+${Key.LEFT}`,
+  Key.RIGHT,
+  `${Key.SHIFT}+${Key.RIGHT}`
 ];
 
 export const getPositionByKey = (key, x, y, value) => {

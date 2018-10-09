@@ -1,18 +1,19 @@
 import { Color } from '../../utils/Color';
+import { Key } from '../core/Key';
 
-export const COLOR_KEYS: string[] = ['b', 'g', 'o', 'r', 'y'];
+export const COLOR_KEYS: string[] = [Key.B, Key.G, Key.O, Key.R, Key.Y];
 
 export const getColorByKey = (key: string) => {
   switch (key) {
-    case 'r':
+    case Key.R:
       return Color.RED;
-    case 'g':
+    case Key.G:
       return Color.GREEN;
-    case 'b':
+    case Key.B:
       return Color.BLUE;
-    case 'o':
+    case Key.O:
       return Color.ORANGE;
-    case 'y':
+    case Key.Y:
       return Color.YELLOW;
     default:
       return Color.RED;
