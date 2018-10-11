@@ -1,11 +1,13 @@
 import * as R from 'ramda';
 import { AnyAction } from 'redux';
-import { ADD_GUIDE, REMOVE_GUIDE } from '../actions/guides';
+import { ADD_GUIDE, GUIDE_SET_LOCK, REMOVE_GUIDE } from '../actions/guides';
 import { factory } from '../components/guide/factory';
 import { IGuide } from '../components/guide/IGuide';
 import { Tool } from '../components/toolbox/Tool';
 import { track } from '../utils/analytics';
+import { hasSameId, updatePropIfSameId } from '../utils/utils';
 
+const t = track('tool', Tool.GUIDE);
 const initialStore: IGuide[] = [];
 
 export const guides = (
@@ -14,11 +16,15 @@ export const guides = (
 ): IGuide[] => {
   switch (type) {
     case ADD_GUIDE:
-      track('tool', Tool.GUIDE, 'add');
+      t('add');
       return R.append(factory(), store);
     case REMOVE_GUIDE:
-      track('tool', Tool.GUIDE, 'remove');
-      return R.reject(R.equals(payload), store);
+      t('remove');
+      return R.reject((x) => hasSameId(payload, x), store);
+    case GUIDE_SET_LOCK:
+      const { id, locked }: { id: string; locked: boolean } = payload;
+      t(`locked/${locked}`);
+      return R.map((x) => updatePropIfSameId('locked', id, locked, x), store);
   }
   return store;
 };

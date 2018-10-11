@@ -30,9 +30,6 @@ interface IProps {
   rulers: IRuler[];
   settings: ISettingsStore;
   tools: IToolsStore;
-
-  removeGuide: (guide: IGuide) => void;
-  removeOnion: (onion: IOnionImage) => void;
 }
 
 class AppView extends React.Component<IProps> {
@@ -67,22 +64,10 @@ class AppView extends React.Component<IProps> {
             <Ruler key={ruler.id} {...ruler} />
           ))}
           {onions.map((onion: IOnionImage) => (
-            <OnionImage
-              key={onion.id}
-              {...onion}
-              remove={() => {
-                this.props.removeOnion(onion);
-              }}
-            />
+            <OnionImage key={onion.id} {...onion} />
           ))}
           {guides.map((guide: IGuide) => (
-            <Guide
-              key={guide.id}
-              {...guide}
-              remove={() => {
-                this.props.removeGuide(guide);
-              }}
-            />
+            <Guide key={guide.id} {...guide} />
           ))}
         </ToolsWrapper>
 
