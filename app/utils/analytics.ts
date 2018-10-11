@@ -1,7 +1,7 @@
 import { remote } from 'electron';
 import Analytics from 'electron-ga';
 import * as uuid from 'uuid/v4';
-import { store, StoreKey } from './AppStore';
+import { PreferenceKey, preferences } from '../utils/preferences';
 
 const isDevelopment = (r) => r.process.env.NODE_ENV === 'development';
 
@@ -9,14 +9,14 @@ const allowAnalytics = (): boolean => {
   if (isDevelopment(remote)) {
     return false;
   }
-  return store.get(StoreKey.SETTING_ALLOW_ANALYTICS, true);
+  return preferences.get(PreferenceKey.SETTING_ALLOW_ANALYTICS, true);
 };
 
 const trackingCode = 'UA-50962418-2';
 const appVersion = '0.6.0';
-const userId = store.get(StoreKey.APP_USER_ID, uuid());
+const userId = preferences.get(PreferenceKey.APP_USER_ID, uuid());
 
-store.set(StoreKey.APP_USER_ID, userId);
+preferences.set(PreferenceKey.APP_USER_ID, userId);
 
 const analytics = new Analytics(trackingCode, {
   appName: 'Overlay',
@@ -38,8 +38,8 @@ export const track = (
 };
 
 export const initAnalytics = (): boolean => {
-  const allow = store.get(StoreKey.SETTING_ALLOW_ANALYTICS, true);
-  store.set(StoreKey.SETTING_ALLOW_ANALYTICS, allow);
+  const allow = preferences.get(PreferenceKey.SETTING_ALLOW_ANALYTICS, true);
+  preferences.set(PreferenceKey.SETTING_ALLOW_ANALYTICS, allow);
 
   return allow;
 };
