@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { setVisibility as setHelpVisibility } from '../../actions/help';
+import { setVisibility as setSettingsVisibility } from '../../actions/settings';
 import { setAllowAnalytics } from '../../actions/settings';
+import { setVisibility as setToolsVisibility } from '../../actions/tools';
 import { ISettingsStore } from '../../reducers/settings';
 import {
   startListeningToIgnoreMouseEvents,
@@ -14,8 +17,10 @@ import { Toggle } from './Toggle';
 interface IProps {
   className?: string;
   settings: ISettingsStore;
-  close: () => void;
   setAllowAnalytics: (value: boolean) => void;
+  setHelpVisibility: (value: boolean) => void;
+  setSettingsVisibility: (value: boolean) => void;
+  setToolsVisibility: (value: boolean) => void;
 }
 
 class SettingsComponent extends React.Component<IProps> {
@@ -34,7 +39,7 @@ class SettingsComponent extends React.Component<IProps> {
     return (
       <div ref={this.el} className={className}>
         <CloseButton>
-          <MiniToolboxItem title="" onClick={this.props.close}>
+          <MiniToolboxItem title="" onClick={() => this.close()}>
             <MiniToolboxIcon icon="x" />
           </MiniToolboxItem>
         </CloseButton>
@@ -63,6 +68,12 @@ class SettingsComponent extends React.Component<IProps> {
         </div>
       </div>
     );
+  }
+
+  private close() {
+    this.props.setSettingsVisibility(false);
+    this.props.setToolsVisibility(true);
+    this.props.setHelpVisibility(false);
   }
 }
 
@@ -132,6 +143,9 @@ const SettingsView = styled(SettingsComponent)`
 export const Settings = connect(
   ({ settings }: { settings: ISettingsStore }, ownProps) => ({ settings }),
   {
-    setAllowAnalytics
+    setAllowAnalytics,
+    setHelpVisibility,
+    setSettingsVisibility,
+    setToolsVisibility
   }
 )(SettingsView);
