@@ -1,11 +1,13 @@
 import * as interactjs from 'interactjs';
 import * as mousetrap from 'mousetrap';
 import * as React from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { removeGuide, setLockGuide } from '../../actions/guides';
 import { track } from '../../utils/analytics';
 import { Color } from '../../utils/Color';
 import { Key } from '../../utils/Key';
-import { move, setColor, toggleLock } from '../core/reducer';
+import { move, setColor } from '../core/reducer';
 import { COLOR_KEYS, getColorByKey } from '../helpers/getColorByKey';
 import { ARROW_KEYS, getPositionByKey } from '../helpers/getPositionByKey';
 import { setPositionInDOM } from '../helpers/impure';
@@ -23,28 +25,33 @@ import { GuideToolbox } from './GuideToolbox';
 import { IGuide } from './IGuide';
 import { rotate } from './utils';
 
-const isLocked = (state) => state.locked === true;
-
 interface IState {
   x: number;
   y: number;
   orientation: GuideOrientation;
   color: Color;
-  locked: boolean;
 }
 
 const REMOVE_KEYS = [Key.BACKSPACE, Key.DEL];
 const HORIZONTAL_VERTICAL_KEYS = [Key.V, Key.H];
 
 interface IProps {
-  remove: () => void;
+  setLockGuide: (id: string, locked: boolean) => void;
+  removeGuide: (id: string) => void;
 }
 
-export class Guide extends React.Component<IGuide & IProps, IState> {
+class GuideView extends React.Component<IGuide & IProps, IState> {
   public static getDerivedStateFromProps(nextProps, prevState) {
     return { ...nextProps, ...prevState };
   }
   private el: React.RefObject<HTMLDivElement> = React.createRef();
+
+  public componentDidUpdate(prevProps) {
+    const { locked } = this.props;
+    if (locked !== prevProps.locked) {
+      interactjs(this.el.current as HTMLDivElement).styleCursor(!locked);
+    }
+  }
 
   public componentDidMount() {
     const el = this.el.current as HTMLDivElement;
@@ -56,7 +63,7 @@ export class Guide extends React.Component<IGuide & IProps, IState> {
 
     interactjs(el).draggable({
       onmove: ({ dx, dy, target }) => {
-        if (isLocked(this.state)) {
+        if (this.props.locked) {
           return;
         }
 
@@ -88,8 +95,8 @@ export class Guide extends React.Component<IGuide & IProps, IState> {
   }
 
   public render() {
-    const { remove } = this.props;
-    const { orientation, color, locked } = this.state;
+    const { orientation, color } = this.state;
+    const { locked } = this.props;
     const isHorizontal = isHorizontalOrientation(orientation);
     return (
       <GuideElement
@@ -98,16 +105,12 @@ export class Guide extends React.Component<IGuide & IProps, IState> {
         color={color}
       >
         <GuideToolbox
-          remove={remove}
+          // FIXME: don't create functions in render
+          remove={() => this.props.removeGuide(this.props.id)}
           rotate={this.updateRotate}
           locked={locked}
           toggleLock={() =>
-            this.setState(toggleLock, () => {
-              interactjs(this.el.current as HTMLDivElement).styleCursor(
-                !this.state.locked
-              );
-              track('tool', Tool.GUIDE, `locked/${this.state.locked}`);
-            })
+            this.props.setLockGuide(this.props.id, !this.props.locked)
           }
           setColor={this.updateColor}
         />
@@ -117,7 +120,7 @@ export class Guide extends React.Component<IGuide & IProps, IState> {
 
   private bindKeys = () => {
     mousetrap.bind(ARROW_KEYS, ({ shiftKey, key }) => {
-      if (isLocked(this.state)) {
+      if (this.props.locked) {
         return;
       }
 
@@ -143,7 +146,7 @@ export class Guide extends React.Component<IGuide & IProps, IState> {
     });
 
     mousetrap.bind(REMOVE_KEYS, () => {
-      this.props.remove();
+      this.props.removeGuide(this.props.id);
     });
   }
 
@@ -208,3 +211,13 @@ const GuideElement = styled.div<IGuideElementProps>`
     opacity: 1;
   }
 `;
+
+const Guide = connect(
+  null,
+  {
+    removeGuide,
+    setLockGuide
+  }
+)(GuideView);
+
+export { Guide };

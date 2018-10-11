@@ -1,7 +1,9 @@
 import * as interactjs from 'interactjs';
 import * as mousetrap from 'mousetrap';
 import * as React from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { removeOnion, setLockOnion } from '../../actions/onions';
 import { track } from '../../utils/analytics';
 import { Key } from '../../utils/Key';
 import {
@@ -9,8 +11,7 @@ import {
   resize,
   setInverted,
   setOpacity,
-  toggleInverted,
-  toggleLock
+  toggleInverted
 } from '../core/reducer';
 import { Coords } from '../helpers/Coords';
 import { ARROW_KEYS, getPositionByKey } from '../helpers/getPositionByKey';
@@ -37,7 +38,6 @@ interface IState {
   y: number;
   width: number;
   height: number;
-  locked: boolean;
 }
 
 const OnionImageWrapper = styled.div`
@@ -97,15 +97,23 @@ const opacityLettersKeys = [
 const INVERT_KEYS = Key.I;
 
 interface IProps {
-  remove: () => void;
+  removeOnion: (id: string) => void;
+  setLockOnion: (id: string, locked: boolean) => void;
 }
 
-export class OnionImage extends React.Component<IOnionImage & IProps, IState> {
+class OnionImageView extends React.Component<IOnionImage & IProps, IState> {
   public static getDerivedStateFromProps(nextProps, prevState) {
     return { ...nextProps, ...prevState };
   }
   private el: React.RefObject<HTMLDivElement> = React.createRef();
   private image: React.RefObject<HTMLImageElement> = React.createRef();
+
+  public componentDidUpdate(prevProps) {
+    const { locked } = this.props;
+    if (locked !== prevProps.locked) {
+      interactjs(this.el.current as HTMLDivElement).styleCursor(!locked);
+    }
+  }
 
   public componentDidMount() {
     const el = this.el.current as HTMLDivElement;
@@ -124,7 +132,7 @@ export class OnionImage extends React.Component<IOnionImage & IProps, IState> {
 
     interactjs(el).draggable({
       onmove: ({ dx, dy, target }) => {
-        if (this.state.locked) {
+        if (this.props.locked) {
           return;
         }
 
@@ -150,17 +158,8 @@ export class OnionImage extends React.Component<IOnionImage & IProps, IState> {
   }
 
   public render() {
-    const { src, remove } = this.props;
-    const {
-      opacity,
-      visible,
-      inverted,
-      x,
-      y,
-      height,
-      width,
-      locked
-    } = this.state;
+    const { locked, src } = this.props;
+    const { opacity, visible, inverted, x, y, height, width } = this.state;
     return (
       <OnionImageWrapper innerRef={this.el}>
         <OnionImageElement
@@ -186,14 +185,9 @@ export class OnionImage extends React.Component<IOnionImage & IProps, IState> {
             })
           }
           toggleLock={() =>
-            this.setState(toggleLock, () => {
-              interactjs(this.el.current as HTMLDivElement).styleCursor(
-                !this.state.locked
-              );
-              track('tool', Tool.ONION, `locked/${this.state.locked}`);
-            })
+            this.props.setLockOnion(this.props.id, !this.props.locked)
           }
-          remove={remove}
+          remove={() => this.props.removeOnion(this.props.id)}
           locked={locked}
         />
       </OnionImageWrapper>
@@ -225,7 +219,7 @@ export class OnionImage extends React.Component<IOnionImage & IProps, IState> {
     });
 
     mousetrap.bind(REMOVE_KEYS, () => {
-      this.props.remove();
+      this.props.removeOnion(this.props.id);
     });
 
     mousetrap.bind(INVERT_KEYS, () => {
@@ -233,7 +227,7 @@ export class OnionImage extends React.Component<IOnionImage & IProps, IState> {
     });
 
     mousetrap.bind(ARROW_KEYS, ({ shiftKey, key }) => {
-      if (this.state.locked) {
+      if (this.props.locked) {
         return;
       }
 
@@ -254,3 +248,13 @@ export class OnionImage extends React.Component<IOnionImage & IProps, IState> {
     mousetrap.unbind(ARROW_KEYS);
   }
 }
+
+const OnionImage = connect(
+  null,
+  {
+    removeOnion,
+    setLockOnion
+  }
+)(OnionImageView);
+
+export { OnionImage };
