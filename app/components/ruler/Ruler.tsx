@@ -2,11 +2,13 @@ import * as chroma from 'chroma-js';
 import * as interactjs from 'interactjs';
 import * as mousetrap from 'mousetrap';
 import * as React from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { setLockRuler } from '../../actions/rulers';
 import { track } from '../../utils/analytics';
 import { Color } from '../../utils/Color';
 import { Key } from '../../utils/Key';
-import { move, resize, setColor, toggleLock } from '../core/reducer';
+import { move, resize, setColor } from '../core/reducer';
 import { createGrid } from '../grid/utils';
 import { Coords } from '../helpers/Coords';
 import { COLOR_KEYS, getColorByKey } from '../helpers/getColorByKey';
@@ -33,20 +35,27 @@ interface IState {
   height: number;
   opacity: number;
   color: Color;
-  locked: boolean;
 }
 
 interface IProps {
+  setLockRuler: (id: string, locked: boolean) => void;
   remove: () => void;
 }
 
-export class Ruler extends React.Component<IRuler & IProps, IState> {
+class RulerView extends React.Component<IRuler & IProps, IState> {
   public static getDerivedStateFromProps(nextProps, prevState) {
     return { ...nextProps, ...prevState };
   }
 
   private el: React.RefObject<HTMLDivElement> = React.createRef();
   private ruler: React.RefObject<HTMLDivElement> = React.createRef();
+
+  public componentDidUpdate(prevProps) {
+    const { locked } = this.props;
+    if (locked !== prevProps.locked) {
+      interactjs(this.el.current as HTMLDivElement).styleCursor(!locked);
+    }
+  }
 
   public componentDidMount() {
     const el = this.el.current as HTMLDivElement;
@@ -58,7 +67,7 @@ export class Ruler extends React.Component<IRuler & IProps, IState> {
 
     interactjs(el).draggable({
       onmove: ({ dx, dy, target }) => {
-        if (this.state.locked) {
+        if (this.props.locked) {
           return;
         }
 
@@ -79,7 +88,7 @@ export class Ruler extends React.Component<IRuler & IProps, IState> {
         }
       })
       .on('resizemove', ({ rect, target, deltaRect }) => {
-        if (this.state.locked) {
+        if (this.props.locked) {
           return;
         }
 
@@ -113,8 +122,9 @@ export class Ruler extends React.Component<IRuler & IProps, IState> {
   }
 
   public render() {
-    const { remove } = this.props;
-    const { x, y, width, height, opacity, color, locked } = this.state;
+    const { x, y, width, height, opacity, color } = this.state;
+    const { locked, remove } = this.props;
+
     return (
       <RulerWrapper innerRef={this.el}>
         <Coords x={x} y={y} />
@@ -130,12 +140,7 @@ export class Ruler extends React.Component<IRuler & IProps, IState> {
           remove={remove}
           locked={locked}
           toggleLock={() => {
-            this.setState(toggleLock, () => {
-              interactjs(this.el.current as HTMLDivElement).styleCursor(
-                !this.state.locked
-              );
-              track('tool', Tool.RULER, `locked/${this.state.locked}`);
-            });
+            this.props.setLockRuler(this.props.id, !locked);
           }}
           setColor={this.updateColor}
         />
@@ -147,7 +152,7 @@ export class Ruler extends React.Component<IRuler & IProps, IState> {
     const el = this.el.current as HTMLDivElement;
 
     mousetrap.bind(ARROW_KEYS, ({ shiftKey, key }) => {
-      if (this.state.locked) {
+      if (this.props.locked) {
         return;
       }
 
@@ -225,3 +230,12 @@ const RulerElement = styled.div<IRulerElementProps>`
       .alpha(opacity)
       .css()};
 `;
+
+const Ruler = connect(
+  null,
+  {
+    setLockRuler
+  }
+)(RulerView);
+
+export { Ruler };
