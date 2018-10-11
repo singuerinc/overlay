@@ -20,6 +20,7 @@ import {
 } from '../helpers/mouseEvents';
 import { Size } from '../helpers/Size';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
+import { Tool } from '../toolbox/Tool';
 import { IRuler } from './IRuler';
 import { RulerToolbox } from './RulerToolbox';
 
@@ -133,7 +134,7 @@ export class Ruler extends React.Component<IRuler & IProps, IState> {
               interactjs(this.el.current as HTMLDivElement).styleCursor(
                 !this.state.locked
               );
-              track('tool', 'ruler', `locked/${this.state.locked}`);
+              track('tool', Tool.RULER, `locked/${this.state.locked}`);
             });
           }}
           setColor={this.updateColor}
@@ -174,7 +175,7 @@ export class Ruler extends React.Component<IRuler & IProps, IState> {
 
   private updateColor = (color: Color) => {
     this.setState(setColor(color), () => {
-      track('tool', 'ruler', `color/${this.state.color}`);
+      track('tool', Tool.RULER, `color/${this.state.color}`);
     });
   }
 }

@@ -72,7 +72,6 @@ class AppView extends React.Component<IProps> {
               {...ruler}
               remove={() => {
                 this.props.removeRuler(ruler);
-                track('tool', 'ruler', 'remove');
               }}
             />
           ))}
@@ -82,7 +81,6 @@ class AppView extends React.Component<IProps> {
               {...onion}
               remove={() => {
                 this.props.removeOnion(onion);
-                track('tool', 'onion', 'remove');
               }}
             />
           ))}
@@ -92,7 +90,6 @@ class AppView extends React.Component<IProps> {
               {...guide}
               remove={() => {
                 this.props.removeGuide(guide);
-                track('tool', 'guide', 'remove');
               }}
             />
           ))}

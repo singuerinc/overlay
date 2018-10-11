@@ -11,20 +11,19 @@ import { addOnion } from '../../actions/onions';
 import { addRuler } from '../../actions/rulers';
 import { setVisibility as setSettingsVisibility } from '../../actions/settings';
 import { setVisibility as setToolsVisibility } from '../../actions/tools';
+import { IAppStore } from '../../reducers';
+import { IHelpStore } from '../../reducers/help';
+import { ISettingsStore } from '../../reducers/settings';
+import { IToolsStore } from '../../reducers/tools';
+import { track } from '../../utils/analytics';
 import { factory as ColumnFactory } from '../column/factory';
 import { IColumn } from '../column/IColumn';
-import { track } from '../core/analytics';
 import { factory as GridFactory } from '../grid/factory';
 import { IGrid } from '../grid/IGrid';
 import { factory as GuideFactory } from '../guide/factory';
 import { IGuide } from '../guide/IGuide';
 import { draggable } from '../helpers/draggable';
 import { setPositionInDOM } from '../helpers/impure';
-
-import { IAppStore } from '../../reducers';
-import { IHelpStore } from '../../reducers/help';
-import { ISettingsStore } from '../../reducers/settings';
-import { IToolsStore } from '../../reducers/tools';
 import {
   startListeningToIgnoreMouseEvents,
   stopListeningToIgnoreMouseEvents
@@ -83,11 +82,9 @@ class ToolboxView extends React.Component<IProps, IState> {
     switch (tool) {
       case Tool.GUIDE:
         this.props.addGuide(GuideFactory());
-        track('tool', 'guide', 'add');
         break;
       case Tool.RULER:
         this.props.addRuler(RulerFactory());
-        track('tool', 'ruler', 'add');
         break;
       case Tool.ONION:
         const paths: string[] | null = await this.showOpenDialogImage();
@@ -96,7 +93,6 @@ class ToolboxView extends React.Component<IProps, IState> {
             const onion: IOnionImage = OnionFactory();
             onion.src = path;
             this.props.addOnion(onion);
-            track('tool', 'oion', 'add');
           }, paths);
         }
         break;
@@ -210,20 +206,16 @@ class ToolboxView extends React.Component<IProps, IState> {
         const isGridVisible = R.gt(R.length(this.props.grids), 0);
         if (isGridVisible) {
           this.props.removeGrid(this.props.grids[0]);
-          track('tool', 'grid', 'remove');
         } else {
           this.props.addGrid(GridFactory());
-          track('tool', 'grid', 'add');
         }
         break;
       case Tool.COLUMN:
         const isColumnVisible = R.gt(R.length(this.props.columns), 0);
         if (isColumnVisible) {
           this.props.removeColumn(this.props.columns[0]);
-          track('tool', 'grid', 'remove');
         } else {
           this.props.addColumn(ColumnFactory());
-          track('tool', 'grid', 'add');
         }
         break;
     }

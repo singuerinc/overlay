@@ -17,6 +17,7 @@ import {
 } from '../helpers/mouseEvents';
 import { isHorizontalOrientation } from '../helpers/orientation';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
+import { Tool } from '../toolbox/Tool';
 import { GuideOrientation } from './GuideOrientation';
 import { GuideToolbox } from './GuideToolbox';
 import { IGuide } from './IGuide';
@@ -105,7 +106,7 @@ export class Guide extends React.Component<IGuide & IProps, IState> {
               interactjs(this.el.current as HTMLDivElement).styleCursor(
                 !this.state.locked
               );
-              track('tool', 'guide', `locked/${this.state.locked}`);
+              track('tool', Tool.GUIDE, `locked/${this.state.locked}`);
             })
           }
           setColor={this.updateColor}
@@ -155,7 +156,7 @@ export class Guide extends React.Component<IGuide & IProps, IState> {
 
   private updateColor = (color: Color) => {
     this.setState(setColor(color), () => {
-      track('tool', 'guide', `color/${this.state.color}`);
+      track('tool', Tool.GUIDE, `color/${this.state.color}`);
     });
   }
 
@@ -165,7 +166,7 @@ export class Guide extends React.Component<IGuide & IProps, IState> {
       : GuideOrientation.HORIZONTAL;
     this.setState(rotate(next), () => {
       setPositionInDOM(this.el.current, this.state.x, this.state.y);
-      track('tool', 'guide', `rotate/${this.state.orientation}`);
+      track('tool', Tool.GUIDE, `rotate/${this.state.orientation}`);
     });
   }
 }

@@ -23,6 +23,7 @@ import {
 } from '../helpers/mouseEvents';
 import { Size } from '../helpers/Size';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
+import { Tool } from '../toolbox/Tool';
 import { IOnionImage } from './IOnionImage';
 import { OnionToolbox } from './OnionToolbox';
 
@@ -176,12 +177,12 @@ export class OnionImage extends React.Component<IOnionImage & IProps, IState> {
           inverted={inverted}
           setInverted={(value) =>
             this.setState(setInverted(value), () => {
-              track('tool', 'onion', `inverted/${this.state.inverted}`);
+              track('tool', Tool.ONION, `inverted/${this.state.inverted}`);
             })
           }
           setOpacity={(value) =>
             this.setState(setOpacity(value), () => {
-              track('tool', 'onion', `opacity/${this.state.opacity}`);
+              track('tool', Tool.ONION, `opacity/${this.state.opacity}`);
             })
           }
           toggleLock={() =>
@@ -189,7 +190,7 @@ export class OnionImage extends React.Component<IOnionImage & IProps, IState> {
               interactjs(this.el.current as HTMLDivElement).styleCursor(
                 !this.state.locked
               );
-              track('tool', 'onion', `locked/${this.state.locked}`);
+              track('tool', Tool.ONION, `locked/${this.state.locked}`);
             })
           }
           remove={remove}
