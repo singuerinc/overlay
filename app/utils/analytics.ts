@@ -1,5 +1,6 @@
 import { remote } from 'electron';
 import Analytics from 'electron-ga';
+import * as R from 'ramda';
 import * as uuid from 'uuid/v4';
 import { PreferenceKey, preferences } from '../utils/preferences';
 
@@ -24,18 +25,15 @@ const analytics = new Analytics(trackingCode, {
   userId
 });
 
-export const track = (
-  category: string,
-  action: string,
-  label: string,
-  value: number = 1
-) => {
-  if (allowAnalytics()) {
-    // tslint:disable-next-line
-    console.log('Tracking', `v${appVersion}`, category, action, label, value);
-    analytics.send('event', { ec: category, ea: action, el: label, ev: value });
+export const track = R.curry(
+  (category: string, action: string, label: string) => {
+    if (allowAnalytics()) {
+      // tslint:disable-next-line
+      console.log('Tracking', `v${appVersion}`, category, action, label, 1);
+      analytics.send('event', { ec: category, ea: action, el: label, ev: 1 });
+    }
   }
-};
+);
 
 export const initAnalytics = (): boolean => {
   const allow = preferences.get(PreferenceKey.SETTING_ALLOW_ANALYTICS, true);
