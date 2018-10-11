@@ -3,8 +3,8 @@ import { IOnionImage } from '../components/onionImage/IOnionImage';
 export const ADD_ONION = 'ADD_ONION';
 export const REMOVE_ONION = 'REMOVE_ONION';
 
-export const addOnion = (onion: IOnionImage) => ({
-  payload: onion,
+export const addOnion = (path: string) => ({
+  payload: path,
   type: ADD_ONION
 });
 

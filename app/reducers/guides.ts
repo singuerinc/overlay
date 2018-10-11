@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 import { AnyAction } from 'redux';
 import { ADD_GUIDE, REMOVE_GUIDE } from '../actions/guides';
+import { factory } from '../components/guide/factory';
 import { IGuide } from '../components/guide/IGuide';
 import { Tool } from '../components/toolbox/Tool';
 import { track } from '../utils/analytics';
@@ -14,7 +15,7 @@ export const guides = (
   switch (type) {
     case ADD_GUIDE:
       track('tool', Tool.GUIDE, 'add');
-      return R.append(payload, store);
+      return R.append(factory(), store);
     case REMOVE_GUIDE:
       track('tool', Tool.GUIDE, 'remove');
       return R.reject(R.equals(payload), store);

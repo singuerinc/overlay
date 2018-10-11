@@ -1,5 +1,5 @@
 import { Color } from '../../utils/Color';
-import { Key } from '../core/Key';
+import { Key } from '../../utils/Key';
 
 export const COLOR_KEYS: string[] = [Key.B, Key.G, Key.O, Key.R, Key.Y];
 

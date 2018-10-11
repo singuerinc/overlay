@@ -15,7 +15,6 @@ import { IHelpStore } from '../reducers/help';
 import { ISettingsStore } from '../reducers/settings';
 import { IToolsStore } from '../reducers/tools';
 import { IColumn } from './column/IColumn';
-import { track } from './core/analytics';
 import { IGrid } from './grid/IGrid';
 import { IGuide } from './guide/IGuide';
 import { Help } from './help/Help';

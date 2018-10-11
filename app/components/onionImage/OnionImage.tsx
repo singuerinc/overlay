@@ -2,8 +2,8 @@ import * as interactjs from 'interactjs';
 import * as mousetrap from 'mousetrap';
 import * as React from 'react';
 import styled from 'styled-components';
-import { track } from '../core/analytics';
-import { Key } from '../core/Key';
+import { track } from '../../utils/analytics';
+import { Key } from '../../utils/Key';
 import {
   move,
   resize,

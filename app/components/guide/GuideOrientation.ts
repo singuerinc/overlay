@@ -1,4 +1,4 @@
-import { Key } from '../core/Key';
+import { Key } from '../../utils/Key';
 
 export enum GuideOrientation {
   VERTICAL = Key.V,

@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import { SET_HELP_VISIBILITY } from '../actions/help';
-import { track } from '../components/core/analytics';
+import { track } from '../utils/analytics';
 
 export interface IHelpStore {
   visible: boolean;
