@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import { applyMiddleware, createStore } from 'redux';
+import { applyMiddleware, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { setAllowAnalytics } from './actions/settings';
 import { Root } from './components/Root';
@@ -9,7 +9,13 @@ import rootReducer from './reducers';
 import { initAnalytics, track } from './utils/analytics';
 import { PreferenceKey, preferences } from './utils/preferences';
 
-const store = createStore(rootReducer, {}, applyMiddleware(thunk));
+const composeEnhancers =
+  (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(
+  rootReducer,
+  {},
+  composeEnhancers(applyMiddleware(thunk))
+);
 const allow = initAnalytics();
 
 track('app', 'first-run', preferences.get(PreferenceKey.APP_FIRST_RUN, true));
