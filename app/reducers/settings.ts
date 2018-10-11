@@ -35,6 +35,7 @@ export const settings = (
         allowAnalytics: payload
       };
     case SET_SETTINGS_VISIBILITY:
+      track('app', 'settings', `visibility/${payload}`);
       return {
         ...store,
         visible: payload

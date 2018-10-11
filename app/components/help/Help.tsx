@@ -1,5 +1,9 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { setVisibility as setHelpVisibility } from '../../actions/help';
+import { setVisibility as setSettingsVisibility } from '../../actions/settings';
+import { setVisibility as setToolsVisibility } from '../../actions/tools';
 import {
   startListeningToIgnoreMouseEvents,
   stopListeningToIgnoreMouseEvents
@@ -9,7 +13,9 @@ import { MiniToolboxItem } from '../miniToolbox/MiniToolboxItem';
 
 interface IProps {
   className?: string;
-  close: () => void;
+  setHelpVisibility: (value: boolean) => void;
+  setSettingsVisibility: (value: boolean) => void;
+  setToolsVisibility: (value: boolean) => void;
 }
 
 class Element extends React.Component<IProps> {
@@ -24,11 +30,11 @@ class Element extends React.Component<IProps> {
   }
 
   public render() {
-    const { className, close } = this.props;
+    const { className } = this.props;
     return (
       <div ref={this.el} className={className}>
         <CloseButton>
-          <MiniToolboxItem title="" onClick={close}>
+          <MiniToolboxItem title="" onClick={() => this.close()}>
             <MiniToolboxIcon icon="x" />
           </MiniToolboxItem>
         </CloseButton>
@@ -77,6 +83,12 @@ class Element extends React.Component<IProps> {
       </div>
     );
   }
+
+  private close() {
+    this.props.setHelpVisibility(false);
+    this.props.setToolsVisibility(true);
+    this.props.setSettingsVisibility(false);
+  }
 }
 
 const CloseButton = styled.ul`
@@ -85,7 +97,7 @@ const CloseButton = styled.ul`
   left: 0;
 `;
 
-export const Help = styled(Element)`
+const HelpView = styled(Element)`
   position: fixed;
   top: 50%;
   left: 50%;
@@ -131,3 +143,14 @@ export const Help = styled(Element)`
     flex: 1 0 50%;
   }
 `;
+
+const Help = connect(
+  null,
+  {
+    setHelpVisibility,
+    setSettingsVisibility,
+    setToolsVisibility
+  }
+)(HelpView);
+
+export { Help };

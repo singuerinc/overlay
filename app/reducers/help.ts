@@ -1,5 +1,6 @@
 import { AnyAction } from 'redux';
 import { SET_HELP_VISIBILITY } from '../actions/help';
+import { track } from '../components/core/analytics';
 
 export interface IHelpStore {
   visible: boolean;
@@ -15,6 +16,7 @@ export const help = (
 ): IHelpStore => {
   switch (type) {
     case SET_HELP_VISIBILITY:
+      track('app', 'help', `visibility/${payload}`);
       return {
         ...store,
         visible: payload

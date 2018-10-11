@@ -1,5 +1,6 @@
 import { AnyAction } from 'redux';
 import { SET_TOOLS_VISIBILITY } from '../actions/tools';
+import { track } from '../components/core/analytics';
 
 export interface IToolsStore {
   visible: boolean;
@@ -15,6 +16,7 @@ export const tools = (
 ): IToolsStore => {
   switch (type) {
     case SET_TOOLS_VISIBILITY:
+      track('app', 'tools', `visibility/${payload}`);
       return {
         ...store,
         visible: payload
