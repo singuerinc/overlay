@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { removeGuide } from '../actions/guides';
 import { removeOnion } from '../actions/onions';
-import { removeRuler } from '../actions/rulers';
 import { Column } from '../components/column/Column';
 import { Grid } from '../components/grid/Grid';
 import { Guide } from '../components/guide/Guide';
@@ -34,7 +33,6 @@ interface IProps {
 
   removeGuide: (guide: IGuide) => void;
   removeOnion: (onion: IOnionImage) => void;
-  removeRuler: (ruler: IRuler) => void;
 }
 
 class AppView extends React.Component<IProps> {
@@ -66,13 +64,7 @@ class AppView extends React.Component<IProps> {
             <Column key={column.id} {...column} />
           ))}
           {rulers.map((ruler: IRuler) => (
-            <Ruler
-              key={ruler.id}
-              {...ruler}
-              remove={() => {
-                this.props.removeRuler(ruler);
-              }}
-            />
+            <Ruler key={ruler.id} {...ruler} />
           ))}
           {onions.map((onion: IOnionImage) => (
             <OnionImage
@@ -106,8 +98,7 @@ const App = connect(
   (store: IAppStore, ownProps) => store,
   {
     removeGuide,
-    removeOnion,
-    removeRuler
+    removeOnion
   }
 )(AppView);
 
