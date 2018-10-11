@@ -3,7 +3,7 @@ import * as mousetrap from 'mousetrap';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { removeOnion, setLockOnion } from '../../actions/onions';
+import { remove, setLock } from '../../actions/onions';
 import { track } from '../../utils/analytics';
 import { Key } from '../../utils/Key';
 import {
@@ -97,8 +97,8 @@ const opacityLettersKeys = [
 const INVERT_KEYS = Key.I;
 
 interface IProps {
-  removeOnion: (id: string) => void;
-  setLockOnion: (id: string, locked: boolean) => void;
+  remove: (id: string) => void;
+  setLock: (id: string, locked: boolean) => void;
 }
 
 class OnionImageView extends React.Component<IOnionImage & IProps, IState> {
@@ -185,9 +185,9 @@ class OnionImageView extends React.Component<IOnionImage & IProps, IState> {
             })
           }
           toggleLock={() =>
-            this.props.setLockOnion(this.props.id, !this.props.locked)
+            this.props.setLock(this.props.id, !this.props.locked)
           }
-          remove={() => this.props.removeOnion(this.props.id)}
+          remove={() => this.props.remove(this.props.id)}
           locked={locked}
         />
       </OnionImageWrapper>
@@ -219,7 +219,7 @@ class OnionImageView extends React.Component<IOnionImage & IProps, IState> {
     });
 
     mousetrap.bind(REMOVE_KEYS, () => {
-      this.props.removeOnion(this.props.id);
+      this.props.remove(this.props.id);
     });
 
     mousetrap.bind(INVERT_KEYS, () => {
@@ -252,8 +252,8 @@ class OnionImageView extends React.Component<IOnionImage & IProps, IState> {
 const OnionImage = connect(
   null,
   {
-    removeOnion,
-    setLockOnion
+    remove,
+    setLock
   }
 )(OnionImageView);
 

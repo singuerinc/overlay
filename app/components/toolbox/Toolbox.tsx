@@ -3,12 +3,15 @@ import * as R from 'ramda';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { addColumn, removeColumn } from '../../actions/columns';
-import { addGrid, removeGrid } from '../../actions/grids';
-import { addGuide } from '../../actions/guides';
+import {
+  add as addColumn,
+  remove as removeColumn
+} from '../../actions/columns';
+import { add as addGrid, remove as removeGrid } from '../../actions/grids';
+import { add as addGuide } from '../../actions/guides';
 import { setVisibility as setHelpVisibility } from '../../actions/help';
-import { addOnion } from '../../actions/onions';
-import { addRuler } from '../../actions/rulers';
+import { add as addOnion } from '../../actions/onions';
+import { add as addRuler } from '../../actions/rulers';
 import { setVisibility as setSettingsVisibility } from '../../actions/settings';
 import { setVisibility as setToolsVisibility } from '../../actions/tools';
 import { IAppStore } from '../../reducers';

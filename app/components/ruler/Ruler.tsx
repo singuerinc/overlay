@@ -4,7 +4,7 @@ import * as mousetrap from 'mousetrap';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { removeRuler, setLockRuler } from '../../actions/rulers';
+import { remove, setLock } from '../../actions/rulers';
 import { track } from '../../utils/analytics';
 import { Color } from '../../utils/Color';
 import { Key } from '../../utils/Key';
@@ -38,8 +38,8 @@ interface IState {
 }
 
 interface IProps {
-  setLockRuler: (id: string, locked: boolean) => void;
-  removeRuler: (id: string) => void;
+  setLock: (id: string, locked: boolean) => void;
+  remove: (id: string) => void;
 }
 
 class RulerView extends React.Component<IRuler & IProps, IState> {
@@ -138,11 +138,11 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
         />
         <RulerToolbox
           remove={() => {
-            this.props.removeRuler(this.props.id);
+            this.props.remove(this.props.id);
           }}
           locked={locked}
           toggleLock={() => {
-            this.props.setLockRuler(this.props.id, !locked);
+            this.props.setLock(this.props.id, !locked);
           }}
           setColor={this.updateColor}
         />
@@ -171,7 +171,7 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
     });
 
     mousetrap.bind(REMOVE_KEYS, () => {
-      this.props.removeRuler(this.props.id);
+      this.props.remove(this.props.id);
     });
   }
 
@@ -236,8 +236,8 @@ const RulerElement = styled.div<IRulerElementProps>`
 const Ruler = connect(
   null,
   {
-    removeRuler,
-    setLockRuler
+    remove,
+    setLock
   }
 )(RulerView);
 
