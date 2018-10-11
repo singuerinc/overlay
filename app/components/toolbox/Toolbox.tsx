@@ -65,25 +65,16 @@ class ToolboxView extends React.Component<IProps, IState> {
   };
 
   private el: React.RefObject<HTMLUListElement> = React.createRef();
+
   public async showOpenDialogImage(): Promise<string[]> {
     track('dialog', 'open-file', 'onion');
     return await ipc.callMain('show-open-dialog-image');
   }
 
-  public create = async (tool: Tool) => {
-    switch (tool) {
-      case Tool.GUIDE:
-        this.props.addGuide();
-        break;
-      case Tool.RULER:
-        this.props.addRuler();
-        break;
-      case Tool.ONION:
-        const paths: string[] | null = await this.showOpenDialogImage();
-        if (paths) {
-          R.map(this.props.addOnion, paths);
-        }
-        break;
+  public async openDialogToSelectImage() {
+    const paths: string[] | null = await this.showOpenDialogImage();
+    if (!R.isNil(paths)) {
+      R.map(this.props.addOnion, paths);
     }
   }
 
@@ -133,19 +124,19 @@ class ToolboxView extends React.Component<IProps, IState> {
           <ToolSpace />
           <MiniToolboxItem
             title="New guide"
-            onClick={() => this.create(Tool.GUIDE)}
+            onClick={() => this.props.addGuide()}
           >
             <MiniToolboxIcon icon="layout" />
           </MiniToolboxItem>
           <MiniToolboxItem
             title="New ruler"
-            onClick={() => this.create(Tool.RULER)}
+            onClick={() => this.props.addRuler()}
           >
             <MiniToolboxIcon icon="square" />
           </MiniToolboxItem>
           <MiniToolboxItem
             title="New onion image"
-            onClick={() => this.create(Tool.ONION)}
+            onClick={() => this.openDialogToSelectImage()}
           >
             <MiniToolboxIcon icon="image" />
           </MiniToolboxItem>
