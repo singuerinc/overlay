@@ -16,12 +16,8 @@ import { IHelpStore } from '../../reducers/help';
 import { ISettingsStore } from '../../reducers/settings';
 import { IToolsStore } from '../../reducers/tools';
 import { track } from '../../utils/analytics';
-import { factory as ColumnFactory } from '../column/factory';
 import { IColumn } from '../column/IColumn';
-import { factory as GridFactory } from '../grid/factory';
 import { IGrid } from '../grid/IGrid';
-import { factory as GuideFactory } from '../guide/factory';
-import { IGuide } from '../guide/IGuide';
 import { draggable } from '../helpers/draggable';
 import { setPositionInDOM } from '../helpers/impure';
 import {
@@ -30,10 +26,6 @@ import {
 } from '../helpers/mouseEvents';
 import { MiniToolboxIcon } from '../miniToolbox/MiniToolboxIcon';
 import { MiniToolboxItem } from '../miniToolbox/MiniToolboxItem';
-import { factory as OnionFactory } from '../onionImage/factory';
-import { IOnionImage } from '../onionImage/IOnionImage';
-import { factory as RulerFactory } from '../ruler/factory';
-import { IRuler } from '../ruler/IRuler';
 import { Tool } from './Tool';
 import { ToolboxItemDumb } from './ToolboxItemDumb';
 
@@ -51,11 +43,11 @@ interface IProps {
   setSettingsVisibility: (value: boolean) => void;
   setToolsVisibility: (value: boolean) => void;
 
-  addColumn: (column: IColumn) => void;
-  addGrid: (grid: IGrid) => void;
-  addGuide: (guide: IGuide) => void;
-  addOnion: (onion: IOnionImage) => void;
-  addRuler: (ruler: IRuler) => void;
+  addColumn: () => void;
+  addGrid: () => void;
+  addGuide: () => void;
+  addOnion: (src: string) => void;
+  addRuler: () => void;
 
   removeColumn: (column: IColumn) => void;
   removeGrid: (grid: IGrid) => void;
@@ -81,19 +73,15 @@ class ToolboxView extends React.Component<IProps, IState> {
   public create = async (tool: Tool) => {
     switch (tool) {
       case Tool.GUIDE:
-        this.props.addGuide(GuideFactory());
+        this.props.addGuide();
         break;
       case Tool.RULER:
-        this.props.addRuler(RulerFactory());
+        this.props.addRuler();
         break;
       case Tool.ONION:
         const paths: string[] | null = await this.showOpenDialogImage();
         if (paths) {
-          R.map((path: string) => {
-            const onion: IOnionImage = OnionFactory();
-            onion.src = path;
-            this.props.addOnion(onion);
-          }, paths);
+          R.map(this.props.addOnion, paths);
         }
         break;
     }
@@ -207,7 +195,7 @@ class ToolboxView extends React.Component<IProps, IState> {
         if (isGridVisible) {
           this.props.removeGrid(this.props.grids[0]);
         } else {
-          this.props.addGrid(GridFactory());
+          this.props.addGrid();
         }
         break;
       case Tool.COLUMN:
@@ -215,7 +203,7 @@ class ToolboxView extends React.Component<IProps, IState> {
         if (isColumnVisible) {
           this.props.removeColumn(this.props.columns[0]);
         } else {
-          this.props.addColumn(ColumnFactory());
+          this.props.addColumn();
         }
         break;
     }

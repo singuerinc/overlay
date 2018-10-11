@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import { SET_TOOLS_VISIBILITY } from '../actions/tools';
-import { track } from '../components/core/analytics';
+import { track } from '../utils/analytics';
 
 export interface IToolsStore {
   visible: boolean;

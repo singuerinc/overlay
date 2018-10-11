@@ -4,8 +4,8 @@ import {
   SET_SETTINGS_VISIBILITY,
   UPDATE_ALL_SETTINGS
 } from '../actions/settings';
-import { track } from '../components/core/analytics';
-import { store as appStore, StoreKey } from '../components/core/AppStore';
+import { track } from '../utils/analytics';
+import { PreferenceKey, preferences } from '../utils/preferences';
 
 export interface ISettingsStore {
   visible: boolean;
@@ -29,7 +29,7 @@ export const settings = (
       };
     case SET_SETTING_ALLOW_ANALYTICS:
       track('settings', 'allowAnalitycs', payload);
-      appStore.set(StoreKey.SETTING_ALLOW_ANALYTICS, payload);
+      preferences.set(PreferenceKey.SETTING_ALLOW_ANALYTICS, payload);
       return {
         ...store,
         allowAnalytics: payload

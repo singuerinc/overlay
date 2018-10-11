@@ -4,16 +4,16 @@ import { AppContainer } from 'react-hot-loader';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { setAllowAnalytics } from './actions/settings';
-import { initAnalytics, track } from './components/core/analytics';
-import { store as appStore, StoreKey } from './components/core/AppStore';
 import { Root } from './components/Root';
 import rootReducer from './reducers';
+import { initAnalytics, track } from './utils/analytics';
+import { PreferenceKey, preferences } from './utils/preferences';
 
 const store = createStore(rootReducer, {}, applyMiddleware(thunk));
 const allow = initAnalytics();
 
-track('app', 'first-run', appStore.get(StoreKey.APP_FIRST_RUN, true));
-appStore.set(StoreKey.APP_FIRST_RUN, false);
+track('app', 'first-run', preferences.get(PreferenceKey.APP_FIRST_RUN, true));
+preferences.set(PreferenceKey.APP_FIRST_RUN, false);
 
 store.dispatch(setAllowAnalytics(allow));
 
