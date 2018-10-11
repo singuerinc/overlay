@@ -9,7 +9,7 @@ export const setAllowAnalytics = (value: boolean) => ({
   type: SET_SETTING_ALLOW_ANALYTICS
 });
 
-export const updateAllSettings = (settings: ISettingsStore) => ({
+export const updateAll = (settings: ISettingsStore) => ({
   payload: settings,
   type: UPDATE_ALL_SETTINGS
 });
