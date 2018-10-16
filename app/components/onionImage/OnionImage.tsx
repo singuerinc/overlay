@@ -131,6 +131,14 @@ class OnionImageView extends React.Component<IOnionImage & IProps, IState> {
     el.addEventListener('mouseout', this.unbindKeys);
 
     interactjs(el).draggable({
+      onend: ({ target }) => {
+        const x = parseInt(target.getAttribute('data-x'), 10);
+        const y = parseInt(target.getAttribute('data-y'), 10);
+
+        setPositionInDOM(el, x, y);
+
+        this.setState(move(x, y));
+      },
       onmove: ({ dx, dy, target }) => {
         if (this.props.locked) {
           return;
