@@ -15,7 +15,8 @@ import {
   startListeningAndSwapZIndex,
   startListeningToIgnoreMouseEvents,
   stopListeningAndSwapZIndex,
-  stopListeningToIgnoreMouseEvents
+  stopListeningToIgnoreMouseEvents,
+  toTopZIndex
 } from '../helpers/mouseEvents';
 import { isHorizontalOrientation } from '../helpers/orientation';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
@@ -55,6 +56,8 @@ class GuideView extends React.Component<IGuide & IProps, IState> {
 
   public componentDidMount() {
     const el = this.el.current as HTMLDivElement;
+
+    toTopZIndex(el);
 
     startListeningToIgnoreMouseEvents(el);
     startListeningAndSwapZIndex(el);

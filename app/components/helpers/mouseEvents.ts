@@ -12,9 +12,8 @@ export function onMouseLeave() {
   });
 }
 
-export function onMouseDown(e: MouseEvent) {
-  const { currentTarget } = e;
-  const { parentElement } = currentTarget as HTMLElement;
+export function toTopZIndex(target: HTMLElement) {
+  const { parentElement } = target;
   const { children } = parentElement as HTMLElement;
 
   const tools = Array.from(children);
@@ -26,11 +25,13 @@ export function onMouseDown(e: MouseEvent) {
 
   const nextIndex = maxIndex + 1;
 
-  R.forEach((child: Element) => {
-    if (child === currentTarget) {
-      (child as HTMLElement).style.zIndex = nextIndex;
-    }
-  }, tools);
+  const top = R.find(R.equals(target), tools) as HTMLElement;
+  top.style.zIndex = nextIndex;
+}
+
+export function onMouseDown(e: MouseEvent) {
+  const { currentTarget } = e;
+  toTopZIndex(currentTarget as HTMLElement);
 }
 
 export function startListeningToIgnoreMouseEvents(el) {

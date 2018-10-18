@@ -18,7 +18,8 @@ import {
   startListeningAndSwapZIndex,
   startListeningToIgnoreMouseEvents,
   stopListeningAndSwapZIndex,
-  stopListeningToIgnoreMouseEvents
+  stopListeningToIgnoreMouseEvents,
+  toTopZIndex
 } from '../helpers/mouseEvents';
 import { Size } from '../helpers/Size';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
@@ -60,6 +61,8 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
   public componentDidMount() {
     const el = this.el.current as HTMLDivElement;
     const ruler = this.ruler.current as HTMLDivElement;
+
+    toTopZIndex(el);
 
     startListeningToIgnoreMouseEvents(el);
     startListeningAndSwapZIndex(el);

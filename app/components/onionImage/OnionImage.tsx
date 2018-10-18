@@ -20,7 +20,8 @@ import {
   startListeningAndSwapZIndex,
   startListeningToIgnoreMouseEvents,
   stopListeningAndSwapZIndex,
-  stopListeningToIgnoreMouseEvents
+  stopListeningToIgnoreMouseEvents,
+  toTopZIndex
 } from '../helpers/mouseEvents';
 import { Size } from '../helpers/Size';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
@@ -118,6 +119,8 @@ class OnionImageView extends React.Component<IOnionImage & IProps, IState> {
   public componentDidMount() {
     const el = this.el.current as HTMLDivElement;
     const image = this.image.current as HTMLImageElement;
+
+    toTopZIndex(el);
 
     startListeningToIgnoreMouseEvents(this.el.current);
     startListeningAndSwapZIndex(this.el.current);
