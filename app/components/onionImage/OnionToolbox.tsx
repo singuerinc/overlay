@@ -24,10 +24,22 @@ export const OnionToolbox = ({
 }: IProps) => (
   <MiniToolboxWrapper>
     <MiniToolboxItem
-      title={`Set opacity to ${opacity !== 1 ? '1' : '0.5'}`}
-      onClick={() => setOpacity(opacity !== 1 ? 1 : 0.5)}
+      title={`Set opacity to ${Math.max(0, opacity - 0.1).toFixed(1)}`}
+      onClick={() => setOpacity(Math.max(0, opacity - 0.1))}
+    >
+      <MiniToolboxIcon icon="minus-circle" />
+    </MiniToolboxItem>
+    <MiniToolboxItem
+      title={`Set opacity to ${opacity === 0.5 ? '1' : '0.5'}`}
+      onClick={() => setOpacity(opacity === 0.5 ? 1 : 0.5)}
     >
       <MiniToolboxIcon icon="percent" />
+    </MiniToolboxItem>
+    <MiniToolboxItem
+      title={`Set opacity to ${Math.min(1, opacity + 0.1).toFixed(1)}`}
+      onClick={() => setOpacity(Math.min(1, opacity + 0.1))}
+    >
+      <MiniToolboxIcon icon="plus-circle" />
     </MiniToolboxItem>
     <MiniToolboxItem
       title="Invert colors"

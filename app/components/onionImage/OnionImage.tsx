@@ -190,11 +190,13 @@ class OnionImageView extends React.Component<IOnionImage & IProps, IState> {
               track('tool', Tool.ONION, `inverted/${this.state.inverted}`);
             })
           }
-          setOpacity={(value) =>
-            this.setState(setOpacity(value), () => {
+          setOpacity={(value) => {
+            const newOpacity: number = parseFloat(value.toFixed(1));
+
+            this.setState(setOpacity(newOpacity), () => {
               track('tool', Tool.ONION, `opacity/${this.state.opacity}`);
-            })
-          }
+            });
+          }}
           toggleLock={() =>
             this.props.setLock(this.props.id, !this.props.locked)
           }
@@ -222,11 +224,7 @@ class OnionImageView extends React.Component<IOnionImage & IProps, IState> {
         value *= 1;
       }
 
-      const opacity: number = parseFloat(
-        Math.max(0, Math.min(1, this.state.opacity + value)).toFixed(1)
-      );
-
-      this.setState(setOpacity(opacity));
+      this.setState(setOpacity(value));
     });
 
     mousetrap.bind(REMOVE_KEYS, () => {
