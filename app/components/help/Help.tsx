@@ -109,6 +109,7 @@ const HelpView = styled(Element)`
   padding: 40px 40px;
   background-color: #f8f9fa;
   color: #495057;
+  box-shadow: 0px 0px 2rem 0px rgba(0, 0, 0, 0.5);
 
   h1,
   h2,
