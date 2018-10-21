@@ -13,7 +13,10 @@ import { setVisibility as setHelpVisibility } from '../../actions/help';
 import { add as addOnion } from '../../actions/onions';
 import { add as addRuler } from '../../actions/rulers';
 import { setVisibility as setSettingsVisibility } from '../../actions/settings';
-import { setVisibility as setToolsVisibility } from '../../actions/tools';
+import {
+  setAlwaysOnTop,
+  setVisibility as setToolsVisibility
+} from '../../actions/tools';
 import { IAppStore } from '../../reducers';
 import { IHelpStore } from '../../reducers/help';
 import { ISettingsStore } from '../../reducers/settings';
@@ -42,6 +45,7 @@ interface IProps {
   settings: ISettingsStore;
   tools: IToolsStore;
 
+  setAlwaysOnTop: (value: boolean) => void;
   setHelpVisibility: (value: boolean) => void;
   setSettingsVisibility: (value: boolean) => void;
   setToolsVisibility: (value: boolean) => void;
@@ -98,6 +102,7 @@ class ToolboxView extends React.Component<IProps, IState> {
   public render() {
     const { columns, grids, settings, tools, help, x, y } = this.props;
 
+    const isAlwaysOnTop = tools.alwaysOnTop;
     const isToolsVisible = tools.visible;
     const isHelpVisible = help.visible;
     const isSettingsVisible = settings.visible;
@@ -111,6 +116,18 @@ class ToolboxView extends React.Component<IProps, IState> {
         </ToolboxItemDumb>
         <MenuWrapper>
           <ToolSpace />
+          <MiniToolboxItem
+            title="Always on top"
+            onClick={() => {
+              ipc.callMain('always-on-top', !isAlwaysOnTop);
+              this.props.setAlwaysOnTop(!isAlwaysOnTop);
+            }}
+          >
+            <MiniToolboxIcon
+              active={isAlwaysOnTop}
+              icon={isAlwaysOnTop ? 'zap' : 'zap-off'}
+            />
+          </MiniToolboxItem>
           <MiniToolboxItem
             title={`${isToolsVisible ? 'Hide' : 'Show'} all`}
             onClick={() => {
@@ -216,6 +233,7 @@ const Toolbox = connect(
     removeColumn,
     removeGrid,
 
+    setAlwaysOnTop,
     setHelpVisibility,
     setSettingsVisibility,
     setToolsVisibility
