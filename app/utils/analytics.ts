@@ -14,7 +14,7 @@ const allowAnalytics = (): boolean => {
 };
 
 const trackingCode = 'UA-50962418-2';
-const appVersion = '0.7.0';
+const appVersion = '0.8.0';
 const userId = preferences.get(PreferenceKey.APP_USER_ID, uuid());
 
 preferences.set(PreferenceKey.APP_USER_ID, userId);

@@ -1,3 +1,11 @@
+0.8.0
+==================
+
+  * feat: always on top button
+  * feat: +/- buttons to change onion image opacity
+  * fix: help and settings windows have shadow
+  * fix: new tools have the right z-index
+
 0.7.0
 ==================
 
