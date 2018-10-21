@@ -76,6 +76,10 @@ const createWindow = () => {
     return filePaths;
   });
 
+  ipc.answerRenderer('always-on-top', (arg) => {
+    mainWindow.setAlwaysOnTop(arg);
+  });
+
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.show();
     mainWindow.focus();
