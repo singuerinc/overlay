@@ -264,6 +264,7 @@ interface IToolBoxProps {
 
 const Wrapper = styled.ul<IToolBoxProps>`
   position: fixed;
+  z-index: 9999999999999;
   background-color: transparent;
   display: flex;
   flex-direction: row;

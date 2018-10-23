@@ -4,6 +4,7 @@
   * feat: lock/unlock all tools
   * refactor: always on top by default
   * fix: click on transparent after closing help/settings
+  * fix: toolbox always on top
 
 0.8.0
 ==================
