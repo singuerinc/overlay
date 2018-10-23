@@ -87,6 +87,8 @@ const createWindow = () => {
     mainWindow.setIgnoreMouseEvents(true, {
       forward: true
     });
+
+    mainWindow.setAlwaysOnTop(true);
   });
 
   mainWindow.on('closed', () => {

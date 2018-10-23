@@ -5,7 +5,6 @@ import { setVisibility as setHelpVisibility } from '../../actions/help';
 import { setVisibility as setSettingsVisibility } from '../../actions/settings';
 import { setVisibility as setToolsVisibility } from '../../actions/tools';
 import {
-  onMouseLeave,
   startListeningToIgnoreMouseEvents,
   stopListeningToIgnoreMouseEvents
 } from '../helpers/mouseEvents';
@@ -28,7 +27,6 @@ class Element extends React.Component<IProps> {
 
   public componentWillUnmount() {
     stopListeningToIgnoreMouseEvents(this.el.current);
-    onMouseLeave();
   }
 
   public render() {

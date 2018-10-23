@@ -41,7 +41,9 @@ interface IState {
   height: number;
 }
 
-const OnionImageWrapper = styled.div`
+const OnionImageWrapper = styled<{ locked: boolean }, 'div'>('div')`
+  pointer-events: ${({ locked }) => (locked ? 'none' : 'all')};
+  cursor: ${({ locked }) => (locked ? 'none' : 'move')};
   position: fixed;
 
   & ${Coords}, & ${Size} {
@@ -108,13 +110,6 @@ class OnionImageView extends React.Component<IOnionImage & IProps, IState> {
   private el: React.RefObject<HTMLDivElement> = React.createRef();
   private image: React.RefObject<HTMLImageElement> = React.createRef();
 
-  public componentDidUpdate(prevProps) {
-    const { locked } = this.props;
-    if (locked !== prevProps.locked) {
-      interactjs(this.el.current as HTMLDivElement).styleCursor(!locked);
-    }
-  }
-
   public componentDidMount() {
     const el = this.el.current as HTMLDivElement;
     const image = this.image.current as HTMLImageElement;
@@ -168,10 +163,10 @@ class OnionImageView extends React.Component<IOnionImage & IProps, IState> {
   }
 
   public render() {
-    const { src } = this.props;
+    const { locked, src } = this.props;
     const { opacity, visible, inverted, x, y, height, width } = this.state;
     return (
-      <OnionImageWrapper innerRef={this.el}>
+      <OnionImageWrapper innerRef={this.el} locked={locked}>
         <OnionImageElement
           innerRef={this.image}
           src={src}
