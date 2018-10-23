@@ -7,6 +7,7 @@ import { setAllowAnalytics } from '../../actions/settings';
 import { setVisibility as setToolsVisibility } from '../../actions/tools';
 import { ISettingsStore } from '../../reducers/settings';
 import {
+  onMouseLeave,
   startListeningToIgnoreMouseEvents,
   stopListeningToIgnoreMouseEvents
 } from '../helpers/mouseEvents';
@@ -32,6 +33,7 @@ class SettingsComponent extends React.Component<IProps> {
 
   public componentWillUnmount() {
     stopListeningToIgnoreMouseEvents(this.el.current);
+    onMouseLeave();
   }
 
   public render() {
