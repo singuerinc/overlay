@@ -2,6 +2,7 @@
 ==================
   * feat: global keys
   * feat: lock/unlock all tools
+  * feat: border around toolbox
   * refactor: always on top by default
   * refactor: show all tools if a new tool is created
   * fix: click on transparent after closing help/settings
