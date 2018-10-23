@@ -5,6 +5,7 @@ import { setVisibility as setHelpVisibility } from '../../actions/help';
 import { setVisibility as setSettingsVisibility } from '../../actions/settings';
 import { setVisibility as setToolsVisibility } from '../../actions/tools';
 import {
+  onMouseLeave,
   startListeningToIgnoreMouseEvents,
   stopListeningToIgnoreMouseEvents
 } from '../helpers/mouseEvents';
@@ -27,6 +28,7 @@ class Element extends React.Component<IProps> {
 
   public componentWillUnmount() {
     stopListeningToIgnoreMouseEvents(this.el.current);
+    onMouseLeave();
   }
 
   public render() {
@@ -44,15 +46,22 @@ class Element extends React.Component<IProps> {
           <table>
             <tbody>
               <tr>
-                <td>Change tool color (when mouse over)</td>
+                <td>Always on top (on/off)</td>
                 <td>
-                  <kbd>b</kbd>
-                  <kbd>g</kbd>
-                  <kbd>o</kbd>
-                  <kbd>r</kbd>
-                  <kbd>y</kbd>
+                  <kbd>esc</kbd>
                 </td>
               </tr>
+              <tr>
+                <td>Show/Hide all tools</td>
+                <td>
+                  <kbd>s</kbd>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <h2>Any tool</h2>
+          <table>
+            <tbody>
               <tr>
                 <td>Delete tool (when mouse over)</td>
                 <td>
@@ -62,17 +71,32 @@ class Element extends React.Component<IProps> {
               </tr>
             </tbody>
           </table>
+          <h2>Rulers &amp; Guides</h2>
+          <table>
+            <tbody>
+              <tr>
+                <td>Change tool color (when mouse over)</td>
+                <td>
+                  <kbd>b</kbd>
+                  <kbd>g</kbd>
+                  <kbd>o</kbd>
+                  <kbd>r</kbd>
+                  <kbd>y</kbd>
+                </td>
+              </tr>
+            </tbody>
+          </table>
           <h2>Image</h2>
           <table>
             <tbody>
               <tr>
-                <td>Invert colors</td>
+                <td>Invert colors (when mouse over)</td>
                 <td>
                   <kbd>i</kbd>
                 </td>
               </tr>
               <tr>
-                <td>Change opacity 0% to 100%</td>
+                <td>Change opacity 0% to 100% (when mouse over)</td>
                 <td>
                   <kbd>0</kbd> - <kbd>9</kbd>
                 </td>
