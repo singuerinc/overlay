@@ -1,4 +1,9 @@
 import { AnyAction } from 'redux';
+import { ADD_COLUMN } from '../actions/columns';
+import { ADD_GRID } from '../actions/grids';
+import { ADD_GUIDE } from '../actions/guides';
+import { ADD_ONION } from '../actions/onions';
+import { ADD_RULER } from '../actions/rulers';
 import {
   SET_ALWAYS_ON_TOP,
   SET_TOOLS_LOCKED,
@@ -40,6 +45,15 @@ export const tools = (
       return {
         ...store,
         allLocked: payload
+      };
+    case ADD_GUIDE:
+    case ADD_RULER:
+    case ADD_ONION:
+    case ADD_GRID:
+    case ADD_COLUMN:
+      return {
+        ...store,
+        visible: true
       };
   }
 
