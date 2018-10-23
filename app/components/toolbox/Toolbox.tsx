@@ -122,7 +122,6 @@ class ToolboxView extends React.Component<IProps, IState> {
           <MiniToolboxItem
             title="Always on top"
             onClick={() => {
-              ipc.callMain('always-on-top', !isAlwaysOnTop);
               this.props.setAlwaysOnTop(!isAlwaysOnTop);
             }}
           >
