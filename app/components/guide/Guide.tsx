@@ -3,7 +3,7 @@ import * as mousetrap from 'mousetrap';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { remove, setLock } from '../../actions/guides';
+import { remove } from '../../actions/guides';
 import { track } from '../../utils/analytics';
 import { Color } from '../../utils/Color';
 import { Key } from '../../utils/Key';
@@ -37,7 +37,6 @@ const REMOVE_KEYS = [Key.BACKSPACE, Key.DEL];
 const HORIZONTAL_VERTICAL_KEYS = [Key.V, Key.H];
 
 interface IProps {
-  setLock: (id: string, locked: boolean) => void;
   remove: (id: string) => void;
 }
 
@@ -107,8 +106,8 @@ class GuideView extends React.Component<IGuide & IProps, IState> {
 
   public render() {
     const { orientation, color } = this.state;
-    const { locked } = this.props;
     const isHorizontal = isHorizontalOrientation(orientation);
+
     return (
       <GuideElement
         innerRef={this.el}
@@ -119,10 +118,6 @@ class GuideView extends React.Component<IGuide & IProps, IState> {
           // FIXME: don't create functions in render
           remove={() => this.props.remove(this.props.id)}
           rotate={this.updateRotate}
-          locked={locked}
-          toggleLock={() =>
-            this.props.setLock(this.props.id, !this.props.locked)
-          }
           setColor={this.updateColor}
         />
       </GuideElement>
@@ -226,8 +221,7 @@ const GuideElement = styled.div<IGuideElementProps>`
 const Guide = connect(
   null,
   {
-    remove,
-    setLock
+    remove
   }
 )(GuideView);
 

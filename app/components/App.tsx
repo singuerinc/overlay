@@ -15,6 +15,7 @@ import { IColumn } from './column/IColumn';
 import { IGrid } from './grid/IGrid';
 import { IGuide } from './guide/IGuide';
 import { Help } from './help/Help';
+import { GlobalKeysContainer } from './keys/GlobalKeysContainer';
 import { IOnionImage } from './onionImage/IOnionImage';
 import { IRuler } from './ruler/IRuler';
 import { Settings } from './settings/Settings';
@@ -49,6 +50,7 @@ const AppView = ({
 
   return (
     <>
+      <GlobalKeysContainer />
       <ToolsWrapper visible={shouldDisplayTools}>
         {grids.map((grid: IGrid) => (
           <Grid key={grid.id} {...grid} />

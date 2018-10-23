@@ -1,13 +1,19 @@
 import { AnyAction } from 'redux';
-import { SET_ALWAYS_ON_TOP, SET_TOOLS_VISIBILITY } from '../actions/tools';
+import {
+  SET_ALWAYS_ON_TOP,
+  SET_TOOLS_LOCKED,
+  SET_TOOLS_VISIBILITY
+} from '../actions/tools';
 import { track } from '../utils/analytics';
 
 export interface IToolsStore {
+  allLocked: boolean;
   alwaysOnTop: boolean;
   visible: boolean;
 }
 
 const initialStore: IToolsStore = {
+  allLocked: false,
   alwaysOnTop: false,
   visible: true
 };
@@ -28,6 +34,12 @@ export const tools = (
       return {
         ...store,
         visible: payload
+      };
+    case SET_TOOLS_LOCKED:
+      track('app', 'tools', `visibility/${payload}`);
+      return {
+        ...store,
+        allLocked: payload
       };
   }
 

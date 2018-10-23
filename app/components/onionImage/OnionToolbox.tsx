@@ -6,20 +6,16 @@ import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 interface IProps {
   opacity: number;
   inverted: boolean;
-  locked: boolean;
   setInverted: (value: boolean) => void;
   setOpacity: (value: number) => void;
-  toggleLock: () => void;
   remove: () => void;
 }
 
 export const OnionToolbox = ({
   inverted,
   opacity,
-  locked,
   setInverted,
   setOpacity,
-  toggleLock,
   remove
 }: IProps) => (
   <MiniToolboxWrapper>
@@ -46,9 +42,6 @@ export const OnionToolbox = ({
       onClick={() => setInverted(!inverted)}
     >
       <MiniToolboxIcon icon={inverted ? 'sun' : 'moon'} />
-    </MiniToolboxItem>
-    <MiniToolboxItem title={locked ? 'Lock' : 'Unlock'} onClick={toggleLock}>
-      <MiniToolboxIcon icon={locked ? 'lock' : 'unlock'} />
     </MiniToolboxItem>
     <MiniToolboxItem title="Remove" onClick={remove}>
       <MiniToolboxIcon icon="trash-2" />
