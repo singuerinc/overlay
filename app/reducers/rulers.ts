@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 import { AnyAction } from 'redux';
 import { ADD_RULER, REMOVE_RULER, RULER_SET_LOCK } from '../actions/rulers';
+import { SET_TOOLS_LOCKED } from '../actions/tools';
 import { factory } from '../components/ruler/factory';
 import { IRuler } from '../components/ruler/IRuler';
 import { Tool } from '../components/toolbox/Tool';
@@ -24,7 +25,12 @@ export const rulers = (
     case RULER_SET_LOCK:
       const { id, locked }: { id: string; locked: boolean } = payload;
       t(`locked/${locked}`);
-      return R.map((x) => updatePropIfSameId('locked', id, locked, x), store);
+      return R.map(
+        (x: IRuler) => updatePropIfSameId('locked', id, locked, x),
+        store
+      );
+    case SET_TOOLS_LOCKED:
+      return R.map((x: IRuler) => ({ ...x, locked: payload }), store);
   }
   return store;
 };

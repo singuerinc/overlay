@@ -4,7 +4,7 @@ import * as mousetrap from 'mousetrap';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { remove, setLock } from '../../actions/rulers';
+import { remove } from '../../actions/rulers';
 import { track } from '../../utils/analytics';
 import { Color } from '../../utils/Color';
 import { Key } from '../../utils/Key';
@@ -39,7 +39,6 @@ interface IState {
 }
 
 interface IProps {
-  setLock: (id: string, locked: boolean) => void;
   remove: (id: string) => void;
 }
 
@@ -134,7 +133,6 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
 
   public render() {
     const { x, y, width, height, opacity, color } = this.state;
-    const { locked } = this.props;
 
     return (
       <RulerWrapper innerRef={this.el}>
@@ -150,10 +148,6 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
         <RulerToolbox
           remove={() => {
             this.props.remove(this.props.id);
-          }}
-          locked={locked}
-          toggleLock={() => {
-            this.props.setLock(this.props.id, !locked);
           }}
           setColor={this.updateColor}
         />
@@ -247,8 +241,7 @@ const RulerElement = styled.div<IRulerElementProps>`
 const Ruler = connect(
   null,
   {
-    remove,
-    setLock
+    remove
   }
 )(RulerView);
 

@@ -14,6 +14,7 @@ import { add as addOnion } from '../../actions/onions';
 import { add as addRuler } from '../../actions/rulers';
 import { setVisibility as setSettingsVisibility } from '../../actions/settings';
 import {
+  setAllLocked as setAllToolsLocked,
   setAlwaysOnTop,
   setVisibility as setToolsVisibility
 } from '../../actions/tools';
@@ -49,6 +50,7 @@ interface IProps {
   setHelpVisibility: (value: boolean) => void;
   setSettingsVisibility: (value: boolean) => void;
   setToolsVisibility: (value: boolean) => void;
+  setAllToolsLocked: (value: boolean) => void;
 
   addColumn: () => void;
   addGrid: () => void;
@@ -103,6 +105,7 @@ class ToolboxView extends React.Component<IProps, IState> {
     const { columns, grids, settings, tools, help, x, y } = this.props;
 
     const isAlwaysOnTop = tools.alwaysOnTop;
+    const isAllToolsLocked = tools.allLocked;
     const isToolsVisible = tools.visible;
     const isHelpVisible = help.visible;
     const isSettingsVisible = settings.visible;
@@ -126,6 +129,17 @@ class ToolboxView extends React.Component<IProps, IState> {
             <MiniToolboxIcon
               active={isAlwaysOnTop}
               icon={isAlwaysOnTop ? 'zap' : 'zap-off'}
+            />
+          </MiniToolboxItem>
+          <MiniToolboxItem
+            title={`${isAllToolsLocked ? 'Unlock' : 'Lock'} all`}
+            onClick={() => {
+              this.props.setAllToolsLocked(!isAllToolsLocked);
+            }}
+          >
+            <MiniToolboxIcon
+              active={isAllToolsLocked}
+              icon={isAllToolsLocked ? 'lock' : 'unlock'}
             />
           </MiniToolboxItem>
           <MiniToolboxItem
@@ -233,6 +247,7 @@ const Toolbox = connect(
     removeColumn,
     removeGrid,
 
+    setAllToolsLocked,
     setAlwaysOnTop,
     setHelpVisibility,
     setSettingsVisibility,

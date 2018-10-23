@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 import { AnyAction } from 'redux';
 import { ADD_GUIDE, GUIDE_SET_LOCK, REMOVE_GUIDE } from '../actions/guides';
+import { SET_TOOLS_LOCKED } from '../actions/tools';
 import { factory } from '../components/guide/factory';
 import { IGuide } from '../components/guide/IGuide';
 import { Tool } from '../components/toolbox/Tool';
@@ -25,6 +26,8 @@ export const guides = (
       const { id, locked }: { id: string; locked: boolean } = payload;
       t(`locked/${locked}`);
       return R.map((x) => updatePropIfSameId('locked', id, locked, x), store);
+    case SET_TOOLS_LOCKED:
+      return R.map((x: IGuide) => ({ ...x, locked: payload }), store);
   }
   return store;
 };

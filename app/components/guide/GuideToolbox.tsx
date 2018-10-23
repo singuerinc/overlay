@@ -9,24 +9,13 @@ interface IProps {
   rotate: () => void;
   remove: () => void;
   setColor: (color: Color) => void;
-  toggleLock: () => void;
-  locked: boolean;
 }
 
-export const GuideToolbox = ({
-  remove,
-  rotate,
-  setColor,
-  toggleLock,
-  locked
-}: IProps) => (
+export const GuideToolbox = ({ remove, rotate, setColor }: IProps) => (
   <MiniToolboxWrapper>
     <MiniToolboxColors setColor={setColor} />
     <MiniToolboxItem title="Rotate" onClick={rotate}>
       <MiniToolboxIcon icon="rotate-cw" />
-    </MiniToolboxItem>
-    <MiniToolboxItem title={locked ? 'Lock' : 'Unlock'} onClick={toggleLock}>
-      <MiniToolboxIcon icon={locked ? 'lock' : 'unlock'} />
     </MiniToolboxItem>
     <MiniToolboxItem title="Remove" onClick={remove}>
       <MiniToolboxIcon icon="trash-2" />
