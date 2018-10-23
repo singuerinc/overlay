@@ -14,7 +14,7 @@ export interface IToolsStore {
 
 const initialStore: IToolsStore = {
   allLocked: false,
-  alwaysOnTop: false,
+  alwaysOnTop: true,
   visible: true
 };
 

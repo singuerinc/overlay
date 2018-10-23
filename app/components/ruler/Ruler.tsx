@@ -50,13 +50,6 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
   private el: React.RefObject<HTMLDivElement> = React.createRef();
   private ruler: React.RefObject<HTMLDivElement> = React.createRef();
 
-  public componentDidUpdate(prevProps) {
-    const { locked } = this.props;
-    if (locked !== prevProps.locked) {
-      interactjs(this.el.current as HTMLDivElement).styleCursor(!locked);
-    }
-  }
-
   public componentDidMount() {
     const el = this.el.current as HTMLDivElement;
     const ruler = this.ruler.current as HTMLDivElement;
@@ -133,9 +126,10 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
 
   public render() {
     const { x, y, width, height, opacity, color } = this.state;
+    const { locked } = this.props;
 
     return (
-      <RulerWrapper innerRef={this.el}>
+      <RulerWrapper innerRef={this.el} locked={locked}>
         <Coords x={x} y={y} />
         <Size width={width} height={height} />
         <RulerElement
@@ -192,7 +186,9 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
   }
 }
 
-const RulerWrapper = styled.div`
+const RulerWrapper = styled<{ locked: boolean }, 'div'>('div')`
+  pointer-events: ${({ locked }) => (locked ? 'none' : 'all')};
+  cursor: ${({ locked }) => (locked ? 'none' : 'move')};
   position: fixed;
   display: block;
 

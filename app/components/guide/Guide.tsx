@@ -46,13 +46,6 @@ class GuideView extends React.Component<IGuide & IProps, IState> {
   }
   private el: React.RefObject<HTMLDivElement> = React.createRef();
 
-  public componentDidUpdate(prevProps) {
-    const { locked } = this.props;
-    if (locked !== prevProps.locked) {
-      interactjs(this.el.current as HTMLDivElement).styleCursor(!locked);
-    }
-  }
-
   public componentDidMount() {
     const el = this.el.current as HTMLDivElement;
 
@@ -106,6 +99,7 @@ class GuideView extends React.Component<IGuide & IProps, IState> {
 
   public render() {
     const { orientation, color } = this.state;
+    const { locked } = this.props;
     const isHorizontal = isHorizontalOrientation(orientation);
 
     return (
@@ -113,6 +107,7 @@ class GuideView extends React.Component<IGuide & IProps, IState> {
         innerRef={this.el}
         isHorizontal={isHorizontal}
         color={color}
+        locked={locked}
       >
         <GuideToolbox
           // FIXME: don't create functions in render
@@ -183,9 +178,12 @@ class GuideView extends React.Component<IGuide & IProps, IState> {
 interface IGuideElementProps {
   color: string;
   isHorizontal: boolean;
+  locked: boolean;
 }
 
 const GuideElement = styled.div<IGuideElementProps>`
+  pointer-events: ${({ locked }) => (locked ? 'none' : 'all')};
+  cursor: ${({ locked }) => (locked ? 'none' : 'move')};
   position: fixed;
   width: ${({ isHorizontal }) => (isHorizontal ? '100vw' : '1px')};
   height: ${({ isHorizontal }) => (isHorizontal ? '1px' : '100vh')};
