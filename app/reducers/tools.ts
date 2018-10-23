@@ -1,3 +1,4 @@
+import * as ipc from 'electron-better-ipc';
 import { AnyAction } from 'redux';
 import { ADD_COLUMN } from '../actions/columns';
 import { ADD_GRID } from '../actions/grids';
@@ -29,6 +30,7 @@ export const tools = (
 ): IToolsStore => {
   switch (type) {
     case SET_ALWAYS_ON_TOP:
+      ipc.callMain('always-on-top', payload);
       track('app', 'tools', `always-on-top/${payload}`);
       return {
         ...store,
