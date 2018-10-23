@@ -264,13 +264,14 @@ interface IToolBoxProps {
 const Wrapper = styled.ul<IToolBoxProps>`
   position: fixed;
   z-index: 9999999999999;
-  background-color: transparent;
   display: flex;
   flex-direction: row;
   margin: 0;
   padding: 0;
   top: ${({ y }) => y}px;
   left: ${({ x }) => x}px;
+  border: 4px solid rgba(0, 0, 0, 1);
+  background-color: rgba(0, 0, 0, 1);
 `;
 
 const ToolSpace = styled.li`
