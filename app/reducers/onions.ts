@@ -28,7 +28,10 @@ export const onions = (
       t(`locked/${locked}`);
       return R.map((x) => updatePropIfSameId('locked', id, locked, x), store);
     case SET_TOOLS_LOCKED:
-      return R.map((x: IOnionImage) => ({ ...x, locked: payload }), store);
+      return R.map(
+        (x: IOnionImage) => ({ ...x, locked: payload.locked }),
+        store
+      );
   }
   return store;
 };

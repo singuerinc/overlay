@@ -27,7 +27,7 @@ export const guides = (
       t(`locked/${locked}`);
       return R.map((x) => updatePropIfSameId('locked', id, locked, x), store);
     case SET_TOOLS_LOCKED:
-      return R.map((x: IGuide) => ({ ...x, locked: payload }), store);
+      return R.map((x: IGuide) => ({ ...x, locked: payload.locked }), store);
   }
   return store;
 };

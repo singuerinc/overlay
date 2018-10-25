@@ -43,10 +43,10 @@ export const tools = (
         visible: payload
       };
     case SET_TOOLS_LOCKED:
-      track('app', 'tools', `visibility/${payload}`);
+      track('app', 'tools', `all-locked/${payload.locked}`);
       return {
         ...store,
-        allLocked: payload
+        allLocked: payload.locked
       };
     case ADD_GUIDE:
     case ADD_RULER:
