@@ -78,6 +78,9 @@ const createWindow = () => {
 
   ipc.answerRenderer('always-on-top', (arg) => {
     mainWindow.setAlwaysOnTop(arg);
+    win.setIgnoreMouseEvents(true, {
+      forward: true
+    });
   });
 
   mainWindow.webContents.on('did-finish-load', () => {
