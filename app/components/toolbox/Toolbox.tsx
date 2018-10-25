@@ -272,6 +272,7 @@ const Wrapper = styled.ul<IToolBoxProps>`
   left: ${({ x }) => x}px;
   border: 4px solid rgba(0, 0, 0, 1);
   background-color: rgba(0, 0, 0, 1);
+  border-radius: 4px;
 `;
 
 const ToolSpace = styled.li`
