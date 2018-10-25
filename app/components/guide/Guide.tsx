@@ -3,11 +3,11 @@ import * as mousetrap from 'mousetrap';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { remove } from '../../actions/guides';
+import { remove, setColor } from '../../actions/guides';
 import { track } from '../../utils/analytics';
 import { Color } from '../../utils/Color';
 import { Key } from '../../utils/Key';
-import { move, setColor } from '../core/reducer';
+import { move } from '../core/reducer';
 import { COLOR_KEYS, getColorByKey } from '../helpers/getColorByKey';
 import { ARROW_KEYS, getPositionByKey } from '../helpers/getPositionByKey';
 import { setPositionInDOM } from '../helpers/impure';
@@ -30,14 +30,15 @@ interface IState {
   x: number;
   y: number;
   orientation: GuideOrientation;
-  color: Color;
 }
 
 const REMOVE_KEYS = [Key.BACKSPACE, Key.DEL];
 const HORIZONTAL_VERTICAL_KEYS = [Key.V, Key.H];
 
 interface IProps {
+  color: Color;
   remove: (id: string) => void;
+  setColor: (id: string, color: Color) => void;
 }
 
 class GuideView extends React.Component<IGuide & IProps, IState> {
@@ -98,8 +99,8 @@ class GuideView extends React.Component<IGuide & IProps, IState> {
   }
 
   public render() {
-    const { orientation, color } = this.state;
-    const { locked } = this.props;
+    const { orientation } = this.state;
+    const { color, locked } = this.props;
     const isHorizontal = isHorizontalOrientation(orientation);
 
     return (
@@ -160,9 +161,7 @@ class GuideView extends React.Component<IGuide & IProps, IState> {
   }
 
   private updateColor = (color: Color) => {
-    this.setState(setColor(color), () => {
-      track('tool', Tool.GUIDE, `color/${this.state.color}`);
-    });
+    this.props.setColor(this.props.id, color);
   }
 
   private updateRotate = () => {
@@ -210,6 +209,10 @@ const GuideElement = styled.div<IGuideElementProps>`
   & ${MiniToolboxWrapper} {
     opacity: 0;
     transition: opacity 100ms ease;
+    left: ${({ isHorizontal }) => (isHorizontal ? '50%' : '0')};
+    top: ${({ isHorizontal }) => (isHorizontal ? '0' : '50%')};
+    transform: ${({ isHorizontal }) =>
+      isHorizontal ? 'translate(-50%, 0)' : 'translate(0, -50%)'};
   }
 
   &:hover ${MiniToolboxWrapper} {
@@ -220,7 +223,8 @@ const GuideElement = styled.div<IGuideElementProps>`
 const Guide = connect(
   null,
   {
-    remove
+    remove,
+    setColor
   }
 )(GuideView);
 
