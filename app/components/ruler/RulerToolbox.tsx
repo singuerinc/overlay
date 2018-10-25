@@ -6,13 +6,14 @@ import { MiniToolboxItem } from '../miniToolbox/MiniToolboxItem';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 
 interface IProps {
+  color: Color;
   remove: () => void;
   setColor: (color: Color) => void;
 }
 
-export const RulerToolbox = ({ remove, setColor }: IProps) => (
+export const RulerToolbox = ({ remove, color, setColor }: IProps) => (
   <MiniToolboxWrapper>
-    <MiniToolboxColors setColor={setColor} />
+    <MiniToolboxColors setColor={setColor} color={color} />
     <MiniToolboxItem title="Remove" onClick={remove}>
       <MiniToolboxIcon icon="trash-2" />
     </MiniToolboxItem>

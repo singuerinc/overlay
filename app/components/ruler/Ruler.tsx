@@ -142,6 +142,7 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
           remove={() => {
             this.props.remove(this.props.id);
           }}
+          color={this.props.color}
           setColor={this.updateColor}
         />
       </RulerWrapper>

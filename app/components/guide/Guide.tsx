@@ -113,6 +113,7 @@ class GuideView extends React.Component<IGuide & IProps, IState> {
           // FIXME: don't create functions in render
           remove={() => this.props.remove(this.props.id)}
           rotate={this.updateRotate}
+          color={this.props.color}
           setColor={this.updateColor}
         />
       </GuideElement>
