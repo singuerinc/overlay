@@ -188,7 +188,7 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
 
 const RulerWrapper = styled<{ locked: boolean }, 'div'>('div')`
   pointer-events: ${({ locked }) => (locked ? 'none' : 'all')};
-  cursor: ${({ locked }) => (locked ? 'none' : 'move')};
+  cursor: ${({ locked }) => (locked ? 'none' : 'inherit')};
   position: fixed;
   display: block;
 
