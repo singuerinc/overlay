@@ -1,17 +1,9 @@
-export const toggleLock = ({ locked }: { locked: boolean }) => ({
-  locked: !locked
-});
-
 export const toggleInverted = ({ inverted }: { inverted: boolean }) => ({
   inverted: !inverted
 });
 
 export const setInverted = (inverted: boolean) => () => ({
   inverted
-});
-
-export const setVisibility = (visible: boolean) => () => ({
-  visible
 });
 
 export const setOpacity = (opacity: number) => () => ({ opacity });
