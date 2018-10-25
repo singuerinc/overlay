@@ -1,7 +1,3 @@
-import { Color } from '../../utils/Color';
-
-export const setColor = (color: Color) => () => ({ color });
-
 export const toggleLock = ({ locked }: { locked: boolean }) => ({
   locked: !locked
 });

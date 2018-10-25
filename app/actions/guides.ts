@@ -1,5 +1,6 @@
 export const ADD_GUIDE = 'ADD_GUIDE';
 export const REMOVE_GUIDE = 'REMOVE_GUIDE';
+export const GUIDE_SET_COLOR = 'GUIDE_SET_COLOR';
 export const GUIDE_SET_LOCK = 'GUIDE_SET_LOCK';
 
 export const add = () => ({
@@ -14,4 +15,9 @@ export const remove = (id: string) => ({
 export const setLock = (id: string, locked: boolean) => ({
   payload: { id, locked },
   type: GUIDE_SET_LOCK
+});
+
+export const setColor = (id: string, color: string) => ({
+  payload: { id, color },
+  type: GUIDE_SET_COLOR
 });

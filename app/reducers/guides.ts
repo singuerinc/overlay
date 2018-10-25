@@ -1,6 +1,11 @@
 import * as R from 'ramda';
 import { AnyAction } from 'redux';
-import { ADD_GUIDE, GUIDE_SET_LOCK, REMOVE_GUIDE } from '../actions/guides';
+import {
+  ADD_GUIDE,
+  GUIDE_SET_COLOR,
+  GUIDE_SET_LOCK,
+  REMOVE_GUIDE
+} from '../actions/guides';
 import { SET_TOOLS_LOCKED } from '../actions/tools';
 import { factory } from '../components/guide/factory';
 import { IGuide } from '../components/guide/IGuide';
@@ -22,6 +27,13 @@ export const guides = (
     case REMOVE_GUIDE:
       t('remove');
       return R.reject((x) => hasSameId(payload, x), store);
+    case GUIDE_SET_COLOR:
+      t(`color/${payload.color}`);
+      return R.map(
+        (x: IGuide) =>
+          updatePropIfSameId('color', payload.id, payload.color, x),
+        store
+      );
     case GUIDE_SET_LOCK:
       const { id, locked }: { id: string; locked: boolean } = payload;
       t(`locked/${locked}`);

@@ -10,4 +10,5 @@ export const MiniToolboxWrapper = styled.ul`
   bottom: -36px;
   left: 0;
   width: auto;
+  height: 36px;
 `;
