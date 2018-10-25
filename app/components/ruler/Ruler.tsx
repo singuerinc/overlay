@@ -4,11 +4,10 @@ import * as mousetrap from 'mousetrap';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { remove } from '../../actions/rulers';
-import { track } from '../../utils/analytics';
+import { remove, setColor } from '../../actions/rulers';
 import { Color } from '../../utils/Color';
 import { Key } from '../../utils/Key';
-import { move, resize, setColor } from '../core/reducer';
+import { move, resize } from '../core/reducer';
 import { createGrid } from '../grid/utils';
 import { Coords } from '../helpers/Coords';
 import { COLOR_KEYS, getColorByKey } from '../helpers/getColorByKey';
@@ -23,7 +22,6 @@ import {
 } from '../helpers/mouseEvents';
 import { Size } from '../helpers/Size';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
-import { Tool } from '../toolbox/Tool';
 import { IRuler } from './IRuler';
 import { RulerToolbox } from './RulerToolbox';
 
@@ -35,11 +33,12 @@ interface IState {
   width: number;
   height: number;
   opacity: number;
-  color: Color;
 }
 
 interface IProps {
+  color: Color;
   remove: (id: string) => void;
+  setColor: (id: string, color: string) => void;
 }
 
 class RulerView extends React.Component<IRuler & IProps, IState> {
@@ -125,8 +124,8 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
   }
 
   public render() {
-    const { x, y, width, height, opacity, color } = this.state;
-    const { locked } = this.props;
+    const { x, y, width, height, opacity } = this.state;
+    const { locked, color } = this.props;
 
     return (
       <RulerWrapper innerRef={this.el} locked={locked}>
@@ -180,9 +179,7 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
   }
 
   private updateColor = (color: Color) => {
-    this.setState(setColor(color), () => {
-      track('tool', Tool.RULER, `color/${this.state.color}`);
-    });
+    this.props.setColor(this.props.id, color);
   }
 }
 
@@ -237,7 +234,8 @@ const RulerElement = styled.div<IRulerElementProps>`
 const Ruler = connect(
   null,
   {
-    remove
+    remove,
+    setColor
   }
 )(RulerView);
 
