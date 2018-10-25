@@ -3,6 +3,7 @@
   "extends": ["tslint:recommended"],
   "jsRules": {},
   "rules": {
+    "no-empty-interface": false,
     "quotemark": [true, "single", "jsx-double"],
     "trailing-comma": false
   },
