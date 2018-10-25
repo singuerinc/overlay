@@ -1,7 +1,12 @@
 0.10.0
 ==================
+  * feat: change color by cycling
   * feat: toolbox round borders
+  * fix: setIgnoreMouseEvents when onTop
   * fix: ruler cursor
+  * refactor: locked payload
+  * refactor: ruler - setColor with redux
+  * chore: remove no-empty-interface tslint rule
 
 0.9.0
 ==================
