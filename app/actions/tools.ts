@@ -13,6 +13,6 @@ export const setVisibility = (value: boolean) => ({
 });
 
 export const setAllLocked = (locked: boolean) => ({
-  payload: locked,
+  payload: { locked },
   type: SET_TOOLS_LOCKED
 });
