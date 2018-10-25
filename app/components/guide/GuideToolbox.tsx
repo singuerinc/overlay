@@ -6,14 +6,15 @@ import { MiniToolboxItem } from '../miniToolbox/MiniToolboxItem';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 
 interface IProps {
+  color: Color;
   rotate: () => void;
   remove: () => void;
   setColor: (color: Color) => void;
 }
 
-export const GuideToolbox = ({ remove, rotate, setColor }: IProps) => (
+export const GuideToolbox = ({ color, remove, rotate, setColor }: IProps) => (
   <MiniToolboxWrapper>
-    <MiniToolboxColors setColor={setColor} />
+    <MiniToolboxColors color={color} setColor={setColor} />
     <MiniToolboxItem title="Rotate" onClick={rotate}>
       <MiniToolboxIcon icon="rotate-cw" />
     </MiniToolboxItem>
