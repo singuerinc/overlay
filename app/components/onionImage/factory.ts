@@ -7,6 +7,7 @@ export const factory = (id: string = uuid(), props = {}): IOnionImage => ({
   inverted: false,
   locked: false,
   opacity: 1,
+  scale: 1,
   src: '',
   visible: true,
   width: 410,

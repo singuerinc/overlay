@@ -6,25 +6,23 @@ import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 interface IProps {
   opacity: number;
   inverted: boolean;
+  scale: number;
   setInverted: (value: boolean) => void;
   setOpacity: (value: number) => void;
+  setScale: (value: number) => void;
   remove: () => void;
 }
 
 export const OnionToolbox = ({
   inverted,
   opacity,
+  scale,
   setInverted,
   setOpacity,
+  setScale,
   remove
 }: IProps) => (
   <MiniToolboxWrapper>
-    <MiniToolboxItem
-      title={`Set opacity to ${Math.max(0, opacity - 0.1).toFixed(1)}`}
-      onClick={() => setOpacity(Math.max(0, opacity - 0.1))}
-    >
-      <MiniToolboxIcon icon="minus-circle" />
-    </MiniToolboxItem>
     <MiniToolboxItem
       title={`Set opacity to ${opacity === 0.5 ? '1' : '0.5'}`}
       onClick={() => setOpacity(opacity === 0.5 ? 1 : 0.5)}
@@ -32,16 +30,16 @@ export const OnionToolbox = ({
       <MiniToolboxIcon icon="percent" />
     </MiniToolboxItem>
     <MiniToolboxItem
-      title={`Set opacity to ${Math.min(1, opacity + 0.1).toFixed(1)}`}
-      onClick={() => setOpacity(Math.min(1, opacity + 0.1))}
-    >
-      <MiniToolboxIcon icon="plus-circle" />
-    </MiniToolboxItem>
-    <MiniToolboxItem
       title="Invert colors"
       onClick={() => setInverted(!inverted)}
     >
       <MiniToolboxIcon icon={inverted ? 'sun' : 'moon'} />
+    </MiniToolboxItem>
+    <MiniToolboxItem
+      title="Scale"
+      onClick={() => setScale(scale === 1 ? 0.5 : 1)}
+    >
+      <MiniToolboxIcon icon={scale === 1 ? 'zoom-out' : 'zoom-in'} />
     </MiniToolboxItem>
     <MiniToolboxItem title="Remove" onClick={remove}>
       <MiniToolboxIcon icon="trash-2" />

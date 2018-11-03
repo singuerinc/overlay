@@ -6,6 +6,7 @@ export interface IOnionImage {
   width: number;
   height: number;
   opacity: number;
+  scale: number;
   inverted: boolean;
   visible: boolean;
   locked: boolean;

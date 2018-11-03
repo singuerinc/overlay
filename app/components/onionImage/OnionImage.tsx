@@ -3,7 +3,7 @@ import * as mousetrap from 'mousetrap';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { remove } from '../../actions/onions';
+import { remove, setScale } from '../../actions/onions';
 import { track } from '../../utils/analytics';
 import { Key } from '../../utils/Key';
 import {
@@ -41,9 +41,14 @@ interface IState {
   height: number;
 }
 
-const OnionImageWrapper = styled<{ locked: boolean }, 'div'>('div')`
+const OnionImageWrapper = styled<
+  { locked: boolean; width: number; height: number; scale: number },
+  'div'
+>('div')`
   pointer-events: ${({ locked }) => (locked ? 'none' : 'all')};
   cursor: ${({ locked }) => (locked ? 'none' : 'move')};
+  width: ${({ width, scale }) => width * scale}px;
+  height: ${({ height, scale }) => height * scale}px;
   position: fixed;
 
   & ${Coords}, & ${Size} {
@@ -70,6 +75,7 @@ const OnionImageWrapper = styled<{ locked: boolean }, 'div'>('div')`
 interface IOnionImageElementProps {
   opacity: number;
   inverted: boolean;
+  scale: number;
   visible: boolean;
 }
 
@@ -77,6 +83,7 @@ const OnionImageElement = styled.img<IOnionImageElementProps>`
   opacity: ${({ opacity }) => opacity};
   filter: invert(${({ inverted }) => (inverted ? '100%' : '0%')});
   display: ${({ visible }) => (visible ? 'block' : 'none')};
+  width: 100%;
 `;
 
 const opacityNumberKeys = [
@@ -100,6 +107,7 @@ const opacityLettersKeys = [
 const INVERT_KEYS = Key.I;
 
 interface IProps {
+  setScale: (id: string, scale: number) => void;
   remove: (id: string) => void;
 }
 
@@ -163,22 +171,31 @@ class OnionImageView extends React.Component<IOnionImage & IProps, IState> {
   }
 
   public render() {
-    const { locked, src } = this.props;
+    const { locked, scale, src } = this.props;
     const { opacity, visible, inverted, x, y, height, width } = this.state;
     return (
-      <OnionImageWrapper innerRef={this.el} locked={locked}>
+      <OnionImageWrapper
+        innerRef={this.el}
+        width={width}
+        height={height}
+        locked={locked}
+        scale={scale}
+      >
         <OnionImageElement
           innerRef={this.image}
           src={src}
           visible={visible}
           opacity={opacity}
+          scale={scale}
           inverted={inverted}
         />
         <Coords x={x} y={y} />
-        <Size width={width} height={height} />
+        <Size width={width * scale} height={height * scale} />
         <OnionToolbox
           opacity={opacity}
           inverted={inverted}
+          scale={scale}
+          setScale={(value) => this.props.setScale(this.props.id, value)}
           setInverted={(value) =>
             this.setState(setInverted(value), () => {
               track('tool', Tool.ONION, `inverted/${this.state.inverted}`);
@@ -251,7 +268,8 @@ class OnionImageView extends React.Component<IOnionImage & IProps, IState> {
 const OnionImage = connect(
   null,
   {
-    remove
+    remove,
+    setScale
   }
 )(OnionImageView);
 
