@@ -1,0 +1,4 @@
+[build]
+  base = "web/"
+  publish = "web/dist/"
+  command = "yarn build"
