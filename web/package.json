@@ -8,6 +8,7 @@
     "tachyons": "^4.11.1"
   },
   "scripts": {
-    "start": "parcel ./src/index.html"
+    "start": "parcel ./src/index.html",
+    "build": "parcel build ./src/index.html"
   }
 }
