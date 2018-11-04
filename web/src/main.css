@@ -1,0 +1,26 @@
+@import '../node_modules/tachyons/css/tachyons.min.css';
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f03e3e;
+}
+
+* {
+  /* border: 1px dashed darkmagenta; */
+}
+
+nav {
+  border-color: #111;
+}
+
+.overlay-title {
+  font-size: 12rem;
+  position: absolute;
+  color: cyan;
+}
+
+.overlay-title:nth-child(2) {
+  opacity: 0.5;
+  transform: translate(-2px, -2px);
+  filter: invert(100%);
+}
