@@ -1,0 +1,13 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "parcel-bundler": "^1.10.3",
+    "tachyons": "^4.11.1"
+  },
+  "scripts": {
+    "start": "parcel ./src/index.html"
+  }
+}
