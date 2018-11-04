@@ -1,12 +1,16 @@
 @import '../node_modules/tachyons/css/tachyons.min.css';
 
+html,
 body {
-  font-family: 'Montserrat', sans-serif;
-  background-color: #f03e3e;
+  background: black;
+  height: 100%;
 }
 
-* {
-  /* border: 1px dashed darkmagenta; */
+body {
+  font-family: 'Muli', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-weight: 400;
 }
 
 nav {
@@ -14,13 +18,20 @@ nav {
 }
 
 .overlay-title {
-  font-size: 12rem;
-  position: absolute;
-  color: cyan;
+  color: white;
+  text-transform: uppercase;
+  font-weight: 200;
+  letter-spacing: 4.4rem;
 }
 
-.overlay-title:nth-child(2) {
-  opacity: 0.5;
-  transform: translate(-2px, -2px);
-  filter: invert(100%);
+.overlay-title:nth-child(1) {
+  position: absolute;
+  opacity: 0.4;
+  top: 0;
+  transform: translate(20px, 1px);
+  filter: invert(10%) blur(150%);
+}
+
+.overlay {
+  opacity: 0.8;
 }
