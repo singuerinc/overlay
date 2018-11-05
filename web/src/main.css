@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:100,200,300,400,500,600,700,800,900');
 @import '../node_modules/tachyons/css/tachyons.min.css';
 
 html,
@@ -7,8 +8,8 @@ body {
 }
 
 body {
-  font-family: 'Muli', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   font-weight: 400;
 }
@@ -17,21 +18,42 @@ nav {
   border-color: #111;
 }
 
+@keyframes move {
+  0% {
+    transform: translate(20px, 1px);
+  }
+  100% {
+    transform: translate(0px, 1px);
+  }
+}
+
 .overlay-title {
   color: white;
   text-transform: uppercase;
-  font-weight: 200;
-  letter-spacing: 4.4rem;
+  font-weight: 100;
+  letter-spacing: 2.7rem;
+  margin-left: -1.9rem;
+  margin-right: -4.4rem;
 }
 
 .overlay-title:nth-child(1) {
-  position: absolute;
-  opacity: 0.4;
+  opacity: 0.2;
   top: 0;
+  position: absolute;
   transform: translate(20px, 1px);
-  filter: invert(10%) blur(150%);
+  animation-name: move;
+  animation-duration: 2s;
+  animation-delay: 2s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease;
 }
 
 .overlay {
-  opacity: 0.8;
+  opacity: 1;
+  margin-top: -1.5rem;
+}
+
+.sub {
+  background-color: rgba(0, 0, 0, 0.04);
 }
