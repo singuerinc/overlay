@@ -76,6 +76,8 @@ interface IOnionImageElementProps {
   opacity: number;
   inverted: boolean;
   scale: number;
+  width: number;
+  height: number;
   visible: boolean;
 }
 
@@ -83,7 +85,8 @@ const OnionImageElement = styled.img<IOnionImageElementProps>`
   opacity: ${({ opacity }) => opacity};
   filter: invert(${({ inverted }) => (inverted ? '100%' : '0%')});
   display: ${({ visible }) => (visible ? 'block' : 'none')};
-  width: 100%;
+  width: ${({ width, scale }) => width * scale}px;
+  height: ${({ height, scale }) => height * scale}px;
 `;
 
 const opacityNumberKeys = [
@@ -98,12 +101,14 @@ const opacityNumberKeys = [
   Key.KEY_9,
   Key.KEY_0
 ];
+
 const opacityLettersKeys = [
   Key.KEY_EQUAL,
   Key.KEY_PLUS,
   Key.KEY_MINUS,
   Key.KEY_UNDERSCORE
 ];
+
 const INVERT_KEYS = Key.I;
 
 interface IProps {
@@ -128,8 +133,8 @@ class OnionImageView extends React.Component<IOnionImage & IProps, IState> {
     startListeningAndSwapZIndex(this.el.current);
     setPositionInDOM(this.el.current, this.state.x, this.state.y);
 
-    image.onload = (() => {
-      this.setState(resize(image.width, image.height));
+    image.onload = ((event) => {
+      this.setState(resize(image.naturalWidth, image.naturalHeight));
     }).bind(this);
 
     el.addEventListener('mouseover', this.bindKeys);
@@ -186,6 +191,8 @@ class OnionImageView extends React.Component<IOnionImage & IProps, IState> {
           src={src}
           visible={visible}
           opacity={opacity}
+          width={width}
+          height={height}
           scale={scale}
           inverted={inverted}
         />
