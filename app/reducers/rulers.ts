@@ -4,7 +4,8 @@ import {
   ADD_RULER,
   REMOVE_RULER,
   RULER_SET_COLOR,
-  RULER_SET_LOCK
+  RULER_SET_LOCK,
+  RULER_SPLIT
 } from '../actions/rulers';
 import { SET_TOOLS_LOCKED } from '../actions/tools';
 import {
@@ -14,12 +15,15 @@ import {
   factory
 } from '../components/ruler/factory';
 import { IRuler } from '../components/ruler/IRuler';
+import { SplitDirection } from '../components/ruler/SplitDirection';
 import { Tool } from '../components/toolbox/Tool';
 import { track } from '../utils/analytics';
 import { Color } from '../utils/Color';
 import { hasSameId, updatePropIfSameId } from '../utils/utils';
 
-interface IPayload extends IRuler {}
+interface IPayload extends IRuler {
+  splitDirection: SplitDirection;
+}
 
 let latestColor: Color = DEFAULT_RULER_COLOR;
 
@@ -57,6 +61,18 @@ export const rulers = (
           updatePropIfSameId('color', payload.id, payload.color, x),
         store
       );
+    case RULER_SPLIT:
+      const splitHorizontal =
+        payload.splitDirection === SplitDirection.HORIZONTAL;
+      const splited = factory({
+        color: latestColor,
+        x: splitHorizontal ? payload.x : payload.x + payload.width,
+        y: splitHorizontal ? payload.y + payload.height : payload.y,
+        width: payload.width,
+        height: payload.height
+      });
+      return R.append(splited, store);
+      break;
     case SET_TOOLS_LOCKED:
       return R.map((x: IRuler) => ({ ...x, locked: payload.locked }), store);
   }

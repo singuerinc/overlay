@@ -4,7 +4,7 @@ import * as mousetrap from 'mousetrap';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { remove, setColor } from '../../actions/rulers';
+import { remove, setColor, split } from '../../actions/rulers';
 import { Color } from '../../utils/Color';
 import { Key } from '../../utils/Key';
 import { move, resize } from '../core/reducer';
@@ -24,6 +24,7 @@ import { Size } from '../helpers/Size';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
 import { IRuler } from './IRuler';
 import { RulerToolbox } from './RulerToolbox';
+import { SplitDirection } from './SplitDirection';
 
 const REMOVE_KEYS = [Key.BACKSPACE, Key.DEL];
 
@@ -39,6 +40,14 @@ interface IProps {
   color: Color;
   remove: (id: string) => void;
   setColor: (id: string, color: string) => void;
+  split: (
+    splitDirection: SplitDirection,
+    id: string,
+    x: number,
+    y: number,
+    width: number,
+    height: number
+  ) => void;
 }
 
 class RulerView extends React.Component<IRuler & IProps, IState> {
@@ -144,6 +153,8 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
           }}
           color={this.props.color}
           setColor={this.updateColor}
+          splitHorizontally={this.split(SplitDirection.HORIZONTAL)}
+          splitVertically={this.split(SplitDirection.VERTICAL)}
         />
       </RulerWrapper>
     );
@@ -181,6 +192,26 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
 
   private updateColor = (color: Color) => {
     this.props.setColor(this.props.id, color);
+  }
+
+  private split = (direction: SplitDirection) => () => {
+    const isHorizontal = direction === SplitDirection.HORIZONTAL;
+    this.setState(
+      resize(
+        isHorizontal ? this.state.width : this.state.width / 2,
+        isHorizontal ? this.state.height / 2 : this.state.height
+      ),
+      () => {
+        this.props.split(
+          direction,
+          this.props.id,
+          this.state.x,
+          this.state.y,
+          this.state.width,
+          this.state.height
+        );
+      }
+    );
   }
 }
 
@@ -236,7 +267,8 @@ const Ruler = connect(
   null,
   {
     remove,
-    setColor
+    setColor,
+    split
   }
 )(RulerView);
 
