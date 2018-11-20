@@ -196,19 +196,21 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
   }
 
   private split = (direction: SplitDirection) => () => {
-    const isHorizontal = direction === SplitDirection.HORIZONTAL;
-    const newWidth = isHorizontal ? this.state.width : this.state.width / 2;
-    const newHeight = isHorizontal ? this.state.height / 2 : this.state.height;
+    const isSplitHorizontally = direction === SplitDirection.HORIZONTAL;
+    const width = this.state.width * (isSplitHorizontally ? 1 : 0.5);
+    const height = this.state.height * (isSplitHorizontally ? 0.5 : 1);
+    const x = isSplitHorizontally ? this.state.x : this.state.x + width;
+    const y = isSplitHorizontally ? this.state.y + height : this.state.y;
 
-    this.setState(resize(newWidth, newHeight), () => {
+    this.setState(resize(width, height), () => {
       setPositionInDOM(this.el.current, this.state.x, this.state.y);
       this.props.split(
         direction,
         this.props.id,
-        isHorizontal ? this.state.x : this.state.x + newWidth,
-        isHorizontal ? this.state.y + newHeight : this.state.y,
-        newWidth,
-        newHeight,
+        x,
+        y,
+        width,
+        height,
         this.props.color
       );
     });
