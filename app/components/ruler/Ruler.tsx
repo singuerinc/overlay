@@ -46,7 +46,8 @@ interface IProps {
     x: number,
     y: number,
     width: number,
-    height: number
+    height: number,
+    color: Color
   ) => void;
 }
 
@@ -208,7 +209,8 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
           this.state.x,
           this.state.y,
           this.state.width,
-          this.state.height
+          this.state.height,
+          this.props.color
         );
       }
     );

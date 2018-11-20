@@ -13,3 +13,16 @@ export enum Color {
   YELLOW = '#fcc419',
   ORANGE = '#ff922b'
 }
+
+export const colors = [
+  Color.RED,
+  Color.ORANGE,
+  Color.INDIGO,
+  Color.LIME,
+  Color.YELLOW
+];
+
+export const nextColor = (color: Color): Color => {
+  const index = colors.indexOf(color) + 1;
+  return colors[(index + 1) % colors.length];
+};

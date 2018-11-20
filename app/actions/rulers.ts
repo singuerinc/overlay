@@ -1,4 +1,5 @@
 import { SplitDirection } from '../components/ruler/SplitDirection';
+import { Color } from '../utils/Color';
 
 export const ADD_RULER = 'ADD_RULER';
 export const REMOVE_RULER = 'REMOVE_RULER';
@@ -31,8 +32,9 @@ export const split = (
   x: number,
   y: number,
   width: number,
-  height: number
+  height: number,
+  color: Color
 ) => ({
-  payload: { id, splitDirection, x, y, width, height },
+  payload: { id, splitDirection, x, y, width, height, color },
   type: RULER_SPLIT
 });

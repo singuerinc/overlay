@@ -18,7 +18,7 @@ import { IRuler } from '../components/ruler/IRuler';
 import { SplitDirection } from '../components/ruler/SplitDirection';
 import { Tool } from '../components/toolbox/Tool';
 import { track } from '../utils/analytics';
-import { Color } from '../utils/Color';
+import { Color, nextColor } from '../utils/Color';
 import { hasSameId, updatePropIfSameId } from '../utils/utils';
 
 interface IPayload extends IRuler {
@@ -65,7 +65,7 @@ export const rulers = (
       const splitHorizontal =
         payload.splitDirection === SplitDirection.HORIZONTAL;
       const splited = factory({
-        color: latestColor,
+        color: nextColor(payload.color),
         x: splitHorizontal ? payload.x : payload.x + payload.width,
         y: splitHorizontal ? payload.y + payload.height : payload.y,
         width: payload.width,
