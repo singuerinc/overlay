@@ -127,7 +127,7 @@ class ToolboxView extends React.Component<IProps, IState> {
           >
             <MiniToolboxIcon
               active={isAlwaysOnTop}
-              icon={isAlwaysOnTop ? 'zap' : 'zap-off'}
+              icon="layers"
             />
           </MiniToolboxItem>
           <MiniToolboxItem
