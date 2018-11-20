@@ -7,11 +7,14 @@ import {
   REMOVE_GUIDE
 } from '../actions/guides';
 import { SET_TOOLS_LOCKED } from '../actions/tools';
-import { factory } from '../components/guide/factory';
+import { DEFAULT_GUIDE_COLOR, factory } from '../components/guide/factory';
 import { IGuide } from '../components/guide/IGuide';
 import { Tool } from '../components/toolbox/Tool';
 import { track } from '../utils/analytics';
+import { Color } from '../utils/Color';
 import { hasSameId, updatePropIfSameId } from '../utils/utils';
+
+let latestColor: Color = DEFAULT_GUIDE_COLOR;
 
 const t = track('tool', Tool.GUIDE);
 const initialStore: IGuide[] = [];
@@ -23,12 +26,17 @@ export const guides = (
   switch (type) {
     case ADD_GUIDE:
       t('add');
-      return R.append(factory(), store);
+      const guide = factory({
+        color: latestColor,
+        y: Math.floor(window.screen.availHeight / 2)
+      });
+      return R.append(guide, store);
     case REMOVE_GUIDE:
       t('remove');
       return R.reject((x) => hasSameId(payload, x), store);
     case GUIDE_SET_COLOR:
       t(`color/${payload.color}`);
+      latestColor = payload.color;
       return R.map(
         (x: IGuide) =>
           updatePropIfSameId('color', payload.id, payload.color, x),
