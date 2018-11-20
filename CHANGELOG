@@ -1,5 +1,6 @@
 0.12.0
 ==================
+  * feat: split rulers (horizontally/vertically)
   * feat: initial positions for rulers and guides
   * feat: latest color for new guides and rulers
   * feat: latest used orientation for new guides
