@@ -197,23 +197,21 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
 
   private split = (direction: SplitDirection) => () => {
     const isHorizontal = direction === SplitDirection.HORIZONTAL;
-    this.setState(
-      resize(
-        isHorizontal ? this.state.width : this.state.width / 2,
-        isHorizontal ? this.state.height / 2 : this.state.height
-      ),
-      () => {
-        this.props.split(
-          direction,
-          this.props.id,
-          this.state.x,
-          this.state.y,
-          this.state.width,
-          this.state.height,
-          this.props.color
-        );
-      }
-    );
+    const newWidth = isHorizontal ? this.state.width : this.state.width / 2;
+    const newHeight = isHorizontal ? this.state.height / 2 : this.state.height;
+
+    this.setState(resize(newWidth, newHeight), () => {
+      setPositionInDOM(this.el.current, this.state.x, this.state.y);
+      this.props.split(
+        direction,
+        this.props.id,
+        isHorizontal ? this.state.x : this.state.x + newWidth,
+        isHorizontal ? this.state.y + newHeight : this.state.y,
+        newWidth,
+        newHeight,
+        this.props.color
+      );
+    });
   }
 }
 
@@ -263,6 +261,34 @@ const RulerElement = styled.div<IRulerElementProps>`
     chroma(color)
       .alpha(opacity)
       .css()};
+  &:after {
+    filter: invert(100%);
+    content: '';
+    position: absolute;
+    top: 0;
+    left: calc(50% - 1px);
+    width: 1px;
+    height: 100%;
+    border-left: 1px dashed
+      ${({ color }) =>
+        chroma(color)
+          .brighten(0.4)
+          .css()};
+  }
+  &:before {
+    filter: invert(100%);
+    content: '';
+    position: absolute;
+    top: calc(50% - 1px);
+    left: 0;
+    width: 100%;
+    height: 1px;
+    border-top: 1px dashed
+      ${({ color }) =>
+        chroma(color)
+          .brighten(0.4)
+          .css()};
+  }
 `;
 
 const Ruler = connect(

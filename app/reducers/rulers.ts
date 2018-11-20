@@ -62,12 +62,10 @@ export const rulers = (
         store
       );
     case RULER_SPLIT:
-      const splitHorizontal =
-        payload.splitDirection === SplitDirection.HORIZONTAL;
       const splited = factory({
         color: nextColor(payload.color),
-        x: splitHorizontal ? payload.x : payload.x + payload.width,
-        y: splitHorizontal ? payload.y + payload.height : payload.y,
+        x: payload.x,
+        y: payload.y,
         width: payload.width,
         height: payload.height
       });
