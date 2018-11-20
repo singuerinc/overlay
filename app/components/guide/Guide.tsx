@@ -3,8 +3,7 @@ import * as mousetrap from 'mousetrap';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { remove, setColor } from '../../actions/guides';
-import { track } from '../../utils/analytics';
+import { remove, setColor, setOrientation } from '../../actions/guides';
 import { Color } from '../../utils/Color';
 import { Key } from '../../utils/Key';
 import { move } from '../core/reducer';
@@ -20,7 +19,6 @@ import {
 } from '../helpers/mouseEvents';
 import { isHorizontalOrientation } from '../helpers/orientation';
 import { MiniToolboxWrapper } from '../miniToolbox/MiniToolboxWrapper';
-import { Tool } from '../toolbox/Tool';
 import { GuideOrientation } from './GuideOrientation';
 import { GuideToolbox } from './GuideToolbox';
 import { IGuide } from './IGuide';
@@ -29,7 +27,6 @@ import { rotate } from './utils';
 interface IState {
   x: number;
   y: number;
-  orientation: GuideOrientation;
 }
 
 const REMOVE_KEYS = [Key.BACKSPACE, Key.DEL];
@@ -39,6 +36,7 @@ interface IProps {
   color: Color;
   remove: (id: string) => void;
   setColor: (id: string, color: Color) => void;
+  setOrientation: (id: string, orientation: GuideOrientation) => void;
 }
 
 class GuideView extends React.Component<IGuide & IProps, IState> {
@@ -71,7 +69,8 @@ class GuideView extends React.Component<IGuide & IProps, IState> {
           return;
         }
 
-        const { x, y, orientation } = this.state;
+        const { x, y } = this.state;
+        const { orientation } = this.props;
         const isHorizontal = isHorizontalOrientation(orientation);
         const newX = Math.round(isHorizontal ? 0 : x + dx);
         const newY = Math.round(isHorizontal ? y + dy : 0);
@@ -99,8 +98,7 @@ class GuideView extends React.Component<IGuide & IProps, IState> {
   }
 
   public render() {
-    const { orientation } = this.state;
-    const { color, locked } = this.props;
+    const { color, locked, orientation } = this.props;
     const isHorizontal = isHorizontalOrientation(orientation);
 
     return (
@@ -113,7 +111,13 @@ class GuideView extends React.Component<IGuide & IProps, IState> {
         <GuideToolbox
           // FIXME: don't create functions in render
           remove={() => this.props.remove(this.props.id)}
-          rotate={this.updateRotate}
+          rotate={() =>
+            this.updateRotate(
+              isHorizontal
+                ? GuideOrientation.VERTICAL
+                : GuideOrientation.HORIZONTAL
+            )
+          }
           color={this.props.color}
           setColor={this.updateColor}
         />
@@ -127,7 +131,8 @@ class GuideView extends React.Component<IGuide & IProps, IState> {
         return;
       }
 
-      const { orientation, x, y } = this.state;
+      const { x, y } = this.state;
+      const { orientation } = this.props;
       const isHorizontal = orientation === GuideOrientation.HORIZONTAL;
       const value = shiftKey ? 10 : 1;
       const { x: nx, y: ny } = getPositionByKey(key, x, y, value);
@@ -139,8 +144,13 @@ class GuideView extends React.Component<IGuide & IProps, IState> {
     });
 
     mousetrap.bind(HORIZONTAL_VERTICAL_KEYS, ({ key }) => {
-      if (key !== this.state.orientation.toString()) {
-        this.updateRotate();
+      switch (key) {
+        case Key.V:
+          this.updateRotate(GuideOrientation.VERTICAL);
+          break;
+        case Key.H:
+          this.updateRotate(GuideOrientation.HORIZONTAL);
+          break;
       }
     });
 
@@ -164,13 +174,10 @@ class GuideView extends React.Component<IGuide & IProps, IState> {
     this.props.setColor(this.props.id, color);
   }
 
-  private updateRotate = () => {
-    const next = isHorizontalOrientation(this.state.orientation)
-      ? GuideOrientation.VERTICAL
-      : GuideOrientation.HORIZONTAL;
-    this.setState(rotate(next), () => {
+  private updateRotate = (orientation: GuideOrientation) => {
+    this.setState(rotate(orientation), () => {
       setPositionInDOM(this.el.current, this.state.x, this.state.y);
-      track('tool', Tool.GUIDE, `rotate/${this.state.orientation}`);
+      this.props.setOrientation(this.props.id, orientation);
     });
   }
 }
@@ -224,7 +231,8 @@ const Guide = connect(
   null,
   {
     remove,
-    setColor
+    setColor,
+    setOrientation
   }
 )(GuideView);
 
