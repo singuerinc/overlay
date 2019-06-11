@@ -136,7 +136,7 @@
     "electron-debug": "^1.1.0",
     "electron-ga": "^1.0.6",
     "electron-log": "^2.2.14",
-    "electron-store": "^2.0.0",
+    "electron-store": "^3.3.0",
     "electron-updater": "^2.21.8",
     "feather-icons": "^4.7.0",
     "first-run": "^1.2.0",
