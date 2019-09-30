@@ -1,3 +1,4 @@
+import { restrictSize } from '@interactjs/modifiers';
 import * as chroma from 'chroma-js';
 import * as interactjs from 'interactjs';
 import * as mousetrap from 'mousetrap';
@@ -95,9 +96,11 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
     interactjs(ruler)
       .resizable({
         edges: { left: false, right: true, bottom: true, top: false },
-        restrictSize: {
-          min: { width: 10, height: 10 }
-        }
+        modifiers: [
+          restrictSize({
+            min: { width: 100, height: 50 }
+          })
+        ]
       })
       .on('resizemove', ({ rect, target, deltaRect }) => {
         if (this.props.locked) {
@@ -184,16 +187,16 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
     mousetrap.bind(REMOVE_KEYS, () => {
       this.props.remove(this.props.id);
     });
-  }
+  };
 
   private unbindKeys = () => {
     mousetrap.unbind(REMOVE_KEYS);
     mousetrap.unbind(ARROW_KEYS);
-  }
+  };
 
   private updateColor = (color: Color) => {
     this.props.setColor(this.props.id, color);
-  }
+  };
 
   private split = (direction: SplitDirection) => () => {
     const isSplitHorizontally = direction === SplitDirection.HORIZONTAL;
@@ -214,7 +217,7 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
         this.props.color
       );
     });
-  }
+  };
 }
 
 const RulerWrapper = styled<{ locked: boolean }, 'div'>('div')`
