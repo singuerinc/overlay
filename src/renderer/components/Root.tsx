@@ -1,21 +1,21 @@
 import * as React from 'react';
 import { Provider } from 'react-redux';
 import { Store } from 'redux';
-import { injectGlobal } from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 import { App } from './App';
 
 interface IProps {
-  store: Store;
+    store: Store;
 }
 
 export const Root = (props: IProps) => (
-  <Provider store={props.store}>
-    <App />
-  </Provider>
+    <Provider store={props.store}>
+        <GlobalStyle />
+        <App />
+    </Provider>
 );
 
-/* tslint:disable */
-injectGlobal`
+const GlobalStyle = createGlobalStyle`
   * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

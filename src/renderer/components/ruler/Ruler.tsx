@@ -1,6 +1,6 @@
 import { restrictSize } from '@interactjs/modifiers';
 import * as chroma from 'chroma-js';
-import * as interactjs from 'interactjs';
+import interactjs from 'interactjs';
 import * as mousetrap from 'mousetrap';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -212,7 +212,7 @@ class RulerView extends React.Component<IRuler & IProps, IState> {
     };
 }
 
-const RulerWrapper = styled<{ locked: boolean }, 'div'>('div')`
+const RulerWrapper = styled.div`
     pointer-events: ${({ locked }) => (locked ? 'none' : 'all')};
     cursor: ${({ locked }) => (locked ? 'none' : 'inherit')};
     position: fixed;

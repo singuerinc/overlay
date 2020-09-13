@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled, { injectGlobal } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import Tooltip from 'tooltip.js';
 
 export const Element = styled.li`
@@ -49,15 +49,18 @@ export class MiniToolboxItem extends React.Component<IProps> {
     public render() {
         const { onClick, children } = this.props;
         return (
-            <Element innerRef={this.el} onClick={onClick}>
-                {children}
-            </Element>
+            <>
+                <GlobalStyle>
+                    <Element ref={this.el} onClick={onClick}>
+                        {children}
+                    </Element>
+                </GlobalStyle>
+            </>
         );
     }
 }
 
-/* tslint:disable */
-injectGlobal`
+const GlobalStyle = createGlobalStyle`
   .tooltip {
     position: absolute;
     background: #030F12;
