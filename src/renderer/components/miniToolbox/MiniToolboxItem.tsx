@@ -1,63 +1,66 @@
 import * as React from 'react';
+import { useRef, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import Tooltip from 'tooltip.js';
 
 export const Element = styled.li`
-    background-color: #111;
-    display: inline-block;
-    text-align: center;
-    justify-content: center;
-    padding: 6px 8px;
-    margin: 0;
-    transition: background-color 100ms ease;
+  background-color: #111;
+  display: inline-block;
+  text-align: center;
+  justify-content: center;
+  padding: 6px 8px;
+  margin: 0;
+  transition: background-color 100ms ease;
 
-    &:hover {
-        cursor: pointer;
-        svg {
-            stroke: #999;
-        }
+  &:hover {
+    cursor: pointer;
+    svg {
+      stroke: #999;
     }
+  }
 `;
 
 interface IProps {
-    title: string;
-    placement?: string;
-    onClick?: () => void;
+  title: string;
+  placement?: string;
+  onClick?: () => void;
+  children?: any;
 }
 
-export class MiniToolboxItem extends React.Component<IProps> {
-    private el: React.RefObject<HTMLLIElement> = React.createRef();
-    private tooltip: Tooltip;
+export function MiniToolboxItem(props: IProps) {
+  const el = useRef<HTMLLIElement>();
+  let tooltip: Tooltip;
 
-    public componentDidMount() {
-        this.tooltip = new Tooltip(this.el.current as HTMLLIElement, {
-            container: this.el.current as HTMLLIElement,
-            offset: this.props.placement === 'bottom' ? '0, 5' : '0, 5',
-            placement: this.props.placement || 'bottom',
-            title: this.props.title
-        });
+  useEffect(() => {
+    if (el.current) {
+      tooltip = new Tooltip(el.current as HTMLLIElement, {
+        container: el.current as HTMLLIElement,
+        offset: props.placement === 'bottom' ? '0, 5' : '0, 5',
+        // placement: props.placement || 'bottom',
+        title: props.title
+      });
     }
 
-    public componentWillUpdate(nextProps, nextState) {
-        this.tooltip.updateTitleContent(nextProps.title);
-    }
+    return () => {
+      tooltip.dispose();
+    };
+  }, [el.current]);
 
-    public componentWillUnmount() {
-        this.tooltip.dispose();
+  useEffect(() => {
+    if (tooltip) {
+      tooltip.updateTitleContent(props.title);
     }
+  }, [props.title]);
 
-    public render() {
-        const { onClick, children } = this.props;
-        return (
-            <>
-                <GlobalStyle>
-                    <Element ref={this.el} onClick={onClick}>
-                        {children}
-                    </Element>
-                </GlobalStyle>
-            </>
-        );
-    }
+  const { onClick, children } = props;
+  return (
+    <>
+      <GlobalStyle />
+      <Element ref={el} onClick={onClick}>
+        {children}
+      </Element>
+    </>
+  );
 }
 
 const GlobalStyle = createGlobalStyle`
