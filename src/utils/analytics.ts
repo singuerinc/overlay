@@ -1,7 +1,7 @@
 import { remote } from 'electron';
 import Analytics from 'electron-ga';
 import * as R from 'ramda';
-import * as uuid from 'uuid/v4';
+import { v1 as uuid } from 'uuid';
 import { PreferenceKey, preferences } from '../utils/preferences';
 
 const isDevelopment = (r) => r.process.env.NODE_ENV === 'development';

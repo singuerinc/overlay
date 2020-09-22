@@ -1,4 +1,4 @@
-import * as uuid from 'uuid/v1';
+import { v1 as uuid } from 'uuid';
 import { IOnionImage } from './IOnionImage';
 
 export const factory = (id: string = uuid(), props = {}): IOnionImage => ({

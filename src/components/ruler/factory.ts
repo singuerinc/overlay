@@ -1,4 +1,4 @@
-import * as uuid from 'uuid/v1';
+import { v1 as uuid } from 'uuid';
 import { Color } from '../../utils/Color';
 import { IRuler } from './IRuler';
 

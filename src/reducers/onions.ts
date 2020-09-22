@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import { AnyAction } from 'redux';
-import * as uuid from 'uuid/v1';
+import { v1 as uuid } from 'uuid';
 import {
   ADD_ONION,
   ONION_SET_LOCK,
