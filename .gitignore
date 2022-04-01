@@ -16,3 +16,4 @@ main.js
 main.js.map
 npm-debug.log.*
 web/.cache
+web/.parcel-cache
