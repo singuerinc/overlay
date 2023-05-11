@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/singuerinc/overlay.svg?branch=master)](https://travis-ci.org/singuerinc/overlay)
-
 # Overlay
 
 ![](resources/icons/128x128.png)
