@@ -1,4 +1,9 @@
 import { createRoot } from "react-dom/client";
+import { GuidelinesRoot } from "./tools/guideline/GuidelinesRoot";
 
 const root = createRoot(document.body);
-root.render(<h2 className="text-6xl">Overlay</h2>);
+root.render(
+  <div className="h-screen w-screen">
+    <GuidelinesRoot />
+  </div>
+);
