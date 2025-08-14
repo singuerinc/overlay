@@ -1,7 +1,8 @@
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
+import type { IVerticalGuideline } from "./types";
 
-export function VerticalGuideline({ id, x }: { id: string; x: number }) {
+export function VerticalGuideline({ id, x }: IVerticalGuideline) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id,
   });
@@ -20,13 +21,13 @@ export function VerticalGuideline({ id, x }: { id: string; x: number }) {
 
   return (
     <div
-      className="h-screen flex flex-row justify-center group hover:cursor-move  top-0 left-0 absolute"
+      className="h-screen flex flex-row justify-center group hover:cursor-move top-0 left-0 absolute"
       ref={setNodeRef}
       style={style}
       {...listeners}
       {...attributes}
     >
-      <div className="h-full w-px bg-amber-600/25 group-hover:bg-amber-600/100"></div>
+      <div className="h-full w-px bg-amber-600/50 group-hover:bg-amber-600/100"></div>
     </div>
   );
 }

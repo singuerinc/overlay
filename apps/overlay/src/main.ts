@@ -10,7 +10,8 @@ if (started) {
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    // transparent: true,
+    hasShadow: false,
+    transparent: true,
     // frame: false,
     alwaysOnTop: true,
     // fullscreen: true,
