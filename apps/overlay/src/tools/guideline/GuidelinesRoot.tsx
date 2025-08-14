@@ -11,9 +11,42 @@ import {
   restrictToHorizontalAxis,
   restrictToVerticalAxis,
 } from "@dnd-kit/modifiers";
-import { useState } from "react";
 import { HorizontalGuideline } from "./HorizontalGuideline";
 import { VerticalGuideline } from "./VerticalGuideline";
+
+import { create } from "zustand";
+
+type IHorizontalGuideline = {
+  id: string;
+  y: number;
+};
+
+type IVerticalGuideline = {
+  id: string;
+  x: number;
+};
+
+interface GuidelineState {
+  hGuidelines: IHorizontalGuideline[];
+  vGuidelines: IVerticalGuideline[];
+  setHorizontalGuidelines: (guidelines: IHorizontalGuideline[]) => void;
+  setVerticalGuidelines: (guidelines: IVerticalGuideline[]) => void;
+}
+
+const useStore = create<GuidelineState>()((set) => ({
+  hGuidelines: [
+    { id: "gride-h-0", y: 100 },
+    { id: "gride-h-1", y: 200 },
+  ],
+  setHorizontalGuidelines: (guidelines: IHorizontalGuideline[]) =>
+    set(() => ({ hGuidelines: guidelines })),
+  vGuidelines: [
+    { id: "gride-v-0", x: 100 },
+    { id: "gride-v-1", x: 200 },
+  ],
+  setVerticalGuidelines: (guidelines: IVerticalGuideline[]) =>
+    set(() => ({ vGuidelines: guidelines })),
+}));
 
 export function GuidelinesRoot() {
   const mouseSensor = useSensor(MouseSensor);
@@ -21,22 +54,21 @@ export function GuidelinesRoot() {
   const keyboardSensor = useSensor(KeyboardSensor, {});
   const sensors = useSensors(mouseSensor, touchSensor, keyboardSensor);
 
-  const [hItems, setHorizontalItems] = useState([
-    { id: "gride-h-0", y: 100 },
-    { id: "gride-h-1", y: 200 },
-  ]);
-
-  const [vItems, setVerticalItems] = useState([
-    { id: "gride-v-0", x: 100 },
-    { id: "gride-v-1", x: 200 },
-  ]);
+  const hGuidelines = useStore((state) => state.hGuidelines);
+  const vGuidelines = useStore((state) => state.vGuidelines);
+  const setHorizontalGuidelines = useStore(
+    (state) => state.setHorizontalGuidelines
+  );
+  const setVerticalGuidelines = useStore(
+    (state) => state.setVerticalGuidelines
+  );
 
   const handleHorizontalDragEnd = (event: DragEndEvent) => {
     const { active, delta } = event;
 
-    setHorizontalItems((prev) =>
-      prev.map((item) =>
-        item.id === active.id ? { ...item, x: 0, y: item.y + delta.y } : item
+    setHorizontalGuidelines(
+      hGuidelines.map((item) =>
+        item.id === active.id ? { ...item, y: item.y + delta.y } : item
       )
     );
   };
@@ -44,9 +76,9 @@ export function GuidelinesRoot() {
   const handleVerticalDragEnd = (event: DragEndEvent) => {
     const { active, delta } = event;
 
-    setVerticalItems((prev) =>
-      prev.map((item) =>
-        item.id === active.id ? { ...item, x: item.x + delta.x, y: 0 } : item
+    setVerticalGuidelines(
+      vGuidelines.map((item) =>
+        item.id === active.id ? { ...item, x: item.x + delta.x } : item
       )
     );
   };
@@ -58,7 +90,7 @@ export function GuidelinesRoot() {
         onDragEnd={handleHorizontalDragEnd}
         modifiers={[restrictToVerticalAxis]}
       >
-        {hItems.map((item) => (
+        {hGuidelines.map((item) => (
           <HorizontalGuideline key={item.id} {...item} />
         ))}
       </DndContext>
@@ -67,7 +99,7 @@ export function GuidelinesRoot() {
         onDragEnd={handleVerticalDragEnd}
         modifiers={[restrictToHorizontalAxis]}
       >
-        {vItems.map((item) => (
+        {vGuidelines.map((item) => (
           <VerticalGuideline key={item.id} {...item} />
         ))}
       </DndContext>
