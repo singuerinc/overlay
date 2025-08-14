@@ -3,7 +3,7 @@
   "productName": "overlay",
   "version": "1.0.0",
   "description": "My Electron application description",
-  "main": ".webpack/main",
+  "main": ".vite/build/main.js",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
@@ -23,6 +23,7 @@
       "electron-winstaller"
     ]
   },
+  "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad",
   "devDependencies": {
     "@electron-forge/cli": "^7.8.3",
     "@electron-forge/maker-deb": "^7.8.3",
@@ -31,28 +32,26 @@
     "@electron-forge/maker-zip": "^7.8.3",
     "@electron-forge/plugin-auto-unpack-natives": "^7.8.3",
     "@electron-forge/plugin-fuses": "^7.8.3",
-    "@electron-forge/plugin-webpack": "^7.8.3",
+    "@electron-forge/plugin-vite": "^7.8.3",
     "@electron/fuses": "^1.8.0",
-    "@types/node": "24.2.1",
+    "@types/electron-squirrel-startup": "^1.0.2",
     "@types/react": "19.1.10",
     "@types/react-dom": "19.1.7",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
-    "@vercel/webpack-asset-relocator-loader": "1.7.3",
-    "css-loader": "^6.11.0",
     "electron": "37.2.6",
     "eslint": "^8.57.1",
     "eslint-plugin-import": "^2.32.0",
-    "fork-ts-checker-webpack-plugin": "^7.3.0",
-    "node-loader": "^2.1.0",
-    "style-loader": "^3.3.4",
-    "ts-loader": "^9.5.2",
-    "typescript": "~4.5.5"
+    "typescript": "~4.5.5",
+    "vite": "^5.4.19"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "4.1.11",
+    "@tailwindcss/vite": "4.1.11",
     "electron-squirrel-startup": "^1.0.1",
+    "postcss": "8.5.6",
     "react": "19.1.1",
-    "react-dom": "19.1.1"
-  },
-  "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad"
+    "react-dom": "19.1.1",
+    "tailwindcss": "4.1.11"
+  }
 }
