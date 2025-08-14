@@ -1,7 +1,8 @@
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
+import type { IHorizontalGuideline } from "./types";
 
-export function HorizontalGuideline({ id, y }: { id: string; y: number }) {
+export function HorizontalGuideline({ id, y }: IHorizontalGuideline) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id,
   });

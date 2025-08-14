@@ -14,73 +14,79 @@ import {
 import { HorizontalGuideline } from "./HorizontalGuideline";
 import { VerticalGuideline } from "./VerticalGuideline";
 
-import { create } from "zustand";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { IGuideLineStore } from "./types";
 
-type IHorizontalGuideline = {
-  id: string;
-  y: number;
-};
+function getGuidelines(): Promise<IGuideLineStore> {
+  return new Promise((resolve) => {
+    const maybeGuidelines = localStorage.getItem("guidelines");
 
-type IVerticalGuideline = {
-  id: string;
-  x: number;
-};
-
-interface GuidelineState {
-  hGuidelines: IHorizontalGuideline[];
-  vGuidelines: IVerticalGuideline[];
-  setHorizontalGuidelines: (guidelines: IHorizontalGuideline[]) => void;
-  setVerticalGuidelines: (guidelines: IVerticalGuideline[]) => void;
+    if (maybeGuidelines === null) {
+      resolve({
+        hGuidelines: [
+          { id: "gride-h-0", type: "horizontal", y: 100 },
+          { id: "gride-h-1", type: "horizontal", y: 200 },
+        ],
+        vGuidelines: [
+          { id: "gride-v-0", type: "vertical", x: 100 },
+          { id: "gride-v-1", type: "vertical", x: 200 },
+        ],
+      });
+    } else {
+      resolve(JSON.parse(maybeGuidelines));
+    }
+  });
 }
 
-const useStore = create<GuidelineState>()((set) => ({
-  hGuidelines: [
-    { id: "gride-h-0", y: 100 },
-    { id: "gride-h-1", y: 200 },
-  ],
-  setHorizontalGuidelines: (guidelines: IHorizontalGuideline[]) =>
-    set(() => ({ hGuidelines: guidelines })),
-  vGuidelines: [
-    { id: "gride-v-0", x: 100 },
-    { id: "gride-v-1", x: 200 },
-  ],
-  setVerticalGuidelines: (guidelines: IVerticalGuideline[]) =>
-    set(() => ({ vGuidelines: guidelines })),
-}));
+function postGuidelines(data: IGuideLineStore): Promise<void> {
+  return new Promise((resolve) => {
+    localStorage.setItem("guidelines", JSON.stringify(data));
+    resolve();
+  });
+}
 
 export function GuidelinesRoot() {
+  const queryClient = useQueryClient();
   const mouseSensor = useSensor(MouseSensor);
   const touchSensor = useSensor(TouchSensor);
   const keyboardSensor = useSensor(KeyboardSensor, {});
   const sensors = useSensors(mouseSensor, touchSensor, keyboardSensor);
 
-  const hGuidelines = useStore((state) => state.hGuidelines);
-  const vGuidelines = useStore((state) => state.vGuidelines);
-  const setHorizontalGuidelines = useStore(
-    (state) => state.setHorizontalGuidelines
-  );
-  const setVerticalGuidelines = useStore(
-    (state) => state.setVerticalGuidelines
-  );
+  const { data } = useQuery<IGuideLineStore>({
+    queryKey: ["guidelines"],
+    queryFn: getGuidelines,
+  });
+
+  const hGuidelines = data?.hGuidelines ?? [];
+  const vGuidelines = data?.vGuidelines ?? [];
+
+  const mutation = useMutation({
+    mutationFn: postGuidelines,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["guidelines"] });
+    },
+  });
 
   const handleHorizontalDragEnd = (event: DragEndEvent) => {
     const { active, delta } = event;
 
-    setHorizontalGuidelines(
-      hGuidelines.map((item) =>
+    mutation.mutate({
+      hGuidelines: hGuidelines.map((item) =>
         item.id === active.id ? { ...item, y: item.y + delta.y } : item
-      )
-    );
+      ),
+      vGuidelines,
+    });
   };
 
   const handleVerticalDragEnd = (event: DragEndEvent) => {
     const { active, delta } = event;
 
-    setVerticalGuidelines(
-      vGuidelines.map((item) =>
+    mutation.mutate({
+      hGuidelines,
+      vGuidelines: vGuidelines.map((item) =>
         item.id === active.id ? { ...item, x: item.x + delta.x } : item
-      )
-    );
+      ),
+    });
   };
 
   return (
