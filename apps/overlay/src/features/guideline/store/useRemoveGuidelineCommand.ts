@@ -2,16 +2,16 @@ import { type IGuideline } from "../types";
 
 import { Command } from "../../../features/commands/Command";
 import { useExecuteCommand } from "../../../features/commands/store/commands";
-import { useAddGuideline } from "../../../features/guideline/store/useAddGuideline";
-import { useRemoveGuideline } from "../../../features/guideline/store/useRemoveGuideline";
 import { useSetSelectedTool } from "../../../features/tools/store/tools";
+import { useAddGuidelineMutation } from "./useAddGuidelineMutation";
+import { useRemoveGuidelineMutation } from "./useRemoveGuidelineMutation";
 
 export function useRemoveGuidelineCommand() {
   const setSelectedTool = useSetSelectedTool();
   const executeCommand = useExecuteCommand();
 
-  const addGuideline = useAddGuideline();
-  const removeGuideline = useRemoveGuideline();
+  const addGuideline = useAddGuidelineMutation();
+  const removeGuideline = useRemoveGuidelineMutation();
 
   return {
     execute: (guideline: IGuideline) => {

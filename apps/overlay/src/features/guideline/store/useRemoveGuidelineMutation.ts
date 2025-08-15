@@ -1,15 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 import { IGuideLineStore, type IGuideline } from "../types";
+import { GUIDELINES_KEYS } from "./guidelinesKeys";
 
-export function useRemoveGuideline() {
+export function useRemoveGuidelineMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({ guideline }: { guideline: IGuideline }) => {
-      const prevGuidelines = queryClient.getQueryData<IGuideLineStore>([
-        "guidelines",
-      ]);
+      const prevGuidelines = queryClient.getQueryData<IGuideLineStore>(
+        GUIDELINES_KEYS.guidelines
+      );
 
       const guidelines = produce(
         prevGuidelines,
