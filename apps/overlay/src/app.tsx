@@ -1,3 +1,5 @@
+import { CrosshairRoot } from "@/features/crosshair/CrosshairRoot";
+import { CrosshairToolbar } from "@/features/crosshair/toolbar/CrosshairToolbar";
 import { KeyboardObserver } from "@/features/keyboard/KeyboardObserver";
 import { ToolSelectedToolBar } from "@/features/toolbar/ToolSelectedToolBar";
 import { DocumentObserver } from "@/ui/DocumentObserver";
@@ -12,16 +14,18 @@ const queryClient = new QueryClient();
 
 const root = createRoot(document.body);
 root.render(
-  <div className="h-screen w-screen pointer-events-none">
+  <div className="h-screen w-screen pointer-events-none relative">
     <QueryClientProvider client={queryClient}>
       <ToolBar initX={20} initY={20}>
         <Undo />
         <GuidelinesToolbar />
+        <CrosshairToolbar />
       </ToolBar>
       <ToolSelectedToolBar />
       <DocumentObserver />
       <KeyboardObserver />
       <GuidelinesRoot />
+      <CrosshairRoot />
     </QueryClientProvider>
   </div>
 );

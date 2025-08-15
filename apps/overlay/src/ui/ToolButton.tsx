@@ -12,7 +12,7 @@ const variants = cva(["rounded-sm p-1"], {
     },
     activated: {
       true: "text-neutral-100",
-      false: "text-neutral-200",
+      false: "text-neutral-400",
     },
   },
   defaultVariants: {

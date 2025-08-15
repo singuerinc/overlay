@@ -51,7 +51,7 @@ export function GuidelinesRoot() {
   }
 
   return (
-    <div className="h-screen w-screen relative pointer-events-none">
+    <div className="h-screen w-screen pointer-events-none absolute top-0 left-0">
       <DndContext
         sensors={sensors}
         onDragStart={handleDragStart}
