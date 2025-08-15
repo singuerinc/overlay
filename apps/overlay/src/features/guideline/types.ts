@@ -8,12 +8,14 @@ export interface IHorizontalGuideline extends ITool<"guideline-horizontal"> {
   x: number; // 0
   y: number;
   color: GuidelineColorType;
+  locked: boolean;
 }
 
 export interface IVerticalGuideline extends ITool<"guideline-vertical"> {
   x: number;
   y: number; //0
   color: GuidelineColorType;
+  locked: boolean;
 }
 
 export type IGuideline = IHorizontalGuideline | IVerticalGuideline;

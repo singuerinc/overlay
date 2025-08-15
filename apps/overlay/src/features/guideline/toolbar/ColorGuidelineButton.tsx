@@ -9,9 +9,9 @@ import { type IGuideline } from "../types";
 const colors: GuidelineColorType[] = ["cyan", "red", "green"];
 
 const fillByColor = {
-  cyan: "fill-cyan-400",
-  red: "fill-red-400",
-  green: "fill-green-400",
+  cyan: "text-cyan-400",
+  red: "text-red-400",
+  green: "text-green-400",
 };
 
 export function ColorGuidelineButton() {

@@ -7,4 +7,5 @@ export const createHorizontalGuideline = (): IHorizontalGuideline => ({
   y: 100,
   x: 0,
   color: "cyan",
+  locked: false,
 });

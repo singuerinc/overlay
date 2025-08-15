@@ -41,13 +41,13 @@ export function ToolsElements({
   };
   return (
     <div
-      className="flex items-center bg-neutral-900 p-1 z-50 absolute rounded-sm text-neutral-600"
+      className="flex items-center bg-neutral-900 p-1 z-50 absolute rounded-sm text-neutral-600 pointer-events-auto"
       ref={setNodeRef}
       style={style}
     >
       <IconGripVertical
         {...listeners}
-        {...attributes}
+        // {...attributes}
         className="cursor-grab active:cursor-grabbing"
       />
       <div className="flex gap-x-2">{children}</div>
