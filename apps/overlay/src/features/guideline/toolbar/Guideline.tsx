@@ -9,18 +9,10 @@ export function Guideline() {
   const selectedTool = useSelectedTool();
   const removeGuidelineCommand = useRemoveGuidelineCommand();
 
-  if (
-    selectedTool === null ||
-    (selectedTool.type !== "guideline-horizontal" &&
-      selectedTool.type !== "guideline-vertical")
-  ) {
-    return null;
-  }
-
   return (
     <div className="flex items-center gap-x-1 bg-neutral-700 px-1 rounded-sm">
       <ToolButton
-        enabled={selectedTool !== null}
+        enabled={true}
         Icon={<IconTrash size={16} />}
         onClick={() => {
           const guideline = { ...selectedTool } as IGuideline;
@@ -28,7 +20,7 @@ export function Guideline() {
         }}
       />
       <ToolButton
-        enabled={selectedTool !== null}
+        enabled={true}
         Icon={<IconCircle size={16} />}
         onClick={() => {
           //

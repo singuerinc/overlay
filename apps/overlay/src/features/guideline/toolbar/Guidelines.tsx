@@ -3,6 +3,7 @@ import { type IHorizontalGuideline, type IVerticalGuideline } from "../types";
 
 import { v4 as uuidv4 } from "uuid";
 import { useAddGuidelineCommand } from "../../../features/guideline/store/useAddGuidelineCommand";
+import { useSelectedTool } from "../../../features/tools/store/tools";
 import { ToolButton } from "../../../ui/ToolButton";
 import { Guideline } from "../toolbar/Guideline";
 
@@ -21,6 +22,7 @@ const createVerticalGuideline = (): IVerticalGuideline => ({
 });
 
 export function Guidelines() {
+  const selectedTool = useSelectedTool();
   const addGuidelineCommand = useAddGuidelineCommand();
 
   return (
@@ -33,7 +35,9 @@ export function Guidelines() {
           addGuidelineCommand.execute(guideline);
         }}
       />
-      <Guideline />
+      {selectedTool && selectedTool.type === "guideline-horizontal" && (
+        <Guideline />
+      )}
       <ToolButton
         enabled={true}
         Icon={<IconBorderVertical />}
@@ -42,6 +46,9 @@ export function Guidelines() {
           addGuidelineCommand.execute(guideline);
         }}
       />
+      {selectedTool && selectedTool.type === "guideline-vertical" && (
+        <Guideline />
+      )}
     </div>
   );
 }
