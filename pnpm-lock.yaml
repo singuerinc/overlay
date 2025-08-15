@@ -38,6 +38,9 @@ importers:
       immer:
         specifier: 10.1.1
         version: 10.1.1
+      mousetrap:
+        specifier: 1.6.5
+        version: 1.6.5
       postcss:
         specifier: 8.5.6
         version: 8.5.6
@@ -90,6 +93,9 @@ importers:
       '@types/electron-squirrel-startup':
         specifier: ^1.0.2
         version: 1.0.2
+      '@types/mousetrap':
+        specifier: 1.6.15
+        version: 1.6.15
       '@types/react':
         specifier: 19.1.10
         version: 19.1.10
@@ -773,6 +779,9 @@ packages:
 
   '@types/keyv@3.1.4':
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
+
+  '@types/mousetrap@1.6.15':
+    resolution: {integrity: sha512-qL0hyIMNPow317QWW/63RvL1x5MVMV+Ru3NaY9f/CuEpCqrmb7WeuK2071ZY5hczOnm38qExWM2i2WtkXLSqFw==}
 
   '@types/node@22.17.1':
     resolution: {integrity: sha512-y3tBaz+rjspDTylNjAX37jEC3TETEFGNJL6uQDxwF9/8GLLIjW1rvVHlynyuUKMnMr1Roq8jOv3vkopBjC4/VA==}
@@ -2249,6 +2258,9 @@ packages:
     resolution: {integrity: sha512-+NsyUUAZDmo6YVHzL/stxSu3t9YS1iljliy3BSDrXJ/dkn1KYdmtZODGGjLcc9XLgVVpH4KshHB8XmZgMhaBXg==}
     engines: {node: '>=10'}
     hasBin: true
+
+  mousetrap@1.6.5:
+    resolution: {integrity: sha512-QNo4kEepaIBwiT8CDhP98umTetp+JNfQYBWvC1pc6/OAibuXtRcxZ58Qz8skvEHYvURne/7R8T5VoOI7rDsEUA==}
 
   ms@2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
@@ -3904,6 +3916,8 @@ snapshots:
   '@types/keyv@3.1.4':
     dependencies:
       '@types/node': 24.2.1
+
+  '@types/mousetrap@1.6.15': {}
 
   '@types/node@22.17.1':
     dependencies:
@@ -5602,6 +5616,8 @@ snapshots:
   mkdirp@1.0.4: {}
 
   mkdirp@3.0.1: {}
+
+  mousetrap@1.6.5: {}
 
   ms@2.0.0: {}
 

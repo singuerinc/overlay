@@ -1,3 +1,4 @@
+import { KeyboardObserver } from "@/features/keyboard/KeyboardObserver";
 import { ToolSelectedToolBar } from "@/features/toolbar/ToolSelectedToolBar";
 import { DocumentObserver } from "@/ui/DocumentObserver";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -19,6 +20,7 @@ root.render(
       </ToolBar>
       <ToolSelectedToolBar />
       <DocumentObserver />
+      <KeyboardObserver />
       <GuidelinesRoot />
     </QueryClientProvider>
   </div>
