@@ -11,11 +11,15 @@ import { GUIDELINE_VERTICAL, type IGuideline } from "./types";
 const variantsWrapper = cva(
   [
     "absolute top-0 left-0",
-    "flex",
-    "group hover:opacity-100 hover:cursor-move",
+    "flex pointer-events-auto",
+    "group hover:opacity-100 transition-colors",
   ],
   {
     variants: {
+      locked: {
+        true: "cursor-not-allowed",
+        false: "cursor-move",
+      },
       isVertical: {
         true: "h-screen w-[9px] flex-row justify-center",
         false: "w-screen h-[9px] flex-col justify-center",
@@ -62,12 +66,14 @@ const variantsGuideline = cva([], {
 });
 
 const variantsInfo = cva(
-  ["absolute whitespace-nowrap text-xs tabular-nums hidden group-hover:block"],
+  [
+    "absolute whitespace-nowrap text-xs tabular-nums hidden group-hover:block bg-neutral-900/20 px-1",
+  ],
   {
     variants: {
       isVertical: {
         true: ["top-1 left-3"],
-        false: ["top-2 left-2"],
+        false: ["top-3 left-1"],
       },
     },
   }
@@ -80,6 +86,7 @@ export function Guideline<T extends IGuideline>(props: { tool: T }) {
   const isSelected = selectedTool?.id === tool.id;
   const { attributes, listeners, setNodeRef, transform, node } = useDraggable({
     id: tool.id,
+    disabled: tool.locked,
   });
 
   const isVertical = tool.type === GUIDELINE_VERTICAL;
@@ -105,6 +112,7 @@ export function Guideline<T extends IGuideline>(props: { tool: T }) {
   const variantsConfig = {
     selected: isSelected,
     color: tool.color,
+    locked: tool.locked,
     isVertical: isVertical,
   };
 

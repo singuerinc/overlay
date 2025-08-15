@@ -7,4 +7,5 @@ export const createVerticalGuideline = (): IVerticalGuideline => ({
   x: 100,
   y: 0,
   color: "cyan",
+  locked: false,
 });
