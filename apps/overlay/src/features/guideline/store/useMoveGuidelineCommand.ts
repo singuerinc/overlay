@@ -1,3 +1,4 @@
+import { useSetSelectedTool } from "@/features/tools/store/tools";
 import type { Coordinates } from "@dnd-kit/core/dist/types";
 import { useQueryClient } from "@tanstack/react-query";
 import { Command } from "../../../features/commands/Command";
@@ -10,6 +11,7 @@ export function useMoveGuidelineCommand() {
   const queryClient = useQueryClient();
   const mutation = useMoveGuidelineMutation();
   const executeCommand = useExecuteCommand();
+  const setSelectedTool = useSetSelectedTool();
 
   return {
     execute: (id: string, delta: Coordinates) => {
@@ -32,6 +34,7 @@ export function useMoveGuidelineCommand() {
             x: pItem.x,
             y: pItem.y,
           });
+          setSelectedTool(pItem);
         }
       );
 

@@ -10,7 +10,7 @@ export function RemoveGuidelineButton() {
   return (
     <ToolButton
       enabled={true}
-      Icon={<IconTrash size={16} />}
+      Icon={<IconTrash />}
       onClick={() => {
         const guideline = { ...selectedTool } as IGuideline;
         removeGuidelineCommand.execute(guideline);
