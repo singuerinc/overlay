@@ -5,7 +5,7 @@ import { useRemoveGuidelineCommand } from "../../../features/guideline/store/use
 import { useSelectedTool } from "../../../features/tools/store/tools";
 import { ToolButton } from "../../../ui/ToolButton";
 
-export function Guideline() {
+export function GuidelineToolbar() {
   const selectedTool = useSelectedTool();
   const removeGuidelineCommand = useRemoveGuidelineCommand();
 

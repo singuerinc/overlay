@@ -5,7 +5,7 @@ import {
   useSelectedTool,
   useSetSelectedTool,
 } from "../../features/tools/store/tools";
-import type { IGuideline } from "./types";
+import { GUIDELINE_VERTICAL, type IGuideline } from "./types";
 
 const variantsWrapper = cva(
   [
@@ -68,13 +68,13 @@ export function Guideline<T extends IGuideline>(props: { tool: T }) {
   });
 
   const x =
-    tool.type === "guideline-vertical"
+    tool.type === GUIDELINE_VERTICAL
       ? transform
         ? transform.x + tool.x
         : tool.x
       : 0;
   const y =
-    tool.type === "guideline-vertical"
+    tool.type === GUIDELINE_VERTICAL
       ? 0
       : transform
         ? transform.y + tool.y
@@ -94,7 +94,7 @@ export function Guideline<T extends IGuideline>(props: { tool: T }) {
     <div
       className={variantsWrapper({
         selected: isSelected,
-        isVertical: tool.type === "guideline-vertical",
+        isVertical: tool.type === GUIDELINE_VERTICAL,
       })}
       ref={setNodeRef}
       style={style}
@@ -105,7 +105,7 @@ export function Guideline<T extends IGuideline>(props: { tool: T }) {
       <div
         className={variantsGuideline({
           selected: isSelected,
-          isVertical: tool.type === "guideline-vertical",
+          isVertical: tool.type === GUIDELINE_VERTICAL,
         })}
       />
     </div>

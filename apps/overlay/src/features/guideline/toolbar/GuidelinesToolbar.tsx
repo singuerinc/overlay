@@ -1,11 +1,16 @@
 import { IconBorderHorizontal, IconBorderVertical } from "@tabler/icons-react";
-import { type IHorizontalGuideline, type IVerticalGuideline } from "../types";
+import {
+  GUIDELINE_HORIZONTAL,
+  GUIDELINE_VERTICAL,
+  type IHorizontalGuideline,
+  type IVerticalGuideline,
+} from "../types";
 
 import { v4 as uuidv4 } from "uuid";
 import { useAddGuidelineCommand } from "../../../features/guideline/store/useAddGuidelineCommand";
 import { useSelectedTool } from "../../../features/tools/store/tools";
 import { ToolButton } from "../../../ui/ToolButton";
-import { Guideline } from "../toolbar/Guideline";
+import { GuidelineToolbar } from "../toolbar/GuidelineToolbar";
 
 const createHorizontalGuideline = (): IHorizontalGuideline => ({
   id: uuidv4(),
@@ -23,7 +28,7 @@ const createVerticalGuideline = (): IVerticalGuideline => ({
   color: "cyan",
 });
 
-export function Guidelines() {
+export function GuidelinesToolbar() {
   const selectedTool = useSelectedTool();
   const addGuidelineCommand = useAddGuidelineCommand();
 
@@ -37,8 +42,8 @@ export function Guidelines() {
           addGuidelineCommand.execute(guideline);
         }}
       />
-      {selectedTool && selectedTool.type === "guideline-horizontal" && (
-        <Guideline />
+      {selectedTool && selectedTool.type === GUIDELINE_HORIZONTAL && (
+        <GuidelineToolbar />
       )}
       <ToolButton
         enabled={true}
@@ -48,8 +53,8 @@ export function Guidelines() {
           addGuidelineCommand.execute(guideline);
         }}
       />
-      {selectedTool && selectedTool.type === "guideline-vertical" && (
-        <Guideline />
+      {selectedTool && selectedTool.type === GUIDELINE_VERTICAL && (
+        <GuidelineToolbar />
       )}
     </div>
   );

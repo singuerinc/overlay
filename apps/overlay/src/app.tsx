@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRoot } from "react-dom/client";
 import { GuidelinesRoot } from "./features/guideline/GuidelinesRoot";
-import { Guidelines } from "./features/guideline/toolbar/Guidelines";
+import { GuidelinesToolbar } from "./features/guideline/toolbar/GuidelinesToolbar";
 import { ToolBar } from "./features/toolbar/ToolBar";
 import { Undo } from "./features/undo/toolbar/Undo";
 
@@ -14,7 +14,7 @@ root.render(
       <ToolBar>
         <div className="flex gap-x-2">
           <Undo />
-          <Guidelines />
+          <GuidelinesToolbar />
         </div>
       </ToolBar>
       <GuidelinesRoot />
