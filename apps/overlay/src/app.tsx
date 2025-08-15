@@ -1,3 +1,4 @@
+import { ToolSelectedToolBar } from "@/features/toolbar/ToolSelectedToolBar";
 import { DocumentObserver } from "@/ui/DocumentObserver";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRoot } from "react-dom/client";
@@ -12,12 +13,11 @@ const root = createRoot(document.body);
 root.render(
   <div className="h-screen w-screen pointer-events-none">
     <QueryClientProvider client={queryClient}>
-      <ToolBar>
-        <div className="flex gap-x-2">
-          <Undo />
-          <GuidelinesToolbar />
-        </div>
+      <ToolBar initX={20} initY={20}>
+        <Undo />
+        <GuidelinesToolbar />
       </ToolBar>
+      <ToolSelectedToolBar />
       <DocumentObserver />
       <GuidelinesRoot />
     </QueryClientProvider>

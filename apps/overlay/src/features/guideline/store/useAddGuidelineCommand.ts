@@ -9,7 +9,6 @@ import { useRemoveGuidelineMutation } from "./useRemoveGuidelineMutation";
 export function useAddGuidelineCommand() {
   const setSelectedTool = useSetSelectedTool();
   const executeCommand = useExecuteCommand();
-
   const addGuideline = useAddGuidelineMutation();
   const removeGuideline = useRemoveGuidelineMutation();
 

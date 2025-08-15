@@ -1,6 +1,6 @@
 - [ ] guidelines: move with arrows
 - [ ] guidelines: set position with keyboard nums
 - [x] guidelines: colors
-- [ ] guideline: can be locked individually
+- [x] guideline: can be locked individually
 - [x] guideline: coord in toolbar
 - [ ] crosshair tool

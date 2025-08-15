@@ -4,10 +4,10 @@ import { RemoveGuidelineButton } from "@/features/guideline/toolbar/RemoveGuidel
 
 export function GuidelineToolbar() {
   return (
-    <div className="flex items-center gap-x-1 bg-neutral-700 px-1 rounded-sm">
+    <>
       <LockGuidelineButton />
       <ColorGuidelineButton />
       <RemoveGuidelineButton />
-    </div>
+    </>
   );
 }

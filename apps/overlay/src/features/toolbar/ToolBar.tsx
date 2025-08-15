@@ -3,8 +3,13 @@ import { CSS } from "@dnd-kit/utilities";
 import { IconGripVertical } from "@tabler/icons-react";
 import { useState, type PropsWithChildren } from "react";
 
-export function ToolBar({ children }: PropsWithChildren) {
-  const [{ x, y }, setCoords] = useState({ x: 20, y: 20 });
+export function ToolBar({
+  gripSize = 24,
+  children,
+  initX,
+  initY,
+}: PropsWithChildren<{ initX: number; initY: number; gripSize?: number }>) {
+  const [{ x, y }, setCoords] = useState({ x: initX, y: initY });
 
   return (
     <DndContext
@@ -13,7 +18,7 @@ export function ToolBar({ children }: PropsWithChildren) {
       }}
       modifiers={[]}
     >
-      <ToolsElements x={x} y={y}>
+      <ToolsElements x={x} y={y} gripSize={gripSize}>
         {children}
       </ToolsElements>
     </DndContext>
@@ -21,10 +26,11 @@ export function ToolBar({ children }: PropsWithChildren) {
 }
 
 export function ToolsElements({
+  gripSize,
   children,
   x,
   y,
-}: PropsWithChildren<{ x: number; y: number }>) {
+}: PropsWithChildren<{ x: number; y: number; gripSize: number }>) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: "tools",
   });
@@ -46,11 +52,12 @@ export function ToolsElements({
       style={style}
     >
       <IconGripVertical
+        size={gripSize}
         {...listeners}
         // {...attributes}
         className="cursor-grab active:cursor-grabbing"
       />
-      <div className="flex gap-x-2">{children}</div>
+      <div className="flex">{children}</div>
     </div>
   );
 }
