@@ -11,8 +11,7 @@ import {
   restrictToHorizontalAxis,
   restrictToVerticalAxis,
 } from "@dnd-kit/modifiers";
-import { HorizontalGuideline } from "./HorizontalGuideline";
-import { VerticalGuideline } from "./VerticalGuideline";
+import { Guideline } from "./Guideline";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Command } from "../../features/commands/Command";
@@ -155,7 +154,7 @@ export function GuidelinesRoot() {
         modifiers={[restrictToVerticalAxis]}
       >
         {hGuidelines.map((item) => (
-          <HorizontalGuideline key={item.id} {...item} />
+          <Guideline key={item.id} tool={item} />
         ))}
       </DndContext>
       <DndContext
@@ -164,7 +163,7 @@ export function GuidelinesRoot() {
         modifiers={[restrictToHorizontalAxis]}
       >
         {vGuidelines.map((item) => (
-          <VerticalGuideline key={item.id} {...item} />
+          <Guideline key={item.id} tool={item} />
         ))}
       </DndContext>
     </div>

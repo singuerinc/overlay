@@ -41,7 +41,7 @@ export function ToolsElements({
   };
   return (
     <div
-      className="flex gap-x-2 items-center bg-neutral-900 p-1 z-50 absolute rounded-sm text-neutral-600"
+      className="flex items-center bg-neutral-900 p-1 z-50 absolute rounded-sm text-neutral-600"
       ref={setNodeRef}
       style={style}
     >
@@ -50,7 +50,7 @@ export function ToolsElements({
         {...attributes}
         className="cursor-grab active:cursor-grabbing"
       />
-      {children}
+      <div className="flex gap-x-2">{children}</div>
     </div>
   );
 }

@@ -13,7 +13,7 @@ export function Undo() {
       <ToolButton
         enabled={canUndo}
         onClick={() => undo()}
-        Icon={IconArrowBackUp}
+        Icon={<IconArrowBackUp />}
       />
     </div>
   );
