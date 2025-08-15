@@ -20,7 +20,7 @@ export function ToolButton({
 }: {
   enabled: boolean;
   onClick: () => void;
-  Icon: React.ElementType;
+  Icon: React.ReactNode;
 }) {
   return (
     <button
@@ -28,7 +28,7 @@ export function ToolButton({
       className={variants({ enabled })}
       onClick={onClick}
     >
-      <Icon />
+      {Icon}
     </button>
   );
 }
