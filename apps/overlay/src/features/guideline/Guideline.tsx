@@ -31,7 +31,7 @@ const variantsWrapper = cva(
       },
       selected: {
         true: "opacity-100",
-        false: "opacity-25",
+        false: "opacity-50",
       },
     },
     defaultVariants: {
