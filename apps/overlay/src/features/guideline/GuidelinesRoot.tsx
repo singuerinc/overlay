@@ -24,10 +24,7 @@ function getGuidelines(): Promise<IGuideLineStore> {
     const maybeGuidelines = localStorage.getItem("guidelines");
 
     if (maybeGuidelines === null) {
-      resolve({
-        hGuidelines: [],
-        vGuidelines: [],
-      });
+      resolve([]);
     } else {
       resolve(JSON.parse(maybeGuidelines));
     }
@@ -60,8 +57,7 @@ export function GuidelinesRoot() {
     queryFn: getGuidelines,
   });
 
-  const hGuidelines = data?.hGuidelines ?? [];
-  const vGuidelines = data?.vGuidelines ?? [];
+  const guidelines = data ?? [];
 
   const mutation = useMutation({
     mutationFn: postGuidelines,
@@ -75,34 +71,32 @@ export function GuidelinesRoot() {
   const handleHorizontalDragEnd = (event: DragEndEvent) => {
     const { active, delta } = event;
 
-    const activeItem = hGuidelines.find((item) => item.id === active.id);
+    const activeItem = guidelines.find((item) => item.id === active.id);
 
     const command = new Command(
       () => {
-        mutation.mutate({
-          hGuidelines: hGuidelines.map((item) => {
+        mutation.mutate(
+          guidelines.map((item) => {
             if (item.id === active.id) {
               const newItem = { ...item, y: item.y + delta.y };
               setSelectedTool(newItem);
               return newItem;
             }
             return item;
-          }),
-          vGuidelines,
-        });
+          })
+        );
       },
       () => {
         const pItem = { ...activeItem, y: activeItem.y };
-        mutation.mutate({
-          hGuidelines: hGuidelines.map((item) => {
+        mutation.mutate(
+          guidelines.map((item) => {
             if (item.id === active.id) {
               setSelectedTool(pItem);
               return pItem;
             }
             return item;
-          }),
-          vGuidelines,
-        });
+          })
+        );
       }
     );
 
@@ -112,34 +106,32 @@ export function GuidelinesRoot() {
   const handleVerticalDragEnd = (event: DragEndEvent) => {
     const { active, delta } = event;
 
-    const activeItem = vGuidelines.find((item) => item.id === active.id);
+    const activeItem = guidelines.find((item) => item.id === active.id);
 
     const command = new Command(
       () => {
-        mutation.mutate({
-          hGuidelines,
-          vGuidelines: vGuidelines.map((item) => {
+        mutation.mutate(
+          guidelines.map((item) => {
             if (item.id === active.id) {
               const newItem = { ...item, x: item.x + delta.x };
               setSelectedTool(newItem);
               return newItem;
             }
             return item;
-          }),
-        });
+          })
+        );
       },
       () => {
         const pItem = { ...activeItem, x: activeItem.x };
-        mutation.mutate({
-          hGuidelines,
-          vGuidelines: vGuidelines.map((item) => {
+        mutation.mutate(
+          guidelines.map((item) => {
             if (item.id === active.id) {
               setSelectedTool(pItem);
               return pItem;
             }
             return item;
-          }),
-        });
+          })
+        );
       }
     );
 
@@ -153,18 +145,22 @@ export function GuidelinesRoot() {
         onDragEnd={handleHorizontalDragEnd}
         modifiers={[restrictToVerticalAxis]}
       >
-        {hGuidelines.map((item) => (
-          <Guideline key={item.id} tool={item} />
-        ))}
+        {guidelines
+          .filter((item) => item.type === "guideline-horizontal")
+          .map((item) => (
+            <Guideline key={item.id} tool={item} />
+          ))}
       </DndContext>
       <DndContext
         sensors={sensors}
         onDragEnd={handleVerticalDragEnd}
         modifiers={[restrictToHorizontalAxis]}
       >
-        {vGuidelines.map((item) => (
-          <Guideline key={item.id} tool={item} />
-        ))}
+        {guidelines
+          .filter((item) => item.type === "guideline-vertical")
+          .map((item) => (
+            <Guideline key={item.id} tool={item} />
+          ))}
       </DndContext>
     </div>
   );
