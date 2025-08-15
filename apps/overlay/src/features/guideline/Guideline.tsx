@@ -1,10 +1,11 @@
-import { useDraggable } from "@dnd-kit/core";
-import { CSS } from "@dnd-kit/utilities";
-import { cva } from "class-variance-authority";
 import {
   useSelectedTool,
   useSetSelectedTool,
-} from "../../features/tools/store/tools";
+} from "@/features/tools/store/tools";
+import { useDraggable } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
+import { cva } from "class-variance-authority";
+import { useCallback, useState } from "react";
 import { GUIDELINE_VERTICAL, type IGuideline } from "./types";
 
 const variantsWrapper = cva(
@@ -22,6 +23,7 @@ const variantsWrapper = cva(
       color: {
         cyan: "hover:bg-cyan-500/10",
         red: "hover:bg-red-500/10",
+        green: "hover:bg-green-500/10",
       },
       selected: {
         true: "opacity-100",
@@ -45,6 +47,7 @@ const variantsGuideline = cva([], {
     color: {
       cyan: "bg-cyan-500",
       red: "bg-red-500",
+      green: "bg-green-500",
     },
     selected: {
       true: "",
@@ -58,21 +61,30 @@ const variantsGuideline = cva([], {
   },
 });
 
+const variantsInfo = cva(
+  ["absolute whitespace-nowrap text-xs tabular-nums hidden group-hover:block"],
+  {
+    variants: {
+      isVertical: {
+        true: ["top-1 left-3"],
+        false: ["top-2 left-2"],
+      },
+    },
+  }
+);
+
 export function Guideline<T extends IGuideline>(props: { tool: T }) {
   const { tool } = props;
   const setSelectedTool = useSetSelectedTool();
   const selectedTool = useSelectedTool();
   const isSelected = selectedTool?.id === tool.id;
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+  const { attributes, listeners, setNodeRef, transform, node } = useDraggable({
     id: tool.id,
   });
 
-  const x =
-    tool.type === GUIDELINE_VERTICAL
-      ? transform
-        ? transform.x + tool.x
-        : tool.x
-      : 0;
+  const isVertical = tool.type === GUIDELINE_VERTICAL;
+
+  const x = isVertical ? (transform ? transform.x + tool.x : tool.x) : 0;
   const y =
     tool.type === GUIDELINE_VERTICAL
       ? 0
@@ -90,24 +102,37 @@ export function Guideline<T extends IGuideline>(props: { tool: T }) {
       : CSS.Translate.toString({ x, y, scaleX: 1, scaleY: 1 }),
   };
 
+  const variantsConfig = {
+    selected: isSelected,
+    color: tool.color,
+    isVertical: isVertical,
+  };
+
+  const [{ posX, posY }, setPos] = useState({ posX: x, posY: y });
+
+  const handleMove = useCallback(() => {
+    setPos({
+      posX: node.current?.getBoundingClientRect().x || 0,
+      posY: node.current?.getBoundingClientRect().y || 0,
+    });
+  }, [node]);
+
   return (
     <div
-      className={variantsWrapper({
-        selected: isSelected,
-        isVertical: tool.type === GUIDELINE_VERTICAL,
-      })}
+      className={variantsWrapper(variantsConfig)}
       ref={setNodeRef}
       style={style}
       {...listeners}
       {...attributes}
       onClick={() => setSelectedTool(tool)}
+      onMouseMove={handleMove}
     >
-      <div
-        className={variantsGuideline({
-          selected: isSelected,
-          isVertical: tool.type === GUIDELINE_VERTICAL,
-        })}
-      />
+      {
+        <div className={variantsInfo(variantsConfig)}>
+          {isVertical ? posX + 4 : posY + 4}
+        </div>
+      }
+      <div className={variantsGuideline(variantsConfig)} />
     </div>
   );
 }

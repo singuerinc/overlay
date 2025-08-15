@@ -15,8 +15,8 @@ const useToolsStore = create<Store>((set) => ({
   },
 }));
 
-export const useSelectedTool = () =>
-  useToolsStore((state) => state.selectedTool);
+export const useSelectedTool = <T extends ITool>() =>
+  useToolsStore((state) => state.selectedTool as T);
 
 export const useSetSelectedTool = () =>
   useToolsStore((state) => state.actions.setSelectedTool);
