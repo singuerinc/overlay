@@ -14,11 +14,7 @@ export function useAddGuideline() {
       const guidelines = produce(
         prevGuidelines,
         (draftState: IGuideLineStore) => {
-          if (guideline.type === "guideline-horizontal") {
-            draftState.hGuidelines.push(guideline);
-          } else {
-            draftState.vGuidelines.push(guideline);
-          }
+          draftState.push(guideline);
         }
       );
 

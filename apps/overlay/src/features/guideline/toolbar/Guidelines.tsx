@@ -11,6 +11,7 @@ const createHorizontalGuideline = (): IHorizontalGuideline => ({
   id: uuidv4(),
   type: "guideline-horizontal",
   y: 100,
+  x: 0,
   color: "cyan",
 });
 
@@ -18,6 +19,7 @@ const createVerticalGuideline = (): IVerticalGuideline => ({
   id: uuidv4(),
   type: "guideline-vertical",
   x: 100,
+  y: 0,
   color: "cyan",
 });
 

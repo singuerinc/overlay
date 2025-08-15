@@ -13,17 +13,8 @@ export function useRemoveGuideline() {
 
       const guidelines = produce(
         prevGuidelines,
-        (draftState: IGuideLineStore) => {
-          if (guideline.type === "guideline-horizontal") {
-            draftState.hGuidelines = draftState.hGuidelines.filter(
-              (item) => item.id !== guideline.id
-            );
-          } else {
-            draftState.vGuidelines = draftState.vGuidelines.filter(
-              (item) => item.id !== guideline.id
-            );
-          }
-        }
+        (draftState: IGuideLineStore) =>
+          draftState.filter((item) => item.id !== guideline.id)
       );
 
       queryClient.setQueryData(["guidelines"], guidelines);
