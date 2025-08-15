@@ -1,0 +1,3 @@
+- [ ] guidelines: move with arrows
+- [ ] guidelines: set position with keyboard nums
+- [ ] guidelines: colors

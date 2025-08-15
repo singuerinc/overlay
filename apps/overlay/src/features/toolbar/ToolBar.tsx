@@ -3,7 +3,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { IconGripVertical } from "@tabler/icons-react";
 import { useState, type PropsWithChildren } from "react";
 
-export function Tools({ children }: PropsWithChildren) {
+export function ToolBar({ children }: PropsWithChildren) {
   const [{ x, y }, setCoords] = useState({ x: 20, y: 20 });
 
   return (
@@ -45,7 +45,11 @@ export function ToolsElements({
       ref={setNodeRef}
       style={style}
     >
-      <IconGripVertical {...listeners} {...attributes} />
+      <IconGripVertical
+        {...listeners}
+        {...attributes}
+        className="cursor-grab active:cursor-grabbing"
+      />
       {children}
     </div>
   );

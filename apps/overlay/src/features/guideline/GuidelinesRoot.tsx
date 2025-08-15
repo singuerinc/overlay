@@ -15,6 +15,9 @@ import { HorizontalGuideline } from "./HorizontalGuideline";
 import { VerticalGuideline } from "./VerticalGuideline";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Command } from "../../features/commands/Command";
+import { useExecuteCommand } from "../../features/commands/store/commands";
+import { useSetSelectedTool } from "../../features/tools/store/tools";
 import type { IGuideLineStore } from "./types";
 
 function getGuidelines(): Promise<IGuideLineStore> {
@@ -23,14 +26,8 @@ function getGuidelines(): Promise<IGuideLineStore> {
 
     if (maybeGuidelines === null) {
       resolve({
-        hGuidelines: [
-          { id: "gride-h-0", type: "horizontal", y: 100 },
-          { id: "gride-h-1", type: "horizontal", y: 200 },
-        ],
-        vGuidelines: [
-          { id: "gride-v-0", type: "vertical", x: 100 },
-          { id: "gride-v-1", type: "vertical", x: 200 },
-        ],
+        hGuidelines: [],
+        vGuidelines: [],
       });
     } else {
       resolve(JSON.parse(maybeGuidelines));
@@ -46,8 +43,15 @@ function postGuidelines(data: IGuideLineStore): Promise<void> {
 }
 
 export function GuidelinesRoot() {
+  const setSelectedTool = useSetSelectedTool();
+  const executeCommand = useExecuteCommand();
   const queryClient = useQueryClient();
-  const mouseSensor = useSensor(MouseSensor);
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      tolerance: 10,
+      delay: 100,
+    },
+  });
   const touchSensor = useSensor(TouchSensor);
   const keyboardSensor = useSensor(KeyboardSensor, {});
   const sensors = useSensors(mouseSensor, touchSensor, keyboardSensor);
@@ -67,26 +71,80 @@ export function GuidelinesRoot() {
     },
   });
 
+  // TODO: extract to avoid repetition with horizontal & vertical
+
   const handleHorizontalDragEnd = (event: DragEndEvent) => {
     const { active, delta } = event;
 
-    mutation.mutate({
-      hGuidelines: hGuidelines.map((item) =>
-        item.id === active.id ? { ...item, y: item.y + delta.y } : item
-      ),
-      vGuidelines,
-    });
+    const activeItem = hGuidelines.find((item) => item.id === active.id);
+
+    const command = new Command(
+      () => {
+        mutation.mutate({
+          hGuidelines: hGuidelines.map((item) => {
+            if (item.id === active.id) {
+              const newItem = { ...item, y: item.y + delta.y };
+              setSelectedTool(newItem);
+              return newItem;
+            }
+            return item;
+          }),
+          vGuidelines,
+        });
+      },
+      () => {
+        const pItem = { ...activeItem, y: activeItem.y };
+        mutation.mutate({
+          hGuidelines: hGuidelines.map((item) => {
+            if (item.id === active.id) {
+              setSelectedTool(pItem);
+              return pItem;
+            }
+            return item;
+          }),
+          vGuidelines,
+        });
+      }
+    );
+
+    executeCommand(command);
   };
 
   const handleVerticalDragEnd = (event: DragEndEvent) => {
     const { active, delta } = event;
 
-    mutation.mutate({
-      hGuidelines,
-      vGuidelines: vGuidelines.map((item) =>
-        item.id === active.id ? { ...item, x: item.x + delta.x } : item
-      ),
-    });
+    const activeItem = vGuidelines.find((item) => item.id === active.id);
+
+    const command = new Command(
+      () => {
+        mutation.mutate({
+          hGuidelines,
+          vGuidelines: vGuidelines.map((item) => {
+            if (item.id === active.id) {
+              const newItem = { ...item, x: item.x + delta.x };
+              setSelectedTool(newItem);
+              return newItem;
+            }
+            return item;
+          }),
+        });
+      },
+      () => {
+        const pItem = { ...activeItem, x: activeItem.x };
+        mutation.mutate({
+          hGuidelines,
+          vGuidelines: vGuidelines.map((item) => {
+            if (item.id === active.id) {
+              setSelectedTool(pItem);
+              return pItem;
+            }
+            return item;
+          }),
+        });
+      }
+    );
+
+    executeCommand(command);
   };
 
   return (
