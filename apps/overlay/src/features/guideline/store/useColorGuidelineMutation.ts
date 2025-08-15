@@ -33,7 +33,7 @@ export function useColorGuidelineMutation() {
       localStorage.setItem("guidelines", JSON.stringify(newGuidelines));
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["guidelines"] });
+      queryClient.invalidateQueries({ queryKey: GUIDELINES_KEYS.guidelines });
     },
   });
 }
