@@ -8,7 +8,7 @@ function getRuler(): Promise<IRulerStore> {
     const maybeRuler = localStorage.getItem("ruler");
 
     if (maybeRuler === null) {
-      const ruler = createRuler();
+      const ruler = createRuler("100%", "100%");
       localStorage.setItem("ruler", JSON.stringify(ruler));
       resolve(ruler);
     } else {

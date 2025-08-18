@@ -3,8 +3,9 @@
 - [x] guidelines: colors
 - [x] guideline: can be locked individually
 - [x] guideline: coord in toolbar
-- [ ] guideline: rotate
-- [ ] crosshair tool
+- [x] guideline: rotate
+- [x] crosshair tool
 - [ ] columns tool
 - [ ] grid tool
 - [ ] image onion tool
+- [ ] color drop
