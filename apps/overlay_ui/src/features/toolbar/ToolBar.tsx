@@ -47,6 +47,7 @@ export function ToolsElements({
   };
   return (
     <div
+      id="toolbar"
       className="flex items-center bg-neutral-100 p-1 z-50 absolute rounded-sm pointer-events-auto"
       ref={setNodeRef}
       style={style}

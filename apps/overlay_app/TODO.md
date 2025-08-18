@@ -9,3 +9,5 @@
 - [ ] grid tool
 - [ ] image onion tool
 - [ ] color drop
+- [ ] all borders (similar to extension)
+- [ ] dark mode

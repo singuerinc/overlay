@@ -76,7 +76,6 @@ export function Crosshair() {
       const mouseX = event.clientX || 0;
       const mouseY = event.clientY || 0;
 
-      console.log({ mouseX, mouseY });
       const [x, y] = calculateNormalizePosition(mouseX, mouseY);
       //copy to clipboard
       navigator.clipboard.writeText(`${x}, ${y}`);

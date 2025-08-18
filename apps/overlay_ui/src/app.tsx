@@ -19,7 +19,7 @@ export function App() {
   return (
     <div className="h-screen w-screen pointer-events-none relative overflow-hidden">
       <QueryClientProvider client={queryClient}>
-        <ToolBar initX={20} initY={20}>
+        <ToolBar initX={window.innerWidth / 2} initY={window.innerHeight - 100}>
           <Undo />
           <ToggleRulerButton />
           <GuidelinesToolbar />

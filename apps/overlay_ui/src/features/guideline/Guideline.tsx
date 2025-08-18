@@ -25,10 +25,27 @@ const variantsGuideline = cva(["pointer-events-auto"], {
       green: "bg-green-500/20 hover:bg-green-500/100",
     },
     selected: {
-      true: "",
+      true: "shadow",
       false: "",
     },
   },
+  compoundVariants: [
+    {
+      selected: true,
+      color: "cyan",
+      className: "bg-cyan-500/100",
+    },
+    {
+      selected: true,
+      color: "red",
+      className: "bg-red-500/100",
+    },
+    {
+      selected: true,
+      color: "green",
+      className: "bg-green-500/100",
+    },
+  ],
   defaultVariants: {
     isVertical: true,
     color: "cyan",
@@ -44,16 +61,19 @@ export function Guideline({ id }: { id: string }) {
   const isSelected = selectedTool?.id === guideline?.id;
   const ref = useRef<HTMLDivElement>(null);
   const moveGuidelineCommand = useMoveGuidelineCommand();
-
   const [isDrag, setDrag] = useState(false);
   const rulerSetPosition = useRulerSetPosition();
 
   const isVertical = guideline?.type === GUIDELINE_VERTICAL || false;
 
-  const handleDown = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+  const handleDown = useCallback(() => {
     setDrag(true);
-    console.log("mouse down");
-  }, []);
+    if (isVertical) {
+      rulerSetPosition(guideline?.x ?? null, null);
+    } else {
+      rulerSetPosition(null, guideline?.y ?? null);
+    }
+  }, [guideline?.x, guideline?.y, isVertical, rulerSetPosition]);
 
   const handleUp = useCallback(
     (event: MouseEvent) => {
@@ -73,6 +93,12 @@ export function Guideline({ id }: { id: string }) {
     },
     [guideline, isDrag, isVertical, moveGuidelineCommand]
   );
+
+  const handleClick = useCallback(() => {
+    if (guideline) {
+      setSelectedTool(guideline);
+    }
+  }, [guideline, setSelectedTool]);
 
   const handleMove = useCallback(
     (event: MouseEvent) => {
@@ -124,7 +150,7 @@ export function Guideline({ id }: { id: string }) {
     <div
       className="absolute top-0 left-0 h-screen w-screen pointer-events-none"
       onMouseDown={handleDown}
-      onClick={() => setSelectedTool(guideline)}
+      onClick={handleClick}
     >
       <div ref={ref} className={variantsGuideline(variantsConfig)} />
     </div>

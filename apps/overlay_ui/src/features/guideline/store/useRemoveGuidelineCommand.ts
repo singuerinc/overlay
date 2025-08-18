@@ -1,5 +1,7 @@
 import { type IGuideline } from "../types";
 
+import { useRulerSetPosition } from "@/features/rulers/store/rulerStore";
+import { useNormalizedPosition } from "@/features/rulers/useNormalizedPosition";
 import { Command } from "../../../features/commands/Command";
 import { useExecuteCommand } from "../../../features/commands/store/commands";
 import { useSetSelectedTool } from "../../../features/tools/store/tools";
@@ -13,6 +15,9 @@ export function useRemoveGuidelineCommand() {
   const addGuideline = useAddGuidelineMutation();
   const removeGuideline = useRemoveGuidelineMutation();
 
+  const rulerSetPosition = useRulerSetPosition();
+  const { calculate: calculateNormalizedPosition } = useNormalizedPosition();
+
   return {
     execute: (guideline: IGuideline) => {
       const command = new Command(
@@ -20,6 +25,7 @@ export function useRemoveGuidelineCommand() {
           removeGuideline.mutate({
             guideline,
           });
+          rulerSetPosition(null, null);
           setSelectedTool(null);
         },
         () => {
@@ -27,6 +33,8 @@ export function useRemoveGuidelineCommand() {
             guideline,
           });
           setSelectedTool(guideline);
+          const [x, y] = calculateNormalizedPosition(guideline.x, guideline.y);
+          rulerSetPosition(x, y);
         }
       );
       executeCommand(command);
