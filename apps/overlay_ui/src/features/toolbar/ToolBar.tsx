@@ -47,7 +47,7 @@ export function ToolsElements({
   };
   return (
     <div
-      className="flex items-center bg-neutral-900 p-1 z-50 absolute rounded-sm text-neutral-600 pointer-events-auto"
+      className="flex items-center bg-neutral-100 p-1 z-50 absolute rounded-sm pointer-events-auto"
       ref={setNodeRef}
       style={style}
     >
@@ -55,7 +55,8 @@ export function ToolsElements({
         size={gripSize}
         {...listeners}
         // {...attributes}
-        className="cursor-grab active:cursor-grabbing"
+        className="cursor-grab active:cursor-grabbing text-neutral-300"
+        stroke={1}
       />
       <div className="flex">{children}</div>
     </div>

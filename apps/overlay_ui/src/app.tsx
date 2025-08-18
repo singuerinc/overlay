@@ -1,7 +1,7 @@
 import { Crosshair } from "@/features/crosshair/Crosshair";
 import { CrosshairToolbar } from "@/features/crosshair/toolbar/CrosshairToolbar";
 import { KeyboardObserver } from "@/features/keyboard/KeyboardObserver";
-import { RulersRoot } from "@/features/rulers/RulersRoot";
+import { Ruler } from "@/features/rulers/Ruler";
 import { CenterOriginRulerButton } from "@/features/rulers/toolbar/CenterOriginRulerButton";
 import { ToggleRulerButton } from "@/features/rulers/toolbar/ToggleRulerButton";
 import { ToolSelectedToolBar } from "@/features/toolbar/ToolSelectedToolBar";
@@ -17,7 +17,7 @@ const queryClient = new QueryClient();
 
 export function App() {
   return (
-    <div className="h-screen w-screen pointer-events-none relative">
+    <div className="h-screen w-screen pointer-events-none relative overflow-hidden">
       <QueryClientProvider client={queryClient}>
         <ToolBar initX={20} initY={20}>
           <Undo />
@@ -29,8 +29,8 @@ export function App() {
         <ToolSelectedToolBar />
         <DocumentObserver />
         <KeyboardObserver />
+        <Ruler />
         <GuidelinesRoot />
-        <RulersRoot />
         <Crosshair />
       </QueryClientProvider>
       <Toaster />

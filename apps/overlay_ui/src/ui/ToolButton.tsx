@@ -11,8 +11,8 @@ const variants = cva(["rounded-sm p-1"], {
       false: "opacity-40 cursor-auto",
     },
     activated: {
-      true: "bg-neutral-100 text-neutral-900",
-      false: "text-neutral-400 hover:text-neutral-100",
+      true: "bg-white text-neutral-900",
+      false: "text-neutral-400 hover:text-neutral-600",
     },
   },
   defaultVariants: {
