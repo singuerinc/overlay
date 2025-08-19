@@ -24,8 +24,8 @@ export function GuidelinesRoot() {
   );
 
   const onGuidelinePositionChangeEnded = useCallback(
-    (guideline: IGuideline, position: { x: number; y: number }) => {
-      moveGuidelineCommand.execute(guideline.id, position);
+    (guideline: IGuideline, x: number, y: number) => {
+      moveGuidelineCommand.execute(guideline.id, { x, y });
     },
     [moveGuidelineCommand]
   );

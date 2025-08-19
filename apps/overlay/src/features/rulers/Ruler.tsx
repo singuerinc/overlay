@@ -15,6 +15,7 @@ import { useSetOriginRulerCommand } from "@/features/rulers/store/useSetOriginRu
 import { cn } from "@/ui/cn";
 import { cva } from "class-variance-authority";
 import { useCallback, useEffect, useState } from "react";
+import { HotkeysProvider } from "react-hotkeys-hook";
 
 const variantsInfo = cva(
   [
@@ -70,21 +71,21 @@ export function Ruler() {
   );
 
   const onGuidelinePositionChangeEnded = useCallback(
-    (guideline: IGuideline, position: { x: number; y: number }) => {
-      guideline.x = position.x;
-      guideline.y = position.y;
+    (guideline: IGuideline, x: number, y: number) => {
+      guideline.x = x;
+      guideline.y = y;
       const isVertical = guideline.type === GUIDELINE_VERTICAL;
       if (ruler) {
         setOriginCommand.execute(
-          isVertical ? position.x : ruler.originX,
-          isVertical ? ruler.originY : position.y
+          isVertical ? x : ruler.originX,
+          isVertical ? ruler.originY : y
         );
       }
     },
     [ruler, setOriginCommand]
   );
 
-  const onGuidelineSelected = useCallback((_: IGuideline) => {
+  const onGuidelineSelected = useCallback(() => {
     //
   }, []);
 
@@ -93,36 +94,38 @@ export function Ruler() {
   }
 
   return (
-    <div
-      className="absolute top-0 left-0 pointer-events-none"
-      style={{
-        width: `${ruler.width}`,
-        height: `${ruler.height}`,
-      }}
-    >
+    <HotkeysProvider>
       <div
-        className="absolute top-0 left-0 w-6 h-6 bg-neutral-100 z-10 cursor-pointer"
-        onClick={handleResetOrigin}
-      />
-      <VerticalRuler origin={ruler.originY} />
-      <HorizontalRuler origin={ruler.originX} />
-      <NormalizedPositionX />
-      <NormalizedPositionY />
-      <Guideline
-        guideline={hGuideline}
-        style="dashed"
-        onGuidelineSelected={onGuidelineSelected}
-        onGuidelinePositionChangeEnded={onGuidelinePositionChangeEnded}
-        onGuidelinePositionChanged={onGuidelinePositionChanged}
-      />
-      <Guideline
-        guideline={vGuideline}
-        style="dashed"
-        onGuidelineSelected={onGuidelineSelected}
-        onGuidelinePositionChangeEnded={onGuidelinePositionChangeEnded}
-        onGuidelinePositionChanged={onGuidelinePositionChanged}
-      />
-    </div>
+        className="absolute top-0 left-0 pointer-events-none"
+        style={{
+          width: `${ruler.width}`,
+          height: `${ruler.height}`,
+        }}
+      >
+        <div
+          className="absolute top-0 left-0 w-6 h-6 bg-neutral-100 z-10 cursor-pointer"
+          onClick={handleResetOrigin}
+        />
+        <VerticalRuler origin={ruler.originY} />
+        <HorizontalRuler origin={ruler.originX} />
+        <NormalizedPositionX />
+        <NormalizedPositionY />
+        <Guideline
+          guideline={hGuideline}
+          style="dashed"
+          onGuidelineSelected={onGuidelineSelected}
+          onGuidelinePositionChangeEnded={onGuidelinePositionChangeEnded}
+          onGuidelinePositionChanged={onGuidelinePositionChanged}
+        />
+        <Guideline
+          guideline={vGuideline}
+          style="dashed"
+          onGuidelineSelected={onGuidelineSelected}
+          onGuidelinePositionChangeEnded={onGuidelinePositionChangeEnded}
+          onGuidelinePositionChanged={onGuidelinePositionChanged}
+        />
+      </div>
+    </HotkeysProvider>
   );
 }
 

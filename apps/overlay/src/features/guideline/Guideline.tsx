@@ -1,9 +1,12 @@
+import { useRemoveGuidelineCommand } from "@/features/guideline/store/useRemoveGuidelineCommand";
 import { useSelectedTool } from "@/features/tools/store/tools";
 import { cva } from "class-variance-authority";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
+import type { HotkeysEvent } from "react-hotkeys-hook/packages/react-hotkeys-hook/dist/types";
 import { GUIDELINE_VERTICAL, type IGuideline } from "./types";
 
-const variantsGuideline = cva(["pointer-events-auto"], {
+const variantsGuideline = cva(["pointer-events-auto focus:outline-none"], {
   variants: {
     locked: {
       true: "cursor-not-allowed",
@@ -18,10 +21,10 @@ const variantsGuideline = cva(["pointer-events-auto"], {
       false: "w-full h-px border-t",
     },
     color: {
-      cyan: "border-cyan-500/20 hover:border-cyan-500/100",
-      red: "border-red-500/20 hover:border-red-500/100",
-      green: "border-green-500/20 hover:border-green-500/100",
-      gray: "border-neutral-500/20 hover:border-neutral-500/100",
+      cyan: "border-cyan-500/40 hover:border-cyan-500/100",
+      red: "border-red-500/40 hover:border-red-500/100",
+      green: "border-green-500/40 hover:border-green-500/100",
+      gray: "border-neutral-500/40 hover:border-neutral-500/100",
     },
     selected: {
       true: "shadow",
@@ -83,20 +86,37 @@ export function Guideline({
   ) => void;
   onGuidelinePositionChangeEnded: (
     guideline: IGuideline,
-    position: { x: number; y: number }
+    x: number,
+    y: number
   ) => void;
 }) {
   const selectedTool = useSelectedTool();
-  const isSelected = selectedTool?.id === guideline.id;
+  const isSelected = useMemo(
+    () => selectedTool?.id === guideline.id,
+    [selectedTool, guideline.id]
+  );
   const containerRef = useRef<HTMLDivElement>(null);
   const guidelineRef = useRef<HTMLDivElement>(null);
 
   const [isDrag, setDrag] = useState(false);
 
-  const isVertical = guideline.type === GUIDELINE_VERTICAL || false;
+  const isVertical = guideline.type === GUIDELINE_VERTICAL ? true : false;
+
+  useGuidelineKeyboardShortcuts({
+    guideline,
+    isSelected,
+    isVertical,
+    onGuidelinePositionChanged: (guideline, x, y) => {
+      onGuidelinePositionChanged(guideline, x, y);
+      onGuidelinePositionChangeEnded(guideline, x, y);
+    },
+  });
+
+  const handleOnFocus = useCallback(() => {
+    onGuidelineSelected(guideline);
+  }, [guideline, onGuidelineSelected]);
 
   const handleDown = useCallback(() => {
-    onGuidelineSelected(guideline);
     if (!guideline.locked && containerRef.current) {
       setDrag(true);
 
@@ -106,7 +126,7 @@ export function Guideline({
         isVertical ? 0 : guideline.y
       );
     }
-  }, [guideline, isVertical, onGuidelinePositionChanged, onGuidelineSelected]);
+  }, [guideline, isVertical, onGuidelinePositionChanged]);
 
   const handleUp = useCallback(
     (event: MouseEvent) => {
@@ -117,11 +137,11 @@ export function Guideline({
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
 
-        const position = {
-          x: isVertical ? x : 0,
-          y: isVertical ? 0 : y,
-        };
-        onGuidelinePositionChangeEnded(guideline, position);
+        onGuidelinePositionChangeEnded(
+          guideline,
+          isVertical ? x : 0,
+          isVertical ? 0 : y
+        );
       }
     },
     [guideline, isDrag, isVertical, onGuidelinePositionChangeEnded]
@@ -166,7 +186,7 @@ export function Guideline({
       "transform",
       `translateX(${isVertical ? guideline?.x : 0}px) translateY(${isVertical ? 0 : guideline?.y}px)`
     );
-  }, [guideline?.x, guideline?.y, isVertical]);
+  }, [guideline, isVertical]);
 
   if (!guideline) {
     return null;
@@ -187,7 +207,93 @@ export function Guideline({
       className="absolute top-0 left-0 h-screen w-screen pointer-events-none"
       onMouseDown={handleDown}
     >
-      <div ref={guidelineRef} className={variantsGuideline(variantsConfig)} />
+      <div
+        ref={guidelineRef}
+        tabIndex={0}
+        onFocus={handleOnFocus}
+        aria-disabled={guideline.locked}
+        aria-orientation={isVertical ? "vertical" : "horizontal"}
+        aria-selected={isSelected}
+        className={variantsGuideline(variantsConfig)}
+      />
     </div>
   );
+}
+
+function useGuidelineKeyboardShortcuts({
+  guideline,
+  isSelected,
+  isVertical,
+  onGuidelinePositionChanged,
+}: {
+  guideline: IGuideline;
+  isSelected: boolean;
+  isVertical: boolean;
+  onGuidelinePositionChanged: (
+    guideline: IGuideline,
+    x: number,
+    y: number
+  ) => void;
+}) {
+  const removeGuidelineCommand = useRemoveGuidelineCommand();
+
+  const left = useCallback(
+    (_: KeyboardEvent, hotkeysEvent: HotkeysEvent) => {
+      const amount = hotkeysEvent.shift ? 10 : 1;
+      onGuidelinePositionChanged(guideline, guideline.x - amount, guideline.y);
+    },
+    [guideline, onGuidelinePositionChanged]
+  );
+
+  const right = useCallback(
+    (_: KeyboardEvent, hotkeysEvent: HotkeysEvent) => {
+      const amount = hotkeysEvent.shift ? 10 : 1;
+      onGuidelinePositionChanged(guideline, guideline.x + amount, guideline.y);
+    },
+    [guideline, onGuidelinePositionChanged]
+  );
+
+  const down = useCallback(
+    (_: KeyboardEvent, hotkeysEvent: HotkeysEvent) => {
+      const amount = hotkeysEvent.shift ? 10 : 1;
+      onGuidelinePositionChanged(guideline, guideline.x, guideline.y + amount);
+    },
+    [guideline, onGuidelinePositionChanged]
+  );
+
+  const up = useCallback(
+    (_: KeyboardEvent, hotkeysEvent: HotkeysEvent) => {
+      const amount = hotkeysEvent.shift ? 10 : 1;
+      onGuidelinePositionChanged(guideline, guideline.x, guideline.y - amount);
+    },
+    [guideline, onGuidelinePositionChanged]
+  );
+
+  const handleRemoveGuideline = useCallback(() => {
+    if (!isSelected) {
+      return;
+    }
+    removeGuidelineCommand.execute(guideline);
+  }, [guideline, isSelected, removeGuidelineCommand]);
+
+  useHotkeys(["up", "shift+up"], up, {
+    enabled: isSelected && !guideline.locked && !isVertical,
+    preventDefault: true,
+  });
+  useHotkeys(["down", "shift+down"], down, {
+    enabled: isSelected && !guideline.locked && !isVertical,
+    preventDefault: true,
+  });
+  useHotkeys(["left", "shift+left"], left, {
+    enabled: isSelected && !guideline.locked && isVertical,
+    preventDefault: true,
+  });
+  useHotkeys(["right", "shift+right"], right, {
+    enabled: isSelected && !guideline.locked && isVertical,
+    preventDefault: true,
+  });
+  useHotkeys(["delete", "backspace"], handleRemoveGuideline, {
+    enabled: isSelected && !guideline.locked,
+    preventDefault: true,
+  });
 }
