@@ -1,6 +1,7 @@
 import { CrosshairSettingsToolbar } from "@/features/crosshair/toolbar/CrosshairSettingsToolbar";
 import { CrosshairToolbar } from "@/features/crosshair/toolbar/CrosshairToolbar";
 import { CROSSHAIR } from "@/features/crosshair/types";
+import { ToggleGridButton } from "@/features/grid/toolbar/ToggleGridButton";
 import { GuidelinesToolbar } from "@/features/guideline/toolbar/GuidelinesToolbar";
 import { GuidelineToolbar } from "@/features/guideline/toolbar/GuidelineToolbar";
 import { ToggleGuidelinesButton } from "@/features/guideline/toolbar/ToggleGuidelinesButton";
@@ -40,6 +41,7 @@ export function ToolBar({ initX, initY }: { initX: number; initY: number }) {
           <Undo />
           <ToggleRulerButton />
           <ToggleGuidelinesButton />
+          <ToggleGridButton />
           <GuidelinesToolbar />
           <CrosshairToolbar />
           <CenterOriginRulerButton />

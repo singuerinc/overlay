@@ -1,6 +1,7 @@
 import { useSetActiveFrameId } from "@/appStore";
 import { Crosshair } from "@/features/crosshair/Crosshair";
 import { FrameContextProvider } from "@/features/frame/store/frameStore";
+import { Grid } from "@/features/grid/Grid";
 import { GuidelinesRoot } from "@/features/guideline/GuidelinesRoot";
 import { Ruler } from "@/features/rulers/Ruler";
 import { RulerContextProvider } from "@/features/rulers/store/rulerStore";
@@ -32,6 +33,7 @@ export function Frame({
         }}
       >
         <RulerContextProvider>
+          <Grid />
           <Ruler />
           <GuidelinesRoot />
           <Crosshair />
