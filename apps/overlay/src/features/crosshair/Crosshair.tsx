@@ -77,9 +77,8 @@ export function Crosshair() {
       const mouseY = event.clientY || 0;
 
       const [x, y] = calculateNormalizePosition(mouseX, mouseY);
-      //copy to clipboard
-      navigator.clipboard.writeText(`${x}, ${y}`);
-      toast(`Copied to clipboard - x:${x}, y:${y}`);
+      navigator.clipboard.writeText(`{x: ${x}, y: ${y}}`);
+      toast(`{x: ${x}, y: ${y}}`);
     },
     [calculateNormalizePosition]
   );

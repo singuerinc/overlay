@@ -1,3 +1,4 @@
+import { useActiveFrameId } from "@/appStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 import {
@@ -8,12 +9,13 @@ import {
 import { GUIDELINES_KEYS } from "./guidelinesKeys";
 
 export function useRotateGuidelineMutation() {
+  const frameId = useActiveFrameId();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({ id }: { id: string }) => {
       const guidelines = queryClient.getQueryData<IGuideLineStore>(
-        GUIDELINES_KEYS.guidelines
+        GUIDELINES_KEYS.guidelines(frameId)
       );
       if (guidelines) {
         const foundItemIdx = guidelines.guidelines.findIndex(
@@ -35,11 +37,16 @@ export function useRotateGuidelineMutation() {
           }
         );
 
-        localStorage.setItem("guidelines", JSON.stringify(newGuidelines));
+        localStorage.setItem(
+          GUIDELINES_KEYS.guidelines(frameId).join("-"),
+          JSON.stringify(newGuidelines)
+        );
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["guidelines"] });
+      queryClient.invalidateQueries({
+        queryKey: GUIDELINES_KEYS.guidelines(frameId),
+      });
     },
   });
 }

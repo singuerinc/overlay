@@ -1,9 +1,11 @@
+import { useActiveFrameId } from "@/appStore";
 import { RULER_KEYS } from "@/features/rulers/store/rulerKeys";
 import type { IRulerStore } from "@/features/rulers/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 
-export function useToggleRulerMutation({ frameId }: { frameId: string }) {
+export function useToggleRulerMutation() {
+  const frameId = useActiveFrameId();
   const queryClient = useQueryClient();
 
   return useMutation({

@@ -1,12 +1,10 @@
-import { useActiveFrameId } from "@/appStore";
 import { useGetGridQuery } from "@/features/grid/store/useGetGridQuery";
 import { useToggleGridCommand } from "@/features/grid/store/useToggleGridCommand";
 import { ToolButton } from "@/ui/ToolButton";
 import { IconGrid4x4 } from "@tabler/icons-react";
 
 export function ToggleGridButton() {
-  const frameId = useActiveFrameId();
-  const toggleGridCommand = useToggleGridCommand({ frameId });
+  const toggleGridCommand = useToggleGridCommand();
   const { data: grid } = useGetGridQuery();
 
   const handleClick = () => {

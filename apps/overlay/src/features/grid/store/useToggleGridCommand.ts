@@ -2,9 +2,9 @@ import { useToggleGridMutation } from "@/features/grid/store/useToggleGridMutati
 import { Command } from "../../../features/commands/Command";
 import { useExecuteCommand } from "../../../features/commands/store/commands";
 
-export function useToggleGridCommand({ frameId }: { frameId: string }) {
+export function useToggleGridCommand() {
   const executeCommand = useExecuteCommand();
-  const toggleGrid = useToggleGridMutation({ frameId });
+  const toggleGrid = useToggleGridMutation();
 
   return {
     execute: (visible: boolean) => {

@@ -1,9 +1,11 @@
+import { useActiveFrameId } from "@/appStore";
 import { GRID_KEYS } from "@/features/grid/store/gridKeys";
 import type { IGridStore } from "@/features/grid/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 
-export function useToggleGridMutation({ frameId }: { frameId: string }) {
+export function useToggleGridMutation() {
+  const frameId = useActiveFrameId();
   const queryClient = useQueryClient();
 
   return useMutation({

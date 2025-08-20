@@ -1,15 +1,17 @@
+import { useActiveFrameId } from "@/appStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 import type { IGuideLineStore } from "../types";
 import { GUIDELINES_KEYS } from "./guidelinesKeys";
 
 export function useLockGuidelineMutation() {
+  const frameId = useActiveFrameId();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({ id, locked }: { id: string; locked: boolean }) => {
       const guidelines = queryClient.getQueryData<IGuideLineStore>(
-        GUIDELINES_KEYS.guidelines
+        GUIDELINES_KEYS.guidelines(frameId)
       );
 
       if (guidelines) {
@@ -27,11 +29,16 @@ export function useLockGuidelineMutation() {
           }
         );
 
-        localStorage.setItem("guidelines", JSON.stringify(newGuidelines));
+        localStorage.setItem(
+          GUIDELINES_KEYS.guidelines(frameId).join("-"),
+          JSON.stringify(newGuidelines)
+        );
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["guidelines"] });
+      queryClient.invalidateQueries({
+        queryKey: GUIDELINES_KEYS.guidelines(frameId),
+      });
     },
   });
 }

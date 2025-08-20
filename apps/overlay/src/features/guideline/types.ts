@@ -22,6 +22,6 @@ export type IGuideline = IHorizontalGuideline | IVerticalGuideline;
 
 export type IGuideLineStore = {
   guidelines: IGuideline[];
-  isGuidelinesVisible: boolean;
-  isGuidelinesLocked: boolean;
+  visible: boolean;
+  locked: boolean;
 };

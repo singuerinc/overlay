@@ -15,8 +15,10 @@ const variantsWrapper = cva(
   {
     variants: {
       position: {
-        left: "left-0",
-        right: "right-0",
+        "top-left": "left-0",
+        "top-right": "right-0",
+        "bottom-left": "left-0",
+        "bottom-right": "right-0",
       },
     },
   }
@@ -25,8 +27,10 @@ const variantsWrapper = cva(
 const variantsItem = cva(["h-[50px] w-full flex items-end shrink-0"], {
   variants: {
     position: {
-      right: "flex-row-reverse",
-      left: "flex-row",
+      "top-right": "flex-row-reverse",
+      "bottom-right": "flex-row-reverse",
+      "top-left": "flex-row",
+      "bottom-left": "flex-row",
     },
   },
 });
@@ -34,7 +38,6 @@ const variantsItem = cva(["h-[50px] w-full flex items-end shrink-0"], {
 export function VerticalRuler({ origin }: { origin: number }) {
   const { data: ruler } = useGetRulerQuery();
   const setOriginRulerCommand = useSetOriginRulerCommand();
-  const position = "right";
   const windowSize = useWindowSize();
   const numList = Array.from({ length: windowSize.height / 50 }, (_, i) => i);
 
@@ -47,10 +50,14 @@ export function VerticalRuler({ origin }: { origin: number }) {
     [setOriginRulerCommand, ruler]
   );
 
+  if (!ruler) {
+    return null;
+  }
+
   return (
     <div
       onClick={handleClick}
-      className={cn(variantsWrapper({ position: position }))}
+      className={cn(variantsWrapper({ position: ruler.position }))}
     >
       <div className="h-full w-full flex flex-col">
         <div
@@ -61,7 +68,7 @@ export function VerticalRuler({ origin }: { origin: number }) {
             {numList.map((num) => (
               <li
                 key={num}
-                className={cn(variantsItem({ position: position }))}
+                className={cn(variantsItem({ position: ruler.position }))}
               >
                 <div className="relative w-full h-full flex justify-center items-center -translate-y-1/2">
                   <div className="w-full" />
@@ -77,7 +84,7 @@ export function VerticalRuler({ origin }: { origin: number }) {
             {numList.map((num) => (
               <li
                 key={num}
-                className={cn(variantsItem({ position: position }))}
+                className={cn(variantsItem({ position: ruler.position }))}
               >
                 <div className="relative w-full h-full flex justify-center items-center -translate-y-1/2">
                   <div className="w-full" />

@@ -2,9 +2,9 @@ import { useToggleRulerMutation } from "@/features/rulers/store/useToggleRulerMu
 import { Command } from "../../../features/commands/Command";
 import { useExecuteCommand } from "../../../features/commands/store/commands";
 
-export function useToggleRulerCommand({ frameId }: { frameId: string }) {
+export function useToggleRulerCommand() {
   const executeCommand = useExecuteCommand();
-  const toggleRuler = useToggleRulerMutation({ frameId });
+  const toggleRuler = useToggleRulerMutation();
 
   return {
     execute: (visible: boolean) => {

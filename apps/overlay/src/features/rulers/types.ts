@@ -6,6 +6,7 @@ export interface IRuler extends ITool {
   visible: boolean;
   width: string;
   height: string;
+  position: "top-left" | "top-right" | "bottom-left" | "bottom-right";
 }
 
 export type IRulerStore = IRuler;

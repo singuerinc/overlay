@@ -28,7 +28,7 @@ export function Frame({
       <ToolBar initX={100} initY={window.innerHeight - 100} />
       <div
         onClick={() => setActiveFrameId(frame.id)}
-        className={cn("absolute pointer-events-auto overflow-hidden")}
+        className={cn("pointer-events-auto overflow-hidden")}
         style={{
           width: `${frame.width}px`,
           height: `${frame.height}px`,
@@ -55,7 +55,7 @@ function FrameContent({
   const { data: ruler } = useGetRulerQuery();
   return (
     <div
-      className="relative pointer-events-none"
+      className="pointer-events-none"
       style={{
         width: `${width}px`,
         height: `${height}px`,

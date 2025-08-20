@@ -1,18 +1,12 @@
 import { CrosshairSettingsToolbar } from "@/features/crosshair/toolbar/CrosshairSettingsToolbar";
-import { CrosshairToolbar } from "@/features/crosshair/toolbar/CrosshairToolbar";
-import { CROSSHAIR } from "@/features/crosshair/types";
+import { ToggleCrosshairButton } from "@/features/crosshair/toolbar/ToggleCrosshairButton";
+import { isCrosshair } from "@/features/crosshair/utils/isCrosshair";
 import { ToggleGridButton } from "@/features/grid/toolbar/ToggleGridButton";
-import { GuidelinesToolbar } from "@/features/guideline/toolbar/GuidelinesToolbar";
 import { GuidelineToolbar } from "@/features/guideline/toolbar/GuidelineToolbar";
 import { ToggleGuidelinesButton } from "@/features/guideline/toolbar/ToggleGuidelinesButton";
-import {
-  GUIDELINE_HORIZONTAL,
-  GUIDELINE_VERTICAL,
-} from "@/features/guideline/types";
-import { CenterOriginRulerButton } from "@/features/rulers/toolbar/CenterOriginRulerButton";
+import { isGuideline } from "@/features/guideline/utils/isGuideline";
 import { ToggleRulerButton } from "@/features/rulers/toolbar/ToggleRulerButton";
 import { useSelectedTool } from "@/features/tools/store/tools";
-import { Undo } from "@/features/undo/toolbar/Undo";
 import { DndContext, useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { IconGripVertical } from "@tabler/icons-react";
@@ -22,12 +16,8 @@ export function ToolBar({ initX, initY }: { initX: number; initY: number }) {
   const [{ x, y }, setCoords] = useState({ x: initX, y: initY });
   const selectedTool = useSelectedTool();
 
-  const isGuideline =
-    selectedTool &&
-    (selectedTool.type === GUIDELINE_HORIZONTAL ||
-      selectedTool.type === GUIDELINE_VERTICAL);
-
-  const isCrosshair = selectedTool && selectedTool.type === CROSSHAIR;
+  const isToolGuideline = isGuideline(selectedTool);
+  const isToolCrosshair = isCrosshair(selectedTool);
 
   return (
     <DndContext
@@ -38,17 +28,14 @@ export function ToolBar({ initX, initY }: { initX: number; initY: number }) {
     >
       <ToolsElements x={x} y={y}>
         <div className="flex gap-x-1">
-          <Undo />
           <ToggleRulerButton />
           <ToggleGuidelinesButton />
           <ToggleGridButton />
-          <GuidelinesToolbar />
-          <CrosshairToolbar />
-          <CenterOriginRulerButton />
+          <ToggleCrosshairButton />
         </div>
         <div className="flex items-center gap-x-1">
-          {isGuideline && <GuidelineToolbar />}
-          {isCrosshair && <CrosshairSettingsToolbar />}
+          {isToolGuideline && <GuidelineToolbar />}
+          {isToolCrosshair && <CrosshairSettingsToolbar />}
         </div>
       </ToolsElements>
     </DndContext>
