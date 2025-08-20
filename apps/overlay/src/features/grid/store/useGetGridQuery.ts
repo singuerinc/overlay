@@ -9,7 +9,7 @@ function getGrid(frameId: string): Promise<IGridStore> {
     const maybeGrid = localStorage.getItem(GRID_KEYS.grid(frameId).join("-"));
 
     if (maybeGrid === null) {
-      const grid = createGrid(20, 20);
+      const grid = createGrid();
       localStorage.setItem(
         GRID_KEYS.grid(frameId).join("-"),
         JSON.stringify(grid)
