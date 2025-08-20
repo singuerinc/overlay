@@ -1,3 +1,5 @@
+import { useSetNumColumns } from "@/features/columns/hooks/useSetNumColumns";
+import { useToggleColumns } from "@/features/columns/hooks/useToggleColumns";
 import {
   useCanUndoCommand,
   useUndoCommand,
@@ -42,6 +44,8 @@ export function CommandMenu() {
   const { toggleRuler } = useToggleRuler();
   const { resetOrigin, centerOrigin } = useSetOriginRuler();
   const { setPositionRuler } = useSetPositionRuler();
+  const { toggle: toggleColumns } = useToggleColumns();
+  const { addColumn, removeColumn } = useSetNumColumns();
 
   const handleUndo = useCallback(() => {
     undo();
@@ -106,6 +110,18 @@ export function CommandMenu() {
   const handleRulerPositionTopLeft = useCallback(() => {
     setPositionRuler("top-left");
   }, [setPositionRuler]);
+
+  const handleToggleColumns = useCallback(() => {
+    toggleColumns();
+  }, [toggleColumns]);
+
+  const handleAddOneColumn = useCallback(() => {
+    addColumn();
+  }, [addColumn]);
+
+  const handleRemoveOneColumn = useCallback(() => {
+    removeColumn();
+  }, [removeColumn]);
 
   return (
     <Command.Dialog open={open} onOpenChange={setOpen}>
@@ -174,7 +190,18 @@ export function CommandMenu() {
         </Command.Group>
         <Command.Group heading="Crosshair">
           <Item onSelect={handleToggleCrosshair} value="crosshair-visibility">
-            Toggle Crosshair
+            Toggle
+          </Item>
+        </Command.Group>
+        <Command.Group heading="Columns">
+          <Item onSelect={handleToggleColumns} value="columns-visibility">
+            Toggle
+          </Item>
+          <Item onSelect={handleAddOneColumn} value="columns-add-one">
+            Add 1 Column
+          </Item>
+          <Item onSelect={handleRemoveOneColumn} value="columns-remove-one">
+            Remove 1 Column
           </Item>
         </Command.Group>
       </Command.List>
