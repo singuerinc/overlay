@@ -25,7 +25,7 @@ export function Grid() {
       <div
         className="absolute top-0 left-0 w-screen h-screen pointer-events-none"
         style={{
-          backgroundPosition: `${ruler.originX}px ${ruler.originY}px`,
+          backgroundPosition: `${ruler.originX + grid.gapX / 2}px ${ruler.originY + grid.gapY / 2}px`,
           backgroundSize: `${grid.gapX}px ${grid.gapY}px`,
           ...styles.dotted,
         }}

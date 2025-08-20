@@ -6,7 +6,7 @@ export const createVerticalGuideline = (
 ): IVerticalGuideline => ({
   id: uuidv4(),
   type: "guideline-vertical",
-  x: 200,
+  x: 0,
   y: 0,
   color: "cyan",
   locked: false,

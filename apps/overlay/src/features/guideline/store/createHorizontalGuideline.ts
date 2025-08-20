@@ -7,7 +7,7 @@ export const createHorizontalGuideline = (
   id: uuidv4(),
   type: "guideline-horizontal",
   x: 0,
-  y: 200,
+  y: 0,
   color: "cyan",
   locked: false,
   ...props,
