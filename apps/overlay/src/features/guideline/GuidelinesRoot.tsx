@@ -1,5 +1,6 @@
 import { useMoveGuidelineCommand } from "@/features/guideline/store/useMoveGuidelineCommand";
 import { useRulerSetPosition } from "@/features/rulers/store/rulerStore";
+import { useGetRulerQuery } from "@/features/rulers/store/useGetRulerQuery";
 import { useSetSelectedTool } from "@/features/tools/store/tools";
 import { useCallback } from "react";
 import { Guideline } from "./Guideline";
@@ -11,6 +12,7 @@ import {
 } from "./types";
 
 export function GuidelinesRoot() {
+  const { data: ruler } = useGetRulerQuery();
   const { data: guidelines, isLoading, isError } = useGetGuidelinesQuery();
   const rulerSetPosition = useRulerSetPosition();
   const moveGuidelineCommand = useMoveGuidelineCommand();
@@ -53,6 +55,8 @@ export function GuidelinesRoot() {
           <Guideline
             key={item.id}
             guideline={item}
+            originX={ruler?.originX ?? 0}
+            originY={ruler?.originY ?? 0}
             style="solid"
             onGuidelineSelected={onGuidelineSelected}
             onGuidelinePositionChanged={onGuidelinePositionChanged}
@@ -65,6 +69,8 @@ export function GuidelinesRoot() {
           <Guideline
             key={item.id}
             guideline={item}
+            originX={ruler?.originX ?? 0}
+            originY={ruler?.originY ?? 0}
             style="solid"
             onGuidelineSelected={onGuidelineSelected}
             onGuidelinePositionChanged={onGuidelinePositionChanged}

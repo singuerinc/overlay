@@ -9,6 +9,17 @@ export function Grid() {
     return null;
   }
 
+  const styles = {
+    solid: {
+      backgroundImage:
+        "linear-gradient(to right, rgba(255,0,0,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,0,0,0.1) 1px, transparent 1px)",
+    },
+    dotted: {
+      backgroundImage:
+        "radial-gradient(circle, rgba(255,0,0,0.1) 1px, transparent 1px)",
+    },
+  };
+
   return (
     <>
       <div
@@ -16,8 +27,7 @@ export function Grid() {
         style={{
           backgroundPosition: `${ruler.originX}px ${ruler.originY}px`,
           backgroundSize: `${grid.gapX}px ${grid.gapY}px`,
-          backgroundImage:
-            "linear-gradient(to right, rgba(255,0,0,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,0,0,0.1) 1px, transparent 1px)",
+          ...styles.dotted,
         }}
       />
     </>

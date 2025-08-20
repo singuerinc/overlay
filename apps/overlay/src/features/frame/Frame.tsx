@@ -5,8 +5,10 @@ import { Grid } from "@/features/grid/Grid";
 import { GuidelinesRoot } from "@/features/guideline/GuidelinesRoot";
 import { Ruler } from "@/features/rulers/Ruler";
 import { RulerContextProvider } from "@/features/rulers/store/rulerStore";
+import { useGetRulerQuery } from "@/features/rulers/store/useGetRulerQuery";
 import { ToolBar } from "@/features/toolbar/ToolBar";
 import { cn } from "@/ui/cn";
+import type { PropsWithChildren } from "react";
 
 export function Frame({
   frame,
@@ -34,11 +36,33 @@ export function Frame({
       >
         <RulerContextProvider>
           <Grid />
+          <FrameContent width={frame.width} height={frame.height}>
+            <GuidelinesRoot />
+            <Crosshair />
+          </FrameContent>
           <Ruler />
-          <GuidelinesRoot />
-          <Crosshair />
         </RulerContextProvider>
       </div>
     </FrameContextProvider>
+  );
+}
+
+function FrameContent({
+  children,
+  width,
+  height,
+}: PropsWithChildren<{ width: number; height: number }>) {
+  const { data: ruler } = useGetRulerQuery();
+  return (
+    <div
+      className="relative pointer-events-none"
+      style={{
+        width: `${width}px`,
+        height: `${height}px`,
+        transform: `translate(${ruler?.originX}px, ${ruler?.originY}px)`,
+      }}
+    >
+      {children}
+    </div>
   );
 }
