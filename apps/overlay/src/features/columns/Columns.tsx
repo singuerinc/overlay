@@ -7,7 +7,7 @@ export function Columns() {
     return null;
   }
 
-  const columnsObj = Array.from({ length: columns.numColumns }, (_, i) => ({}));
+  const columnsObj = Array.from({ length: columns.numColumns }, () => ({}));
 
   return (
     <div className="w-full h-full flex gap-4">

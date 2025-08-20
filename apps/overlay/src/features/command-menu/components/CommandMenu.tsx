@@ -15,7 +15,7 @@ import { type IGuideline } from "@/features/guideline/types";
 import { isGuideline } from "@/features/guideline/utils/isGuideline";
 import { useSetOriginRuler } from "@/features/rulers/hooks/useSetOriginRuler";
 import { useSetPositionRuler } from "@/features/rulers/hooks/useSetPositionRuler";
-import { useToggleRuler } from "@/features/rulers/hooks/useToggleRulers";
+import { useToggleRuler } from "@/features/rulers/hooks/useToggleRuler";
 import { useSelectedTool } from "@/features/tools/store/tools";
 import { Command } from "cmdk";
 import { useCallback, useState } from "react";
