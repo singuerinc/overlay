@@ -4,7 +4,7 @@ import { produce } from "immer";
 import {
   GUIDELINE_HORIZONTAL,
   GUIDELINE_VERTICAL,
-  type IGuideLineStore,
+  type IGuideline,
 } from "../types";
 import { GUIDELINES_KEYS } from "./guidelinesKeys";
 
@@ -14,38 +14,28 @@ export function useRotateGuidelineMutation() {
 
   return useMutation({
     mutationFn: async ({ id }: { id: string }) => {
-      const guidelines = queryClient.getQueryData<IGuideLineStore>(
-        GUIDELINES_KEYS.guidelines(frameId)
+      const guideline = queryClient.getQueryData<IGuideline>(
+        GUIDELINES_KEYS.guideline(frameId, id)
       );
-      if (guidelines) {
-        const foundItemIdx = guidelines.guidelines.findIndex(
-          (item) => item.id === id
-        );
-
-        const newGuidelines = produce(
-          guidelines,
-          (draftState: IGuideLineStore) => {
-            draftState.guidelines[foundItemIdx] = {
-              ...draftState.guidelines[foundItemIdx],
-              x: draftState.guidelines[foundItemIdx].y,
-              y: draftState.guidelines[foundItemIdx].x,
-              type:
-                draftState.guidelines[foundItemIdx].type === GUIDELINE_VERTICAL
-                  ? GUIDELINE_HORIZONTAL
-                  : GUIDELINE_VERTICAL,
-            };
-          }
-        );
+      if (guideline) {
+        const newGuideline = produce(guideline, (draftState: IGuideline) => {
+          draftState.x = guideline.y;
+          draftState.y = guideline.x;
+          draftState.type =
+            guideline.type === GUIDELINE_VERTICAL
+              ? GUIDELINE_HORIZONTAL
+              : GUIDELINE_VERTICAL;
+        });
 
         localStorage.setItem(
-          GUIDELINES_KEYS.guidelines(frameId).join("-"),
-          JSON.stringify(newGuidelines)
+          GUIDELINES_KEYS.guideline(frameId, id).join("-"),
+          JSON.stringify(newGuideline)
         );
       }
     },
-    onSuccess: () => {
+    onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({
-        queryKey: GUIDELINES_KEYS.guidelines(frameId),
+        queryKey: GUIDELINES_KEYS.guideline(frameId, id),
       });
     },
   });

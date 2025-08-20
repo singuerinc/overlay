@@ -1,3 +1,3 @@
 export const RULER_KEYS = {
-  ruler: (frameId: string) => [frameId, "ruler"],
+  ruler: (frameId: string) => ["overlay", frameId, "ruler"],
 };

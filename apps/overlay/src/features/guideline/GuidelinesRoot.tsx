@@ -5,11 +5,7 @@ import { useSetSelectedTool } from "@/features/tools/store/tools";
 import { useCallback } from "react";
 import { Guideline } from "./Guideline";
 import { useGetGuidelinesQuery } from "./store/useGetGuidelinesQuery";
-import {
-  GUIDELINE_HORIZONTAL,
-  GUIDELINE_VERTICAL,
-  type IGuideline,
-} from "./types";
+import { type IGuideline } from "./types";
 
 export function GuidelinesRoot() {
   const { data: ruler } = useGetRulerQuery();
@@ -49,21 +45,19 @@ export function GuidelinesRoot() {
 
   return (
     <div className="h-screen w-screen pointer-events-none absolute top-0 left-0">
-      {guidelines.guidelines
-        .filter((item) => item.type === GUIDELINE_HORIZONTAL)
-        .map((item) => (
-          <Guideline
-            key={item.id}
-            guideline={item}
-            originX={ruler?.originX ?? 0}
-            originY={ruler?.originY ?? 0}
-            style="solid"
-            onGuidelineSelected={onGuidelineSelected}
-            onGuidelinePositionChanged={onGuidelinePositionChanged}
-            onGuidelinePositionChangeEnded={onGuidelinePositionChangeEnded}
-          />
-        ))}
-      {guidelines.guidelines
+      {guidelines.guidelines.map((guidelineId) => (
+        <Guideline
+          key={guidelineId}
+          id={guidelineId}
+          originX={ruler?.originX ?? 0}
+          originY={ruler?.originY ?? 0}
+          style="solid"
+          onGuidelineSelected={onGuidelineSelected}
+          onGuidelinePositionChanged={onGuidelinePositionChanged}
+          onGuidelinePositionChangeEnded={onGuidelinePositionChangeEnded}
+        />
+      ))}
+      {/* {guidelines.guidelines
         .filter((item) => item.type === GUIDELINE_VERTICAL)
         .map((item) => (
           <Guideline
@@ -76,7 +70,7 @@ export function GuidelinesRoot() {
             onGuidelinePositionChanged={onGuidelinePositionChanged}
             onGuidelinePositionChangeEnded={onGuidelinePositionChangeEnded}
           />
-        ))}
+        ))} */}
     </div>
   );
 }

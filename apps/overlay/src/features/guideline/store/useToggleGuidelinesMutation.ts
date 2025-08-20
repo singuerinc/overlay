@@ -1,7 +1,7 @@
 import { useActiveFrameId } from "@/appStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
-import type { IGuideLineStore } from "../types";
+import type { IGuidelineStore } from "../types";
 import { GUIDELINES_KEYS } from "./guidelinesKeys";
 
 export function useToggleGuidelinesMutation() {
@@ -10,13 +10,13 @@ export function useToggleGuidelinesMutation() {
 
   return useMutation({
     mutationFn: async ({ visible }: { visible: boolean }) => {
-      const guidelines = queryClient.getQueryData<IGuideLineStore>(
+      const guidelines = queryClient.getQueryData<IGuidelineStore>(
         GUIDELINES_KEYS.guidelines(frameId)
       );
 
       const newGuidelines = produce(
         guidelines,
-        (draftState: IGuideLineStore) => {
+        (draftState: IGuidelineStore) => {
           draftState.visible = visible;
         }
       );

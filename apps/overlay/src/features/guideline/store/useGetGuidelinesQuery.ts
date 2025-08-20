@@ -1,10 +1,10 @@
 import { useActiveFrameId } from "@/appStore";
 import { createGuidelines } from "@/features/guideline/store/createGuidelines";
 import { useQuery } from "@tanstack/react-query";
-import type { IGuideLineStore } from "../types";
+import type { IGuidelineStore } from "../types";
 import { GUIDELINES_KEYS } from "./guidelinesKeys";
 
-function getGuidelines(frameId: string): Promise<IGuideLineStore> {
+function getGuidelines(frameId: string): Promise<IGuidelineStore> {
   return new Promise((resolve) => {
     const maybeGuidelines = localStorage.getItem(
       GUIDELINES_KEYS.guidelines(frameId).join("-")

@@ -8,7 +8,7 @@ import { useWindowSize } from "usehooks-ts";
 
 const variantsWrapper = cva(
   [
-    "absolute left-0 h-5 pointer-events-auto",
+    "absolute left-0 h-5 pointer-events-auto overflow-hidden",
     "flex w-full",
     "select-none text-neutral-400 text-[9px]",
   ],
@@ -39,7 +39,10 @@ export function HorizontalRuler({ origin }: { origin: number }) {
   const { data: ruler } = useGetRulerQuery();
   const setOriginRulerCommand = useSetOriginRulerCommand();
   const windowSize = useWindowSize();
-  const numList = Array.from({ length: windowSize.width / 50 }, (_, i) => i);
+  const numList = Array.from(
+    { length: Math.floor(windowSize.width / 50) },
+    (_, i) => i
+  );
 
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -60,34 +63,53 @@ export function HorizontalRuler({ origin }: { origin: number }) {
       className={cn(variantsWrapper({ position: ruler.position }))}
     >
       <div
-        className="h-full bg-neutral-300/50 shrink-0 grow-0 overflow-hidden"
-        style={{ width: `${origin}px` }}
+        className="absolute h-full w-fit bg-neutral-300/50 shrink-0 grow-0"
+        style={{ transform: `translateX(calc(-100% + ${origin}px))` }}
       >
-        <ol className="flex flex-row-reverse w-full h-full items-end">
+        <div
+          className={cn("absolute left-0 w-full h-1.5", {
+            "bottom-0": ruler.position === "top-left",
+            "top-0": ruler.position === "bottom-right",
+          })}
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, rgba(0,0,0,0.3) 1px, transparent 1px)",
+            backgroundSize: "50px 50px",
+          }}
+        />
+        <ol className="flex flex-row-reverse w-full h-full">
           {numList.map((num) => (
             <li
               key={num}
               className={cn(variantsItem({ position: ruler.position }))}
             >
-              <span className="-translate-x-1/2 flex flex-col justify-center">
-                {-(num + 1) * 50}
-              </span>
-              <span className="border-l border-neutral-400 w-px h-1.5" />
+              <span className="-translate-x-1/2">{-(num + 1) * 50}</span>
             </li>
           ))}
         </ol>
       </div>
-      <div className="h-full w-full grow bg-neutral-100/50">
-        <ol className="flex w-full h-full items-end">
+      <div
+        className="absolute h-full w-fit bg-neutral-200/50 shrink-0 grow-0"
+        style={{ transform: `translateX(${origin}px)` }}
+      >
+        <div
+          className={cn("absolute left-0 w-full h-1.5", {
+            "bottom-0": ruler.position === "top-left",
+            "top-0": ruler.position === "bottom-right",
+          })}
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, rgba(0,0,0,0.3) 1px, transparent 1px)",
+            backgroundSize: "50px 50px",
+          }}
+        />
+        <ol className="flex w-full h-full">
           {numList.map((num) => (
             <li
               key={num}
               className={cn(variantsItem({ position: ruler.position }))}
             >
-              <span className="-translate-x-1/2 flex flex-col justify-center">
-                {num * 50}
-              </span>
-              <span className="border-l w-px h-1.5" />
+              <span className="-translate-x-1/2">{num * 50}</span>
             </li>
           ))}
         </ol>
