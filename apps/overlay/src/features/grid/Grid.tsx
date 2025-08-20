@@ -12,18 +12,18 @@ export function Grid() {
   const styles = {
     solid: {
       backgroundImage:
-        "linear-gradient(to right, rgba(255,0,0,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,0,0,0.1) 1px, transparent 1px)",
+        "linear-gradient(to right, rgba(255,0,0,0.3) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,0,0,0.3) 1px, transparent 1px)",
     },
     dotted: {
       backgroundImage:
-        "radial-gradient(circle, rgba(255,0,0,0.1) 1px, transparent 1px)",
+        "radial-gradient(circle, rgba(255,0,0,0.3) 1px, transparent 1px)",
     },
   };
 
   return (
     <>
       <div
-        className="absolute top-0 left-0 w-screen h-screen"
+        className="absolute top-0 left-0 w-screen h-screen pointer-events-none"
         style={{
           backgroundPosition: `${ruler.originX}px ${ruler.originY}px`,
           backgroundSize: `${grid.gapX}px ${grid.gapY}px`,

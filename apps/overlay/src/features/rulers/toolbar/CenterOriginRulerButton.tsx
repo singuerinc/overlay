@@ -8,8 +8,8 @@ export function CenterOriginRulerButton() {
   const { data: ruler } = useGetRulerQuery();
 
   const handleClick = () => {
-    const originX = window.innerWidth * 0.5;
-    const originY = window.innerHeight * 0.5;
+    const originX = 0; //window.innerWidth * 0.5;
+    const originY = 0; //window.innerHeight * 0.5;
 
     if (ruler) {
       setOriginRulerCommand.execute(originX, originY);

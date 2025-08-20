@@ -30,17 +30,17 @@ export function Frame({
         onClick={() => setActiveFrameId(frame.id)}
         className={cn("absolute pointer-events-auto overflow-hidden")}
         style={{
-          width: `100%`,
-          height: `100%`,
+          width: `${frame.width}px`,
+          height: `${frame.height}px`,
         }}
       >
         <RulerContextProvider>
-          <Grid />
+          <Ruler />
           <FrameContent width={frame.width} height={frame.height}>
             <GuidelinesRoot />
-            <Crosshair />
           </FrameContent>
-          <Ruler />
+          <Crosshair />
+          <Grid />
         </RulerContextProvider>
       </div>
     </FrameContextProvider>

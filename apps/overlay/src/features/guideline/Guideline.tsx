@@ -85,8 +85,8 @@ export function Guideline({
   onGuidelineSelected: (guideline: IGuideline) => void;
   onGuidelinePositionChanged: (
     guideline: IGuideline,
-    x: number,
-    y: number
+    x: number | null,
+    y: number | null
   ) => void;
   onGuidelinePositionChangeEnded: (
     guideline: IGuideline,
@@ -126,8 +126,8 @@ export function Guideline({
 
       onGuidelinePositionChanged(
         guideline,
-        isVertical ? guideline.x : 0,
-        isVertical ? 0 : guideline.y
+        isVertical ? guideline.x : null,
+        isVertical ? null : guideline.y
       );
     }
   }, [guideline, isVertical, onGuidelinePositionChanged]);
@@ -166,8 +166,8 @@ export function Guideline({
 
           onGuidelinePositionChanged(
             guideline,
-            isVertical ? x : 0,
-            isVertical ? 0 : y
+            isVertical ? x : null,
+            isVertical ? null : y
           );
         }
       }
