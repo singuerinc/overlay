@@ -1,23 +1,17 @@
-import { useActiveFrameId } from "@/appStore";
-import { useGetRulerQuery } from "@/features/rulers/store/useGetRulerQuery";
-import { useToggleRulerCommand } from "@/features/rulers/store/useToggleRulerCommand";
+import { useToggleRuler } from "@/features/rulers/hooks/useToggleRuler";
 import { ToolButton } from "@/ui/ToolButton";
 import { IconRuler } from "@tabler/icons-react";
 
 export function ToggleRulerButton() {
-  const frameId = useActiveFrameId();
-  const toggleRulerCommand = useToggleRulerCommand({ frameId });
-  const { data: ruler } = useGetRulerQuery();
+  const { visible, toggleRuler } = useToggleRuler();
 
   const handleClick = () => {
-    if (ruler) {
-      toggleRulerCommand.execute(!ruler.visible);
-    }
+    toggleRuler();
   };
 
   return (
     <ToolButton
-      activated={ruler?.visible}
+      activated={visible ?? false}
       enabled={true}
       Icon={<IconRuler />}
       onClick={handleClick}

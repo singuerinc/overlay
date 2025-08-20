@@ -12,5 +12,5 @@ export function useToggleRuler() {
     }
   }, [rulers, toggleRulerCommand]);
 
-  return { toggleRuler };
+  return { visible: rulers?.visible, toggleRuler };
 }
