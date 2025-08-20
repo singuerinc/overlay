@@ -20,8 +20,8 @@ export interface IVerticalGuideline extends ITool<"guideline-vertical"> {
 
 export type IGuideline = IHorizontalGuideline | IVerticalGuideline;
 
-export type IGuideLineStore = {
-  guidelines: IGuideline[];
+export type IGuidelineStore = {
+  guidelines: IGuideline["id"][];
   visible: boolean;
   locked: boolean;
 };

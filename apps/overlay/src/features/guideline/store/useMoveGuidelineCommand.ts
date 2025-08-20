@@ -3,7 +3,7 @@ import { useSetSelectedTool } from "@/features/tools/store/tools";
 import { useQueryClient } from "@tanstack/react-query";
 import { Command } from "../../../features/commands/Command";
 import { useExecuteCommand } from "../../../features/commands/store/commands";
-import type { IGuideLineStore } from "../types";
+import type { IGuideline } from "../types";
 import { GUIDELINES_KEYS } from "./guidelinesKeys";
 import { useMoveGuidelineMutation } from "./useMoveGuidelineMutation";
 
@@ -16,23 +16,23 @@ export function useMoveGuidelineCommand() {
 
   return {
     execute: (id: string, position: { x: number; y: number }) => {
-      const guidelines = queryClient.getQueryData<IGuideLineStore>(
-        GUIDELINES_KEYS.guidelines(frameId)
+      const guideline = queryClient.getQueryData<IGuideline>(
+        GUIDELINES_KEYS.guideline(frameId, id)
       );
-      const activeItem = guidelines?.guidelines.find((item) => item.id === id);
+
       const command = new Command(
         () => {
-          if (activeItem) {
+          if (guideline) {
             mutation.mutate({
-              id: activeItem.id,
+              id: guideline.id,
               x: position.x,
               y: position.y,
             });
           }
         },
         () => {
-          if (activeItem) {
-            const pItem = { ...activeItem, y: activeItem.y, x: activeItem.x };
+          if (guideline) {
+            const pItem = { ...guideline, y: guideline.y, x: guideline.x };
             mutation.mutate({
               id: pItem.id,
               x: pItem.x,

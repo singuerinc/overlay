@@ -1,7 +1,7 @@
 import { useActiveFrameId } from "@/appStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
-import { type IGuideLineStore, type IGuideline } from "../types";
+import { type IGuideline, type IGuidelineStore } from "../types";
 import { GUIDELINES_KEYS } from "./guidelinesKeys";
 
 export function useAddGuidelineMutation() {
@@ -10,21 +10,30 @@ export function useAddGuidelineMutation() {
 
   return useMutation({
     mutationFn: async ({ guideline }: { guideline: IGuideline }) => {
-      const prevGuidelines = queryClient.getQueryData<IGuideLineStore>(
+      const prevGuidelines = queryClient.getQueryData<IGuidelineStore>(
         GUIDELINES_KEYS.guidelines(frameId)
       );
 
       const guidelines = produce(
         prevGuidelines,
-        (draftState: IGuideLineStore) => {
-          draftState.guidelines.push(guideline);
+        (draftState: IGuidelineStore) => {
+          draftState.guidelines.push(guideline.id);
         }
       );
 
       queryClient.setQueryData(GUIDELINES_KEYS.guidelines(frameId), guidelines);
+      queryClient.setQueryData(
+        GUIDELINES_KEYS.guideline(frameId, guideline.id),
+        guideline
+      );
+
       localStorage.setItem(
         GUIDELINES_KEYS.guidelines(frameId).join("-"),
         JSON.stringify(guidelines)
+      );
+      localStorage.setItem(
+        GUIDELINES_KEYS.guideline(frameId, guideline.id).join("-"),
+        JSON.stringify(guideline)
       );
 
       return guidelines;

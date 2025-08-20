@@ -1,7 +1,7 @@
 import { useActiveFrameId } from "@/appStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
-import { type IGuideLineStore, type IGuideline } from "../types";
+import { type IGuideline, type IGuidelineStore } from "../types";
 import { GUIDELINES_KEYS } from "./guidelinesKeys";
 
 export function useRemoveGuidelineMutation() {
@@ -10,23 +10,32 @@ export function useRemoveGuidelineMutation() {
 
   return useMutation({
     mutationFn: async ({ guideline }: { guideline: IGuideline }) => {
-      const prevGuidelines = queryClient.getQueryData<IGuideLineStore>(
+      const prevGuidelines = queryClient.getQueryData<IGuidelineStore>(
         GUIDELINES_KEYS.guidelines(frameId)
       );
 
       const guidelines = produce(
         prevGuidelines,
-        (draftState: IGuideLineStore) => {
+        (draftState: IGuidelineStore) => {
           draftState.guidelines = draftState.guidelines.filter(
-            (item) => item.id !== guideline.id
+            (guidelineId) => guidelineId !== guideline.id
           );
         }
       );
 
       queryClient.setQueryData(GUIDELINES_KEYS.guidelines(frameId), guidelines);
+      queryClient.setQueryData(
+        GUIDELINES_KEYS.guideline(frameId, guideline.id),
+        undefined
+      );
+
       localStorage.setItem(
         GUIDELINES_KEYS.guidelines(frameId).join("-"),
         JSON.stringify(guidelines)
+      );
+
+      localStorage.removeItem(
+        GUIDELINES_KEYS.guideline(frameId, guideline.id).join("-")
       );
 
       return guidelines;

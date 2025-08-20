@@ -1,4 +1,4 @@
-import type { IGrid } from "@/features/grid/types";
+import { type IGrid } from "@/features/grid/types";
 
 export function createGrid(
   props?: Partial<Exclude<IGrid, "id" | "type" | "visible">>
@@ -9,5 +9,6 @@ export function createGrid(
     visible: true,
     gapX: props?.gapX ?? 16,
     gapY: props?.gapY ?? 16,
+    pattern: props?.pattern ?? "dots",
   };
 }

@@ -2,7 +2,7 @@ import { useActiveFrameId } from "@/appStore";
 import type { GuidelineColorType } from "@/features/guideline/GuidelineColor";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
-import type { IGuideLineStore } from "../types";
+import type { IGuideline, IGuidelineStore } from "../types";
 import { GUIDELINES_KEYS } from "./guidelinesKeys";
 
 export function useColorGuidelineMutation() {
@@ -17,33 +17,23 @@ export function useColorGuidelineMutation() {
       id: string;
       color: GuidelineColorType;
     }) => {
-      const guidelines = queryClient.getQueryData<IGuideLineStore>(
-        GUIDELINES_KEYS.guidelines(frameId)
+      const guideline = queryClient.getQueryData<IGuidelineStore>(
+        GUIDELINES_KEYS.guideline(frameId, id)
       );
-      if (guidelines) {
-        const foundItemIdx = guidelines.guidelines.findIndex(
-          (item) => item.id === id
-        );
-
-        const newGuidelines = produce(
-          guidelines,
-          (draftState: IGuideLineStore) => {
-            draftState.guidelines[foundItemIdx] = {
-              ...draftState.guidelines[foundItemIdx],
-              color,
-            };
-          }
-        );
+      if (guideline) {
+        const newGuideline = produce(guideline, (draftState: IGuideline) => {
+          draftState.color = color;
+        });
 
         localStorage.setItem(
-          GUIDELINES_KEYS.guidelines(frameId).join("-"),
-          JSON.stringify(newGuidelines)
+          GUIDELINES_KEYS.guideline(frameId, id).join("-"),
+          JSON.stringify(newGuideline)
         );
       }
     },
-    onSuccess: () => {
+    onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({
-        queryKey: GUIDELINES_KEYS.guidelines(frameId),
+        queryKey: GUIDELINES_KEYS.guideline(frameId, id),
       });
     },
   });

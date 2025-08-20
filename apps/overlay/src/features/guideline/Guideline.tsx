@@ -1,3 +1,4 @@
+import { useGetGuidelineByIdQuery } from "@/features/guideline/store/useGetGuidelineByIdQuery";
 import { useRemoveGuidelineCommand } from "@/features/guideline/store/useRemoveGuidelineCommand";
 import { useSelectedTool } from "@/features/tools/store/tools";
 import { cva } from "class-variance-authority";
@@ -70,7 +71,7 @@ const variantsGuideline = cva(["pointer-events-auto focus:outline-none"], {
 });
 
 export function Guideline({
-  guideline,
+  id,
   style,
   originX,
   originY,
@@ -78,7 +79,7 @@ export function Guideline({
   onGuidelinePositionChanged,
   onGuidelinePositionChangeEnded,
 }: {
-  guideline: IGuideline;
+  id: string;
   style: "solid" | "dashed";
   originX: number;
   originY: number;
@@ -94,17 +95,18 @@ export function Guideline({
     y: number
   ) => void;
 }) {
+  const { data: guideline } = useGetGuidelineByIdQuery(id);
   const selectedTool = useSelectedTool();
   const isSelected = useMemo(
-    () => selectedTool?.id === guideline.id,
-    [selectedTool, guideline.id]
+    () => selectedTool?.id === guideline?.id,
+    [selectedTool, guideline?.id]
   );
   const containerRef = useRef<HTMLDivElement>(null);
   const guidelineRef = useRef<HTMLDivElement>(null);
 
   const [isDrag, setDrag] = useState(false);
 
-  const isVertical = guideline.type === GUIDELINE_VERTICAL ? true : false;
+  const isVertical = guideline?.type === GUIDELINE_VERTICAL ? true : false;
 
   useGuidelineKeyboardShortcuts({
     guideline,
@@ -117,11 +119,13 @@ export function Guideline({
   });
 
   const handleOnFocus = useCallback(() => {
-    onGuidelineSelected(guideline);
+    if (guideline) {
+      onGuidelineSelected(guideline);
+    }
   }, [guideline, onGuidelineSelected]);
 
   const handleDown = useCallback(() => {
-    if (!guideline.locked && containerRef.current) {
+    if (guideline && !guideline.locked && containerRef.current) {
       setDrag(true);
 
       onGuidelinePositionChanged(
@@ -134,7 +138,7 @@ export function Guideline({
 
   const handleUp = useCallback(
     (event: MouseEvent) => {
-      if (isDrag && containerRef.current) {
+      if (guideline && isDrag && containerRef.current) {
         setDrag(false);
 
         const rect = containerRef.current.getBoundingClientRect();
@@ -153,23 +157,21 @@ export function Guideline({
 
   const handleMove = useCallback(
     (event: MouseEvent) => {
-      if (isDrag) {
-        if (containerRef.current) {
-          const rect = containerRef.current.getBoundingClientRect();
-          const x = event.clientX - rect.left;
-          const y = event.clientY - rect.top;
+      if (guideline && isDrag && containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
 
-          guidelineRef.current?.style.setProperty(
-            "transform",
-            `translateX(${isVertical ? x : -(originX ?? 0)}px) translateY(${isVertical ? -(originY ?? 0) : y}px)`
-          );
+        guidelineRef.current?.style.setProperty(
+          "transform",
+          `translateX(${isVertical ? x : -(originX ?? 0)}px) translateY(${isVertical ? -(originY ?? 0) : y}px)`
+        );
 
-          onGuidelinePositionChanged(
-            guideline,
-            isVertical ? x : null,
-            isVertical ? null : y
-          );
-        }
+        onGuidelinePositionChanged(
+          guideline,
+          isVertical ? x : null,
+          isVertical ? null : y
+        );
       }
     },
     [
@@ -237,7 +239,7 @@ function useGuidelineKeyboardShortcuts({
   isVertical,
   onGuidelinePositionChanged,
 }: {
-  guideline: IGuideline;
+  guideline?: IGuideline;
   isSelected: boolean;
   isVertical: boolean;
   onGuidelinePositionChanged: (
@@ -250,32 +252,56 @@ function useGuidelineKeyboardShortcuts({
 
   const left = useCallback(
     (_: KeyboardEvent, hotkeysEvent: HotkeysEvent) => {
-      const amount = hotkeysEvent.shift ? 10 : 1;
-      onGuidelinePositionChanged(guideline, guideline.x - amount, guideline.y);
+      if (guideline) {
+        const amount = hotkeysEvent.shift ? 10 : 1;
+        onGuidelinePositionChanged(
+          guideline,
+          guideline.x - amount,
+          guideline.y
+        );
+      }
     },
     [guideline, onGuidelinePositionChanged]
   );
 
   const right = useCallback(
     (_: KeyboardEvent, hotkeysEvent: HotkeysEvent) => {
-      const amount = hotkeysEvent.shift ? 10 : 1;
-      onGuidelinePositionChanged(guideline, guideline.x + amount, guideline.y);
+      if (guideline) {
+        const amount = hotkeysEvent.shift ? 10 : 1;
+        onGuidelinePositionChanged(
+          guideline,
+          guideline.x + amount,
+          guideline.y
+        );
+      }
     },
     [guideline, onGuidelinePositionChanged]
   );
 
   const down = useCallback(
     (_: KeyboardEvent, hotkeysEvent: HotkeysEvent) => {
-      const amount = hotkeysEvent.shift ? 10 : 1;
-      onGuidelinePositionChanged(guideline, guideline.x, guideline.y + amount);
+      if (guideline) {
+        const amount = hotkeysEvent.shift ? 10 : 1;
+        onGuidelinePositionChanged(
+          guideline,
+          guideline.x,
+          guideline.y + amount
+        );
+      }
     },
     [guideline, onGuidelinePositionChanged]
   );
 
   const up = useCallback(
     (_: KeyboardEvent, hotkeysEvent: HotkeysEvent) => {
-      const amount = hotkeysEvent.shift ? 10 : 1;
-      onGuidelinePositionChanged(guideline, guideline.x, guideline.y - amount);
+      if (guideline) {
+        const amount = hotkeysEvent.shift ? 10 : 1;
+        onGuidelinePositionChanged(
+          guideline,
+          guideline.x,
+          guideline.y - amount
+        );
+      }
     },
     [guideline, onGuidelinePositionChanged]
   );
@@ -284,27 +310,29 @@ function useGuidelineKeyboardShortcuts({
     if (!isSelected) {
       return;
     }
-    removeGuidelineCommand.execute(guideline);
+    if (guideline) {
+      removeGuidelineCommand.execute(guideline);
+    }
   }, [guideline, isSelected, removeGuidelineCommand]);
 
   useHotkeys(["up", "shift+up"], up, {
-    enabled: isSelected && !guideline.locked && !isVertical,
+    enabled: isSelected && guideline && !guideline.locked && !isVertical,
     preventDefault: true,
   });
   useHotkeys(["down", "shift+down"], down, {
-    enabled: isSelected && !guideline.locked && !isVertical,
+    enabled: isSelected && guideline && !guideline.locked && !isVertical,
     preventDefault: true,
   });
   useHotkeys(["left", "shift+left"], left, {
-    enabled: isSelected && !guideline.locked && isVertical,
+    enabled: isSelected && guideline && !guideline.locked && isVertical,
     preventDefault: true,
   });
   useHotkeys(["right", "shift+right"], right, {
-    enabled: isSelected && !guideline.locked && isVertical,
+    enabled: isSelected && guideline && !guideline.locked && isVertical,
     preventDefault: true,
   });
   useHotkeys(["delete", "backspace"], handleRemoveGuideline, {
-    enabled: isSelected && !guideline.locked,
+    enabled: isSelected && guideline && !guideline.locked,
     preventDefault: true,
   });
 }
