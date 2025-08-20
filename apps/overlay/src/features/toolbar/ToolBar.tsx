@@ -1,3 +1,4 @@
+import { ToggleColumnsButton } from "@/features/columns/toolbar/ToggleColumnsButton";
 import { CrosshairSettingsToolbar } from "@/features/crosshair/toolbar/CrosshairSettingsToolbar";
 import { ToggleCrosshairButton } from "@/features/crosshair/toolbar/ToggleCrosshairButton";
 import { isCrosshair } from "@/features/crosshair/utils/isCrosshair";
@@ -31,6 +32,7 @@ export function ToolBar({ initX, initY }: { initX: number; initY: number }) {
           <ToggleRulerButton />
           <ToggleGuidelinesButton />
           <ToggleGridButton />
+          <ToggleColumnsButton />
           <ToggleCrosshairButton />
         </div>
         <div className="flex items-center gap-x-1">
