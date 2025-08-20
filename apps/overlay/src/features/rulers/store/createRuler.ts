@@ -9,5 +9,6 @@ export function createRuler(width: string, height: string): IRuler {
     visible: true,
     width,
     height,
+    position: "top-left",
   };
 }

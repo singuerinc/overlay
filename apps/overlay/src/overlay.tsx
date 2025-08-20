@@ -1,3 +1,4 @@
+import { CommandMenu } from "@/features/command-menu/components/CommandMenu";
 import { Frame } from "@/features/frame/Frame";
 import { KeyboardObserver } from "@/features/keyboard/KeyboardObserver";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -14,6 +15,7 @@ export function Overlay() {
       <QueryClientProvider client={queryClient}>
         {/* <DocumentObserver /> */}
         <KeyboardObserver />
+        <CommandMenu />
         <Frame
           frame={{
             id: "frame-1",

@@ -1,3 +1,3 @@
 export const GUIDELINES_KEYS = {
-  guidelines: ["guidelines"],
+  guidelines: (frameId: string) => [frameId, "guidelines"],
 };

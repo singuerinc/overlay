@@ -1,19 +1,20 @@
+import { useToggleGuidelines } from "@/features/guideline/hooks/useToggleGuidelines";
 import { useGetGuidelinesQuery } from "@/features/guideline/store/useGetGuidelinesQuery";
-import { useToggleGuidelinesCommand } from "@/features/guideline/store/useToggleGuidelinesCommand";
 import { ToolButton } from "@/ui/ToolButton";
 import { IconTable } from "@tabler/icons-react";
 
 export function ToggleGuidelinesButton() {
   const { data: guidelines } = useGetGuidelinesQuery();
-  const toggleGuidelinesCommand = useToggleGuidelinesCommand();
+
+  const { toggleGuidelines } = useToggleGuidelines();
 
   return (
     <ToolButton
-      activated={guidelines?.isGuidelinesVisible}
+      activated={guidelines?.visible}
       enabled={true}
       Icon={<IconTable />}
       onClick={() => {
-        toggleGuidelinesCommand.execute(!guidelines?.isGuidelinesVisible);
+        toggleGuidelines();
       }}
     />
   );

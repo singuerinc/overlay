@@ -43,7 +43,7 @@ export function GuidelinesRoot() {
     return null;
   }
 
-  if (!guidelines.isGuidelinesVisible) {
+  if (!guidelines.visible) {
     return null;
   }
 

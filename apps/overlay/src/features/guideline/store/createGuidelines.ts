@@ -1,7 +1,7 @@
 export function createGuidelines() {
   return {
     guidelines: [],
-    isGuidelinesVisible: true,
-    isGuidelinesLocked: false,
+    visible: true,
+    locked: false,
   };
 }

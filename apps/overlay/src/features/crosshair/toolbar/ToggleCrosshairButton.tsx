@@ -3,7 +3,7 @@ import { useToggleCrosshairCommand } from "@/features/crosshair/store/useToggleC
 import { IconFocus2 } from "@tabler/icons-react";
 import { ToolButton } from "../../../ui/ToolButton";
 
-export function CrosshairToolbar() {
+export function ToggleCrosshairButton() {
   const { data: crosshair } = useGetCrosshairQuery();
   const toggleCrosshairCommand = useToggleCrosshairCommand();
 

@@ -15,8 +15,10 @@ const variantsWrapper = cva(
   {
     variants: {
       position: {
-        top: "top-0",
-        bottom: "bottom-0",
+        "top-left": "top-0",
+        "top-right": "top-0",
+        "bottom-left": "bottom-0",
+        "bottom-right": "bottom-0",
       },
     },
   }
@@ -25,14 +27,15 @@ const variantsWrapper = cva(
 const variantsItem = cva(["w-[50px] flex items-start shrink-0"], {
   variants: {
     position: {
-      top: "flex-col",
-      bottom: "flex-col-reverse",
+      "top-left": "flex-col",
+      "top-right": "flex-col",
+      "bottom-left": "flex-col-reverse",
+      "bottom-right": "flex-col-reverse",
     },
   },
 });
 
 export function HorizontalRuler({ origin }: { origin: number }) {
-  const position = "bottom";
   const { data: ruler } = useGetRulerQuery();
   const setOriginRulerCommand = useSetOriginRulerCommand();
   const windowSize = useWindowSize();
@@ -47,10 +50,14 @@ export function HorizontalRuler({ origin }: { origin: number }) {
     [setOriginRulerCommand, ruler]
   );
 
+  if (!ruler) {
+    return null;
+  }
+
   return (
     <div
       onClick={handleClick}
-      className={cn(variantsWrapper({ position: position }))}
+      className={cn(variantsWrapper({ position: ruler.position }))}
     >
       <div
         className="h-full bg-neutral-300/50 shrink-0 grow-0 overflow-hidden"
@@ -58,7 +65,10 @@ export function HorizontalRuler({ origin }: { origin: number }) {
       >
         <ol className="flex flex-row-reverse w-full h-full items-end">
           {numList.map((num) => (
-            <li key={num} className={cn(variantsItem({ position: position }))}>
+            <li
+              key={num}
+              className={cn(variantsItem({ position: ruler.position }))}
+            >
               <span className="-translate-x-1/2 flex flex-col justify-center">
                 {-(num + 1) * 50}
               </span>
@@ -70,7 +80,10 @@ export function HorizontalRuler({ origin }: { origin: number }) {
       <div className="h-full w-full grow bg-neutral-100/50">
         <ol className="flex w-full h-full items-end">
           {numList.map((num) => (
-            <li key={num} className={cn(variantsItem({ position: position }))}>
+            <li
+              key={num}
+              className={cn(variantsItem({ position: ruler.position }))}
+            >
               <span className="-translate-x-1/2 flex flex-col justify-center">
                 {num * 50}
               </span>
