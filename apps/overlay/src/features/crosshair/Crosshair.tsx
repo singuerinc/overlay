@@ -64,10 +64,11 @@ export function Crosshair() {
         hNode.current?.style.setProperty("transform", `translateY(${y}px)`);
         vNode.current?.style.setProperty("transform", `translateX(${x}px)`);
 
-        setRulerPosition(x, y);
+        const [normalizedX, normalizedY] = calculateNormalizePosition(x, y);
+        setRulerPosition(normalizedX, normalizedY);
       }
     },
-    [setRulerPosition]
+    [calculateNormalizePosition, setRulerPosition]
   );
 
   const handleClick = useCallback(
