@@ -113,6 +113,8 @@ export function Ruler() {
         <Guideline
           guideline={hGuideline}
           style="dashed"
+          originX={0}
+          originY={0}
           onGuidelineSelected={onGuidelineSelected}
           onGuidelinePositionChangeEnded={onGuidelinePositionChangeEnded}
           onGuidelinePositionChanged={onGuidelinePositionChanged}
@@ -120,6 +122,8 @@ export function Ruler() {
         <Guideline
           guideline={vGuideline}
           style="dashed"
+          originX={0}
+          originY={0}
           onGuidelineSelected={onGuidelineSelected}
           onGuidelinePositionChangeEnded={onGuidelinePositionChangeEnded}
           onGuidelinePositionChanged={onGuidelinePositionChanged}

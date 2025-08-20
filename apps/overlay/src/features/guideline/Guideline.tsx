@@ -72,12 +72,16 @@ const variantsGuideline = cva(["pointer-events-auto focus:outline-none"], {
 export function Guideline({
   guideline,
   style,
+  originX,
+  originY,
   onGuidelineSelected,
   onGuidelinePositionChanged,
   onGuidelinePositionChangeEnded,
 }: {
   guideline: IGuideline;
   style: "solid" | "dashed";
+  originX: number;
+  originY: number;
   onGuidelineSelected: (guideline: IGuideline) => void;
   onGuidelinePositionChanged: (
     guideline: IGuideline,
@@ -157,7 +161,7 @@ export function Guideline({
 
           guidelineRef.current?.style.setProperty(
             "transform",
-            `translateX(${isVertical ? x : 0}px) translateY(${isVertical ? 0 : y}px)`
+            `translateX(${isVertical ? x : -(originX ?? 0)}px) translateY(${isVertical ? -(originY ?? 0) : y}px)`
           );
 
           onGuidelinePositionChanged(
@@ -168,7 +172,14 @@ export function Guideline({
         }
       }
     },
-    [guideline, isDrag, isVertical, onGuidelinePositionChanged]
+    [
+      guideline,
+      isDrag,
+      isVertical,
+      onGuidelinePositionChanged,
+      originX,
+      originY,
+    ]
   );
 
   useEffect(() => {
@@ -184,9 +195,9 @@ export function Guideline({
   useEffect(() => {
     guidelineRef.current?.style.setProperty(
       "transform",
-      `translateX(${isVertical ? guideline?.x : 0}px) translateY(${isVertical ? 0 : guideline?.y}px)`
+      `translateX(${isVertical ? guideline?.x : -(originX ?? 0)}px) translateY(${isVertical ? -(originY ?? 0) : guideline?.y}px)`
     );
-  }, [guideline, isVertical]);
+  }, [guideline, isVertical, originX, originY]);
 
   if (!guideline) {
     return null;
