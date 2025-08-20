@@ -27,7 +27,7 @@ const variantsGuideline = cva(["pointer-events-auto focus:outline-none"], {
       gray: "border-neutral-500/40 hover:border-neutral-500/100",
     },
     selected: {
-      true: "shadow",
+      true: "",
       false: "",
     },
     style: {
