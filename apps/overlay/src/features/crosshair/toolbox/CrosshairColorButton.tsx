@@ -4,14 +4,15 @@ import {
 } from "@/features/crosshair/CrosshairColor";
 import { useCrosshairColorCommand } from "@/features/crosshair/store/useCrosshairColorCommand";
 import { useCrosshairQuery } from "@/features/crosshair/store/useCrosshairQuery";
+import { cn } from "@/ui/cn";
 import { ToolButton } from "@/ui/ToolButton";
 import { IconCircle } from "@tabler/icons-react";
 import { useCallback } from "react";
 
 const fillByColor = {
-  cyan: "text-cyan-400",
-  red: "text-red-400",
-  green: "text-green-400",
+  cyan: "fill-cyan-400",
+  red: "fill-red-400",
+  green: "fill-green-400",
 };
 
 export function CrosshairColorButton() {
@@ -36,9 +37,10 @@ export function CrosshairColorButton() {
 
   return (
     <ToolButton
-      activated={crosshair.visible}
       enabled={true}
-      Icon={<IconCircle className={fillByColor[color]} />}
+      Icon={
+        <IconCircle className={cn(fillByColor[color], "text-transparent")} />
+      }
       onClick={handleClick}
     />
   );

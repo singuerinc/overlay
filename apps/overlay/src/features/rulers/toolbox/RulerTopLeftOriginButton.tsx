@@ -1,18 +1,18 @@
 import { useRulerSetOrigin } from "@/features/rulers/hooks/useRulerSetOrigin";
 import { ToolButton } from "@/ui/ToolButton";
-import { IconBorderInner } from "@tabler/icons-react";
+import { IconBorderCornerSquare } from "@tabler/icons-react";
 
-export function RulerCenterOriginButton() {
-  const { centerOrigin } = useRulerSetOrigin();
+export function RulerTopLeftOriginButton() {
+  const { resetOrigin } = useRulerSetOrigin();
 
   const handleClick = () => {
-    centerOrigin();
+    resetOrigin();
   };
 
   return (
     <ToolButton
       enabled={true}
-      Icon={<IconBorderInner />}
+      Icon={<IconBorderCornerSquare />}
       onClick={handleClick}
     />
   );

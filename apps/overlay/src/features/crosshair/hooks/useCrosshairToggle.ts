@@ -12,5 +12,5 @@ export function useCrosshairToggle() {
     }
   }, [crosshair, toggleCommand]);
 
-  return { toggle };
+  return { visible: crosshair?.visible ?? false, toggle };
 }

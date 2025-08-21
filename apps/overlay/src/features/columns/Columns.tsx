@@ -10,7 +10,12 @@ export function Columns() {
   const columnsObj = Array.from({ length: columns.numColumns }, () => ({}));
 
   return (
-    <div className="w-full h-full flex gap-4">
+    <div
+      className="w-full h-full flex"
+      style={{
+        gap: `${columns.gap}px`,
+      }}
+    >
       {columnsObj.map((_, index) => (
         <div
           key={index}

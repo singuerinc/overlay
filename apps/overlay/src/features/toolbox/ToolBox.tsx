@@ -1,16 +1,10 @@
-import { ColumnsToggleButton } from "@/features/columns/toolbox/ColumnsToggleButton";
-import { CrosshairSettingsToolBox } from "@/features/crosshair/toolbox/CrosshairSettingsToolBox";
-import { CrosshairToggleButton } from "@/features/crosshair/toolbox/CrosshairToggleButton";
-import { isCrosshair } from "@/features/crosshair/utils/isCrosshair";
-import { GridToggleButton } from "@/features/grid/toolbox/GridToggleButton";
-import { GuidelinesToggleButton } from "@/features/guideline/toolbox/GuidelinesToggleButton";
+import { ColumnsToolBox } from "@/features/columns/toolbox/ColumnsToolBox";
+import { CrosshairToolBox } from "@/features/crosshair/toolbox/CrosshairToolBox";
+import { GridToolBox } from "@/features/grid/toolbox/GridToolBox";
 import { GuidelinesToolBox } from "@/features/guideline/toolbox/GuidelinesToolBox";
-import { GuidelineToolBox } from "@/features/guideline/toolbox/GuidelineToolBox";
-import { isGuideline } from "@/features/guideline/utils/isGuideline";
-import { RulerToggleButton } from "@/features/rulers/toolbox/RulerToggleButton";
+import { RulerToolBox } from "@/features/rulers/toolbox/RulerToolBox";
 import { useToolBoxMove } from "@/features/toolbox/hooks/useToolBoxMove";
 import { useToolBoxQuery } from "@/features/toolbox/store/useToolBoxQuery";
-import { useSelectedTool } from "@/features/tools/store/tools";
 import { DndContext, useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { IconGripVertical } from "@tabler/icons-react";
@@ -19,9 +13,6 @@ import { type PropsWithChildren } from "react";
 export function ToolBox() {
   const { data: toolBox } = useToolBoxQuery();
   const { move: toolBoxMove } = useToolBoxMove();
-  const selectedTool = useSelectedTool();
-  const isToolGuideline = isGuideline(selectedTool);
-  const isToolCrosshair = isCrosshair(selectedTool);
 
   if (!toolBox) {
     return null;
@@ -32,27 +23,26 @@ export function ToolBox() {
       onDragEnd={({ delta }) => {
         toolBoxMove(toolBox.x + delta.x, toolBox.y + delta.y);
       }}
-      modifiers={[]}
     >
       <ToolBoxRoot x={toolBox.x} y={toolBox.y}>
         <ToolBoxGroup>
-          <RulerToggleButton />
-          <RulerToggleButton />
+          <RulerToolBox />
         </ToolBoxGroup>
         <ToolBoxSeparator />
         <ToolBoxGroup>
-          <GridToggleButton />
-          <ColumnsToggleButton />
-          <CrosshairToggleButton />
+          <GridToolBox />
         </ToolBoxGroup>
         <ToolBoxSeparator />
         <ToolBoxGroup>
-          <GuidelinesToggleButton />
+          <ColumnsToolBox />
+        </ToolBoxGroup>
+        <ToolBoxSeparator />
+        <ToolBoxGroup>
+          <CrosshairToolBox />
+        </ToolBoxGroup>
+        <ToolBoxSeparator />
+        <ToolBoxGroup>
           <GuidelinesToolBox />
-        </ToolBoxGroup>
-        <ToolBoxGroup>
-          {isToolGuideline && <GuidelineToolBox />}
-          {isToolCrosshair && <CrosshairSettingsToolBox />}
         </ToolBoxGroup>
       </ToolBoxRoot>
     </DndContext>
@@ -60,7 +50,11 @@ export function ToolBox() {
 }
 
 function ToolBoxGroup({ children }: PropsWithChildren) {
-  return <div className="flex items-center gap-x-1">{children}</div>;
+  return (
+    <div className="flex items-center gap-x-1 border border-white p-1 rounded-md">
+      {children}
+    </div>
+  );
 }
 
 function ToolBoxSeparator() {

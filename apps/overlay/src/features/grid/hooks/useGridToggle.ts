@@ -4,12 +4,13 @@ import { useCallback } from "react";
 
 export function useGridToggle() {
   const { data: grid } = useGridQuery();
-  const toggleCommand = useGridToggleCommand();
+  const cmd = useGridToggleCommand();
+
   const toggle = useCallback(() => {
     if (grid) {
-      toggleCommand.execute(!grid.visible);
+      cmd.execute(!grid.visible);
     }
-  }, [grid, toggleCommand]);
+  }, [grid, cmd]);
 
   return { toggle };
 }
