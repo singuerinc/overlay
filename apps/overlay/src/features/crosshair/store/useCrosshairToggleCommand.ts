@@ -1,9 +1,9 @@
+import { Command } from "@/features/commands/Command";
+import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
 import { useCrosshairMutation } from "@/features/crosshair/store/useCrosshairMutation";
-import { Command } from "../../../features/commands/Command";
-import { useExecuteCommand } from "../../../features/commands/store/commands";
 
 export function useCrosshairToggleCommand() {
-  const executeCommand = useExecuteCommand();
+  const executeCommand = useCommandExecute();
   const updateCrosshair = useCrosshairMutation();
 
   return {

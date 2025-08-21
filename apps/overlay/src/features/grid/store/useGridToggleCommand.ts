@@ -1,9 +1,9 @@
+import { Command } from "@/features/commands/Command";
+import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
 import { useGridMutation } from "@/features/grid/store/useGridMutation";
-import { Command } from "../../../features/commands/Command";
-import { useExecuteCommand } from "../../../features/commands/store/commands";
 
 export function useGridToggleCommand() {
-  const executeCommand = useExecuteCommand();
+  const executeCommand = useCommandExecute();
   const updateGrid = useGridMutation();
 
   return {

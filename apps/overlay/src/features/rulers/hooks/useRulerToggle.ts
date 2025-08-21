@@ -1,10 +1,10 @@
-import { useGetRulerQuery } from "@/features/rulers/store/useGetRulerQuery";
-import { useToggleRulerCommand } from "@/features/rulers/store/useToggleRulerCommand";
+import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
+import { useRulerToggleCommand } from "@/features/rulers/store/useRulerToggleCommand";
 import { useCallback } from "react";
 
 export function useRulerToggle() {
-  const { data: rulers } = useGetRulerQuery();
-  const toggleCommand = useToggleRulerCommand();
+  const { data: rulers } = useRulerQuery();
+  const toggleCommand = useRulerToggleCommand();
 
   const toggle = useCallback(() => {
     if (rulers) {

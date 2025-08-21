@@ -2,7 +2,7 @@ import { useRulerToggle } from "@/features/rulers/hooks/useRulerToggle";
 import { ToolButton } from "@/ui/ToolButton";
 import { IconRuler } from "@tabler/icons-react";
 
-export function ToggleRulerButton() {
+export function RulerToggleButton() {
   const { visible, toggle } = useRulerToggle();
 
   const handleClick = () => {

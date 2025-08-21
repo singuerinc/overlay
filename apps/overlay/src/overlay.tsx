@@ -17,7 +17,7 @@ export function Overlay() {
   }, []);
 
   return (
-    <div className="pointer-events-none">
+    <div id="overlay-app" className="pointer-events-none">
       <QueryClientProvider client={queryClient}>
         {/* <DocumentObserver /> */}
         <KeyboardObserver />

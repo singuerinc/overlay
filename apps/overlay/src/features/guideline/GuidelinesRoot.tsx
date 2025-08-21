@@ -3,12 +3,12 @@ import { useGuidelineMove } from "@/features/guideline/hooks/useGuidelineMove";
 import { useGuidelinesQuery } from "@/features/guideline/store/useGuidelinesQuery";
 import { type IGuideline } from "@/features/guideline/types";
 import { useRulerSetPosition } from "@/features/rulers/store/rulerStore";
-import { useGetRulerQuery } from "@/features/rulers/store/useGetRulerQuery";
+import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
 import { useSetSelectedTool } from "@/features/tools/store/tools";
 import { useCallback } from "react";
 
 export function GuidelinesRoot() {
-  const { data: ruler } = useGetRulerQuery();
+  const { data: ruler } = useRulerQuery();
   const { data: guidelines, isLoading, isError } = useGuidelinesQuery();
   const rulerSetPosition = useRulerSetPosition();
   const { move: moveGuideline } = useGuidelineMove();

@@ -1,10 +1,10 @@
 import { useGridQuery } from "@/features/grid/store/useGridQuery";
 import { GridPattern, type IGridPattern } from "@/features/grid/types";
-import { useGetRulerQuery } from "@/features/rulers/store/useGetRulerQuery";
+import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
 
 export function Grid() {
   const { data: grid } = useGridQuery();
-  const { data: ruler } = useGetRulerQuery();
+  const { data: ruler } = useRulerQuery();
 
   if (!ruler || !grid || !grid.visible) {
     return null;

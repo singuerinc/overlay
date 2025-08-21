@@ -1,9 +1,9 @@
 import { useRulerPositionX } from "@/features/rulers/store/rulerStore";
-import { useGetRulerQuery } from "@/features/rulers/store/useGetRulerQuery";
+import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
 import { cn } from "@/ui/cn";
 
 export function NormalizedPositionX() {
-  const { data: ruler } = useGetRulerQuery();
+  const { data: ruler } = useRulerQuery();
   const x = useRulerPositionX();
   const normalizedX = x ?? 0;
 

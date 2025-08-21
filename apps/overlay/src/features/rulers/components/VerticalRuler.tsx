@@ -1,6 +1,6 @@
 import { NormalizedPositionY } from "@/features/rulers/components/NormalizedPositionY";
-import { useGetRulerQuery } from "@/features/rulers/store/useGetRulerQuery";
-import { useSetOriginRulerCommand } from "@/features/rulers/store/useSetOriginRulerCommand";
+import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
+import { useRulerSetOriginCommand } from "@/features/rulers/store/useRulerSetOriginCommand";
 import { cn } from "@/ui/cn";
 import { cva } from "class-variance-authority";
 import { useCallback } from "react";
@@ -36,8 +36,8 @@ const variantsItem = cva(["h-[50px] w-full flex items-end shrink-0"], {
 });
 
 export function VerticalRuler({ origin }: { origin: number }) {
-  const { data: ruler } = useGetRulerQuery();
-  const setOriginRulerCommand = useSetOriginRulerCommand();
+  const { data: ruler } = useRulerQuery();
+  const setOriginRulerCommand = useRulerSetOriginCommand();
   const windowSize = useWindowSize();
   const numList = Array.from(
     { length: Math.floor(windowSize.height / 50) + 1 },

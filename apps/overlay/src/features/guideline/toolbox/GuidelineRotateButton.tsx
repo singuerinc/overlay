@@ -4,7 +4,7 @@ import { ToolButton } from "@/ui/ToolButton";
 import { IconRotate } from "@tabler/icons-react";
 import { type IGuideline } from "../types";
 
-export function RotateGuidelineButton({ id }: { id: IGuideline["id"] }) {
+export function GuidelineRotateButton({ id }: { id: IGuideline["id"] }) {
   const { data: guideline } = useGuidelineByIdQuery(id);
   const rotateGuidelineCommand = useGuidelineRotateCommand();
 

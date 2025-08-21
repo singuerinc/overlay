@@ -1,9 +1,9 @@
-import { useSetOriginRulerCommand } from "@/features/rulers/store/useSetOriginRulerCommand";
+import { useRulerSetOriginCommand } from "@/features/rulers/store/useRulerSetOriginCommand";
 import { useWindowSize } from "usehooks-ts";
 
-export function useSetOriginRuler() {
+export function useRulerSetOrigin() {
   const windowSize = useWindowSize();
-  const setOriginRulerCommand = useSetOriginRulerCommand();
+  const setOriginRulerCommand = useRulerSetOriginCommand();
   const centerX = windowSize.width / 2;
   const centerY = windowSize.height / 2;
 

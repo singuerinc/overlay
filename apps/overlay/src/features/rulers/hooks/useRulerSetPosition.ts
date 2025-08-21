@@ -1,11 +1,11 @@
-import { useGetRulerQuery } from "@/features/rulers/store/useGetRulerQuery";
-import { useSetPositionRulerCommand } from "@/features/rulers/store/useSetPositionRulerCommand";
+import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
+import { useRulerSetPositionCommand } from "@/features/rulers/store/useRulerSetPositionCommand";
 import type { IRuler } from "@/features/rulers/types";
 import { useCallback } from "react";
 
-export function useSetPositionRuler() {
-  const { data: rulers } = useGetRulerQuery();
-  const setPositionRulerCommand = useSetPositionRulerCommand();
+export function useRulerSetPosition() {
+  const { data: rulers } = useRulerQuery();
+  const setPositionRulerCommand = useRulerSetPositionCommand();
 
   const setPositionRuler = useCallback(
     (position: IRuler["position"]) => {

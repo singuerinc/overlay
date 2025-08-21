@@ -1,10 +1,10 @@
 import { HorizontalRuler } from "@/features/rulers/components/HorizontalRuler";
 import { VerticalRuler } from "@/features/rulers/components/VerticalRuler";
-import { useGetRulerQuery } from "@/features/rulers/store/useGetRulerQuery";
+import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
 import { HotkeysProvider } from "react-hotkeys-hook";
 
 export function Ruler() {
-  const { data: ruler } = useGetRulerQuery();
+  const { data: ruler } = useRulerQuery();
 
   if (!ruler || ruler.visible === false) {
     return null;

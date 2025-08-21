@@ -1,10 +1,10 @@
 import { Command } from "@/features/commands/Command";
-import { useExecuteCommand } from "@/features/commands/store/commands";
-import { useUpdateRulerMutation } from "@/features/rulers/store/useUpdateRulerMutation";
+import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
+import { useRulerMutation } from "@/features/rulers/store/useRulerMutation";
 
-export function useSetOriginRulerCommand() {
-  const executeCommand = useExecuteCommand();
-  const updateRuler = useUpdateRulerMutation();
+export function useRulerSetOriginCommand() {
+  const executeCommand = useCommandExecute();
+  const updateRuler = useRulerMutation();
 
   return {
     execute: (originX: number, originY: number) => {

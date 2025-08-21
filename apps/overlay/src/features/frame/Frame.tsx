@@ -6,7 +6,7 @@ import { Grid } from "@/features/grid/Grid";
 import { GuidelinesRoot } from "@/features/guideline/GuidelinesRoot";
 import { Ruler } from "@/features/rulers/Ruler";
 import { RulerContextProvider } from "@/features/rulers/store/rulerStore";
-import { useGetRulerQuery } from "@/features/rulers/store/useGetRulerQuery";
+import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
 import { ToolBox } from "@/features/toolbox/ToolBox";
 import { cn } from "@/ui/cn";
 import type { PropsWithChildren } from "react";
@@ -16,7 +16,8 @@ export function Frame({ frame }: { frame: { id: string } }) {
 
   return (
     <FrameContextProvider id={frame.id}>
-      <ToolBox initX={100} initY={window.innerHeight - 100} />
+      <ToolBox />
+
       <div
         onClick={() => setActiveFrameId(frame.id)}
         className={cn(
@@ -38,7 +39,7 @@ export function Frame({ frame }: { frame: { id: string } }) {
 }
 
 function FrameContent({ children }: PropsWithChildren) {
-  const { data: ruler } = useGetRulerQuery();
+  const { data: ruler } = useRulerQuery();
   return (
     <div
       className="pointer-events-none w-full h-full"

@@ -1,5 +1,5 @@
 import { Command } from "@/features/commands/Command";
-import { useExecuteCommand } from "@/features/commands/store/commands";
+import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
 import { useGuidelineMutation } from "@/features/guideline/store/useGuidelineMutation";
 import { useSetSelectedTool } from "@/features/tools/store/tools";
 import {
@@ -9,7 +9,7 @@ import {
 } from "../types";
 
 export function useGuidelineRotateCommand() {
-  const executeCommand = useExecuteCommand();
+  const executeCommand = useCommandExecute();
   const mutation = useGuidelineMutation();
   const setSelectedTool = useSetSelectedTool();
 
