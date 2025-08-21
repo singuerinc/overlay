@@ -1,10 +1,10 @@
-import { useGetGridQuery } from "@/features/grid/store/useGetGridQuery";
-import { useToggleGridCommand } from "@/features/grid/store/useToggleGridCommand";
+import { useGridQuery } from "@/features/grid/store/useGridQuery";
+import { useGridToggleCommand } from "@/features/grid/store/useGridToggleCommand";
 import { useCallback } from "react";
 
 export function useGridToggle() {
-  const { data: grid } = useGetGridQuery();
-  const toggleCommand = useToggleGridCommand();
+  const { data: grid } = useGridQuery();
+  const toggleCommand = useGridToggleCommand();
   const toggle = useCallback(() => {
     if (grid) {
       toggleCommand.execute(!grid.visible);

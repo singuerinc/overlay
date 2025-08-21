@@ -1,9 +1,9 @@
-import { useGetGridQuery } from "@/features/grid/store/useGetGridQuery";
+import { useGridQuery } from "@/features/grid/store/useGridQuery";
 import { GridPattern, type IGridPattern } from "@/features/grid/types";
 import { useGetRulerQuery } from "@/features/rulers/store/useGetRulerQuery";
 
 export function Grid() {
-  const { data: grid } = useGetGridQuery();
+  const { data: grid } = useGridQuery();
   const { data: ruler } = useGetRulerQuery();
 
   if (!ruler || !grid || !grid.visible) {

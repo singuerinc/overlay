@@ -1,11 +1,11 @@
-import { ToggleColumnsButton } from "@/features/columns/toolbox/ToggleColumnsButton";
+import { ColumnsToggleButton } from "@/features/columns/toolbox/ColumnsToggleButton";
 import { CrosshairSettingsToolBox } from "@/features/crosshair/toolbox/CrosshairSettingsToolBox";
-import { ToggleCrosshairButton } from "@/features/crosshair/toolbox/ToggleCrosshairButton";
+import { CrosshairToggleButton } from "@/features/crosshair/toolbox/CrosshairToggleButton";
 import { isCrosshair } from "@/features/crosshair/utils/isCrosshair";
-import { ToggleGridButton } from "@/features/grid/toolbox/ToggleGridButton";
+import { GridToggleButton } from "@/features/grid/toolbox/GridToggleButton";
+import { GuidelinesToggleButton } from "@/features/guideline/toolbox/GuidelinesToggleButton";
 import { GuidelinesToolBox } from "@/features/guideline/toolbox/GuidelinesToolBox";
 import { GuidelineToolBox } from "@/features/guideline/toolbox/GuidelineToolBox";
-import { ToggleGuidelinesButton } from "@/features/guideline/toolbox/ToggleGuidelinesButton";
 import { isGuideline } from "@/features/guideline/utils/isGuideline";
 import { ToggleRulerButton } from "@/features/rulers/toolbox/ToggleRulerButton";
 import { useToolBoxMove } from "@/features/toolbox/hooks/useToolBoxMove";
@@ -37,13 +37,13 @@ export function ToolBox() {
       <ToolBoxRoot x={toolBox.x} y={toolBox.y}>
         <ToolBoxGroup>
           <ToggleRulerButton />
-          <ToggleGridButton />
-          <ToggleColumnsButton />
-          <ToggleCrosshairButton />
+          <GridToggleButton />
+          <ColumnsToggleButton />
+          <CrosshairToggleButton />
         </ToolBoxGroup>
         <ToolBoxSeparator />
         <ToolBoxGroup>
-          <ToggleGuidelinesButton />
+          <GuidelinesToggleButton />
           <GuidelinesToolBox />
         </ToolBoxGroup>
         <ToolBoxGroup>

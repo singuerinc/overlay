@@ -1,7 +1,7 @@
-import { useGetColumnsQuery } from "@/features/columns/store/useGetColumnsQuery";
+import { useColumnsQuery } from "@/features/columns/store/useColumnsQuery";
 
 export function Columns() {
-  const { data: columns } = useGetColumnsQuery();
+  const { data: columns } = useColumnsQuery();
 
   if (!columns || !columns.visible) {
     return null;
