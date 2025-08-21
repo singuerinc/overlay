@@ -1,10 +1,10 @@
 import { useRemoveGuidelineCommand } from "@/features/guideline/store/useRemoveGuidelineCommand";
 import type { IGuideline } from "@/features/guideline/types";
 
-export function useDeleteGuideline() {
+export function useGuidelineDelete() {
   const command = useRemoveGuidelineCommand();
   return {
-    deleteGuideline: (guideline: IGuideline) => {
+    delete: (guideline: IGuideline) => {
       command.execute(guideline);
     },
   };

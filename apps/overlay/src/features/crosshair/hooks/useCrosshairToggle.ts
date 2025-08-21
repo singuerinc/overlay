@@ -2,15 +2,15 @@ import { useGetCrosshairQuery } from "@/features/crosshair/store/useGetCrosshair
 import { useToggleCrosshairCommand } from "@/features/crosshair/store/useToggleCrosshairCommand";
 import { useCallback } from "react";
 
-export function useToggleCrosshair() {
+export function useCrosshairToggle() {
   const { data: crosshair } = useGetCrosshairQuery();
-  const toggleCrosshairCommand = useToggleCrosshairCommand();
+  const toggleCommand = useToggleCrosshairCommand();
 
-  const toggleCrosshair = useCallback(() => {
+  const toggle = useCallback(() => {
     if (crosshair) {
-      toggleCrosshairCommand.execute(!crosshair.visible);
+      toggleCommand.execute(!crosshair.visible);
     }
-  }, [crosshair, toggleCrosshairCommand]);
+  }, [crosshair, toggleCommand]);
 
-  return { toggleCrosshair };
+  return { toggle };
 }

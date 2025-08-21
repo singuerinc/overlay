@@ -1,22 +1,22 @@
-import { useSetNumColumns } from "@/features/columns/hooks/useSetNumColumns";
-import { useToggleColumns } from "@/features/columns/hooks/useToggleColumns";
+import { useColumnsSetNum } from "@/features/columns/hooks/useColumnsSetNum";
+import { useColumnsToggle } from "@/features/columns/hooks/useColumnsToggle";
 import {
   useCanUndoCommand,
   useUndoCommand,
 } from "@/features/commands/store/commands";
-import { useToggleCrosshair } from "@/features/crosshair/hooks/useToggleCrosshair";
-import { useToggleGrid } from "@/features/grid/hooks/useToggleGrid";
-import { useAddHorizontalGuideline } from "@/features/guideline/hooks/useAddHorizontalGuideline";
-import { useAddVerticalGuideline } from "@/features/guideline/hooks/useAddVerticalGuideline";
-import { useDeleteGuideline } from "@/features/guideline/hooks/useDeleteGuideline";
-import { useRotateGuideline } from "@/features/guideline/hooks/useRotateGuideline";
-import { useToggleGuidelines } from "@/features/guideline/hooks/useToggleGuidelines";
-import { useToggleLockGuideline } from "@/features/guideline/hooks/useToggleLockGuideline";
+import { useCrosshairToggle } from "@/features/crosshair/hooks/useCrosshairToggle";
+import { useGridToggle } from "@/features/grid/hooks/useGridToggle";
+import { useGuidelineAddHorizontal } from "@/features/guideline/hooks/useGuidelineAddHorizontal";
+import { useGuidelineAddVertical } from "@/features/guideline/hooks/useGuidelineAddVertical";
+import { useGuidelineDelete } from "@/features/guideline/hooks/useGuidelineDelete";
+import { useGuidelineRotate } from "@/features/guideline/hooks/useGuidelineRotate";
+import { useGuidelinesToggle } from "@/features/guideline/hooks/useGuidelinesToggle";
+import { useGuidelineToggleLock } from "@/features/guideline/hooks/useGuidelineToggleLock";
 import { type IGuideline } from "@/features/guideline/types";
 import { isGuideline } from "@/features/guideline/utils/isGuideline";
+import { useRulerToggle } from "@/features/rulers/hooks/useRulerToggle";
 import { useSetOriginRuler } from "@/features/rulers/hooks/useSetOriginRuler";
 import { useSetPositionRuler } from "@/features/rulers/hooks/useSetPositionRuler";
-import { useToggleRuler } from "@/features/rulers/hooks/useToggleRuler";
 import { useSelectedTool } from "@/features/tools/store/tools";
 import { Command } from "cmdk";
 import { useCallback, useState } from "react";
@@ -35,19 +35,19 @@ export function CommandMenu() {
 
   const selectedTool = useSelectedTool();
 
-  const { toggleGrid } = useToggleGrid();
-  const { toggleGuidelines } = useToggleGuidelines();
-  const { addGuideline: addHorizontalGuideline } = useAddHorizontalGuideline();
-  const { addGuideline: addVerticalGuideline } = useAddVerticalGuideline();
-  const { rotate: rotateGuideline } = useRotateGuideline();
-  const { toggleLockGuideline } = useToggleLockGuideline();
-  const { deleteGuideline } = useDeleteGuideline();
-  const { toggleCrosshair } = useToggleCrosshair();
-  const { toggleRuler } = useToggleRuler();
+  const { toggle: toggleGrid } = useGridToggle();
+  const { toggle: toggleGuidelines } = useGuidelinesToggle();
+  const { add: addHorizontalGuideline } = useGuidelineAddHorizontal();
+  const { add: addVerticalGuideline } = useGuidelineAddVertical();
+  const { rotate: rotateGuideline } = useGuidelineRotate();
+  const { toggleLock: toggleLockGuideline } = useGuidelineToggleLock();
+  const { delete: deleteGuideline } = useGuidelineDelete();
+  const { toggle: toggleCrosshair } = useCrosshairToggle();
+  const { toggle: toggleRuler } = useRulerToggle();
   const { resetOrigin, centerOrigin } = useSetOriginRuler();
   const { setPositionRuler } = useSetPositionRuler();
-  const { toggle: toggleColumns } = useToggleColumns();
-  const { addColumn, removeColumn } = useSetNumColumns();
+  const { toggle: toggleColumns } = useColumnsToggle();
+  const { addColumn, removeColumn } = useColumnsSetNum();
 
   const handleUndo = useCallback(() => {
     undo();

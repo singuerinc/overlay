@@ -1,10 +1,10 @@
 import { useLockGuidelineCommand } from "@/features/guideline/store/useLockGuidelineCommand";
 import type { IGuideline } from "@/features/guideline/types";
 
-export function useToggleLockGuideline() {
+export function useGuidelineToggleLock() {
   const command = useLockGuidelineCommand();
   return {
-    toggleLockGuideline: (guideline: IGuideline) => {
+    toggleLock: (guideline: IGuideline) => {
       command.execute(guideline, !guideline.locked);
     },
   };
