@@ -3,36 +3,20 @@ import { createStore, type StoreApi } from "zustand";
 
 type Store = {
   id: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
 };
 
 const Context = createContext<StoreApi<Store> | null>(null);
 
 export function FrameContextProvider({
   id,
-  x,
-  y,
-  width,
-  height,
   children,
 }: {
   id: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
   children: React.ReactNode;
 }) {
   const [store] = useState(() =>
     createStore<Store>(() => ({
       id,
-      x,
-      y,
-      width,
-      height,
     }))
   );
 

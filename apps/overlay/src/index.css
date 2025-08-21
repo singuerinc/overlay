@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+body {
+  height: 100vh;
+}
+
 :root {
   color-scheme: light;
   font-synthesis: none;
@@ -54,6 +58,20 @@
   --blue10: hsl(208, 100%, 47.3%);
   --blue11: hsl(211, 100%, 43.2%);
   --blue12: hsl(211, 100%, 15%);
+}
+
+.overlay-anchor {
+  anchor-name: --overlay-anchor;
+}
+
+.overlay-root {
+  position: fixed;
+  position-anchor: --overlay-anchor;
+  top: anchor(top);
+  left: anchor(left);
+  width: calc(anchor-size(width));
+  height: calc(anchor-size(height));
+  overflow: hidden;
 }
 
 .dark {

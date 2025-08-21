@@ -1,4 +1,4 @@
-import { useMoveGuidelineCommand } from "@/features/guideline/store/useMoveGuidelineCommand";
+import { useMoveGuideline } from "@/features/guideline/hooks/useMoveGuideline";
 import { useRulerSetPosition } from "@/features/rulers/store/rulerStore";
 import { useGetRulerQuery } from "@/features/rulers/store/useGetRulerQuery";
 import { useSetSelectedTool } from "@/features/tools/store/tools";
@@ -11,7 +11,7 @@ export function GuidelinesRoot() {
   const { data: ruler } = useGetRulerQuery();
   const { data: guidelines, isLoading, isError } = useGetGuidelinesQuery();
   const rulerSetPosition = useRulerSetPosition();
-  const moveGuidelineCommand = useMoveGuidelineCommand();
+  const { move: moveGuideline } = useMoveGuideline();
   const setSelectedTool = useSetSelectedTool();
 
   const onGuidelinePositionChanged = useCallback(
@@ -23,9 +23,9 @@ export function GuidelinesRoot() {
 
   const onGuidelinePositionChangeEnded = useCallback(
     (guideline: IGuideline, x: number, y: number) => {
-      moveGuidelineCommand.execute(guideline.id, { x, y });
+      moveGuideline(guideline, { x, y });
     },
-    [moveGuidelineCommand]
+    [moveGuideline]
   );
 
   const onGuidelineSelected = useCallback(

@@ -2,16 +2,22 @@ import { CommandMenu } from "@/features/command-menu/components/CommandMenu";
 import { Frame } from "@/features/frame/Frame";
 import { KeyboardObserver } from "@/features/keyboard/KeyboardObserver";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { Toaster } from "sonner";
-import { useWindowSize } from "usehooks-ts";
 import "./index.css";
 
 const queryClient = new QueryClient();
 
 export function Overlay() {
-  const windowSize = useWindowSize();
+  useEffect(() => {
+    document.body.classList.add("overlay-anchor");
+    return () => {
+      document.body.classList.remove("overlay-anchor");
+    };
+  }, []);
+
   return (
-    <div className="h-screen w-screen pointer-events-none overflow-hidden top-0 left-0 absolute">
+    <div className="pointer-events-none">
       <QueryClientProvider client={queryClient}>
         {/* <DocumentObserver /> */}
         <KeyboardObserver />
@@ -19,10 +25,6 @@ export function Overlay() {
         <Frame
           frame={{
             id: "frame-1",
-            x: 0,
-            y: 0,
-            width: windowSize.width,
-            height: windowSize.height,
           }}
         />
       </QueryClientProvider>

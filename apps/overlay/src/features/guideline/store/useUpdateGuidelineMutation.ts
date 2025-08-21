@@ -1,11 +1,7 @@
 import { useActiveFrameId } from "@/appStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
-import {
-  GUIDELINE_HORIZONTAL,
-  GUIDELINE_VERTICAL,
-  type IGuideline,
-} from "../types";
+import { type IGuideline } from "../types";
 import { GUIDELINES_KEYS } from "./guidelinesKeys";
 
 export function useUpdateGuidelineMutation() {
@@ -19,12 +15,7 @@ export function useUpdateGuidelineMutation() {
       );
       if (guideline) {
         const newGuideline = produce(guideline, (draftState: IGuideline) => {
-          draftState.x = guideline.y;
-          draftState.y = guideline.x;
-          draftState.type =
-            guideline.type === GUIDELINE_VERTICAL
-              ? GUIDELINE_HORIZONTAL
-              : GUIDELINE_VERTICAL;
+          Object.assign(draftState, props);
         });
 
         localStorage.setItem(

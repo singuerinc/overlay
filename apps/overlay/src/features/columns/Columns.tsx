@@ -15,7 +15,9 @@ export function Columns() {
         <div
           key={index}
           className="bg-cyan-600/10 w-24 h-full"
-          style={{ width: `${columns.size}px` }}
+          style={{
+            width: columns.size,
+          }}
         ></div>
       ))}
     </div>
