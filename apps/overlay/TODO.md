@@ -12,4 +12,6 @@
 - [ ] all borders (similar to extension)
 - [ ] dark mode
 - [ ] snap to grid
-- [ ]
+- [ ] eyedrop
+- [ ] zoom / loupe / magnifier
+- [ ] measure tool, diagonal, free

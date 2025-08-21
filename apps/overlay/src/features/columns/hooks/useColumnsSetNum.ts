@@ -6,17 +6,17 @@ export function useColumnsSetNum() {
   const setNumColumns = useColumnsSetNumCommand();
 
   return {
-    addColumn: () => {
+    addOne: () => {
       if (columns) {
         setNumColumns.execute(columns.numColumns + 1);
       }
     },
-    removeColumn: () => {
+    removeOne: () => {
       if (columns) {
         setNumColumns.execute(columns.numColumns - 1);
       }
     },
-    setNumColumns: (numColumns: number) => {
+    set: (numColumns: number) => {
       setNumColumns.execute(numColumns);
     },
   };

@@ -1,7 +1,7 @@
 import { useGridQuery } from "@/features/grid/store/useGridQuery";
 import { useGridToggleCommand } from "@/features/grid/store/useGridToggleCommand";
 import { ToolButton } from "@/ui/ToolButton";
-import { IconGrid4x4, IconGridDots } from "@tabler/icons-react";
+import { IconGrid3x3 } from "@tabler/icons-react";
 
 export function GridToggleButton() {
   const { data: grid } = useGridQuery();
@@ -17,7 +17,7 @@ export function GridToggleButton() {
     <ToolButton
       activated={grid?.visible}
       enabled={true}
-      Icon={grid?.pattern === "dots" ? <IconGridDots /> : <IconGrid4x4 />}
+      Icon={<IconGrid3x3 />}
       onClick={handleClick}
     />
   );
