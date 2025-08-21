@@ -8,27 +8,33 @@ import { GuidelineToolBox } from "@/features/guideline/toolbox/GuidelineToolBox"
 import { ToggleGuidelinesButton } from "@/features/guideline/toolbox/ToggleGuidelinesButton";
 import { isGuideline } from "@/features/guideline/utils/isGuideline";
 import { ToggleRulerButton } from "@/features/rulers/toolbox/ToggleRulerButton";
+import { useToolBoxMove } from "@/features/toolbox/hooks/useToolBoxMove";
+import { useToolBoxQuery } from "@/features/toolbox/store/useToolBoxQuery";
 import { useSelectedTool } from "@/features/tools/store/tools";
 import { DndContext, useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { IconGripVertical } from "@tabler/icons-react";
-import { useState, type PropsWithChildren } from "react";
+import { type PropsWithChildren } from "react";
 
-export function ToolBox({ initX, initY }: { initX: number; initY: number }) {
-  const [{ x, y }, setCoords] = useState({ x: initX, y: initY });
+export function ToolBox() {
+  const { data: toolBox } = useToolBoxQuery();
+  const { move: toolBoxMove } = useToolBoxMove();
   const selectedTool = useSelectedTool();
-
   const isToolGuideline = isGuideline(selectedTool);
   const isToolCrosshair = isCrosshair(selectedTool);
+
+  if (!toolBox) {
+    return null;
+  }
 
   return (
     <DndContext
       onDragEnd={({ delta }) => {
-        setCoords((prev) => ({ x: prev.x + delta.x, y: prev.y + delta.y }));
+        toolBoxMove(toolBox.x + delta.x, toolBox.y + delta.y);
       }}
       modifiers={[]}
     >
-      <ToolBoxRoot x={x} y={y}>
+      <ToolBoxRoot x={toolBox.x} y={toolBox.y}>
         <ToolBoxGroup>
           <ToggleRulerButton />
           <ToggleGridButton />
