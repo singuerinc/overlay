@@ -1,7 +1,7 @@
 import { useGetColumnsQuery } from "@/features/columns/store/useGetColumnsQuery";
 import { useToggleColumnsCommand } from "@/features/columns/store/useToggleColumnsCommand";
 
-export function useToggleColumns() {
+export function useColumnsToggle() {
   const { data: columns } = useGetColumnsQuery();
   const command = useToggleColumnsCommand();
 

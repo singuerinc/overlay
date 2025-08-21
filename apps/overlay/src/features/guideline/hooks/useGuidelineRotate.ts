@@ -1,11 +1,11 @@
 import { useRotateGuidelineCommand } from "@/features/guideline/store/useRotateGuidelineCommand";
 import type { IGuideline } from "@/features/guideline/types";
 
-export function useRotateGuideline() {
-  const rotateGuidelineCommand = useRotateGuidelineCommand();
+export function useGuidelineRotate() {
+  const rotateCommand = useRotateGuidelineCommand();
   return {
     rotate: (guideline: IGuideline) => {
-      rotateGuidelineCommand.execute(guideline);
+      rotateCommand.execute(guideline);
     },
   };
 }

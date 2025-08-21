@@ -2,15 +2,15 @@ import { useGetGuidelinesQuery } from "@/features/guideline/store/useGetGuidelin
 import { useToggleGuidelinesCommand } from "@/features/guideline/store/useToggleGuidelinesCommand";
 import { useCallback } from "react";
 
-export function useToggleGuidelines() {
+export function useGuidelinesToggle() {
   const { data: guidelines } = useGetGuidelinesQuery();
-  const toggleGuidelinesCommand = useToggleGuidelinesCommand();
+  const toggleCommand = useToggleGuidelinesCommand();
 
-  const toggleGuidelines = useCallback(() => {
+  const toggle = useCallback(() => {
     if (guidelines) {
-      toggleGuidelinesCommand.execute(!guidelines.visible);
+      toggleCommand.execute(!guidelines.visible);
     }
-  }, [guidelines, toggleGuidelinesCommand]);
+  }, [guidelines, toggleCommand]);
 
-  return { toggleGuidelines };
+  return { toggle };
 }

@@ -2,15 +2,15 @@ import { useGetRulerQuery } from "@/features/rulers/store/useGetRulerQuery";
 import { useToggleRulerCommand } from "@/features/rulers/store/useToggleRulerCommand";
 import { useCallback } from "react";
 
-export function useToggleRuler() {
+export function useRulerToggle() {
   const { data: rulers } = useGetRulerQuery();
-  const toggleRulerCommand = useToggleRulerCommand();
+  const toggleCommand = useToggleRulerCommand();
 
-  const toggleRuler = useCallback(() => {
+  const toggle = useCallback(() => {
     if (rulers) {
-      toggleRulerCommand.execute(!rulers.visible);
+      toggleCommand.execute(!rulers.visible);
     }
-  }, [rulers, toggleRulerCommand]);
+  }, [rulers, toggleCommand]);
 
-  return { visible: rulers?.visible, toggleRuler };
+  return { visible: rulers?.visible, toggle };
 }
