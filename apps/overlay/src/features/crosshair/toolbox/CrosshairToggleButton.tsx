@@ -1,6 +1,6 @@
 import { useCrosshairQuery } from "@/features/crosshair/store/useCrosshairQuery";
 import { useCrosshairToggleCommand } from "@/features/crosshair/store/useCrosshairToggleCommand";
-import { IconFocus2 } from "@tabler/icons-react";
+import { IconCrosshair } from "@tabler/icons-react";
 import { ToolButton } from "../../../ui/ToolButton";
 
 export function CrosshairToggleButton() {
@@ -16,7 +16,7 @@ export function CrosshairToggleButton() {
       <ToolButton
         activated={crosshair.visible}
         enabled={true}
-        Icon={<IconFocus2 />}
+        Icon={<IconCrosshair />}
         onClick={() => {
           toggleCrosshairCommand.execute(!crosshair.visible);
         }}

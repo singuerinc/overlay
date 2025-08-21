@@ -1,6 +1,8 @@
 import { CommandMenu } from "@/features/command-menu/components/CommandMenu";
 import { Frame } from "@/features/frame/Frame";
 import { KeyboardObserver } from "@/features/keyboard/KeyboardObserver";
+import { ShortcutsObserver } from "@/features/shortcuts/ShortcutsObserver";
+import { DocumentObserver } from "@/ui/DocumentObserver";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { Toaster } from "sonner";
@@ -19,8 +21,9 @@ export function Overlay() {
   return (
     <div id="overlay-app" className="pointer-events-none">
       <QueryClientProvider client={queryClient}>
-        {/* <DocumentObserver /> */}
+        <DocumentObserver />
         <KeyboardObserver />
+        <ShortcutsObserver />
         <CommandMenu />
         <Frame
           frame={{

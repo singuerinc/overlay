@@ -1,6 +1,12 @@
+import { useGuidelineMove } from "@/features/guideline/hooks/useGuidelineMove";
+import { useGuidelineToggleLock } from "@/features/guideline/hooks/useGuidelineToggleLock";
 import { useGuidelineByIdQuery } from "@/features/guideline/store/useGuidelineByIdQuery";
 import { useGuidelineRemoveCommand } from "@/features/guideline/store/useGuidelineRemoveCommand";
-import { useSelectedTool } from "@/features/tools/store/tools";
+import { useRulerSetPosition } from "@/features/rulers/store/rulerStore";
+import {
+  useSelectedTool,
+  useSetSelectedTool,
+} from "@/features/tools/store/tools";
 import { cva } from "class-variance-authority";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -75,28 +81,18 @@ export function Guideline({
   style,
   originX,
   originY,
-  onGuidelineSelected,
-  onGuidelinePositionChanged,
-  onGuidelinePositionChangeEnded,
 }: {
   id: string;
   style: "solid" | "dashed";
   originX: number;
   originY: number;
-  onGuidelineSelected: (guideline: IGuideline) => void;
-  onGuidelinePositionChanged: (
-    guideline: IGuideline,
-    x: number | null,
-    y: number | null
-  ) => void;
-  onGuidelinePositionChangeEnded: (
-    guideline: IGuideline,
-    x: number,
-    y: number
-  ) => void;
 }) {
   const { data: guideline } = useGuidelineByIdQuery(id);
   const selectedTool = useSelectedTool();
+  const rulerSetPosition = useRulerSetPosition();
+  const { move } = useGuidelineMove();
+  const { toggleLock } = useGuidelineToggleLock();
+  const setSelectedTool = useSetSelectedTool();
   const isSelected = useMemo(
     () => selectedTool?.id === guideline?.id,
     [selectedTool, guideline?.id]
@@ -105,6 +101,27 @@ export function Guideline({
   const guidelineRef = useRef<HTMLDivElement>(null);
 
   const [isDrag, setDrag] = useState(false);
+
+  const onGuidelinePositionChanged = useCallback(
+    (_: IGuideline, x: number | null, y: number | null) => {
+      rulerSetPosition(x, y);
+    },
+    [rulerSetPosition]
+  );
+
+  const onGuidelinePositionChangeEnded = useCallback(
+    (guideline: IGuideline, x: number, y: number) => {
+      move(guideline, { x, y });
+    },
+    [move]
+  );
+
+  const onGuidelineSelected = useCallback(
+    (guideline: IGuideline) => {
+      setSelectedTool(guideline);
+    },
+    [setSelectedTool]
+  );
 
   const isVertical = guideline?.type === GUIDELINE_VERTICAL ? true : false;
 
@@ -135,6 +152,12 @@ export function Guideline({
       );
     }
   }, [guideline, isVertical, onGuidelinePositionChanged]);
+
+  const handleDoubleClick = useCallback(() => {
+    if (guideline) {
+      toggleLock(guideline);
+    }
+  }, [guideline, toggleLock]);
 
   const handleUp = useCallback(
     (event: MouseEvent) => {
@@ -219,6 +242,7 @@ export function Guideline({
       ref={containerRef}
       className="absolute top-0 left-0 h-screen w-screen pointer-events-none"
       onMouseDown={handleDown}
+      onDoubleClick={handleDoubleClick}
     >
       <div
         ref={guidelineRef}
