@@ -1,9 +1,9 @@
+import { Command } from "@/features/commands/Command";
+import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
 import { useToolBoxMutation } from "@/features/toolbox/store/useToolBoxMutation";
-import { Command } from "../../../features/commands/Command";
-import { useExecuteCommand } from "../../../features/commands/store/commands";
 
 export function useToolBoxToggleCommand() {
-  const executeCommand = useExecuteCommand();
+  const executeCommand = useCommandExecute();
   const mutation = useToolBoxMutation();
 
   return {

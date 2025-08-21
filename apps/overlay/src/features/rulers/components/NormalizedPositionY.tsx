@@ -1,8 +1,8 @@
 import { useRulerPositionY } from "@/features/rulers/store/rulerStore";
-import { useGetRulerQuery } from "@/features/rulers/store/useGetRulerQuery";
+import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
 
 export function NormalizedPositionY() {
-  const { data: ruler } = useGetRulerQuery();
+  const { data: ruler } = useRulerQuery();
   const y = useRulerPositionY();
   const normalizedY = y ?? 0;
 

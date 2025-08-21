@@ -7,7 +7,7 @@ import { GuidelinesToggleButton } from "@/features/guideline/toolbox/GuidelinesT
 import { GuidelinesToolBox } from "@/features/guideline/toolbox/GuidelinesToolBox";
 import { GuidelineToolBox } from "@/features/guideline/toolbox/GuidelineToolBox";
 import { isGuideline } from "@/features/guideline/utils/isGuideline";
-import { ToggleRulerButton } from "@/features/rulers/toolbox/ToggleRulerButton";
+import { RulerToggleButton } from "@/features/rulers/toolbox/RulerToggleButton";
 import { useToolBoxMove } from "@/features/toolbox/hooks/useToolBoxMove";
 import { useToolBoxQuery } from "@/features/toolbox/store/useToolBoxQuery";
 import { useSelectedTool } from "@/features/tools/store/tools";
@@ -36,7 +36,7 @@ export function ToolBox() {
     >
       <ToolBoxRoot x={toolBox.x} y={toolBox.y}>
         <ToolBoxGroup>
-          <ToggleRulerButton />
+          <RulerToggleButton />
           <GridToggleButton />
           <ColumnsToggleButton />
           <CrosshairToggleButton />

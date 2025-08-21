@@ -9,7 +9,7 @@ type State = {
   };
 };
 
-const useCommandStore = create<State>((set) => ({
+export const useCommandStore = create<State>((set) => ({
   _commands: [],
   actions: {
     execute: (command: ICommand, skipStack: boolean = false) => {
@@ -31,15 +31,3 @@ const useCommandStore = create<State>((set) => ({
     },
   },
 }));
-
-export function useCanUndoCommand() {
-  return useCommandStore((state) => state._commands.length > 0);
-}
-
-export function useUndoCommand() {
-  return useCommandStore((state) => state.actions.undo);
-}
-
-export function useExecuteCommand() {
-  return useCommandStore((state) => state.actions.execute);
-}

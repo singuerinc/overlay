@@ -1,11 +1,11 @@
 import { Command } from "@/features/commands/Command";
-import { useExecuteCommand } from "@/features/commands/store/commands";
+import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
 import { useGuidelinesMutation } from "@/features/guideline/store/useGuidelinesMutation";
 import { useSetSelectedTool } from "@/features/tools/store/tools";
 
 export function useGuidelinesToggleCommand() {
   const mutation = useGuidelinesMutation();
-  const executeCommand = useExecuteCommand();
+  const executeCommand = useCommandExecute();
   const setSelectedTool = useSetSelectedTool();
 
   return {

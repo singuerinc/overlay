@@ -1,9 +1,7 @@
 import { useColumnsSetNum } from "@/features/columns/hooks/useColumnsSetNum";
 import { useColumnsToggle } from "@/features/columns/hooks/useColumnsToggle";
-import {
-  useCanUndoCommand,
-  useUndoCommand,
-} from "@/features/commands/store/commands";
+import { useUndo } from "@/features/commands/hooks/useUndo";
+import { useUndoAvailable } from "@/features/commands/hooks/useUndoAvailable";
 import { useCrosshairToggle } from "@/features/crosshair/hooks/useCrosshairToggle";
 import { useGridToggle } from "@/features/grid/hooks/useGridToggle";
 import { useGuidelineAddHorizontal } from "@/features/guideline/hooks/useGuidelineAddHorizontal";
@@ -14,9 +12,9 @@ import { useGuidelinesToggle } from "@/features/guideline/hooks/useGuidelinesTog
 import { useGuidelineToggleLock } from "@/features/guideline/hooks/useGuidelineToggleLock";
 import { type IGuideline } from "@/features/guideline/types";
 import { isGuideline } from "@/features/guideline/utils/isGuideline";
+import { useRulerSetOrigin } from "@/features/rulers/hooks/useRulerSetOrigin";
+import { useRulerSetPosition } from "@/features/rulers/hooks/useRulerSetPosition";
 import { useRulerToggle } from "@/features/rulers/hooks/useRulerToggle";
-import { useSetOriginRuler } from "@/features/rulers/hooks/useSetOriginRuler";
-import { useSetPositionRuler } from "@/features/rulers/hooks/useSetPositionRuler";
 import { useSelectedTool } from "@/features/tools/store/tools";
 import { Command } from "cmdk";
 import { useCallback, useState } from "react";
@@ -30,8 +28,8 @@ export function CommandMenu() {
     setOpen(true);
   });
 
-  const undo = useUndoCommand();
-  const canUndo = useCanUndoCommand();
+  const undo = useUndo();
+  const canUndo = useUndoAvailable();
 
   const selectedTool = useSelectedTool();
 
@@ -44,8 +42,8 @@ export function CommandMenu() {
   const { delete: deleteGuideline } = useGuidelineDelete();
   const { toggle: toggleCrosshair } = useCrosshairToggle();
   const { toggle: toggleRuler } = useRulerToggle();
-  const { resetOrigin, centerOrigin } = useSetOriginRuler();
-  const { setPositionRuler } = useSetPositionRuler();
+  const { resetOrigin, centerOrigin } = useRulerSetOrigin();
+  const { setPositionRuler } = useRulerSetPosition();
   const { toggle: toggleColumns } = useColumnsToggle();
   const { addColumn, removeColumn } = useColumnsSetNum();
 

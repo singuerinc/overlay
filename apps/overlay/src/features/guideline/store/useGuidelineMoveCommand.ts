@@ -1,9 +1,9 @@
 import { useActiveFrameId } from "@/appStore";
+import { Command } from "@/features/commands/Command";
+import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
 import { useGuidelineMutation } from "@/features/guideline/store/useGuidelineMutation";
 import { useSetSelectedTool } from "@/features/tools/store/tools";
 import { useQueryClient } from "@tanstack/react-query";
-import { Command } from "../../../features/commands/Command";
-import { useExecuteCommand } from "../../../features/commands/store/commands";
 import type { IGuideline } from "../types";
 import { GUIDELINES_KEYS } from "./guidelinesKeys";
 
@@ -11,7 +11,7 @@ export function useGuidelineMoveCommand() {
   const frameId = useActiveFrameId();
   const queryClient = useQueryClient();
   const mutation = useGuidelineMutation();
-  const executeCommand = useExecuteCommand();
+  const executeCommand = useCommandExecute();
   const setSelectedTool = useSetSelectedTool();
 
   return {

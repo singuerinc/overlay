@@ -1,9 +1,9 @@
-import { useSetOriginRuler } from "@/features/rulers/hooks/useSetOriginRuler";
+import { useRulerSetOrigin } from "@/features/rulers/hooks/useRulerSetOrigin";
 import { ToolButton } from "@/ui/ToolButton";
 import { IconFocusCentered } from "@tabler/icons-react";
 
-export function CenterOriginRulerButton() {
-  const { centerOrigin } = useSetOriginRuler();
+export function RulerCenterOriginButton() {
+  const { centerOrigin } = useRulerSetOrigin();
 
   const handleClick = () => {
     centerOrigin();

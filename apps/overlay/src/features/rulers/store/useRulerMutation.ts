@@ -4,7 +4,7 @@ import type { IRulerStore } from "@/features/rulers/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 
-export function useUpdateRulerMutation() {
+export function useRulerMutation() {
   const frameId = useActiveFrameId();
   const queryClient = useQueryClient();
 

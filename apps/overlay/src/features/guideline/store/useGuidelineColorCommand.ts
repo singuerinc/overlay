@@ -1,12 +1,12 @@
 import { Command } from "@/features/commands/Command";
-import { useExecuteCommand } from "@/features/commands/store/commands";
+import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
 import { type GuidelineColorType } from "@/features/guideline/GuidelineColor";
 import { useGuidelineMutation } from "@/features/guideline/store/useGuidelineMutation";
 import { useSetSelectedTool } from "@/features/tools/store/tools";
 import { type IGuideline } from "../types";
 
 export function useGuidelineColorCommand() {
-  const executeCommand = useExecuteCommand();
+  const executeCommand = useCommandExecute();
   const mutation = useGuidelineMutation();
   const setSelectedTool = useSetSelectedTool();
 

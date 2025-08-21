@@ -1,6 +1,6 @@
 import { NormalizedPositionX } from "@/features/rulers/components/NormalizedPositionX";
-import { useGetRulerQuery } from "@/features/rulers/store/useGetRulerQuery";
-import { useSetOriginRulerCommand } from "@/features/rulers/store/useSetOriginRulerCommand";
+import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
+import { useRulerSetOriginCommand } from "@/features/rulers/store/useRulerSetOriginCommand";
 import { cn } from "@/ui/cn";
 import { cva } from "class-variance-authority";
 import { useCallback } from "react";
@@ -36,8 +36,8 @@ const variantsItem = cva(["w-[50px] flex items-start shrink-0"], {
 });
 
 export function HorizontalRuler({ origin }: { origin: number }) {
-  const { data: ruler } = useGetRulerQuery();
-  const setOriginRulerCommand = useSetOriginRulerCommand();
+  const { data: ruler } = useRulerQuery();
+  const setOriginRulerCommand = useRulerSetOriginCommand();
   const windowSize = useWindowSize();
   const numList = Array.from(
     { length: Math.floor(windowSize.width / 50) + 1 },

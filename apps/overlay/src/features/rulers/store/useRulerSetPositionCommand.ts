@@ -1,11 +1,11 @@
 import { Command } from "@/features/commands/Command";
-import { useExecuteCommand } from "@/features/commands/store/commands";
-import { useUpdateRulerMutation } from "@/features/rulers/store/useUpdateRulerMutation";
+import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
+import { useRulerMutation } from "@/features/rulers/store/useRulerMutation";
 import type { IRuler } from "@/features/rulers/types";
 
-export function useSetPositionRulerCommand() {
-  const executeCommand = useExecuteCommand();
-  const updateRuler = useUpdateRulerMutation();
+export function useRulerSetPositionCommand() {
+  const executeCommand = useCommandExecute();
+  const updateRuler = useRulerMutation();
 
   return {
     execute: (position: IRuler["position"]) => {

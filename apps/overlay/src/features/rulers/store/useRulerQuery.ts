@@ -23,7 +23,7 @@ function getRuler(frameId: string): Promise<IRulerStore> {
   });
 }
 
-export function useGetRulerQuery() {
+export function useRulerQuery() {
   const frameId = useActiveFrameId();
   return useQuery({
     queryKey: RULER_KEYS.ruler(frameId),

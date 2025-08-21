@@ -1,21 +1,21 @@
-import { useColumnsMutation } from "@/features/columns/store/useColumnsMutation";
 import { Command } from "@/features/commands/Command";
 import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
+import { useRulerMutation } from "@/features/rulers/store/useRulerMutation";
 
-export function useColumnsToggleCommand() {
+export function useRulerToggleCommand() {
   const executeCommand = useCommandExecute();
-  const updateColumns = useColumnsMutation();
+  const updateRuler = useRulerMutation();
 
   return {
     execute: (visible: boolean) => {
       const command = new Command(
         () => {
-          updateColumns.mutate({
+          updateRuler.mutate({
             visible,
           });
         },
         () => {
-          updateColumns.mutate({
+          updateRuler.mutate({
             visible: !visible,
           });
         }
