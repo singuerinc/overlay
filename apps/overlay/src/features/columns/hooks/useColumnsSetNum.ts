@@ -1,9 +1,9 @@
-import { useGetColumnsQuery } from "@/features/columns/store/useGetColumnsQuery";
-import { useSetNumColumnsCommand } from "@/features/columns/store/useSetNumColumnsCommand";
+import { useColumnsQuery } from "@/features/columns/store/useColumnsQuery";
+import { useColumnsSetNumCommand } from "@/features/columns/store/useColumnsSetNumCommand";
 
 export function useColumnsSetNum() {
-  const { data: columns } = useGetColumnsQuery();
-  const setNumColumns = useSetNumColumnsCommand();
+  const { data: columns } = useColumnsQuery();
+  const setNumColumns = useColumnsSetNumCommand();
 
   return {
     addColumn: () => {

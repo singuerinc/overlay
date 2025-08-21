@@ -1,5 +1,5 @@
 import { CrosshairColors } from "@/features/crosshair/CrosshairColor";
-import { useGetCrosshairQuery } from "@/features/crosshair/store/useGetCrosshairQuery";
+import { useCrosshairQuery } from "@/features/crosshair/store/useCrosshairQuery";
 import { useRulerSetPosition } from "@/features/rulers/store/rulerStore";
 import { useNormalizedPosition } from "@/features/rulers/useNormalizedPosition";
 import { cva } from "class-variance-authority";
@@ -46,7 +46,7 @@ const variantsGuideline = cva(["absolute"], {
 });
 
 export function Crosshair() {
-  const { data: crosshair } = useGetCrosshairQuery();
+  const { data: crosshair } = useCrosshairQuery();
   const { calculate: calculateNormalizePosition } = useNormalizedPosition();
   const setRulerPosition = useRulerSetPosition();
 

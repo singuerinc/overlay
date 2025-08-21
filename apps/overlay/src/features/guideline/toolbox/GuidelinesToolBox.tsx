@@ -1,13 +1,13 @@
 import { IconTablePlus } from "@tabler/icons-react";
 
 import { createHorizontalGuideline } from "@/features/guideline/store/createHorizontalGuideline";
-import { useGetGuidelinesQuery } from "@/features/guideline/store/useGetGuidelinesQuery";
-import { useAddGuidelineCommand } from "../../../features/guideline/store/useAddGuidelineCommand";
+import { useGuidelinesQuery } from "@/features/guideline/store/useGuidelinesQuery";
+import { useGuidelineAddCommand } from "../../../features/guideline/store/useGuidelineAddCommand";
 import { ToolButton } from "../../../ui/ToolButton";
 
 export function GuidelinesToolBox() {
-  const { data: guidelines } = useGetGuidelinesQuery();
-  const addGuidelineCommand = useAddGuidelineCommand();
+  const { data: guidelines } = useGuidelinesQuery();
+  const addGuidelineCommand = useGuidelineAddCommand();
 
   return (
     <>

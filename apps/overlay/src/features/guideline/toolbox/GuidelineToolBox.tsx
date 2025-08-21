@@ -1,6 +1,6 @@
-import { ColorGuidelineButton } from "@/features/guideline/toolbox/ColorGuidelineButton";
-import { LockGuidelineButton } from "@/features/guideline/toolbox/LockGuidelineButton";
-import { RemoveGuidelineButton } from "@/features/guideline/toolbox/RemoveGuidelineButton";
+import { GuidelineColorButton } from "@/features/guideline/toolbox/GuidelineColorButton";
+import { GuidelineLockButton } from "@/features/guideline/toolbox/GuidelineLockButton";
+import { GuidelineRemoveButton } from "@/features/guideline/toolbox/GuidelineRemoveButton";
 import { RotateGuidelineButton } from "@/features/guideline/toolbox/RotateGuidelineButton";
 import type { IGuideline } from "@/features/guideline/types";
 import { useSelectedTool } from "@/features/tools/store/tools";
@@ -13,10 +13,10 @@ export function GuidelineToolBox() {
   return (
     <>
       <IconMinusVertical />
-      <LockGuidelineButton id={guideline.id} />
-      <ColorGuidelineButton id={guideline.id} />
+      <GuidelineLockButton id={guideline.id} />
+      <GuidelineColorButton id={guideline.id} />
       <RotateGuidelineButton id={guideline.id} />
-      <RemoveGuidelineButton id={guideline.id} />
+      <GuidelineRemoveButton id={guideline.id} />
     </>
   );
 }

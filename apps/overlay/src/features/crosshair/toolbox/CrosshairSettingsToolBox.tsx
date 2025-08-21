@@ -1,10 +1,10 @@
-import { ColorCrosshairButton } from "@/features/crosshair/toolbox/ColorCrosshairButton";
+import { CrosshairColorButton } from "@/features/crosshair/toolbox/CrosshairColorButton";
 
 export function CrosshairSettingsToolBox() {
   return (
     <>
       {/* <LockGuidelineButton /> */}
-      <ColorCrosshairButton />
+      <CrosshairColorButton />
     </>
   );
 }

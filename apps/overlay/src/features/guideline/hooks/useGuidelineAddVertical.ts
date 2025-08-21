@@ -1,9 +1,9 @@
 import { createVerticalGuideline } from "@/features/guideline/store/createVerticalGuideline";
-import { useAddGuidelineCommand } from "@/features/guideline/store/useAddGuidelineCommand";
+import { useGuidelineAddCommand } from "@/features/guideline/store/useGuidelineAddCommand";
 import { useWindowSize } from "usehooks-ts";
 
 export function useGuidelineAddVertical() {
-  const command = useAddGuidelineCommand();
+  const command = useGuidelineAddCommand();
   const windowSize = useWindowSize();
   return {
     add: () =>

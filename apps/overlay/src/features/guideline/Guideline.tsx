@@ -1,5 +1,5 @@
-import { useGetGuidelineByIdQuery } from "@/features/guideline/store/useGetGuidelineByIdQuery";
-import { useRemoveGuidelineCommand } from "@/features/guideline/store/useRemoveGuidelineCommand";
+import { useGuidelineByIdQuery } from "@/features/guideline/store/useGuidelineByIdQuery";
+import { useGuidelineRemoveCommand } from "@/features/guideline/store/useGuidelineRemoveCommand";
 import { useSelectedTool } from "@/features/tools/store/tools";
 import { cva } from "class-variance-authority";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -95,7 +95,7 @@ export function Guideline({
     y: number
   ) => void;
 }) {
-  const { data: guideline } = useGetGuidelineByIdQuery(id);
+  const { data: guideline } = useGuidelineByIdQuery(id);
   const selectedTool = useSelectedTool();
   const isSelected = useMemo(
     () => selectedTool?.id === guideline?.id,
@@ -248,7 +248,7 @@ function useGuidelineKeyboardShortcuts({
     y: number
   ) => void;
 }) {
-  const removeGuidelineCommand = useRemoveGuidelineCommand();
+  const removeGuidelineCommand = useGuidelineRemoveCommand();
 
   const left = useCallback(
     (_: KeyboardEvent, hotkeysEvent: HotkeysEvent) => {
