@@ -9,6 +9,7 @@ import { useToggleGrid } from "@/features/grid/hooks/useToggleGrid";
 import { useAddHorizontalGuideline } from "@/features/guideline/hooks/useAddHorizontalGuideline";
 import { useAddVerticalGuideline } from "@/features/guideline/hooks/useAddVerticalGuideline";
 import { useDeleteGuideline } from "@/features/guideline/hooks/useDeleteGuideline";
+import { useRotateGuideline } from "@/features/guideline/hooks/useRotateGuideline";
 import { useToggleGuidelines } from "@/features/guideline/hooks/useToggleGuidelines";
 import { useToggleLockGuideline } from "@/features/guideline/hooks/useToggleLockGuideline";
 import { type IGuideline } from "@/features/guideline/types";
@@ -38,6 +39,7 @@ export function CommandMenu() {
   const { toggleGuidelines } = useToggleGuidelines();
   const { addGuideline: addHorizontalGuideline } = useAddHorizontalGuideline();
   const { addGuideline: addVerticalGuideline } = useAddVerticalGuideline();
+  const { rotate: rotateGuideline } = useRotateGuideline();
   const { toggleLockGuideline } = useToggleLockGuideline();
   const { deleteGuideline } = useDeleteGuideline();
   const { toggleCrosshair } = useToggleCrosshair();
@@ -69,6 +71,14 @@ export function CommandMenu() {
     addHorizontalGuideline();
     setOpen(false);
   }, [addHorizontalGuideline]);
+
+  const handleRotateGuideline = useCallback(
+    (guideline: IGuideline) => {
+      rotateGuideline(guideline);
+      setOpen(false);
+    },
+    [rotateGuideline]
+  );
 
   const handleLockGuideline = useCallback(
     (guideline: IGuideline) => {
@@ -130,6 +140,12 @@ export function CommandMenu() {
         <Command.Empty>No results found.</Command.Empty>
         {isGuideline(selectedTool) && (
           <Command.Group heading="Selected guideline">
+            <Item
+              value="rotate-guideline"
+              onSelect={() => handleRotateGuideline(selectedTool as IGuideline)}
+            >
+              Rotate Guideline
+            </Item>
             <Item
               value="lock-guideline"
               onSelect={() => handleLockGuideline(selectedTool as IGuideline)}

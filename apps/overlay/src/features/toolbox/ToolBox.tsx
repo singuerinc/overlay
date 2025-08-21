@@ -1,19 +1,20 @@
-import { ToggleColumnsButton } from "@/features/columns/toolbar/ToggleColumnsButton";
-import { CrosshairSettingsToolbar } from "@/features/crosshair/toolbar/CrosshairSettingsToolbar";
-import { ToggleCrosshairButton } from "@/features/crosshair/toolbar/ToggleCrosshairButton";
+import { ToggleColumnsButton } from "@/features/columns/toolbox/ToggleColumnsButton";
+import { CrosshairSettingsToolBox } from "@/features/crosshair/toolbox/CrosshairSettingsToolBox";
+import { ToggleCrosshairButton } from "@/features/crosshair/toolbox/ToggleCrosshairButton";
 import { isCrosshair } from "@/features/crosshair/utils/isCrosshair";
-import { ToggleGridButton } from "@/features/grid/toolbar/ToggleGridButton";
-import { GuidelineToolbar } from "@/features/guideline/toolbar/GuidelineToolbar";
-import { ToggleGuidelinesButton } from "@/features/guideline/toolbar/ToggleGuidelinesButton";
+import { ToggleGridButton } from "@/features/grid/toolbox/ToggleGridButton";
+import { GuidelinesToolBox } from "@/features/guideline/toolbox/GuidelinesToolBox";
+import { GuidelineToolBox } from "@/features/guideline/toolbox/GuidelineToolBox";
+import { ToggleGuidelinesButton } from "@/features/guideline/toolbox/ToggleGuidelinesButton";
 import { isGuideline } from "@/features/guideline/utils/isGuideline";
-import { ToggleRulerButton } from "@/features/rulers/toolbar/ToggleRulerButton";
+import { ToggleRulerButton } from "@/features/rulers/toolbox/ToggleRulerButton";
 import { useSelectedTool } from "@/features/tools/store/tools";
 import { DndContext, useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { IconGripVertical } from "@tabler/icons-react";
 import { useState, type PropsWithChildren } from "react";
 
-export function ToolBar({ initX, initY }: { initX: number; initY: number }) {
+export function ToolBox({ initX, initY }: { initX: number; initY: number }) {
   const [{ x, y }, setCoords] = useState({ x: initX, y: initY });
   const selectedTool = useSelectedTool();
 
@@ -27,24 +28,36 @@ export function ToolBar({ initX, initY }: { initX: number; initY: number }) {
       }}
       modifiers={[]}
     >
-      <ToolsElements x={x} y={y}>
-        <div className="flex gap-x-1">
+      <ToolBoxRoot x={x} y={y}>
+        <ToolBoxGroup>
           <ToggleRulerButton />
-          <ToggleGuidelinesButton />
           <ToggleGridButton />
           <ToggleColumnsButton />
           <ToggleCrosshairButton />
-        </div>
-        <div className="flex items-center gap-x-1">
-          {isToolGuideline && <GuidelineToolbar />}
-          {isToolCrosshair && <CrosshairSettingsToolbar />}
-        </div>
-      </ToolsElements>
+        </ToolBoxGroup>
+        <ToolBoxSeparator />
+        <ToolBoxGroup>
+          <ToggleGuidelinesButton />
+          <GuidelinesToolBox />
+        </ToolBoxGroup>
+        <ToolBoxGroup>
+          {isToolGuideline && <GuidelineToolBox />}
+          {isToolCrosshair && <CrosshairSettingsToolBox />}
+        </ToolBoxGroup>
+      </ToolBoxRoot>
     </DndContext>
   );
 }
 
-export function ToolsElements({
+function ToolBoxGroup({ children }: PropsWithChildren) {
+  return <div className="flex items-center gap-x-1">{children}</div>;
+}
+
+function ToolBoxSeparator() {
+  return <div className="h-6 border-l border-neutral-300" />;
+}
+
+function ToolBoxRoot({
   children,
   x,
   y,
@@ -65,7 +78,7 @@ export function ToolsElements({
   };
   return (
     <div
-      id="toolbar"
+      id="toolBox"
       className="flex items-center bg-neutral-200 p-1 z-50 absolute rounded-sm pointer-events-auto"
       ref={setNodeRef}
       style={style}
@@ -76,7 +89,7 @@ export function ToolsElements({
         className="cursor-grab active:cursor-grabbing text-neutral-300"
         stroke={1}
       />
-      <div className="flex gap-x-1">{children}</div>
+      <div className="flex gap-x-1 items-center">{children}</div>
     </div>
   );
 }

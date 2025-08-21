@@ -1,18 +1,19 @@
-import { IconBorderHorizontal, IconBorderVertical } from "@tabler/icons-react";
+import { IconTablePlus } from "@tabler/icons-react";
 
 import { createHorizontalGuideline } from "@/features/guideline/store/createHorizontalGuideline";
-import { createVerticalGuideline } from "@/features/guideline/store/createVerticalGuideline";
+import { useGetGuidelinesQuery } from "@/features/guideline/store/useGetGuidelinesQuery";
 import { useAddGuidelineCommand } from "../../../features/guideline/store/useAddGuidelineCommand";
 import { ToolButton } from "../../../ui/ToolButton";
 
-export function GuidelinesToolbar() {
+export function GuidelinesToolBox() {
+  const { data: guidelines } = useGetGuidelinesQuery();
   const addGuidelineCommand = useAddGuidelineCommand();
 
   return (
-    <div className="flex gap-x-1">
+    <>
       <ToolButton
-        enabled={true}
-        Icon={<IconBorderHorizontal />}
+        enabled={guidelines?.visible}
+        Icon={<IconTablePlus />}
         onClick={() => {
           const guideline = createHorizontalGuideline({
             y: window.innerHeight / 2,
@@ -20,7 +21,7 @@ export function GuidelinesToolbar() {
           addGuidelineCommand.execute(guideline);
         }}
       />
-      <ToolButton
+      {/* <ToolButton
         enabled={true}
         Icon={<IconBorderVertical />}
         onClick={() => {
@@ -29,7 +30,7 @@ export function GuidelinesToolbar() {
           });
           addGuidelineCommand.execute(guideline);
         }}
-      />
-    </div>
+      /> */}
+    </>
   );
 }
