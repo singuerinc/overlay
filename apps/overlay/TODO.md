@@ -1,13 +1,15 @@
-- [ ] guidelines: move with arrows
+- [x] guidelines: move with arrows
 - [ ] guidelines: set position with keyboard nums
 - [x] guidelines: colors
 - [x] guideline: can be locked individually
 - [x] guideline: coord in toolbar
 - [x] guideline: rotate
 - [x] crosshair tool
-- [ ] columns tool
-- [ ] grid tool
+- [x] columns tool
+- [x] grid tool
 - [ ] image onion tool
 - [ ] color drop
 - [ ] all borders (similar to extension)
 - [ ] dark mode
+- [ ] snap to grid
+- [ ]

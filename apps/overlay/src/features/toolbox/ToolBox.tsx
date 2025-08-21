@@ -37,6 +37,10 @@ export function ToolBox() {
       <ToolBoxRoot x={toolBox.x} y={toolBox.y}>
         <ToolBoxGroup>
           <RulerToggleButton />
+          <RulerToggleButton />
+        </ToolBoxGroup>
+        <ToolBoxSeparator />
+        <ToolBoxGroup>
           <GridToggleButton />
           <ColumnsToggleButton />
           <CrosshairToggleButton />
@@ -92,7 +96,7 @@ function ToolBoxRoot({
       <IconGripVertical
         {...listeners}
         // {...attributes}
-        className="cursor-grab active:cursor-grabbing text-neutral-300"
+        className="cursor-grab active:cursor-grabbing text-neutral-400"
         stroke={1}
       />
       <div className="flex gap-x-1 items-center">{children}</div>

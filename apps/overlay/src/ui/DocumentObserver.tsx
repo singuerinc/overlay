@@ -6,15 +6,14 @@ export const DocumentObserver: React.FC = () => {
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
-      console.log(event.target, event.currentTarget);
-      if (event.target === document.body) {
+      if (event.target === document.querySelector(".overlay-root")) {
         setSelectedTool(null);
       }
     };
 
-    document.body.addEventListener("click", handleClick);
+    window.addEventListener("click", handleClick);
     return () => {
-      document.body.removeEventListener("click", handleClick);
+      window.removeEventListener("click", handleClick);
     };
   }, [setSelectedTool]);
 
