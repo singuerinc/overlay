@@ -4,18 +4,18 @@ import type { IGridStore } from "@/features/grid/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 
-export function useToggleGridMutation() {
+export function useUpdateGridMutation() {
   const frameId = useActiveFrameId();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ visible }: { visible: boolean }) => {
+    mutationFn: async (props: Partial<Exclude<IGridStore, "id">>) => {
       const grid = queryClient.getQueryData<IGridStore>(
         GRID_KEYS.grid(frameId)
       );
 
       const updatedGrid = produce(grid, (draftState: IGridStore) => {
-        draftState.visible = visible;
+        Object.assign(draftState, props);
       });
 
       localStorage.setItem(

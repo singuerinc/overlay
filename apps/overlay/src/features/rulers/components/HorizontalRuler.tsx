@@ -40,7 +40,7 @@ export function HorizontalRuler({ origin }: { origin: number }) {
   const setOriginRulerCommand = useSetOriginRulerCommand();
   const windowSize = useWindowSize();
   const numList = Array.from(
-    { length: Math.floor(windowSize.width / 50) },
+    { length: Math.floor(windowSize.width / 50) + 1 },
     (_, i) => i
   );
 

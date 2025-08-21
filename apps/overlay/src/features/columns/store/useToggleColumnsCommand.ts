@@ -1,21 +1,21 @@
-import { useToggleColumnsMutation } from "@/features/columns/store/useToggleColumnsMutation";
+import { useColumnsUpdateMutation } from "@/features/columns/store/useColumnsUpdateMutation";
 import { Command } from "../../../features/commands/Command";
 import { useExecuteCommand } from "../../../features/commands/store/commands";
 
 export function useToggleColumnsCommand() {
   const executeCommand = useExecuteCommand();
-  const toggleColumns = useToggleColumnsMutation();
+  const updateColumns = useColumnsUpdateMutation();
 
   return {
     execute: (visible: boolean) => {
       const command = new Command(
         () => {
-          toggleColumns.mutate({
+          updateColumns.mutate({
             visible,
           });
         },
         () => {
-          toggleColumns.mutate({
+          updateColumns.mutate({
             visible: !visible,
           });
         }

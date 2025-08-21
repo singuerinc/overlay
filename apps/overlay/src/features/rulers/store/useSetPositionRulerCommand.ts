@@ -1,22 +1,22 @@
 import { Command } from "@/features/commands/Command";
 import { useExecuteCommand } from "@/features/commands/store/commands";
-import { useSetPositionRulerMutation } from "@/features/rulers/store/useSetPositionRulerMutation";
+import { useUpdateRulerMutation } from "@/features/rulers/store/useUpdateRulerMutation";
 import type { IRuler } from "@/features/rulers/types";
 
 export function useSetPositionRulerCommand() {
   const executeCommand = useExecuteCommand();
-  const setPositionRuler = useSetPositionRulerMutation();
+  const updateRuler = useUpdateRulerMutation();
 
   return {
     execute: (position: IRuler["position"]) => {
       const command = new Command(
         () => {
-          setPositionRuler.mutate({
+          updateRuler.mutate({
             position,
           });
         },
         () => {
-          setPositionRuler.mutate({
+          updateRuler.mutate({
             position,
           });
         }

@@ -1,13 +1,13 @@
 import { Command } from "@/features/commands/Command";
 import { useExecuteCommand } from "@/features/commands/store/commands";
 import { type GuidelineColorType } from "@/features/guideline/GuidelineColor";
-import { useColorGuidelineMutation } from "@/features/guideline/store/useColorGuidelineMutation";
+import { useUpdateGuidelineMutation } from "@/features/guideline/store/useUpdateGuidelineMutation";
 import { useSetSelectedTool } from "@/features/tools/store/tools";
 import { type IGuideline } from "../types";
 
 export function useColorGuidelineCommand() {
   const executeCommand = useExecuteCommand();
-  const colorGuideline = useColorGuidelineMutation();
+  const updateGuideline = useUpdateGuidelineMutation();
   const setSelectedTool = useSetSelectedTool();
 
   return {
@@ -15,13 +15,13 @@ export function useColorGuidelineCommand() {
       const prevColor = guideline.color;
       const command = new Command(
         () => {
-          colorGuideline.mutate({
+          updateGuideline.mutate({
             id: guideline.id,
             color,
           });
         },
         () => {
-          colorGuideline.mutate({
+          updateGuideline.mutate({
             id: guideline.id,
             color: prevColor,
           });

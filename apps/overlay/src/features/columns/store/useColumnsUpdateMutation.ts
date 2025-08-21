@@ -4,18 +4,18 @@ import type { IColumnsStore } from "@/features/columns/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 
-export function useToggleColumnsMutation() {
+export function useColumnsUpdateMutation() {
   const frameId = useActiveFrameId();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ visible }: { visible: boolean }) => {
+    mutationFn: async (props: Partial<Exclude<IColumnsStore, "id">>) => {
       const columns = queryClient.getQueryData<IColumnsStore>(
         COLUMNS_KEYS.verticalColumns(frameId)
       );
 
       const updatedColumns = produce(columns, (draftState: IColumnsStore) => {
-        draftState.visible = visible;
+        Object.assign(draftState, props);
       });
 
       localStorage.setItem(
