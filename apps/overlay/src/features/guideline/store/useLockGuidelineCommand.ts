@@ -1,12 +1,12 @@
 import { Command } from "@/features/commands/Command";
 import { useExecuteCommand } from "@/features/commands/store/commands";
-import { useLockGuidelineMutation } from "@/features/guideline/store/useLockGuidelineMutation";
+import { useUpdateGuidelineMutation } from "@/features/guideline/store/useUpdateGuidelineMutation";
 import { useSetSelectedTool } from "@/features/tools/store/tools";
 import { type IGuideline } from "../types";
 
 export function useLockGuidelineCommand() {
   const executeCommand = useExecuteCommand();
-  const lockGuideline = useLockGuidelineMutation();
+  const updateGuideline = useUpdateGuidelineMutation();
   const setSelectedTool = useSetSelectedTool();
 
   return {
@@ -14,13 +14,13 @@ export function useLockGuidelineCommand() {
       const prevLocked = guideline.locked;
       const command = new Command(
         () => {
-          lockGuideline.mutate({
+          updateGuideline.mutate({
             id: guideline.id,
             locked,
           });
         },
         () => {
-          lockGuideline.mutate({
+          updateGuideline.mutate({
             id: guideline.id,
             locked: prevLocked,
           });

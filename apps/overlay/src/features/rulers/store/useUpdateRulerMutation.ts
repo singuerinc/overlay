@@ -4,18 +4,18 @@ import type { IRulerStore } from "@/features/rulers/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 
-export function useToggleRulerMutation() {
+export function useUpdateRulerMutation() {
   const frameId = useActiveFrameId();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ visible }: { visible: boolean }) => {
+    mutationFn: async (props: Partial<Exclude<IRulerStore, "id" | "type">>) => {
       const ruler = queryClient.getQueryData<IRulerStore>(
         RULER_KEYS.ruler(frameId)
       );
 
       const updatedRuler = produce(ruler, (draftState: IRulerStore) => {
-        draftState.visible = visible;
+        Object.assign(draftState, props);
       });
 
       localStorage.setItem(

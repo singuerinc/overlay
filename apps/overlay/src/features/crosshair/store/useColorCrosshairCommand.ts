@@ -1,13 +1,13 @@
 import { Command } from "@/features/commands/Command";
 import { useExecuteCommand } from "@/features/commands/store/commands";
 import type { CrosshairColorType } from "@/features/crosshair/CrosshairColor";
-import { useColorCrosshairMutation } from "@/features/crosshair/store/useColorCrosshairMutation";
+import { useUpdateCrosshairMutation } from "@/features/crosshair/store/useUpdateCrosshairMutation";
 import { useSetSelectedTool } from "@/features/tools/store/tools";
 import { type ICrosshair } from "../types";
 
 export function useColorCrosshairCommand() {
   const executeCommand = useExecuteCommand();
-  const colorCrosshair = useColorCrosshairMutation();
+  const updateCrosshair = useUpdateCrosshairMutation();
   const setSelectedTool = useSetSelectedTool();
 
   return {
@@ -15,12 +15,12 @@ export function useColorCrosshairCommand() {
       const prevColor = crosshair.color;
       const command = new Command(
         () => {
-          colorCrosshair.mutate({
+          updateCrosshair.mutate({
             color,
           });
         },
         () => {
-          colorCrosshair.mutate({
+          updateCrosshair.mutate({
             color: prevColor,
           });
           setSelectedTool(crosshair);

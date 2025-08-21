@@ -1,10 +1,10 @@
 import { Command } from "@/features/commands/Command";
 import { useExecuteCommand } from "@/features/commands/store/commands";
-import { useSetOriginRulerMutation } from "@/features/rulers/store/useSetOriginRulerMutation";
+import { useUpdateRulerMutation } from "@/features/rulers/store/useUpdateRulerMutation";
 
 export function useSetOriginRulerCommand() {
   const executeCommand = useExecuteCommand();
-  const setOriginRuler = useSetOriginRulerMutation();
+  const updateRuler = useUpdateRulerMutation();
 
   return {
     execute: (originX: number, originY: number) => {
@@ -14,13 +14,13 @@ export function useSetOriginRulerCommand() {
       };
       const command = new Command(
         () => {
-          setOriginRuler.mutate({
+          updateRuler.mutate({
             originX: originX,
             originY: originY,
           });
         },
         () => {
-          setOriginRuler.mutate({
+          updateRuler.mutate({
             originX: prevOriginX,
             originY: prevOriginY,
           });

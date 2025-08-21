@@ -4,12 +4,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 import type { ICrosshairStore } from "../types";
 
-export function useToggleCrosshairMutation() {
+export function useUpdateCrosshairMutation() {
   const queryClient = useQueryClient();
   const frameId = useActiveFrameId();
 
   return useMutation({
-    mutationFn: async ({ visible }: { visible: boolean }) => {
+    mutationFn: async (props: Partial<Exclude<ICrosshairStore, "id">>) => {
       const crosshair = queryClient.getQueryData<ICrosshairStore>(
         CROSSHAIR_KEYS.crosshair(frameId)
       );
@@ -17,7 +17,7 @@ export function useToggleCrosshairMutation() {
       const updatedCrosshair = produce(
         crosshair,
         (draftState: ICrosshairStore) => {
-          draftState.visible = visible;
+          Object.assign(draftState, props);
         }
       );
 

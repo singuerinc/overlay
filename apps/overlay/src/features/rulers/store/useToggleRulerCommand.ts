@@ -1,21 +1,21 @@
-import { useToggleRulerMutation } from "@/features/rulers/store/useToggleRulerMutation";
+import { useUpdateRulerMutation } from "@/features/rulers/store/useUpdateRulerMutation";
 import { Command } from "../../../features/commands/Command";
 import { useExecuteCommand } from "../../../features/commands/store/commands";
 
 export function useToggleRulerCommand() {
   const executeCommand = useExecuteCommand();
-  const toggleRuler = useToggleRulerMutation();
+  const updateRuler = useUpdateRulerMutation();
 
   return {
     execute: (visible: boolean) => {
       const command = new Command(
         () => {
-          toggleRuler.mutate({
+          updateRuler.mutate({
             visible,
           });
         },
         () => {
-          toggleRuler.mutate({
+          updateRuler.mutate({
             visible: !visible,
           });
         }

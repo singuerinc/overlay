@@ -1,21 +1,21 @@
-import { useToggleGridMutation } from "@/features/grid/store/useToggleGridMutation";
+import { useUpdateGridMutation } from "@/features/grid/store/useUpdateGridMutation";
 import { Command } from "../../../features/commands/Command";
 import { useExecuteCommand } from "../../../features/commands/store/commands";
 
 export function useToggleGridCommand() {
   const executeCommand = useExecuteCommand();
-  const toggleGrid = useToggleGridMutation();
+  const updateGrid = useUpdateGridMutation();
 
   return {
     execute: (visible: boolean) => {
       const command = new Command(
         () => {
-          toggleGrid.mutate({
+          updateGrid.mutate({
             visible,
           });
         },
         () => {
-          toggleGrid.mutate({
+          updateGrid.mutate({
             visible: !visible,
           });
         }

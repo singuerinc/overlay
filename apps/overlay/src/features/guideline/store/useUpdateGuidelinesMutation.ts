@@ -4,12 +4,12 @@ import { produce } from "immer";
 import type { IGuidelineStore } from "../types";
 import { GUIDELINES_KEYS } from "./guidelinesKeys";
 
-export function useToggleGuidelinesMutation() {
+export function useUpdateGuidelinesMutation() {
   const frameId = useActiveFrameId();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ visible }: { visible: boolean }) => {
+    mutationFn: async (props: Partial<Exclude<IGuidelineStore, "id">>) => {
       const guidelines = queryClient.getQueryData<IGuidelineStore>(
         GUIDELINES_KEYS.guidelines(frameId)
       );
@@ -17,7 +17,7 @@ export function useToggleGuidelinesMutation() {
       const newGuidelines = produce(
         guidelines,
         (draftState: IGuidelineStore) => {
-          draftState.visible = visible;
+          Object.assign(draftState, props);
         }
       );
 
