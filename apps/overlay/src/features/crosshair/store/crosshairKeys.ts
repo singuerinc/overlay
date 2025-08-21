@@ -1,3 +1,3 @@
 export const CROSSHAIR_KEYS = {
-  crosshair: (frameId: string) => ["overlay", "crosshair", frameId],
+  crosshair: (frameId: string) => ["overlay", frameId, "crosshair"],
 };
