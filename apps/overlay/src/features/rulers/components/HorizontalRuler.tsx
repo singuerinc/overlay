@@ -8,35 +8,32 @@ import { useWindowSize } from "usehooks-ts";
 
 const variantsWrapper = cva(
   [
-    "overlay:absolute overlay:left-0 overlay:h-5 overlay:pointer-events-auto overlay:overflow-hidden",
-    "overlay:flex overlay:w-full",
-    "overlay:select-none overlay:text-neutral-400 overlay:text-[9px]",
+    "o:absolute o:left-0 o:h-5 o:pointer-events-auto o:overflow-hidden",
+    "o:flex o:w-full",
+    "o:select-none o:text-neutral-400 o:text-[9px]",
   ],
   {
     variants: {
       position: {
-        "top-left": "overlay:top-0",
-        "top-right": "overlay:top-0",
-        "bottom-left": "overlay:bottom-0",
-        "bottom-right": "overlay:bottom-0",
+        "top-left": "o:top-0",
+        "top-right": "o:top-0",
+        "bottom-left": "o:bottom-0",
+        "bottom-right": "o:bottom-0",
       },
     },
   }
 );
 
-const variantsItem = cva(
-  ["overlay:w-[50px] overlay:flex overlay:items-start overlay:shrink-0"],
-  {
-    variants: {
-      position: {
-        "top-left": "overlay:flex-col",
-        "top-right": "overlay:flex-col",
-        "bottom-left": "overlay:flex-col-reverse",
-        "bottom-right": "overlay:flex-col-reverse",
-      },
+const variantsItem = cva(["o:w-[50px] o:flex o:items-start o:shrink-0"], {
+  variants: {
+    position: {
+      "top-left": "o:flex-col",
+      "top-right": "o:flex-col",
+      "bottom-left": "o:flex-col-reverse",
+      "bottom-right": "o:flex-col-reverse",
     },
-  }
-);
+  },
+});
 
 export function HorizontalRuler({ origin }: { origin: number }) {
   const { data: ruler } = useRulerQuery();
@@ -66,61 +63,53 @@ export function HorizontalRuler({ origin }: { origin: number }) {
       className={cn(variantsWrapper({ position: ruler.position }))}
     >
       <div
-        className="overlay:absolute overlay:h-full overlay:w-fit overlay:bg-neutral-300/50 overlay:shrink-0 overlay:grow-0"
+        className="o:absolute o:h-full o:w-fit o:bg-neutral-300/50 o:shrink-0 o:grow-0"
         style={{ transform: `translateX(calc(-100% + ${origin}px))` }}
       >
         <div
-          className={cn(
-            "overlay:absolute overlay:left-0 overlay:w-full overlay:h-1.5",
-            {
-              "overlay:bottom-0": ruler.position === "top-left",
-              "overlay:top-0": ruler.position === "bottom-right",
-            }
-          )}
+          className={cn("o:absolute o:left-0 o:w-full o:h-1.5", {
+            "o:bottom-0": ruler.position === "top-left",
+            "o:top-0": ruler.position === "bottom-right",
+          })}
           style={{
             backgroundImage:
               "linear-gradient(to right, rgba(0,0,0,0.3) 1px, transparent 1px)",
             backgroundSize: "50px 50px",
           }}
         />
-        <ol className="overlay:flex overlay:flex-row-reverse overlay:w-full overlay:h-full">
+        <ol className="o:flex o:flex-row-reverse o:w-full o:h-full">
           {numList.map((num) => (
             <li
               key={num}
               className={cn(variantsItem({ position: ruler.position }))}
             >
-              <span className="overlay:-translate-x-1/2">
-                {-(num + 1) * 50}
-              </span>
+              <span className="o:-translate-x-1/2">{-(num + 1) * 50}</span>
             </li>
           ))}
         </ol>
       </div>
       <div
-        className="overlay:absolute overlay:h-full overlay:w-fit overlay:bg-neutral-200/50 overlay:shrink-0 overlay:grow-0"
+        className="o:absolute o:h-full o:w-fit o:bg-neutral-200/50 o:shrink-0 o:grow-0"
         style={{ transform: `translateX(${origin}px)` }}
       >
         <div
-          className={cn(
-            "overlay:absolute overlay:left-0 overlay:w-full overlay:h-1.5",
-            {
-              "overlay:bottom-0": ruler.position === "top-left",
-              "overlay:top-0": ruler.position === "bottom-right",
-            }
-          )}
+          className={cn("o:absolute o:left-0 o:w-full o:h-1.5", {
+            "o:bottom-0": ruler.position === "top-left",
+            "o:top-0": ruler.position === "bottom-right",
+          })}
           style={{
             backgroundImage:
               "linear-gradient(to right, rgba(0,0,0,0.3) 1px, transparent 1px)",
             backgroundSize: "50px 50px",
           }}
         />
-        <ol className="overlay:flex overlay:w-full overlay:h-full">
+        <ol className="o:flex o:w-full o:h-full">
           {numList.map((num) => (
             <li
               key={num}
               className={cn(variantsItem({ position: ruler.position }))}
             >
-              <span className="overlay:-translate-x-1/2">{num * 50}</span>
+              <span className="o:-translate-x-1/2">{num * 50}</span>
             </li>
           ))}
         </ol>

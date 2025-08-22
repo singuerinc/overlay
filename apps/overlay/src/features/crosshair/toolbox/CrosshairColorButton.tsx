@@ -10,9 +10,9 @@ import { IconCircle } from "@tabler/icons-react";
 import { useCallback } from "react";
 
 const fillByColor = {
-  cyan: "overlay:fill-cyan-400",
-  red: "overlay:fill-red-400",
-  green: "overlay:fill-green-400",
+  cyan: "o:fill-cyan-400",
+  red: "o:fill-red-400",
+  green: "o:fill-green-400",
 };
 
 export function CrosshairColorButton() {
@@ -39,9 +39,7 @@ export function CrosshairColorButton() {
     <ToolButton
       enabled={true}
       Icon={
-        <IconCircle
-          className={cn(fillByColor[color], "overlay:text-transparent")}
-        />
+        <IconCircle className={cn(fillByColor[color], "o:text-transparent")} />
       }
       onClick={handleClick}
     />

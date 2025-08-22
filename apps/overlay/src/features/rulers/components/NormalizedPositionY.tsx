@@ -15,17 +15,15 @@ export function NormalizedPositionY() {
       style={{
         transform: `translateY(${normalizedY + (ruler?.originY ?? 0)}px)`,
       }}
-      className="overlay:absolute -translate-y-1/2 h-[75px] select-none text-[9px] w-full whitespace-nowrap tabular-nums"
+      className="o:absolute -translate-y-1/2 h-[75px] select-none text-[9px] w-full whitespace-nowrap tabular-nums"
     >
-      <div className="overlay:absolute overlay:flex overlay:flex-row overlay:w-full overlay:h-full">
-        <div className="overlay:w-1.5 overlay:h-full" />
-        <div className="overlay:w-full overlay:h-full overlay:overflow-hidden overlay:flex overlay:items-center overlay:justify-center">
-          <span className="overlay:-rotate-90 overlay:text-red-600">
-            {normalizedY}
-          </span>
+      <div className="o:absolute o:flex o:flex-row o:w-full o:h-full">
+        <div className="o:w-1.5 o:h-full" />
+        <div className="o:w-full o:h-full o:overflow-hidden o:flex o:items-center o:justify-center">
+          <span className="o:-rotate-90 o:text-red-600">{normalizedY}</span>
         </div>
       </div>
-      <div className="overlay:bg-gradient-to-b overlay:from-transparent overlay:via-neutral-100 overlay:to-transparent overlay:h-full" />
+      <div className="o:bg-gradient-to-b o:from-transparent o:via-neutral-100 o:to-transparent o:h-full" />
     </div>
   );
 }

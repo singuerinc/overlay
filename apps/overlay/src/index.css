@@ -1,4 +1,4 @@
-@import "tailwindcss" prefix(overlay);
+@import "tailwindcss" prefix(o);
 
 body {
   height: 100vh;

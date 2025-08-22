@@ -15,3 +15,4 @@
 - [ ] eyedrop
 - [ ] zoom / loupe / magnifier
 - [ ] measure tool, diagonal, free
+- [ ] crosshair: a zoom view in the corner to see the pixels under the cross

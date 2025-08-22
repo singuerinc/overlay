@@ -24,15 +24,15 @@ export function Frame({ id }: { id: IFrame["id"] }) {
       <div
         data-overlay-frame-id={frame.id}
         // onClick={() => setFrameActive(frame)}
-        className={cn(
-          "overlay-root overlay:border-2 overlay:pointer-events-none overlay:overflow-hidden"
-        )}
-        style={{
-          width: frame.width,
-          height: frame.height,
-          // top: `${frame.y}px`,
-          // left: `${frame.x}px`,
-        }}
+        className={cn("overlay-root o:pointer-events-none o:overflow-hidden")}
+        style={
+          {
+            // width: frame.width,
+            // height: frame.height,
+            // top: `${frame.y}px`,
+            // left: `${frame.x}px`,
+          }
+        }
       >
         <ToolBox />
         <ShortcutsObserver />
