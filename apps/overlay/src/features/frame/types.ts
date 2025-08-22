@@ -3,6 +3,6 @@ export interface IFrame {
   type: "frame";
   x: number;
   y: number;
-  width: number;
-  height: number;
+  width: `${number}%`;
+  height: `${number}%`;
 }

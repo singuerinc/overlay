@@ -2,7 +2,7 @@ import { Guideline } from "@/features/guideline/Guideline";
 import { useGuidelinesQuery } from "@/features/guideline/store/useGuidelinesQuery";
 import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
 
-export function GuidelinesRoot() {
+export function Guidelines() {
   const { data: ruler } = useRulerQuery();
   const { data: guidelines, isLoading, isError } = useGuidelinesQuery();
 
@@ -15,7 +15,10 @@ export function GuidelinesRoot() {
   }
 
   return (
-    <div className="h-screen w-screen pointer-events-none absolute top-0 left-0">
+    <div
+      data-overlay-tool-type="guidelines"
+      className="h-0 w-0 pointer-events-none absolute top-0 left-0"
+    >
       {guidelines.guidelines.map((guidelineId) => (
         <Guideline
           key={guidelineId}
