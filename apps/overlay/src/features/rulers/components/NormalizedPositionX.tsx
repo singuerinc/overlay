@@ -20,23 +20,18 @@ export function NormalizedPositionX() {
       style={{
         transform: `translateX(${normalizedX + (ruler.originX ?? 0)}px)`,
       }}
-      className="overlay:absolute overlay:w-[75px] overlay:select-none overlay:text-[9px] overlay:h-full overlay:whitespace-nowrap overlay:tabular-nums"
+      className="o:absolute o:w-[75px] o:select-none o:text-[9px] o:h-full o:whitespace-nowrap o:tabular-nums"
     >
-      <div className="overlay:absolute overlay:flex overlay:flex-col overlay:w-full overlay:h-full">
+      <div className="o:absolute o:flex o:flex-col o:w-full o:h-full">
         <div
-          className={cn(
-            "overlay:w-full overlay:z-10 overlay:h-full overlay:overflow-hidden overlay:flex",
-            {
-              "overlay:items-end": ruler.position === "bottom-right",
-            }
-          )}
+          className={cn("o:w-full o:z-10 o:h-full o:overflow-hidden o:flex", {
+            "o:items-end": ruler.position === "bottom-right",
+          })}
         >
-          <span className="overlay:text-red-600 overlay:pl-2">
-            {normalizedX}
-          </span>
+          <span className="o:text-red-600 o:pl-2">{normalizedX}</span>
         </div>
       </div>
-      <div className="overlay:-translate-x-1/2 overlay:bg-gradient-to-l overlay:from-transparent overlay:via-neutral-100 overlay:to-transparent overlay:h-full" />
+      <div className="o:-translate-x-1/2 o:bg-gradient-to-l o:from-transparent o:via-neutral-100 o:to-transparent o:h-full" />
     </div>
   );
 }

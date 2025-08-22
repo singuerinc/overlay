@@ -1,5 +1,6 @@
 import { useGridQuery } from "@/features/grid/store/useGridQuery";
 import { GridCyclePatternButton } from "@/features/grid/toolbox/GridCyclePatternButton";
+import { GridGapSetInput } from "@/features/grid/toolbox/GridGapSetInput";
 import { GridToggleButton } from "@/features/grid/toolbox/GridToggleButton";
 
 export function GridToolBox() {
@@ -11,6 +12,7 @@ export function GridToolBox() {
     <>
       <GridToggleButton />
       {isVisible && <GridCyclePatternButton />}
+      {isVisible && <GridGapSetInput />}
     </>
   );
 }

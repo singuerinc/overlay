@@ -13,7 +13,7 @@ export function Ruler() {
   return (
     <HotkeysProvider>
       <div
-        className="overlay:absolute overlay:top-0 overlay:left-0 overlay:pointer-events-none"
+        className="o:absolute o:top-0 o:left-0 o:pointer-events-none"
         style={{
           width: `${ruler.width}`,
           height: `${ruler.height}`,
@@ -21,18 +21,18 @@ export function Ruler() {
       >
         <VerticalRuler origin={ruler.originY} />
         <HorizontalRuler origin={ruler.originX} />
-        <div
-          className="overlay:w-px overlay:h-full overlay:border-r overlay:border-dashed overlay:border-neutral-600/30 overlay:absolute"
+        {/* <div
+          className="o:w-px o:h-full o:border-r o:border-dashed o:border-neutral-600/30 o:absolute"
           style={{
             transform: `translateX(${ruler.originX}px)`,
           }}
         />
         <div
-          className="overlay:h-px overlay:w-full overlay:border-t overlay:border-dashed overlay:border-neutral-600/30 overlay:absolute"
+          className="o:h-px o:w-full o:border-t o:border-dashed o:border-neutral-600/30 o:absolute"
           style={{
             transform: `translateY(${ruler.originY}px)`,
           }}
-        />
+        /> */}
       </div>
     </HotkeysProvider>
   );

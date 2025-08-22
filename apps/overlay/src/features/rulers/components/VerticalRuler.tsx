@@ -8,33 +8,31 @@ import { useWindowSize } from "usehooks-ts";
 
 const variantsWrapper = cva(
   [
-    "overlay:absolute overlay:top-0 overlay:w-5 overlay:pointer-events-auto",
-    "overlay:flex overlay:h-full",
-    "overlay:select-none overlay:text-[9px] overlay:text-neutral-400",
+    "o:absolute o:top-0 o:w-5 o:pointer-events-auto",
+    "o:flex o:h-full",
+    "o:select-none o:text-[9px] o:text-neutral-400",
   ],
   {
     variants: {
       position: {
-        "top-left": "overlay:left-0",
-        "top-right": "overlay:right-0",
-        "bottom-left": "overlay:left-0",
-        "bottom-right": "overlay:right-0",
+        "top-left": "o:left-0",
+        "top-right": "o:right-0",
+        "bottom-left": "o:left-0",
+        "bottom-right": "o:right-0",
       },
     },
   }
 );
 
 const variantsItem = cva(
-  [
-    "overlay:h-[50px] overlay:w-full overlay:flex overlay:items-end overlay:shrink-0",
-  ],
+  ["o:h-[50px] o:w-full o:flex o:items-end o:shrink-0"],
   {
     variants: {
       position: {
-        "top-right": "overlay:flex-row-reverse",
-        "bottom-right": "overlay:flex-row-reverse",
-        "top-left": "overlay:flex-row",
-        "bottom-left": "overlay:flex-row",
+        "top-right": "o:flex-row-reverse",
+        "bottom-right": "o:flex-row-reverse",
+        "top-left": "o:flex-row",
+        "bottom-left": "o:flex-row",
       },
     },
   }
@@ -67,34 +65,31 @@ export function VerticalRuler({ origin }: { origin: number }) {
       onClick={handleClick}
       className={cn(variantsWrapper({ position: ruler.position }))}
     >
-      <div className="overlay:absolute overlay:h-fit overlay:w-full overlay:flex overlay:flex-col">
+      <div className="o:absolute o:h-fit o:w-full o:flex o:flex-col">
         <div
-          className="overlay:w-full overlay:bg-neutral-300/50 overlay:shrink-0 overlay:grow-0 overlay:overflow-hidden"
+          className="o:w-full o:bg-neutral-300/50 o:shrink-0 o:grow-0 o:overflow-hidden"
           style={{ transform: `translateY(calc(-100% + ${origin}px))` }}
         >
           <div
-            className={cn(
-              "overlay:absolute overlay:top-0 overlay:h-full overlay:w-1.5",
-              {
-                "overlay:right-0": ruler.position === "top-left",
-                "overlay:left-0": ruler.position === "bottom-right",
-              }
-            )}
+            className={cn("o:absolute o:top-0 o:h-full o:w-1.5", {
+              "o:right-0": ruler.position === "top-left",
+              "o:left-0": ruler.position === "bottom-right",
+            })}
             style={{
               backgroundImage:
                 "linear-gradient(to top, rgba(0,0,0,0.3) 1px, transparent 1px)",
               backgroundSize: "50px 50px",
             }}
           />
-          <ol className="overlay:flex overlay:flex-col-reverse overlay:w-full overlay:h-full overlay:items-end">
+          <ol className="o:flex o:flex-col-reverse o:w-full o:h-full o:items-end">
             {numList.map((num) => (
               <li
                 key={num}
                 className={cn(variantsItem({ position: ruler.position }))}
               >
-                <div className="overlay:relative overlay:w-full overlay:h-full overlay:flex overlay:justify-baseline overlay:-translate-y-1/2">
-                  <div className="overlay:w-full" />
-                  <span className="overlay:absolute overlay:-rotate-90">
+                <div className="o:relative o:w-full o:h-full o:flex o:justify-baseline o:-translate-y-1/2">
+                  <div className="o:w-full" />
+                  <span className="o:absolute o:-rotate-90">
                     {-(num + 1) * 50}
                   </span>
                 </div>
@@ -103,34 +98,29 @@ export function VerticalRuler({ origin }: { origin: number }) {
           </ol>
         </div>
         <div
-          className="overlay:absolute overlay:w-full overlay:h-fit overlay:bg-neutral-100/50 overlay:grow"
+          className="o:absolute o:w-full o:h-fit o:bg-neutral-100/50 o:grow"
           style={{ transform: `translateY(${origin}px)` }}
         >
           <div
-            className={cn(
-              "overlay:absolute overlay:top-0 overlay:h-full overlay:w-1.5",
-              {
-                "overlay:right-0": ruler.position === "top-left",
-                "overlay:left-0": ruler.position === "bottom-right",
-              }
-            )}
+            className={cn("o:absolute o:top-0 o:h-full o:w-1.5", {
+              "o:right-0": ruler.position === "top-left",
+              "o:left-0": ruler.position === "bottom-right",
+            })}
             style={{
               backgroundImage:
                 "linear-gradient(to top, rgba(0,0,0,0.3) 1px, transparent 1px)",
               backgroundSize: "50px 50px",
             }}
           />
-          <ol className="overlay:flex overlay:flex-col overlay:w-full overlay:h-full overlay:items-end overlay:select-none">
+          <ol className="o:flex o:flex-col o:w-full o:h-full o:items-end o:select-none">
             {numList.map((num) => (
               <li
                 key={num}
                 className={cn(variantsItem({ position: ruler.position }))}
               >
-                <div className="overlay:relative overlay:w-full overlay:h-full overlay:flex overlay:items-center overlay:-translate-y-1/2">
-                  <div className="overlay:w-full" />
-                  <span className="overlay:absolute overlay:-rotate-90">
-                    {num * 50}
-                  </span>
+                <div className="o:relative o:w-full o:h-full o:flex o:items-center o:-translate-y-1/2">
+                  <div className="o:w-full" />
+                  <span className="o:absolute o:-rotate-90">{num * 50}</span>
                 </div>
               </li>
             ))}

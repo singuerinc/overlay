@@ -17,7 +17,7 @@ export function Grid() {
     },
     lines: {
       backgroundImage:
-        "linear-gradient(to right, rgba(255,0,0,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,0,0,0.1) 1px, transparent 1px)",
+        "linear-gradient(to right, rgba(255,0,0,0.2) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,0,0,0.2) 1px, transparent 1px)",
     },
   } as Record<IGridPattern, React.CSSProperties>;
 
@@ -25,7 +25,7 @@ export function Grid() {
     <>
       <div
         data-overlay-grid-id={grid.id}
-        className="overlay:absolute overlay:top-0 overlay:left-0 overlay:w-screen overlay:h-screen overlay:pointer-events-none"
+        className="o:absolute o:top-0 o:left-0 o:w-screen o:h-screen o:pointer-events-none"
         style={{
           backgroundPosition: `${ruler.originX + grid.gapX / 2}px ${ruler.originY + grid.gapY / 2}px`,
           backgroundSize: `${grid.gapX}px ${grid.gapY}px`,

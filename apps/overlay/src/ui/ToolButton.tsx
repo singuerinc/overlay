@@ -1,30 +1,30 @@
 import { cva } from "class-variance-authority";
 import * as React from "react";
 
-const variants = cva(["overlay:rounded-sm overlay:p-1"], {
+const variants = cva(["o:rounded-sm o:p-1"], {
   variants: {
     enabled: {
       true: [
-        "overlay:opacity-100 overlay:cursor-pointer overlay:active:scale-95 overlay:transition-transform",
+        "o:opacity-100 o:cursor-pointer o:active:scale-95 o:transition-transform",
         "",
       ],
-      false: "overlay:opacity-20 overlay:cursor-auto",
+      false: "o:opacity-20 o:cursor-auto",
     },
     activated: {
-      true: " overlay:text-neutral-900",
-      false: "overlay:text-neutral-400 ",
+      true: " o:text-neutral-900",
+      false: "o:text-neutral-400 ",
     },
   },
   compoundVariants: [
     {
       enabled: true,
       activated: true,
-      class: "overlay:bg-white",
+      class: "o:bg-white",
     },
     {
       enabled: true,
       activated: false,
-      class: "overlay:hover:bg-neutral-100 overlay:hover:text-neutral-600",
+      class: "o:hover:bg-neutral-100 o:hover:text-neutral-600",
     },
   ],
   defaultVariants: {
