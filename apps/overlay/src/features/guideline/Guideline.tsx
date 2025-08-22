@@ -24,8 +24,8 @@ const variantsGuideline = cva(["pointer-events-auto focus:outline-none"], {
       false: "",
     },
     isVertical: {
-      true: "h-full w-px border-l",
-      false: "w-full h-px border-t",
+      true: "h-screen w-px border-l",
+      false: "w-screen h-px border-t",
     },
     color: {
       cyan: "border-cyan-500/40 hover:border-cyan-500/100",
@@ -186,12 +186,12 @@ export function Guideline({
         const normalizedY = event.clientY - rect.top;
         const x = isVertical ? normalizedX : -(originX ?? 0);
         const y = isVertical ? -(originY ?? 0) : normalizedY;
-        const snapX = Math.round(x / 10) * 10;
-        const snapY = Math.round(y / 10) * 10;
+        // const snapX = Math.round(x / 10) * 10;
+        // const snapY = Math.round(y / 10) * 10;
 
         guidelineRef.current?.style.setProperty(
           "transform",
-          `translateX(${snapX}px) translateY(${snapY}px)`
+          `translateX(${x}px) translateY(${y}px)`
         );
 
         onGuidelinePositionChanged(
@@ -243,8 +243,10 @@ export function Guideline({
 
   return (
     <div
+      data-overlay-guideline-id={guideline.id}
+      data-overlay-tool-type="guideline"
       ref={containerRef}
-      className="absolute top-0 left-0 h-screen w-screen pointer-events-none"
+      className="absolute top-0 left-0 h-0 w-0 overflow-visible pointer-events-none"
       onMouseDown={handleDown}
       onDoubleClick={handleDoubleClick}
     >

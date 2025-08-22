@@ -24,6 +24,7 @@ export function Grid() {
   return (
     <>
       <div
+        data-overlay-grid-id={grid.id}
         className="absolute top-0 left-0 w-screen h-screen pointer-events-none"
         style={{
           backgroundPosition: `${ruler.originX + grid.gapX / 2}px ${ruler.originY + grid.gapY / 2}px`,
