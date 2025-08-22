@@ -1,7 +1,5 @@
-import { CommandMenu } from "@/features/command-menu/components/CommandMenu";
-import { Frame } from "@/features/frame/Frame";
 import { KeyboardObserver } from "@/features/keyboard/KeyboardObserver";
-import { ShortcutsObserver } from "@/features/shortcuts/ShortcutsObserver";
+import { Workspace } from "@/features/workspace/Workspace";
 import { DocumentObserver } from "@/ui/DocumentObserver";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -23,13 +21,7 @@ export function Overlay() {
       <QueryClientProvider client={queryClient}>
         <DocumentObserver />
         <KeyboardObserver />
-        <ShortcutsObserver />
-        <CommandMenu />
-        <Frame
-          frame={{
-            id: "frame-1",
-          }}
-        />
+        <Workspace />
       </QueryClientProvider>
       <Toaster />
     </div>

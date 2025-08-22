@@ -182,18 +182,22 @@ export function Guideline({
     (event: MouseEvent) => {
       if (guideline && isDrag && containerRef.current) {
         const rect = containerRef.current.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
+        const normalizedX = event.clientX - rect.left;
+        const normalizedY = event.clientY - rect.top;
+        const x = isVertical ? normalizedX : -(originX ?? 0);
+        const y = isVertical ? -(originY ?? 0) : normalizedY;
+        const snapX = Math.round(x / 10) * 10;
+        const snapY = Math.round(y / 10) * 10;
 
         guidelineRef.current?.style.setProperty(
           "transform",
-          `translateX(${isVertical ? x : -(originX ?? 0)}px) translateY(${isVertical ? -(originY ?? 0) : y}px)`
+          `translateX(${snapX}px) translateY(${snapY}px)`
         );
 
         onGuidelinePositionChanged(
           guideline,
-          isVertical ? x : null,
-          isVertical ? null : y
+          isVertical ? normalizedX : null,
+          isVertical ? null : normalizedY
         );
       }
     },

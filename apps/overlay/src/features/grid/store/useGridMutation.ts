@@ -1,11 +1,11 @@
-import { useActiveFrameId } from "@/appStore";
+import { useFrameActiveId } from "@/features/frame/hooks/useFrameActiveId";
 import { GRID_KEYS } from "@/features/grid/store/gridKeys";
 import type { IGridStore } from "@/features/grid/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 
 export function useGridMutation() {
-  const frameId = useActiveFrameId();
+  const frameId = useFrameActiveId();
   const queryClient = useQueryClient();
 
   return useMutation({

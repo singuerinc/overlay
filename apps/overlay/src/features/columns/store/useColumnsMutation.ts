@@ -1,11 +1,11 @@
-import { useActiveFrameId } from "@/appStore";
 import { COLUMNS_KEYS } from "@/features/columns/store/columnsKeys";
 import type { IColumnsStore } from "@/features/columns/types";
+import { useFrameActiveId } from "@/features/frame/hooks/useFrameActiveId";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 
 export function useColumnsMutation() {
-  const frameId = useActiveFrameId();
+  const frameId = useFrameActiveId();
   const queryClient = useQueryClient();
 
   return useMutation({

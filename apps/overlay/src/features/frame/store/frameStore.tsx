@@ -1,11 +1,14 @@
 import { createContext, useState } from "react";
 import { createStore, type StoreApi } from "zustand";
 
-type Store = {
-  id: string;
+export type FrameStore = {
+  activeId: string;
+  actions: {
+    setActiveId: (id: string) => void;
+  };
 };
 
-const Context = createContext<StoreApi<Store> | null>(null);
+export const FrameContext = createContext<StoreApi<FrameStore> | null>(null);
 
 export function FrameContextProvider({
   id,
@@ -15,20 +18,17 @@ export function FrameContextProvider({
   children: React.ReactNode;
 }) {
   const [store] = useState(() =>
-    createStore<Store>(() => ({
-      id,
+    createStore<FrameStore>((set) => ({
+      activeId: id,
+      actions: {
+        setActiveId: (newId: string) => {
+          set({ activeId: newId });
+        },
+      },
     }))
   );
 
-  return <Context.Provider value={store}>{children}</Context.Provider>;
+  return (
+    <FrameContext.Provider value={store}>{children}</FrameContext.Provider>
+  );
 }
-
-// const useFrameStore = <T,>(selector: (store: Store) => T): T => {
-//   const storeContext = useContext(Context);
-
-//   if (!storeContext) {
-//     throw new Error(`useFrameStore must be used within FrameContextProvider`);
-//   }
-
-//   return useStore(storeContext, selector);
-// };

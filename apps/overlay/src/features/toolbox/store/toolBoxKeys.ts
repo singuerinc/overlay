@@ -1,3 +1,3 @@
 export const TOOLBOX_KEYS = {
-  toolbox: () => ["overlay", "toolbox"],
+  toolbox: (workspaceId: string) => ["overlay", workspaceId, "toolbox"],
 };
