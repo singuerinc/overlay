@@ -1,34 +1,48 @@
 import { Columns } from "@/features/columns/Columns";
 import { Crosshair } from "@/features/crosshair/Crosshair";
-import { useFrameSetActiveId } from "@/features/frame/hooks/useFrameSetActiveId";
+import { useFrameQueryById } from "@/features/frame/hooks/useFrameQueryById";
+import { FrameContextProvider } from "@/features/frame/store/frameStore";
+import type { IFrame } from "@/features/frame/types";
 import { Grid } from "@/features/grid/Grid";
 import { GuidelinesRoot } from "@/features/guideline/GuidelinesRoot";
 import { Ruler } from "@/features/rulers/Ruler";
 import { RulerContextProvider } from "@/features/rulers/store/rulerStore";
 import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
+import { ShortcutsObserver } from "@/features/shortcuts/ShortcutsObserver";
+import { ToolBox } from "@/features/toolbox/ToolBox";
 import { cn } from "@/ui/cn";
 import type { PropsWithChildren } from "react";
 
-export function Frame({ id }: { id: string }) {
-  const setFrameActiveId = useFrameSetActiveId();
+export function Frame({ id }: { id: IFrame["id"] }) {
+  const { data: frame } = useFrameQueryById({ id });
+  // const setFrameActive = useFrameSetActive();
+
+  if (!frame) {
+    return null;
+  }
 
   return (
-    <div
-      onClick={() => setFrameActiveId(id)}
-      className={cn(
-        "overlay-root pointer-events-auto overflow-hidden w-full h-full"
-      )}
-    >
-      <RulerContextProvider>
-        <Ruler />
-        <FrameContent>
-          <Columns />
-          <GuidelinesRoot />
-        </FrameContent>
-        <Crosshair />
-        <Grid />
-      </RulerContextProvider>
-    </div>
+    <FrameContextProvider key={frame.id} activeFrame={frame}>
+      <div
+        // onClick={() => setFrameActive(frame)}
+        className={cn(
+          "overlay-root pointer-events-auto overflow-hidden w-full h-full"
+        )}
+      >
+        <ToolBox />
+        <ShortcutsObserver />
+        {/* <CommandMenu /> */}
+        <RulerContextProvider>
+          <Ruler />
+          <FrameContent>
+            <Columns />
+            <GuidelinesRoot />
+          </FrameContent>
+          <Crosshair />
+          <Grid />
+        </RulerContextProvider>
+      </div>
+    </FrameContextProvider>
   );
 }
 

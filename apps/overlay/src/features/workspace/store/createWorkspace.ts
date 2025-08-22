@@ -4,5 +4,5 @@ import { v4 as uuidv4 } from "uuid";
 export const createWorkspace = (): IWorkspace => ({
   id: uuidv4(),
   type: "workspace",
-  frameIds: [uuidv4()],
+  frames: [],
 });
