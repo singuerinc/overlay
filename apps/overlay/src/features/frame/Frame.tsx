@@ -25,7 +25,7 @@ export function Frame({ id }: { id: IFrame["id"] }) {
         data-overlay-frame-id={frame.id}
         // onClick={() => setFrameActive(frame)}
         className={cn(
-          "overlay-root border-2 pointer-events-none overflow-hidden"
+          "overlay-root overlay:border-2 overlay:pointer-events-none overlay:overflow-hidden"
         )}
         style={{
           width: frame.width,

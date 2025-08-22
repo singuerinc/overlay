@@ -7,12 +7,10 @@ export function UndoButton() {
   const undo = useUndo();
   const isUndoAvailable = useUndoAvailable();
   return (
-    <div className="flex gap-x-1">
-      <ToolButton
-        enabled={isUndoAvailable}
-        onClick={() => undo()}
-        Icon={<IconArrowBackUp />}
-      />
-    </div>
+    <ToolButton
+      enabled={isUndoAvailable}
+      onClick={() => undo()}
+      Icon={<IconArrowBackUp />}
+    />
   );
 }

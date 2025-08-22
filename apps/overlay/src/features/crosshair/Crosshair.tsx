@@ -8,17 +8,17 @@ import { toast } from "sonner";
 
 const variantsWrapper = cva(
   [
-    "absolute top-0 left-0 overflow-hidden",
-    "pointer-events-auto",
-    "group hover:opacity-100 transition-colors",
-    "h-screen w-screen",
-    "justify-center items-center",
+    "overlay:absolute overlay:top-0 overlay:left-0 overlay:overflow-hidden",
+    "overlay:pointer-events-auto",
+    "overlay:group overlay:hover:opacity-100 transition-colors",
+    "overlay:h-screen overlay:w-screen",
+    "overlay:justify-center overlay:items-center",
   ],
   {
     variants: {
       locked: {
-        true: "cursor-not-allowed",
-        false: "cursor-none",
+        true: "overlay:cursor-not-allowed",
+        false: "overlay:cursor-none",
       },
     },
     defaultVariants: {
@@ -27,16 +27,17 @@ const variantsWrapper = cva(
   }
 );
 
-const variantsGuideline = cva(["absolute"], {
+const variantsGuideline = cva(["overlay:absolute"], {
   variants: {
     isVertical: {
-      true: "h-screen w-px border-l border-dashed",
-      false: "w-screen h-px border-t border-dashed",
+      true: "overlay:h-screen overlay:w-px overlay:border-l overlay:border-dashed",
+      false:
+        "overlay:w-screen overlay:h-px overlay:border-t overlay:border-dashed",
     },
     color: {
-      cyan: "border-cyan-500/50",
-      red: "border-red-500/50",
-      green: "border-green-500/50",
+      cyan: "overlay:border-cyan-500/50",
+      red: "overlay:border-red-500/50",
+      green: "overlay:border-green-500/50",
     },
   },
   defaultVariants: {

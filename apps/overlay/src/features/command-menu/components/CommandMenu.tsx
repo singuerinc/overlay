@@ -45,7 +45,7 @@ export function CommandMenu() {
   const { resetOrigin, centerOrigin } = useRulerSetOrigin();
   const { setPositionRuler } = useRulerSetPosition();
   const { toggle: toggleColumns } = useColumnsToggle();
-  const { addColumn, removeColumn } = useColumnsSetNum();
+  const { addOne: addColumn, removeOne: removeColumn } = useColumnsSetNum();
 
   const handleUndo = useCallback(() => {
     undo();
