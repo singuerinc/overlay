@@ -1,4 +1,4 @@
-import { useActiveFrameId } from "@/appStore";
+import { useFrameActiveId } from "@/features/frame/hooks/useFrameActiveId";
 import { createGuidelines } from "@/features/guideline/store/createGuidelines";
 import { useQuery } from "@tanstack/react-query";
 import type { IGuidelineStore } from "../types";
@@ -24,7 +24,7 @@ function getGuidelines(frameId: string): Promise<IGuidelineStore> {
 }
 
 export function useGuidelinesQuery() {
-  const frameId = useActiveFrameId();
+  const frameId = useFrameActiveId();
   return useQuery({
     queryKey: GUIDELINES_KEYS.guidelines(frameId),
     queryFn: () => getGuidelines(frameId),

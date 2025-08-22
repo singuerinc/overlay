@@ -1,12 +1,12 @@
-import { useActiveFrameId } from "@/appStore";
 import { CROSSHAIR_KEYS } from "@/features/crosshair/store/crosshairKeys";
+import { useFrameActiveId } from "@/features/frame/hooks/useFrameActiveId";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 import type { ICrosshairStore } from "../types";
 
 export function useCrosshairMutation() {
   const queryClient = useQueryClient();
-  const frameId = useActiveFrameId();
+  const frameId = useFrameActiveId();
 
   return useMutation({
     mutationFn: async (props: Partial<Exclude<ICrosshairStore, "id">>) => {

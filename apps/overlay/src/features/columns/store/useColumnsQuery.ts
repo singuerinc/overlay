@@ -1,7 +1,7 @@
-import { useActiveFrameId } from "@/appStore";
 import { COLUMNS_KEYS } from "@/features/columns/store/columnsKeys";
 import { createColumns } from "@/features/columns/store/createColumns";
 import type { IColumnsStore } from "@/features/columns/types";
+import { useFrameActiveId } from "@/features/frame/hooks/useFrameActiveId";
 import { useQuery } from "@tanstack/react-query";
 
 function getColumns(frameId: string): Promise<IColumnsStore> {
@@ -24,7 +24,7 @@ function getColumns(frameId: string): Promise<IColumnsStore> {
 }
 
 export function useColumnsQuery() {
-  const frameId = useActiveFrameId();
+  const frameId = useFrameActiveId();
   return useQuery({
     queryKey: COLUMNS_KEYS.verticalColumns(frameId),
     queryFn: () => getColumns(frameId),

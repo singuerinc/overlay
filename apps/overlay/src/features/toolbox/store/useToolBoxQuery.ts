@@ -1,16 +1,19 @@
 import { createToolBox } from "@/features/toolbox/store/createToolBox";
 import { TOOLBOX_KEYS } from "@/features/toolbox/store/toolBoxKeys";
 import type { IToolBox } from "@/features/toolbox/types";
+import { useWorkspaceId } from "@/features/workspace/hooks/useWorkspaceId";
 import { useQuery } from "@tanstack/react-query";
 
-function getToolBox(): Promise<IToolBox> {
+function getToolBox(workspaceId: string): Promise<IToolBox> {
   return new Promise((resolve) => {
-    const maybeToolBox = localStorage.getItem(TOOLBOX_KEYS.toolbox().join("-"));
+    const maybeToolBox = localStorage.getItem(
+      TOOLBOX_KEYS.toolbox(workspaceId).join("-")
+    );
 
     if (maybeToolBox === null) {
       const toolBox = createToolBox();
       localStorage.setItem(
-        TOOLBOX_KEYS.toolbox().join("-"),
+        TOOLBOX_KEYS.toolbox(workspaceId).join("-"),
         JSON.stringify(toolBox)
       );
       resolve(toolBox);
@@ -21,8 +24,9 @@ function getToolBox(): Promise<IToolBox> {
 }
 
 export function useToolBoxQuery() {
+  const workspaceId = useWorkspaceId();
   return useQuery({
-    queryKey: TOOLBOX_KEYS.toolbox(),
-    queryFn: () => getToolBox(),
+    queryKey: TOOLBOX_KEYS.toolbox(workspaceId),
+    queryFn: () => getToolBox(workspaceId),
   });
 }

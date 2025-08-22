@@ -1,7 +1,7 @@
-import { useActiveFrameId } from "@/appStore";
 import { createCrosshair } from "@/features/crosshair/store/createCrosshair";
 import { CROSSHAIR_KEYS } from "@/features/crosshair/store/crosshairKeys";
 import type { ICrosshairStore } from "@/features/crosshair/types";
+import { useFrameActiveId } from "@/features/frame/hooks/useFrameActiveId";
 import { useQuery } from "@tanstack/react-query";
 
 function getCrosshair(frameId: string): Promise<ICrosshairStore> {
@@ -24,7 +24,7 @@ function getCrosshair(frameId: string): Promise<ICrosshairStore> {
 }
 
 export function useCrosshairQuery() {
-  const frameId = useActiveFrameId();
+  const frameId = useFrameActiveId();
   return useQuery({
     queryKey: CROSSHAIR_KEYS.crosshair(frameId),
     queryFn: () => getCrosshair(frameId),

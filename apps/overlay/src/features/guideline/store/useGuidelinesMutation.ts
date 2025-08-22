@@ -1,11 +1,11 @@
-import { useActiveFrameId } from "@/appStore";
+import { useFrameActiveId } from "@/features/frame/hooks/useFrameActiveId";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 import type { IGuidelineStore } from "../types";
 import { GUIDELINES_KEYS } from "./guidelinesKeys";
 
 export function useGuidelinesMutation() {
-  const frameId = useActiveFrameId();
+  const frameId = useFrameActiveId();
   const queryClient = useQueryClient();
 
   return useMutation({

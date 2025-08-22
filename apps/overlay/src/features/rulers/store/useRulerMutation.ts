@@ -1,11 +1,11 @@
-import { useActiveFrameId } from "@/appStore";
+import { useFrameActiveId } from "@/features/frame/hooks/useFrameActiveId";
 import { RULER_KEYS } from "@/features/rulers/store/rulerKeys";
 import type { IRulerStore } from "@/features/rulers/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 
 export function useRulerMutation() {
-  const frameId = useActiveFrameId();
+  const frameId = useFrameActiveId();
   const queryClient = useQueryClient();
 
   return useMutation({

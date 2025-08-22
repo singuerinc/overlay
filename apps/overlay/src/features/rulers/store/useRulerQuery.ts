@@ -1,4 +1,4 @@
-import { useActiveFrameId } from "@/appStore";
+import { useFrameActiveId } from "@/features/frame/hooks/useFrameActiveId";
 import { createRuler } from "@/features/rulers/store/createRuler";
 import { RULER_KEYS } from "@/features/rulers/store/rulerKeys";
 import type { IRulerStore } from "@/features/rulers/types";
@@ -24,7 +24,7 @@ function getRuler(frameId: string): Promise<IRulerStore> {
 }
 
 export function useRulerQuery() {
-  const frameId = useActiveFrameId();
+  const frameId = useFrameActiveId();
   return useQuery({
     queryKey: RULER_KEYS.ruler(frameId),
     queryFn: () => getRuler(frameId),

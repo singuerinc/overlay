@@ -1,4 +1,4 @@
-import { useActiveFrameId } from "@/appStore";
+import { useFrameActiveId } from "@/features/frame/hooks/useFrameActiveId";
 import { createGrid } from "@/features/grid/store/createGrid";
 import { GRID_KEYS } from "@/features/grid/store/gridKeys";
 import type { IGridStore } from "@/features/grid/types";
@@ -22,7 +22,7 @@ function getGrid(frameId: string): Promise<IGridStore> {
 }
 
 export function useGridQuery() {
-  const frameId = useActiveFrameId();
+  const frameId = useFrameActiveId();
   return useQuery({
     queryKey: GRID_KEYS.grid(frameId),
     queryFn: () => getGrid(frameId),
