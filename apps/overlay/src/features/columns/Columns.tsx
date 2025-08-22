@@ -11,7 +11,7 @@ export function Columns() {
 
   return (
     <div
-      className="w-full h-full flex"
+      className="overlay:w-full overlay:h-full overlay:flex"
       style={{
         gap: `${columns.gap}px`,
       }}
@@ -19,7 +19,7 @@ export function Columns() {
       {columnsObj.map((_, index) => (
         <div
           key={index}
-          className="bg-cyan-600/10 w-24 h-full"
+          className="overlay:bg-cyan-600/10 overlay:w-24 overlay:h-full"
           style={{
             width: columns.size,
           }}

@@ -10,16 +10,14 @@ export function CrosshairToggleButton() {
   const setSelectedTool = useSetSelectedTool();
 
   return (
-    <div className="flex gap-x-1">
-      <ToolButton
-        activated={visible}
-        enabled={true}
-        Icon={<IconCrosshair />}
-        onClick={() => {
-          setSelectedTool(!visible ? (crosshair ?? null) : null);
-          toggle();
-        }}
-      />
-    </div>
+    <ToolButton
+      activated={visible}
+      enabled={true}
+      Icon={<IconCrosshair />}
+      onClick={() => {
+        setSelectedTool(!visible ? (crosshair ?? null) : null);
+        toggle();
+      }}
+    />
   );
 }

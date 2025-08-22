@@ -13,68 +13,71 @@ import { useHotkeys } from "react-hotkeys-hook";
 import type { HotkeysEvent } from "react-hotkeys-hook/packages/react-hotkeys-hook/dist/types";
 import { GUIDELINE_VERTICAL, type IGuideline } from "./types";
 
-const variantsGuideline = cva(["pointer-events-auto focus:outline-none"], {
-  variants: {
-    locked: {
-      true: "cursor-not-allowed",
-      false: "cursor-move",
+const variantsGuideline = cva(
+  ["overlay:pointer-events-auto focus:overlay:outline-none"],
+  {
+    variants: {
+      locked: {
+        true: "overlay:cursor-not-allowed",
+        false: "overlay:cursor-move",
+      },
+      isDrag: {
+        true: "",
+        false: "",
+      },
+      isVertical: {
+        true: "overlay:h-screen overlay:w-px overlay:border-l",
+        false: "overlay:w-screen overlay:h-px overlay:border-t",
+      },
+      color: {
+        cyan: "overlay:border-cyan-500/40 hover:overlay:border-cyan-500/100",
+        red: "overlay:border-red-500/40 hover:overlay:border-red-500/100",
+        green: "overlay:border-green-500/40 hover:overlay:border-green-500/100",
+        gray: "overlay:border-neutral-500/40 hover:overlay:border-neutral-500/100",
+      },
+      selected: {
+        true: "",
+        false: "",
+      },
+      style: {
+        solid: "overlay:border-solid",
+        dashed: "overlay:border-dashed",
+      },
     },
-    isDrag: {
-      true: "",
-      false: "",
-    },
-    isVertical: {
-      true: "h-screen w-px border-l",
-      false: "w-screen h-px border-t",
-    },
-    color: {
-      cyan: "border-cyan-500/40 hover:border-cyan-500/100",
-      red: "border-red-500/40 hover:border-red-500/100",
-      green: "border-green-500/40 hover:border-green-500/100",
-      gray: "border-neutral-500/40 hover:border-neutral-500/100",
-    },
-    selected: {
-      true: "",
-      false: "",
-    },
-    style: {
-      solid: "border-solid",
-      dashed: "border-dashed",
-    },
-  },
-  compoundVariants: [
-    {
-      isDrag: true,
-      locked: false,
-      className: "cursor-move",
-    },
-    {
-      selected: true,
+    compoundVariants: [
+      {
+        isDrag: true,
+        locked: false,
+        className: "overlay:cursor-move",
+      },
+      {
+        selected: true,
+        color: "cyan",
+        className: "overlay:border-cyan-500/100",
+      },
+      {
+        selected: true,
+        color: "red",
+        className: "overlay:border-red-500/100",
+      },
+      {
+        selected: true,
+        color: "green",
+        className: "overlay:border-green-500/100",
+      },
+      {
+        selected: true,
+        color: "gray",
+        className: "overlay:border-neutral-500/100",
+      },
+    ],
+    defaultVariants: {
+      isVertical: true,
       color: "cyan",
-      className: "border-cyan-500/100",
+      selected: false,
     },
-    {
-      selected: true,
-      color: "red",
-      className: "border-red-500/100",
-    },
-    {
-      selected: true,
-      color: "green",
-      className: "border-green-500/100",
-    },
-    {
-      selected: true,
-      color: "gray",
-      className: "border-neutral-500/100",
-    },
-  ],
-  defaultVariants: {
-    isVertical: true,
-    color: "cyan",
-    selected: false,
-  },
-});
+  }
+);
 
 export function Guideline({
   id,
@@ -246,7 +249,7 @@ export function Guideline({
       data-overlay-guideline-id={guideline.id}
       data-overlay-tool-type="guideline"
       ref={containerRef}
-      className="absolute top-0 left-0 h-0 w-0 overflow-visible pointer-events-none"
+      className="overlay:absolute overlay:top-0 overlay:left-0 overlay:h-0 overlay:w-0 overlay:overflow-visible overlay:pointer-events-none"
       onMouseDown={handleDown}
       onDoubleClick={handleDoubleClick}
     >

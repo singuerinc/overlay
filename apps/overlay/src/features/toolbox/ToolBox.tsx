@@ -51,14 +51,16 @@ export function ToolBox() {
 
 function ToolBoxGroup({ children }: PropsWithChildren) {
   return (
-    <div className="flex items-center gap-x-1 border border-white p-1 rounded-md">
+    <div className="overlay:flex overlay:items-center overlay:gap-x-1 overlay:border overlay:border-white overlay:p-1 overlay:rounded-md">
       {children}
     </div>
   );
 }
 
 function ToolBoxSeparator() {
-  return <div className="h-6 border-l border-neutral-300" />;
+  return (
+    <div className="overlay:h-6 overlay:border-l overlay:border-neutral-300" />
+  );
 }
 
 function ToolBoxRoot({
@@ -83,17 +85,19 @@ function ToolBoxRoot({
   return (
     <div
       id="toolBox"
-      className="flex items-center bg-neutral-200 p-1 z-50 absolute rounded-sm pointer-events-auto"
+      className="overlay:flex overlay:items-center overlay:bg-neutral-200 overlay:p-1 overlay:z-50 overlay:absolute overlay:rounded-sm overlay:pointer-events-auto"
       ref={setNodeRef}
       style={style}
     >
       <IconGripVertical
         {...listeners}
         // {...attributes}
-        className="cursor-grab active:cursor-grabbing text-neutral-400"
+        className="overlay:cursor-grab overlay:active:cursor-grabbing overlay:text-neutral-400"
         stroke={1}
       />
-      <div className="flex gap-x-1 items-center">{children}</div>
+      <div className="overlay:flex overlay:gap-x-1 overlay:items-center">
+        {children}
+      </div>
     </div>
   );
 }

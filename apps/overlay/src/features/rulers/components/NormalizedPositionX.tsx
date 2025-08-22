@@ -20,18 +20,23 @@ export function NormalizedPositionX() {
       style={{
         transform: `translateX(${normalizedX + (ruler.originX ?? 0)}px)`,
       }}
-      className="absolute w-[75px] select-none text-[9px] h-full whitespace-nowrap tabular-nums"
+      className="overlay:absolute overlay:w-[75px] overlay:select-none overlay:text-[9px] overlay:h-full overlay:whitespace-nowrap overlay:tabular-nums"
     >
-      <div className="absolute flex flex-col w-full h-full">
+      <div className="overlay:absolute overlay:flex overlay:flex-col overlay:w-full overlay:h-full">
         <div
-          className={cn("w-full z-10 h-full overflow-hidden flex", {
-            "items-end": ruler.position === "bottom-right",
-          })}
+          className={cn(
+            "overlay:w-full overlay:z-10 overlay:h-full overlay:overflow-hidden overlay:flex",
+            {
+              "overlay:items-end": ruler.position === "bottom-right",
+            }
+          )}
         >
-          <span className="text-red-600 pl-2">{normalizedX}</span>
+          <span className="overlay:text-red-600 overlay:pl-2">
+            {normalizedX}
+          </span>
         </div>
       </div>
-      <div className="-translate-x-1/2 bg-gradient-to-l from-transparent via-neutral-100 to-transparent h-full" />
+      <div className="overlay:-translate-x-1/2 overlay:bg-gradient-to-l overlay:from-transparent overlay:via-neutral-100 overlay:to-transparent overlay:h-full" />
     </div>
   );
 }
