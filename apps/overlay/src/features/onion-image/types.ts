@@ -6,6 +6,9 @@ export interface IOnionImage extends ITool<"onion-image"> {
   x: number;
   y: number;
   locked: boolean;
+  data: string;
+  width: number;
+  height: number;
 }
 
 export type IOnionImagesStore = {

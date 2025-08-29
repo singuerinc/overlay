@@ -8,6 +8,9 @@ export const createOnionImage = (
   type: ONION_IMAGE,
   x: 0,
   y: 0,
+  data: undefined as unknown as string,
+  width: 0,
+  height: 0,
   locked: false,
   ...props,
 });

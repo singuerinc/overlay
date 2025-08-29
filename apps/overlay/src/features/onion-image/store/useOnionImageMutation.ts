@@ -13,7 +13,19 @@ export function useOnionImageMutation() {
       const onionImage = queryClient.getQueryData<IOnionImage>(
         ONION_IMAGES_KEYS.onionImage(frameId, props.id)
       );
+
       if (onionImage) {
+        // optimistic update
+        queryClient.setQueryData<IOnionImage>(
+          ONION_IMAGES_KEYS.onionImage(frameId, props.id),
+          (prev) => {
+            if (!prev) return prev;
+            return produce(prev, (draftState: IOnionImage) => {
+              Object.assign(draftState, props);
+            });
+          }
+        );
+
         const newOnionImage = produce(onionImage, (draftState: IOnionImage) => {
           Object.assign(draftState, props);
         });
