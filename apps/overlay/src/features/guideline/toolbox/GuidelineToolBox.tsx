@@ -3,11 +3,12 @@ import { GuidelineLockButton } from "@/features/guideline/toolbox/GuidelineLockB
 import { GuidelineRemoveButton } from "@/features/guideline/toolbox/GuidelineRemoveButton";
 import { GuidelineRotateButton } from "@/features/guideline/toolbox/GuidelineRotateButton";
 import type { IGuideline } from "@/features/guideline/types";
+import { isGuideline } from "@/features/guideline/utils/isGuideline";
 import { useSelectedTool } from "@/features/tools/store/tools";
 
 export function GuidelineToolBox() {
   const guideline = useSelectedTool<IGuideline>();
-  if (!guideline) return null;
+  if (!isGuideline(guideline)) return null;
 
   return (
     <>

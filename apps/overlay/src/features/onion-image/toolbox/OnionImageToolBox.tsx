@@ -3,11 +3,12 @@ import { GuidelineLockButton } from "@/features/guideline/toolbox/GuidelineLockB
 import { GuidelineRemoveButton } from "@/features/guideline/toolbox/GuidelineRemoveButton";
 import { GuidelineRotateButton } from "@/features/guideline/toolbox/GuidelineRotateButton";
 import type { IOnionImage } from "@/features/onion-image/types";
+import { isOnionImage } from "@/features/onion-image/utils/isOnionImage";
 import { useSelectedTool } from "@/features/tools/store/tools";
 
 export function OnionImageToolBox() {
   const onionImage = useSelectedTool<IOnionImage>();
-  if (!onionImage) return null;
+  if (!isOnionImage(onionImage)) return null;
 
   return (
     <>

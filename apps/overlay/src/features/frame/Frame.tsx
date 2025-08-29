@@ -23,13 +23,13 @@ export function Frame({ id }: { id: IFrame["id"] }) {
     <FrameContextProvider key={frame.id} activeFrame={frame}>
       <div
         data-overlay-frame-id={frame.id}
-        className={cn("overlay-root o:pointer-events-none o:overflow-hidden")}
+        className={cn("overlay-root o:pointer-events-auto o:overflow-hidden")}
       >
         <OverlayToolBox />
         <ShortcutsObserver />
         <RulerContextProvider>
-          <OnionImages />
           <Columns />
+          <OnionImages />
           <Guidelines />
           <Grid />
           <Ruler />
