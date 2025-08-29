@@ -1,7 +1,6 @@
 import { useGuidelinesToggle } from "@/features/guideline/hooks/useGuidelinesToggle";
 import { useGuidelinesQuery } from "@/features/guideline/store/useGuidelinesQuery";
-import { ToolButton } from "@/ui/ToolButton";
-import { IconTable } from "@tabler/icons-react";
+import { ToolBoxInputBoolean } from "@/features/toolbox/components/ToolBoxInputBoolean";
 
 export function GuidelinesToggleButton() {
   const { data: guidelines } = useGuidelinesQuery();
@@ -9,11 +8,10 @@ export function GuidelinesToggleButton() {
   const { toggle } = useGuidelinesToggle();
 
   return (
-    <ToolButton
-      activated={guidelines?.visible}
-      enabled={true}
-      Icon={<IconTable />}
-      onClick={() => {
+    <ToolBoxInputBoolean
+      label="Visible"
+      defaultValue={guidelines?.visible ?? false}
+      onChange={() => {
         toggle();
       }}
     />

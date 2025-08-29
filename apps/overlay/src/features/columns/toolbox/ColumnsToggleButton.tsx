@@ -1,7 +1,6 @@
 import { useColumnsToggle } from "@/features/columns/hooks/useColumnsToggle";
 import { useColumnsQuery } from "@/features/columns/store/useColumnsQuery";
-import { ToolButton } from "@/ui/ToolButton";
-import { IconColumns3 } from "@tabler/icons-react";
+import { ToolBoxInputBoolean } from "@/features/toolbox/components/ToolBoxInputBoolean";
 
 export function ColumnsToggleButton() {
   const { data: columns } = useColumnsQuery();
@@ -12,11 +11,10 @@ export function ColumnsToggleButton() {
   };
 
   return (
-    <ToolButton
-      activated={columns?.visible}
-      enabled={true}
-      Icon={<IconColumns3 />}
-      onClick={handleClick}
+    <ToolBoxInputBoolean
+      label="Visible"
+      defaultValue={columns?.visible ?? false}
+      onChange={handleClick}
     />
   );
 }

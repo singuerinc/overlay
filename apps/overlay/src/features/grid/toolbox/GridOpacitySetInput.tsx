@@ -1,10 +1,10 @@
-import { useGridSetGap } from "@/features/grid/hooks/useGridSetGap";
+import { useGridSetOpacity } from "@/features/grid/hooks/useGridSetOpacity";
 import { useGridQuery } from "@/features/grid/store/useGridQuery";
 import { ToolBoxInputNumber } from "@/features/toolbox/components/ToolBoxInputNumber";
 
-export function GridGapSetInput() {
+export function GridOpacitySetInput() {
   const { data: grid } = useGridQuery();
-  const { set } = useGridSetGap();
+  const { set } = useGridSetOpacity();
 
   if (!grid) {
     return null;
@@ -12,10 +12,11 @@ export function GridGapSetInput() {
 
   return (
     <ToolBoxInputNumber
-      label="Gap (px)"
-      min={4}
-      step={2}
-      defaultValue={grid.gapX}
+      label="Opacity"
+      min={0}
+      max={1}
+      step={0.1}
+      defaultValue={grid.opacity}
       set={set}
     />
   );

@@ -1,11 +1,11 @@
-import { IconMagnet } from "@tabler/icons-react";
-import { ToolButton } from "../../../ui/ToolButton";
+import { ToolBoxInputBoolean } from "@/features/toolbox/components/ToolBoxInputBoolean";
 
 export function GuidelinesSnapToGridButton() {
   return (
-    <ToolButton
-      Icon={<IconMagnet />}
-      onClick={() => {
+    <ToolBoxInputBoolean
+      defaultValue={false}
+      label="Snap"
+      onChange={() => {
         //
       }}
     />

@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 import * as React from "react";
 
-const variants = cva(["o:rounded-sm o:p-1"], {
+const variants = cva(["o:p-1"], {
   variants: {
     enabled: {
       true: [

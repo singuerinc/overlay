@@ -4,7 +4,6 @@ import { GuidelineRemoveButton } from "@/features/guideline/toolbox/GuidelineRem
 import { GuidelineRotateButton } from "@/features/guideline/toolbox/GuidelineRotateButton";
 import type { IGuideline } from "@/features/guideline/types";
 import { useSelectedTool } from "@/features/tools/store/tools";
-import { IconMinusVertical } from "@tabler/icons-react";
 
 export function GuidelineToolBox() {
   const guideline = useSelectedTool<IGuideline>();
@@ -12,7 +11,6 @@ export function GuidelineToolBox() {
 
   return (
     <>
-      <IconMinusVertical />
       <GuidelineLockButton id={guideline.id} />
       <GuidelineColorButton id={guideline.id} />
       <GuidelineRotateButton id={guideline.id} />

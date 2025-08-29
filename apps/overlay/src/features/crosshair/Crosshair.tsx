@@ -14,15 +14,8 @@ const variantsWrapper = cva(
     "o:justify-center o:items-center",
   ],
   {
-    variants: {
-      locked: {
-        true: "o:cursor-not-allowed",
-        false: "o:cursor-none",
-      },
-    },
-    defaultVariants: {
-      locked: false,
-    },
+    variants: {},
+    defaultVariants: {},
   }
 );
 
@@ -36,7 +29,7 @@ const variantsGuideline = cva(["o:absolute"], {
       cyan: "o:border-cyan-500",
       red: "o:border-red-500",
       green: "o:border-green-500",
-      neutral: "o:border-neutral-200",
+      neutral: "o:border-neutral-400",
     },
   },
   defaultVariants: {
@@ -258,7 +251,11 @@ function MeasureRuler({
         height="100%"
         className="o:absolute o:pointer-events-none"
       >
-        <line ref={measureRef} stroke="rgba(0, 0, 0, 1)" strokeWidth="1" />
+        <line
+          ref={measureRef}
+          stroke="oklch(71.5% 0.143 215.221)"
+          strokeWidth="1"
+        />
         <rect ref={measureSizeRef} fill="rgba(255, 0, 0, 0)" />
       </svg>
       <div
@@ -274,20 +271,22 @@ function MeasureRuler({
       />
       <div
         ref={measureWidthRef}
-        className="o:absolute o:bg-neutral-900/10 o:top-0 o:left-0 o:h-5 o:justify-center o:items-center o:w-6 o:flex o:font-mono o:text-xs o:text-neutral-500 o:select-none"
+        className="o:absolute o:border-red-600 o:border-x o:bg-neutral-900/10 o:top-0 o:left-0 o:h-5 o:justify-center o:items-center o:w-6 o:flex o:font-mono o:text-xs o:text-neutral-500 o:select-none"
       >
+        <div className="o:absolute o:w-full o:h-px o:bg-red-600" />
         <span
           ref={measureWidthTxtRef}
-          className="o:bg-neutral-100 o:px-1"
+          className="o:bg-red-100 o:px-1 o:z-10 o:border o:rounded-sm o:border-red-600 o:text-red-600"
         ></span>
       </div>
       <div
         ref={measureHeightRef}
-        className="o:absolute o:bg-neutral-900/10 o:left-0 o:top-0 o:w-5 o:items-center o:justify-center o:h-6 o:flex o:font-mono o:text-xs o:text-neutral-500 o:select-none"
+        className="o:absolute o:border-red-600 o:border-y o:bg-neutral-900/10 o:left-0 o:top-0 o:w-5 o:items-center o:justify-center o:h-6 o:flex o:font-mono o:text-xs o:text-neutral-500 o:select-none"
       >
+        <div className="o:absolute o:h-full o:w-px o:bg-red-600" />
         <span
           ref={measureHeightTxtRef}
-          className="o:-rotate-90 o:bg-neutral-100 o:px-1"
+          className="o:-rotate-90 o:bg-neutral-100 o:px-1 o:z-10 o:border o:rounded-sm o:border-red-600 o:text-red-600"
         ></span>
       </div>
       <div

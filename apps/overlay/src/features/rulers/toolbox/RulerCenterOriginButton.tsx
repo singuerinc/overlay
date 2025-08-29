@@ -1,5 +1,5 @@
 import { useRulerSetOrigin } from "@/features/rulers/hooks/useRulerSetOrigin";
-import { ToolButton } from "@/ui/ToolButton";
+import { ToolBoxLabeledButton } from "@/features/toolbox/components/ToolBoxLabeledButton";
 import { IconBorderInner } from "@tabler/icons-react";
 
 export function RulerCenterOriginButton() {
@@ -10,10 +10,10 @@ export function RulerCenterOriginButton() {
   };
 
   return (
-    <ToolButton
-      enabled={true}
-      Icon={<IconBorderInner />}
+    <ToolBoxLabeledButton
+      label="50%,50%"
       onClick={handleClick}
+      Icon={<IconBorderInner />}
     />
   );
 }

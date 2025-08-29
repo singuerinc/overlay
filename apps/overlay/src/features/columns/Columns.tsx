@@ -19,7 +19,11 @@ export function Columns() {
       }}
     >
       {columnsObj.map((_, index) => (
-        <div key={index} className="o:bg-cyan-600/20 o:w-full o:h-full"></div>
+        <div
+          key={index}
+          style={{ opacity: columns.opacity }}
+          className="o:bg-cyan-600 o:w-full o:h-full"
+        ></div>
       ))}
     </div>
   );

@@ -1,7 +1,6 @@
 import { useColumnsSetNum } from "@/features/columns/hooks/useColumnsSetNum";
 import { useColumnsQuery } from "@/features/columns/store/useColumnsQuery";
 import { ToolBoxInputNumber } from "@/features/toolbox/components/ToolBoxInputNumber";
-import { IconColumns3Filled } from "@tabler/icons-react";
 
 export function ColumnsSetNumInput() {
   const { data: columns } = useColumnsQuery();
@@ -13,7 +12,7 @@ export function ColumnsSetNumInput() {
 
   return (
     <ToolBoxInputNumber
-      Icon={<IconColumns3Filled size={16} />}
+      label="Columns"
       defaultValue={columns.numColumns}
       set={set}
     />

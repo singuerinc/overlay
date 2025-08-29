@@ -1,7 +1,6 @@
 import { useGridQuery } from "@/features/grid/store/useGridQuery";
 import { useGridToggleCommand } from "@/features/grid/store/useGridToggleCommand";
-import { ToolButton } from "@/ui/ToolButton";
-import { IconGrid3x3 } from "@tabler/icons-react";
+import { ToolBoxInputBoolean } from "@/features/toolbox/components/ToolBoxInputBoolean";
 
 export function GridToggleButton() {
   const { data: grid } = useGridQuery();
@@ -14,11 +13,10 @@ export function GridToggleButton() {
   };
 
   return (
-    <ToolButton
-      activated={grid?.visible}
-      enabled={true}
-      Icon={<IconGrid3x3 />}
-      onClick={handleClick}
+    <ToolBoxInputBoolean
+      label="Visible"
+      defaultValue={grid?.visible ?? false}
+      onChange={handleClick}
     />
   );
 }

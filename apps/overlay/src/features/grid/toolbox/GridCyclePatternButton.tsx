@@ -1,6 +1,6 @@
 import { useGridCyclePattern } from "@/features/grid/hooks/useGridCyclePattern";
 import { useGridQuery } from "@/features/grid/store/useGridQuery";
-import { ToolButton } from "@/ui/ToolButton";
+import { ToolBoxLabeledButton } from "@/features/toolbox/components/ToolBoxLabeledButton";
 import { IconGrid4x4, IconGridDots } from "@tabler/icons-react";
 
 export function GridCyclePatternButton() {
@@ -12,8 +12,8 @@ export function GridCyclePatternButton() {
   };
 
   return (
-    <ToolButton
-      enabled={true}
+    <ToolBoxLabeledButton
+      label="Pattern"
       Icon={grid?.pattern === "dots" ? <IconGridDots /> : <IconGrid4x4 />}
       onClick={handleClick}
     />

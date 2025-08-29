@@ -1,12 +1,14 @@
+import { cn } from "@/ui/cn";
+
 export function ToolBoxInputNumber({
-  Icon,
+  label,
   defaultValue,
   set,
   min,
   max,
   step,
 }: {
-  Icon: React.ReactNode;
+  label: string;
   defaultValue: number;
   set: (value: number) => void;
   min?: number;
@@ -14,15 +16,16 @@ export function ToolBoxInputNumber({
   step?: number;
 }) {
   return (
-    <div className="o:flex o:text-neutral-600 o:rounded-md o:gap-x-1 o:px-2 o:py-0.5 o:items-center">
-      {Icon}
+    <div className="o:flex o:flex-col o:group o:rounded-md o:gap-1">
+      <span className="o:text-xs o:font-semibold">{label}</span>
       <input
         type="number"
         min={min ?? 0}
         max={max ?? undefined}
         step={step ?? 1}
-        className="overlay-step-num o:border-0 o:outline-0 o:text-center"
-        style={{ width: `${String(defaultValue).length * 16}px` }}
+        className={cn(
+          "overlay-step-num o:border-b-2 o:text-neutral-400 o:border-neutral-400 o:focus:text-neutral-900 o:focus:border-neutral-900 o:pb-1 o:outline-0 o:text-left o:w-16"
+        )}
         defaultValue={defaultValue}
         onChange={(e) => set(Number(e.target.value))}
       />

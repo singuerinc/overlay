@@ -1,8 +1,7 @@
 import { useCrosshairToggle } from "@/features/crosshair/hooks/useCrosshairToggle";
 import { useCrosshairQuery } from "@/features/crosshair/store/useCrosshairQuery";
+import { ToolBoxInputBoolean } from "@/features/toolbox/components/ToolBoxInputBoolean";
 import { useSetSelectedTool } from "@/features/tools/store/tools";
-import { IconCrosshair } from "@tabler/icons-react";
-import { ToolButton } from "../../../ui/ToolButton";
 
 export function CrosshairToggleButton() {
   const { data: crosshair } = useCrosshairQuery();
@@ -10,12 +9,11 @@ export function CrosshairToggleButton() {
   const setSelectedTool = useSetSelectedTool();
 
   return (
-    <ToolButton
-      activated={visible}
-      enabled={true}
-      Icon={<IconCrosshair />}
-      onClick={() => {
-        setSelectedTool(!visible ? (crosshair ?? null) : null);
+    <ToolBoxInputBoolean
+      label="Visible"
+      defaultValue={visible ?? false}
+      onChange={(visible: boolean) => {
+        setSelectedTool(visible ? (crosshair ?? null) : null);
         toggle();
       }}
     />
