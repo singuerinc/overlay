@@ -1,5 +1,5 @@
+import { OnionImage } from "@/features/onion-image/components/OnionImage";
 import { useOnionImageMove } from "@/features/onion-image/hooks/useOnionImageMove";
-import { OnionImage } from "@/features/onion-image/OnionImage";
 import { useOnionImagesQuery } from "@/features/onion-image/store/useOnionImagesQuery";
 import { DndContext, type DragEndEvent } from "@dnd-kit/core";
 import { useCallback } from "react";

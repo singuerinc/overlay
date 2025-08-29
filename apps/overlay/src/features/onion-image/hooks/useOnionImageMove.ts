@@ -4,11 +4,8 @@ import type { IOnionImage } from "@/features/onion-image/types";
 export function useOnionImageMove() {
   const cmd = useOnionImageMoveCommand();
   return {
-    move: (
-      onionImageId: IOnionImage["id"],
-      { x, y }: { x: number; y: number }
-    ) => {
-      cmd.execute(onionImageId, { x, y });
+    move: (id: IOnionImage["id"], { x, y }: { x: number; y: number }) => {
+      cmd.execute(id, { x, y });
     },
   };
 }

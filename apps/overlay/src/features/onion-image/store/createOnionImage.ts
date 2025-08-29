@@ -11,6 +11,8 @@ export const createOnionImage = (
   data: undefined as unknown as string,
   width: 0,
   height: 0,
+  filter: "none",
+  opacity: 0.5,
   locked: false,
   ...props,
 });

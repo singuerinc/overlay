@@ -23,15 +23,6 @@ export function useOnionImageRemoveMutation() {
         }
       );
 
-      queryClient.setQueryData(
-        ONION_IMAGES_KEYS.onionImages(frameId),
-        onionImages
-      );
-      queryClient.setQueryData(
-        ONION_IMAGES_KEYS.onionImage(frameId, onionImage.id),
-        undefined
-      );
-
       localStorage.setItem(
         ONION_IMAGES_KEYS.onionImages(frameId).join("-"),
         JSON.stringify(onionImages)
@@ -39,6 +30,15 @@ export function useOnionImageRemoveMutation() {
 
       localStorage.removeItem(
         ONION_IMAGES_KEYS.onionImage(frameId, onionImage.id).join("-")
+      );
+
+      queryClient.setQueryData(
+        ONION_IMAGES_KEYS.onionImages(frameId),
+        onionImages
+      );
+      queryClient.setQueryData(
+        ONION_IMAGES_KEYS.onionImage(frameId, onionImage.id),
+        undefined
       );
 
       return onionImages;
