@@ -41,14 +41,14 @@ export function ToolButton({
 }: {
   activated?: boolean;
   enabled?: boolean;
-  onClick: () => void;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
   Icon: React.ReactNode;
 }) {
   return (
     <button
       disabled={!enabled}
       className={variants({ activated, enabled })}
-      onClick={onClick}
+      onMouseDown={onClick}
     >
       {Icon}
     </button>

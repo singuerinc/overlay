@@ -31,7 +31,7 @@ const variantsGuideline = cva(["o:pointer-events-auto focus:o:outline-none"], {
       cyan: "o:border-cyan-500/40 hover:o:border-cyan-500/100",
       red: "o:border-red-500/40 hover:o:border-red-500/100",
       green: "o:border-green-500/40 hover:o:border-green-500/100",
-      gray: "o:border-neutral-500/40 hover:o:border-neutral-500/100",
+      neutral: "o:border-neutral-500/40 hover:o:border-neutral-500/100",
     },
     selected: {
       true: "",
@@ -65,7 +65,7 @@ const variantsGuideline = cva(["o:pointer-events-auto focus:o:outline-none"], {
     },
     {
       selected: true,
-      color: "gray",
+      color: "neutral",
       className: "o:border-neutral-500/100",
     },
   ],
