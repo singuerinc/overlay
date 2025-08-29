@@ -5,6 +5,7 @@ import { FrameContextProvider } from "@/features/frame/store/frameStore";
 import type { IFrame } from "@/features/frame/types";
 import { Grid } from "@/features/grid/Grid";
 import { Guidelines } from "@/features/guideline/Guidelines";
+import { OnionImages } from "@/features/onion-image/OnionImages";
 import { Ruler } from "@/features/rulers/Ruler";
 import { RulerContextProvider } from "@/features/rulers/store/rulerStore";
 import { ShortcutsObserver } from "@/features/shortcuts/ShortcutsObserver";
@@ -27,6 +28,7 @@ export function Frame({ id }: { id: IFrame["id"] }) {
         <OverlayToolBox />
         <ShortcutsObserver />
         <RulerContextProvider>
+          <OnionImages />
           <Columns />
           <Guidelines />
           <Grid />
