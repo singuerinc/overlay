@@ -3,7 +3,7 @@ import { useCrosshairQuery } from "@/features/crosshair/store/useCrosshairQuery"
 import { useRulerSetPosition } from "@/features/rulers/store/rulerStore";
 import { useNormalizedPosition } from "@/features/rulers/useNormalizedPosition";
 import { cva } from "class-variance-authority";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const variantsWrapper = cva(
   [
@@ -36,6 +36,7 @@ const variantsGuideline = cva(["o:absolute"], {
       cyan: "o:border-cyan-500",
       red: "o:border-red-500",
       green: "o:border-green-500",
+      neutral: "o:border-neutral-200",
     },
   },
   defaultVariants: {
@@ -48,20 +49,35 @@ export function Crosshair() {
   const { data: crosshair } = useCrosshairQuery();
   const { calculate: calculateNormalizePosition } = useNormalizedPosition();
   const setRulerPosition = useRulerSetPosition();
-  const [dragCoords, setDragCoords] = useState<{ x: number; y: number } | null>(
-    null
-  );
+  const [isDrag, setIsDrag] = useState(false);
+  const [dragRect, setDragRect] = useState<{
+    origin: { x: number; y: number };
+    point: { x: number; y: number };
+    width: number;
+    height: number;
+  } | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const measureRef = useRef<SVGLineElement>(null);
-  const measureSizeTxtRef = useRef<HTMLDivElement>(null);
-  const measureSizeRef = useRef<SVGRectElement>(null);
+
   const hNode = useRef<HTMLDivElement>(null);
   const vNode = useRef<HTMLDivElement>(null);
 
-  const handleMove = useCallback(
+  const handleMouseDown = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       if (containerRef.current) {
+        setIsDrag(true);
+        const rect = containerRef.current.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        setDragRect({ origin: { x, y }, point: { x, y }, width: 0, height: 0 });
+      }
+    },
+    []
+  );
+
+  const handleMove = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (containerRef.current && dragRect) {
         const rect = containerRef.current.getBoundingClientRect();
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
@@ -72,113 +88,40 @@ export function Crosshair() {
         const [normalizedX, normalizedY] = calculateNormalizePosition(x, y);
         setRulerPosition(normalizedX, normalizedY);
 
-        if (
-          dragCoords &&
-          containerRef.current &&
-          measureRef.current &&
-          measureSizeRef.current &&
-          measureSizeTxtRef.current
-        ) {
-          const rectWidth = Math.abs(x - (dragCoords?.x ?? 0));
-          const rectHeight = Math.abs(y - (dragCoords?.y ?? 0));
+        const rectWidth = Math.abs(x - (dragRect.origin.x ?? 0));
+        const rectHeight = Math.abs(y - (dragRect.origin.y ?? 0));
 
-          // measureRef.current.style.setProperty("display", "block");
-          measureRef.current.setAttribute("x2", String(x));
-          measureRef.current.setAttribute("y2", String(y));
-          if (dragCoords.x > x) {
-            measureSizeRef.current.setAttribute("x", String(x));
-          }
-          if (dragCoords.y > y) {
-            measureSizeRef.current.setAttribute("y", String(y));
-          }
-          measureSizeRef.current.setAttribute("width", String(rectWidth));
-          measureSizeRef.current.setAttribute("height", String(rectHeight));
-          measureSizeTxtRef.current.style.setProperty(
-            "transform",
-            `translate(${x + 4}px, ${y + 4}px)`
-          );
-          measureSizeTxtRef.current.textContent = `{x: ${x}, y: ${y}, width: ${rectWidth}, height: ${rectHeight}}`;
-
-          // measureRef.current.style.setProperty("width", `${rectWidth}px`);
-          // measureRef.current.style.setProperty("height", `${rectHeight}px`);
-        }
+        setDragRect({
+          origin: dragRect.origin,
+          point: { x, y },
+          width: rectWidth,
+          height: rectHeight,
+        });
       }
     },
-    [calculateNormalizePosition, dragCoords, setRulerPosition]
-  );
-
-  // const handleClick = useCallback(
-  //   (event: React.MouseEvent<HTMLDivElement>) => {
-  //     const mouseX = event.clientX || 0;
-  //     const mouseY = event.clientY || 0;
-
-  //     const [x, y] = calculateNormalizePosition(mouseX, mouseY);
-  //     navigator.clipboard.writeText(`{x: ${x}, y: ${y}}`);
-  //     toast(`{x: ${x}, y: ${y}}`);
-  //   },
-  //   [calculateNormalizePosition]
-  // );
-
-  const handleMouseDown = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      if (
-        containerRef.current &&
-        measureRef.current &&
-        measureSizeRef.current
-      ) {
-        const rect = containerRef.current.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-
-        // measureRef.current.style.setProperty("display", "none");
-        // measureRef.current.style.setProperty("width", "1");
-        // measureRef.current.style.setProperty("height", "1");
-
-        setDragCoords({ x, y });
-        measureRef.current.setAttribute("x1", String(x));
-        measureRef.current.setAttribute("y1", String(y));
-        measureSizeRef.current.setAttribute("width", "0");
-        measureSizeRef.current.setAttribute("height", "0");
-        measureSizeRef.current.setAttribute("x", String(x));
-        measureSizeRef.current.setAttribute("y", String(y));
-        // measureRef.current.style.setProperty(
-        //   "transform",
-        //   `translateX(${x}px) translateY(${y}px)`
-        // );
-      }
-    },
-    []
+    [calculateNormalizePosition, dragRect, setRulerPosition]
   );
 
   const handleMouseUp = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
-      if (
-        containerRef.current &&
-        measureRef.current &&
-        measureSizeRef.current
-      ) {
+      setIsDrag(false);
+      if (containerRef.current && dragRect) {
         const rect = containerRef.current.getBoundingClientRect();
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
 
-        const rectWidth = Math.abs(x - (dragCoords?.x ?? 0));
-        const rectHeight = Math.abs(y - (dragCoords?.y ?? 0));
+        const rectWidth = Math.abs(x - (dragRect.origin.x ?? 0));
+        const rectHeight = Math.abs(y - (dragRect.origin.y ?? 0));
 
-        if (rectWidth === 0 && rectHeight === 0) {
-          // measureRef.current.style.setProperty("display", "none");
-        } else {
-          measureRef.current.setAttribute("x2", String(x));
-          measureRef.current.setAttribute("y2", String(y));
-          // measureRef.current.style.setProperty("width", `${rectWidth}px`);
-          // measureRef.current.style.setProperty("height", `${rectHeight}px`);
-          measureSizeRef.current.setAttribute("width", String(rectWidth));
-          measureSizeRef.current.setAttribute("height", String(rectHeight));
-          // measureSizeRef.current.textContent = `{x: ${x}, y: ${y}, width: ${rectWidth}, height: ${rectHeight}}`;
-        }
+        setDragRect({
+          origin: dragRect.origin,
+          point: { x, y },
+          width: rectWidth,
+          height: rectHeight,
+        });
       }
-      setDragCoords(null);
     },
-    [dragCoords?.x, dragCoords?.y]
+    [dragRect]
   );
 
   if (!crosshair || !crosshair.visible) {
@@ -200,19 +143,8 @@ export function Crosshair() {
       onMouseUp={handleMouseUp}
       onMouseMove={handleMove}
     >
-      <div
-        ref={measureSizeTxtRef}
-        className="o:absolute o:bg-neutral-950 o:text-neutral-50 o:select-none"
-      ></div>
-      <svg
-        width="100%"
-        height="100%"
-        viewBox="0 0 100% 100%"
-        className="o:absolute o:pointer-events-none"
-      >
-        <line ref={measureRef} stroke="rgba(255, 0, 0, 1)" stroke-width="1" />
-        <rect ref={measureSizeRef} fill="rgba(255, 0, 0, 0.2)" />
-      </svg>
+      {isDrag && <MeasureRuler dragRect={dragRect} />}
+
       <div
         ref={vNode}
         className={variantsGuideline({ ...variantsConfig, isVertical: true })}
@@ -225,5 +157,147 @@ export function Crosshair() {
         })}
       />
     </div>
+  );
+}
+
+function MeasureRuler({
+  dragRect,
+}: {
+  dragRect: {
+    origin: { x: number; y: number };
+    point: { x: number; y: number };
+    width: number;
+    height: number;
+  } | null;
+}) {
+  const vNodeOrigin = useRef<HTMLDivElement>(null);
+  const hNodeOrigin = useRef<HTMLDivElement>(null);
+  const measureRef = useRef<SVGLineElement>(null);
+  const measureWidthRef = useRef<HTMLDivElement>(null);
+  const measureWidthTxtRef = useRef<HTMLSpanElement>(null);
+  const measureHeightRef = useRef<HTMLDivElement>(null);
+  const measureHeightTxtRef = useRef<HTMLSpanElement>(null);
+  const measureOriginTxtRef = useRef<HTMLDivElement>(null);
+  const measureCoordsTxtRef = useRef<HTMLDivElement>(null);
+  const measureSizeRef = useRef<SVGRectElement>(null);
+
+  useEffect(() => {
+    if (
+      hNodeOrigin.current &&
+      vNodeOrigin.current &&
+      measureRef.current &&
+      measureSizeRef.current &&
+      measureWidthRef.current &&
+      measureWidthTxtRef.current &&
+      measureHeightRef.current &&
+      measureHeightTxtRef.current &&
+      measureOriginTxtRef.current &&
+      measureCoordsTxtRef.current &&
+      dragRect
+    ) {
+      hNodeOrigin.current.style.setProperty(
+        "transform",
+        `translateY(${dragRect.origin.y}px)`
+      );
+      vNodeOrigin.current.style.setProperty(
+        "transform",
+        `translateX(${dragRect.origin.x}px)`
+      );
+
+      measureOriginTxtRef.current.style.setProperty(
+        "transform",
+        `translate(${dragRect.origin.x + 2}px, ${dragRect.origin.y - 18}px)`
+      );
+      measureCoordsTxtRef.current.style.setProperty(
+        "transform",
+        `translate(${dragRect.point.x + 4}px, ${dragRect.point.y + 4}px)`
+      );
+
+      measureRef.current.setAttribute("x1", String(dragRect.origin.x));
+      measureRef.current.setAttribute("y1", String(dragRect.origin.y));
+
+      measureSizeRef.current.setAttribute("x", String(dragRect.origin.x));
+      measureSizeRef.current.setAttribute("y", String(dragRect.origin.y));
+
+      measureRef.current.setAttribute("x2", String(dragRect.point.x));
+      measureRef.current.setAttribute("y2", String(dragRect.point.y));
+      if (dragRect.origin.x > dragRect.point.x) {
+        measureSizeRef.current.setAttribute("x", String(dragRect.point.x));
+      }
+      if (dragRect.origin.y > dragRect.point.y) {
+        measureSizeRef.current.setAttribute("y", String(dragRect.point.y));
+      }
+      measureSizeRef.current.setAttribute("width", String(dragRect.width));
+      measureSizeRef.current.setAttribute("height", String(dragRect.height));
+      measureWidthRef.current.style.setProperty(
+        "transform",
+        `translate(${Math.min(dragRect.point.x, dragRect.origin.x)}px, 0)`
+      );
+      measureWidthRef.current.style.setProperty("width", `${dragRect.width}px`);
+
+      measureHeightRef.current.style.setProperty(
+        "transform",
+        `translate(0, ${Math.min(dragRect.point.y, dragRect.origin.y)}px)`
+      );
+      measureHeightRef.current.style.setProperty(
+        "height",
+        `${dragRect.height}px`
+      );
+
+      measureWidthTxtRef.current.textContent = `${dragRect.width}px`;
+      measureHeightTxtRef.current.textContent = `${dragRect.height}px`;
+      measureOriginTxtRef.current.textContent = `{x1: ${dragRect.origin.x}, y1: ${dragRect.origin.y}}`;
+      measureCoordsTxtRef.current.textContent = `{x2: ${dragRect.point.x}, y2: ${dragRect.point.y}}`;
+    }
+  }, [dragRect]);
+
+  return (
+    <>
+      <svg
+        width="100%"
+        height="100%"
+        className="o:absolute o:pointer-events-none"
+      >
+        <line ref={measureRef} stroke="rgba(0, 0, 0, 1)" strokeWidth="1" />
+        <rect ref={measureSizeRef} fill="rgba(255, 0, 0, 0)" />
+      </svg>
+      <div
+        ref={vNodeOrigin}
+        className={variantsGuideline({ color: "neutral", isVertical: true })}
+      />
+      <div
+        ref={hNodeOrigin}
+        className={variantsGuideline({
+          color: "neutral",
+          isVertical: false,
+        })}
+      />
+      <div
+        ref={measureWidthRef}
+        className="o:absolute o:bg-neutral-900/10 o:top-0 o:left-0 o:h-5 o:justify-center o:items-center o:w-6 o:flex o:font-mono o:text-xs o:text-neutral-500 o:select-none"
+      >
+        <span
+          ref={measureWidthTxtRef}
+          className="o:bg-neutral-100 o:px-1"
+        ></span>
+      </div>
+      <div
+        ref={measureHeightRef}
+        className="o:absolute o:bg-neutral-900/10 o:left-0 o:top-0 o:w-5 o:items-center o:justify-center o:h-6 o:flex o:font-mono o:text-xs o:text-neutral-500 o:select-none"
+      >
+        <span
+          ref={measureHeightTxtRef}
+          className="o:-rotate-90 o:bg-neutral-100 o:px-1"
+        ></span>
+      </div>
+      <div
+        ref={measureOriginTxtRef}
+        className="o:absolute o:bg-neutral-950/30 o:font-mono o:text-xs o:text-neutral-50 o:select-none"
+      />
+      <div
+        ref={measureCoordsTxtRef}
+        className="o:absolute o:bg-neutral-950/30 o:font-mono o:text-xs o:text-neutral-50 o:select-none"
+      />
+    </>
   );
 }
