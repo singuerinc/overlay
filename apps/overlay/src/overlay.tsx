@@ -3,7 +3,6 @@ import { Workspace } from "@/features/workspace/Workspace";
 import { DocumentObserver } from "@/ui/DocumentObserver";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { Toaster } from "sonner";
 import "./index.css";
 
 const queryClient = new QueryClient();
@@ -23,7 +22,6 @@ export function Overlay() {
         <KeyboardObserver />
         <Workspace />
       </QueryClientProvider>
-      <Toaster />
     </div>
   );
 }

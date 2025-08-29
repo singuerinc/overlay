@@ -13,7 +13,6 @@ import { cn } from "@/ui/cn";
 
 export function Frame({ id }: { id: IFrame["id"] }) {
   const { data: frame } = useFrameQueryById({ id });
-  // const setFrameActive = useFrameSetActive();
 
   if (!frame) {
     return null;
@@ -23,20 +22,10 @@ export function Frame({ id }: { id: IFrame["id"] }) {
     <FrameContextProvider key={frame.id} activeFrame={frame}>
       <div
         data-overlay-frame-id={frame.id}
-        // onClick={() => setFrameActive(frame)}
         className={cn("overlay-root o:pointer-events-none o:overflow-hidden")}
-        style={
-          {
-            // width: frame.width,
-            // height: frame.height,
-            // top: `${frame.y}px`,
-            // left: `${frame.x}px`,
-          }
-        }
       >
         <ToolBox />
         <ShortcutsObserver />
-        {/* <CommandMenu /> */}
         <RulerContextProvider>
           <Ruler />
           <Columns />
