@@ -7,7 +7,7 @@ export function createColumns(
     id: "columns",
     type: "columns",
     visible: true,
-    size: props?.size ?? "100%",
+    size: props?.size ?? "920px",
     gap: props?.gap ?? 4,
     numColumns: props?.numColumns ?? 12,
   };

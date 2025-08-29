@@ -11,19 +11,15 @@ export function Columns() {
 
   return (
     <div
-      className="o:w-full o:h-full o:flex"
+      className="o:h-full o:flex o:mx-auto"
       style={{
+        width: columns.size,
+        maxWidth: "100%",
         gap: `${columns.gap}px`,
       }}
     >
       {columnsObj.map((_, index) => (
-        <div
-          key={index}
-          className="o:bg-cyan-600/20 o:w-24 o:h-full"
-          style={{
-            width: columns.size,
-          }}
-        ></div>
+        <div key={index} className="o:bg-cyan-600/20 o:w-full o:h-full"></div>
       ))}
     </div>
   );

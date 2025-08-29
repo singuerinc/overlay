@@ -21,7 +21,8 @@ export function ToolBoxInputNumber({
         min={min ?? 0}
         max={max ?? undefined}
         step={step ?? 1}
-        className="overlay-step-num o:border-0 o:outline-0 o:w-6"
+        className="overlay-step-num o:border-0 o:outline-0 o:text-center"
+        style={{ width: `${String(defaultValue).length * 16}px` }}
         defaultValue={defaultValue}
         onChange={(e) => set(Number(e.target.value))}
       />

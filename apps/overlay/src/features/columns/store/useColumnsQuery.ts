@@ -11,7 +11,7 @@ function getColumns(frameId: string): Promise<IColumnsStore> {
     );
 
     if (maybeColumns === null) {
-      const columns = createColumns();
+      const columns = createColumns({ size: "1200px" });
       localStorage.setItem(
         COLUMNS_KEYS.verticalColumns(frameId).join("-"),
         JSON.stringify(columns)

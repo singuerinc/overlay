@@ -13,7 +13,7 @@ export function GridGapSetInput() {
 
   return (
     <ToolBoxInputNumber
-      min={2}
+      min={4}
       step={2}
       Icon={<IconSpacingHorizontal size={16} />}
       defaultValue={grid.gapX}

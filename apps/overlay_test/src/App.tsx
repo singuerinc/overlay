@@ -1,5 +1,5 @@
-import { Overlay } from "overlay";
-import "overlay/overlay.css";
+import { Overlay } from "@singuerinc/overlay";
+import "@singuerinc/overlay/overlay.css";
 import "./App.css";
 
 function App() {

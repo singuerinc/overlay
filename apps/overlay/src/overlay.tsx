@@ -9,14 +9,17 @@ const queryClient = new QueryClient();
 
 export function Overlay() {
   useEffect(() => {
-    document.body.classList.add("overlay-anchor");
+    const hasAnchorEl = document.querySelector(".overlay-anchor") !== null;
+    if (!hasAnchorEl) {
+      document.body.classList.add("overlay-anchor");
+    }
     return () => {
       document.body.classList.remove("overlay-anchor");
     };
   }, []);
 
   return (
-    <div id="overlay-app" className="pointer-events-none">
+    <div id="overlay-app" className="o:pointer-events-none">
       <QueryClientProvider client={queryClient}>
         <DocumentObserver />
         <KeyboardObserver />

@@ -1,14 +1,26 @@
 {
   "name": "@singuerinc/overlay",
+  "version": "0.0.5",
   "private": false,
-  "version": "0.0.1",
-  "type": "module",
-  "files": [
-    "dist"
+  "description": "Set of tools for devs and designers to measure, align and overlay on-screen graphics and layouts.",
+  "keywords": [
+    "overlay",
+    "align",
+    "grid",
+    "ruler",
+    "layout"
   ],
-  "types": "./dist/overlay.es.d.ts",
-  "main": "./dist/overlay.umd.js",
-  "module": "./dist/overlay.es.js",
+  "homepage": "https://github.com/singuerinc/overlay#readme",
+  "bugs": {
+    "url": "https://github.com/singuerinc/overlay/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singuerinc/overlay.git"
+  },
+  "license": "ISC",
+  "author": "@singuerinc",
+  "type": "module",
   "exports": {
     ".": {
       "import": "./dist/overlay.es.js",
@@ -19,6 +31,11 @@
       "require": "./dist/overlay.css"
     }
   },
+  "main": "./dist/overlay.umd.js",
+  "types": "./dist/overlay.es.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -30,10 +47,6 @@
     "react-hotkeys-hook": "5.1.0",
     "tailwindcss": "4.1.11",
     "usehooks-ts": "3.1.1"
-  },
-  "peerDependencies": {
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
@@ -49,5 +62,10 @@
     "vite": "^7.1.3",
     "vite-plugin-dts": "4.5.4"
   },
+  "peerDependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "module": "./dist/overlay.es.js",
   "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad"
 }

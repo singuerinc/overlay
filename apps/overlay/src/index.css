@@ -1,26 +1,20 @@
 @import "tailwindcss" prefix(o);
 
-body {
-  height: 100vh;
+.overlay-anchor {
+  anchor-name: --overlay-anchor;
 }
 
-:root {
+.overlay-root {
   color-scheme: light;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --font-sans:
+  /* --font-sans:
     "Inter", --apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */
 
-.overlay-anchor {
-  anchor-name: --overlay-anchor;
-}
-
-.overlay-root {
   position: fixed;
   position-anchor: --overlay-anchor;
   top: anchor(top);
