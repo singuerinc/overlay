@@ -1,6 +1,5 @@
 import { useRulerToggle } from "@/features/rulers/hooks/useRulerToggle";
-import { ToolButton } from "@/ui/ToolButton";
-import { IconRuler } from "@tabler/icons-react";
+import { ToolBoxInputBoolean } from "@/features/toolbox/components/ToolBoxInputBoolean";
 
 export function RulerToggleButton() {
   const { visible, toggle } = useRulerToggle();
@@ -10,11 +9,10 @@ export function RulerToggleButton() {
   };
 
   return (
-    <ToolButton
-      activated={visible ?? false}
-      enabled={true}
-      Icon={<IconRuler />}
-      onClick={handleClick}
+    <ToolBoxInputBoolean
+      label="Visible"
+      defaultValue={visible ?? false}
+      onChange={handleClick}
     />
   );
 }

@@ -1,5 +1,5 @@
 import { useRulerSetOrigin } from "@/features/rulers/hooks/useRulerSetOrigin";
-import { ToolButton } from "@/ui/ToolButton";
+import { ToolBoxLabeledButton } from "@/features/toolbox/components/ToolBoxLabeledButton";
 import { IconBorderCornerSquare } from "@tabler/icons-react";
 
 export function RulerTopLeftOriginButton() {
@@ -10,10 +10,10 @@ export function RulerTopLeftOriginButton() {
   };
 
   return (
-    <ToolButton
-      enabled={true}
-      Icon={<IconBorderCornerSquare />}
+    <ToolBoxLabeledButton
+      label="0,0"
       onClick={handleClick}
+      Icon={<IconBorderCornerSquare />}
     />
   );
 }

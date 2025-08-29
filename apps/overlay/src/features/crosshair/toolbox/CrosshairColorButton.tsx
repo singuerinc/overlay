@@ -4,8 +4,8 @@ import {
 } from "@/features/crosshair/CrosshairColor";
 import { useCrosshairColorCommand } from "@/features/crosshair/store/useCrosshairColorCommand";
 import { useCrosshairQuery } from "@/features/crosshair/store/useCrosshairQuery";
+import { ToolBoxLabeledButton } from "@/features/toolbox/components/ToolBoxLabeledButton";
 import { cn } from "@/ui/cn";
-import { ToolButton } from "@/ui/ToolButton";
 import { IconCircle } from "@tabler/icons-react";
 import { useCallback } from "react";
 
@@ -36,8 +36,8 @@ export function CrosshairColorButton() {
   }
 
   return (
-    <ToolButton
-      enabled={true}
+    <ToolBoxLabeledButton
+      label="Color"
       Icon={
         <IconCircle className={cn(fillByColor[color], "o:text-transparent")} />
       }

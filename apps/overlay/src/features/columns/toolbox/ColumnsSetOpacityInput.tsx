@@ -1,10 +1,10 @@
-import { useColumnsSetSize } from "@/features/columns/hooks/useColumnsSetSize";
+import { useColumnsSetOpacity } from "@/features/columns/hooks/useColumnsSetOpacity";
 import { useColumnsQuery } from "@/features/columns/store/useColumnsQuery";
 import { ToolBoxInputNumber } from "@/features/toolbox/components/ToolBoxInputNumber";
 
-export function ColumnsSizeSetInput() {
+export function ColumnsSetOpacityInput() {
   const { data: columns } = useColumnsQuery();
-  const { set } = useColumnsSetSize();
+  const { set } = useColumnsSetOpacity();
 
   if (!columns) {
     return null;
@@ -12,9 +12,12 @@ export function ColumnsSizeSetInput() {
 
   return (
     <ToolBoxInputNumber
-      label="Size (px)"
-      defaultValue={Number.parseInt(columns.size, 10)}
-      set={(num: number) => set(`${num}px`)}
+      label="Opacity"
+      max={1}
+      min={0}
+      step={0.1}
+      defaultValue={columns.opacity}
+      set={set}
     />
   );
 }

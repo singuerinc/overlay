@@ -8,7 +8,7 @@ import { Guidelines } from "@/features/guideline/Guidelines";
 import { Ruler } from "@/features/rulers/Ruler";
 import { RulerContextProvider } from "@/features/rulers/store/rulerStore";
 import { ShortcutsObserver } from "@/features/shortcuts/ShortcutsObserver";
-import { ToolBox } from "@/features/toolbox/ToolBox";
+import { OverlayToolBox } from "@/features/toolbox/OverlayToolBox";
 import { cn } from "@/ui/cn";
 
 export function Frame({ id }: { id: IFrame["id"] }) {
@@ -24,14 +24,14 @@ export function Frame({ id }: { id: IFrame["id"] }) {
         data-overlay-frame-id={frame.id}
         className={cn("overlay-root o:pointer-events-none o:overflow-hidden")}
       >
-        <ToolBox />
+        <OverlayToolBox />
         <ShortcutsObserver />
         <RulerContextProvider>
-          <Ruler />
           <Columns />
           <Guidelines />
-          <Crosshair />
           <Grid />
+          <Ruler />
+          <Crosshair />
         </RulerContextProvider>
       </div>
     </FrameContextProvider>

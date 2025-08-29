@@ -1,18 +1,19 @@
-import { useGridQuery } from "@/features/grid/store/useGridQuery";
+import { GridColorButton } from "@/features/grid/toolbox/GridColorButton";
 import { GridCyclePatternButton } from "@/features/grid/toolbox/GridCyclePatternButton";
 import { GridGapSetInput } from "@/features/grid/toolbox/GridGapSetInput";
+import { GridOpacitySetInput } from "@/features/grid/toolbox/GridOpacitySetInput";
 import { GridToggleButton } from "@/features/grid/toolbox/GridToggleButton";
+import { ToolBoxTabGrid } from "@/features/toolbox/components/ToolBox";
 
 export function GridToolBox() {
-  const { data: grid } = useGridQuery();
-
-  const isVisible = grid?.visible ?? false;
-
   return (
-    <>
+    <ToolBoxTabGrid>
       <GridToggleButton />
-      {isVisible && <GridCyclePatternButton />}
-      {isVisible && <GridGapSetInput />}
-    </>
+      <GridCyclePatternButton />
+      <GridColorButton />
+      <div />
+      <GridGapSetInput />
+      <GridOpacitySetInput />
+    </ToolBoxTabGrid>
   );
 }

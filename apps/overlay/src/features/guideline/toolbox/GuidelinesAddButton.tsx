@@ -1,13 +1,14 @@
 import { createHorizontalGuideline } from "@/features/guideline/store/createHorizontalGuideline";
 import { useGuidelineAddCommand } from "@/features/guideline/store/useGuidelineAddCommand";
+import { ToolBoxLabeledButton } from "@/features/toolbox/components/ToolBoxLabeledButton";
 import { IconTablePlus } from "@tabler/icons-react";
-import { ToolButton } from "../../../ui/ToolButton";
 
 export function GuidelinesAddButton() {
   const cmd = useGuidelineAddCommand();
 
   return (
-    <ToolButton
+    <ToolBoxLabeledButton
+      label="Add 1"
       Icon={<IconTablePlus />}
       onClick={() => {
         const guideline = createHorizontalGuideline({
