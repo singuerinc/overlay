@@ -2,6 +2,7 @@ import { ColumnsToolBox } from "@/features/columns/toolbox/ColumnsToolBox";
 import { CrosshairToolBox } from "@/features/crosshair/toolbox/CrosshairToolBox";
 import { GridToolBox } from "@/features/grid/toolbox/GridToolBox";
 import { GuidelinesToolBox } from "@/features/guideline/toolbox/GuidelinesToolBox";
+import { OnionImagesToolBox } from "@/features/onion-image/toolbox/OnionImagesToolBox";
 import { RulerToolBox } from "@/features/rulers/toolbox/RulerToolBox";
 import {
   ToolBoxButtons,
@@ -19,6 +20,7 @@ import {
   IconColumns,
   IconCrosshair,
   IconGrid3x3,
+  IconPhoto,
   IconRuler,
   IconSettings,
   IconTable,
@@ -27,7 +29,13 @@ import { useLocalStorage } from "usehooks-ts";
 
 export function OverlayToolBox() {
   const [activeTab, setActiveTab] = useLocalStorage<
-    "ruler" | "grid" | "crosshair" | "columns" | "guidelines" | "settings"
+    | "ruler"
+    | "grid"
+    | "crosshair"
+    | "columns"
+    | "guidelines"
+    | "onion-images"
+    | "settings"
   >("overlay-toolbox-active-tab", "ruler");
   const { data: toolBox } = useToolBoxQuery();
   const { move: toolBoxMove } = useToolBoxMove();
@@ -75,6 +83,12 @@ export function OverlayToolBox() {
             onClick={() => setActiveTab("guidelines")}
           />
           <ToolButton
+            activated={activeTab === "onion-images"}
+            enabled={true}
+            Icon={<IconPhoto />}
+            onClick={() => setActiveTab("onion-images")}
+          />
+          <ToolButton
             activated={activeTab === "settings"}
             enabled={true}
             Icon={<IconSettings />}
@@ -110,6 +124,12 @@ export function OverlayToolBox() {
             <ToolBoxTab>
               <ToolBoxTabTitle>Guidelines</ToolBoxTabTitle>
               <GuidelinesToolBox />
+            </ToolBoxTab>
+          )}
+          {activeTab === "onion-images" && (
+            <ToolBoxTab>
+              <ToolBoxTabTitle>Images</ToolBoxTabTitle>
+              <OnionImagesToolBox />
             </ToolBoxTab>
           )}
           {activeTab === "settings" && (
