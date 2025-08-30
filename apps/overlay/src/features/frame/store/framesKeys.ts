@@ -1,6 +1,6 @@
 import type { IFrame } from "@/features/frame/types";
 
-export const FRAME_KEYS = {
+export const FRAMES_KEYS = {
   frame: (workspaceId: string, id: IFrame["id"]) => [
     "overlay",
     workspaceId,

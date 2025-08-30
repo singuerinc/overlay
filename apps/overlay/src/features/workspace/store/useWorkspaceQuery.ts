@@ -1,10 +1,9 @@
-import { FRAME_KEYS } from "@/features/frame/hooks/frameKeys";
 import { createFrame } from "@/features/frame/store/createFrame";
+import { FRAMES_KEYS } from "@/features/frame/store/framesKeys";
 import { createWorkspace } from "@/features/workspace/store/createWorkspace";
 import { WORKSPACE_KEYS } from "@/features/workspace/store/workspaceKeys";
 import type { IWorkspace } from "@/features/workspace/types";
 import { useQuery } from "@tanstack/react-query";
-import { produce } from "immer";
 
 function getWorkspace(): Promise<IWorkspace> {
   return new Promise((resolve) => {
@@ -15,9 +14,7 @@ function getWorkspace(): Promise<IWorkspace> {
     if (maybeWorkspace === null) {
       const frame = createFrame();
 
-      const workspace = produce(createWorkspace(), (draft) => {
-        draft.frames.push(frame.id);
-      });
+      const workspace = createWorkspace({ frame });
 
       localStorage.setItem(
         WORKSPACE_KEYS.workspace().join("-"),
@@ -25,7 +22,7 @@ function getWorkspace(): Promise<IWorkspace> {
       );
 
       localStorage.setItem(
-        FRAME_KEYS.frame(workspace.id, frame.id).join("-"),
+        FRAMES_KEYS.frame(workspace.id, frame.id).join("-"),
         JSON.stringify(frame)
       );
 
