@@ -1,3 +1,4 @@
+import { ColumnsCycleColorButton } from "@/features/columns/toolbox/ColumnsCycleColorButton";
 import { ColumnsGapSetInput } from "@/features/columns/toolbox/ColumnsGapSetInput";
 import { ColumnsSetNumInput } from "@/features/columns/toolbox/ColumnsSetNumInput";
 import { ColumnsSetOpacityInput } from "@/features/columns/toolbox/ColumnsSetOpacityInput";
@@ -10,7 +11,7 @@ export function ColumnsToolBox() {
     <ToolBoxTabGrid>
       <ColumnsToggleButton />
       <ColumnsSetOpacityInput />
-      <div />
+      <ColumnsCycleColorButton />
       <div />
       <ColumnsSetNumInput />
       <ColumnsGapSetInput />

@@ -1,7 +1,8 @@
 import { useGuidelineMove } from "@/features/guideline/hooks/useGuidelineMove";
+import { useGuidelineRemove } from "@/features/guideline/hooks/useGuidelineRemove";
+import { useGuidelineRotate } from "@/features/guideline/hooks/useGuidelineRotate";
 import { useGuidelineToggleLock } from "@/features/guideline/hooks/useGuidelineToggleLock";
 import { useGuidelineByIdQuery } from "@/features/guideline/store/useGuidelineByIdQuery";
-import { useGuidelineRemoveCommand } from "@/features/guideline/store/useGuidelineRemoveCommand";
 import { useRulerSetPosition } from "@/features/rulers/store/rulerStore";
 import {
   useSelectedTool,
@@ -13,7 +14,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import type { HotkeysEvent } from "react-hotkeys-hook/packages/react-hotkeys-hook/dist/types";
 import { GUIDELINE_VERTICAL, type IGuideline } from "./types";
 
-const variantsGuideline = cva(["o:pointer-events-auto focus:o:outline-none"], {
+const variantsGuideline = cva(["o:pointer-events-auto o:focus:outline-none"], {
   variants: {
     locked: {
       true: "o:cursor-not-allowed",
@@ -246,7 +247,7 @@ export function Guideline({
       data-overlay-guideline-id={guideline.id}
       data-overlay-tool-type="guideline"
       ref={containerRef}
-      className="o:absolute o:top-0 o:left-0 o:h-0 o:w-0 o:overflow-visible o:pointer-events-none"
+      className="o:absolute o:top-0 o:left-0 o:h-0 o:w-0 o:overflow-visible o:pointer-events-none o:focus:outline-none"
       onMouseDown={handleDown}
       onDoubleClick={handleDoubleClick}
     >
@@ -278,7 +279,8 @@ function useGuidelineKeyboardShortcuts({
     y: number
   ) => void;
 }) {
-  const removeGuidelineCommand = useGuidelineRemoveCommand();
+  const { remove } = useGuidelineRemove();
+  const { rotate } = useGuidelineRotate();
 
   const left = useCallback(
     (_: KeyboardEvent, hotkeysEvent: HotkeysEvent) => {
@@ -337,13 +339,16 @@ function useGuidelineKeyboardShortcuts({
   );
 
   const handleRemoveGuideline = useCallback(() => {
-    if (!isSelected) {
-      return;
-    }
     if (guideline) {
-      removeGuidelineCommand.execute(guideline);
+      remove(guideline);
     }
-  }, [guideline, isSelected, removeGuidelineCommand]);
+  }, [guideline, isSelected, remove]);
+
+  const handleRotateGuideline = useCallback(() => {
+    if (guideline) {
+      rotate(guideline);
+    }
+  }, [guideline, isSelected, rotate]);
 
   useHotkeys(["up", "shift+up"], up, {
     enabled: isSelected && guideline && !guideline.locked && !isVertical,
@@ -362,6 +367,10 @@ function useGuidelineKeyboardShortcuts({
     preventDefault: true,
   });
   useHotkeys(["delete", "backspace"], handleRemoveGuideline, {
+    enabled: isSelected && guideline && !guideline.locked,
+    preventDefault: true,
+  });
+  useHotkeys(["r"], handleRotateGuideline, {
     enabled: isSelected && guideline && !guideline.locked,
     preventDefault: true,
   });

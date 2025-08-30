@@ -1,4 +1,3 @@
-import { NormalizedPositionX } from "@/features/rulers/components/NormalizedPositionX";
 import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
 import { useRulerSetOriginCommand } from "@/features/rulers/store/useRulerSetOriginCommand";
 import { cn } from "@/ui/cn";
@@ -114,7 +113,7 @@ export function HorizontalRuler({ origin }: { origin: number }) {
           ))}
         </ol>
       </div>
-      <NormalizedPositionX />
+      {/* <NormalizedPositionX /> */}
     </div>
   );
 }

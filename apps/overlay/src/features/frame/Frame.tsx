@@ -1,4 +1,5 @@
 import { Columns } from "@/features/columns/Columns";
+import { Coords } from "@/features/coords/Coords";
 import { Crosshair } from "@/features/crosshair/Crosshair";
 import { useFrameQueryById } from "@/features/frame/hooks/useFrameQueryById";
 import { FrameContextProvider } from "@/features/frame/store/frameStore";
@@ -34,6 +35,7 @@ export function Frame({ id }: { id: IFrame["id"] }) {
           <Grid />
           <Ruler />
           <Crosshair />
+          <Coords />
         </RulerContextProvider>
       </div>
     </FrameContextProvider>

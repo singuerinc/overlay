@@ -1,16 +1,20 @@
-import { useColumnsSetGap } from "@/features/columns/hooks/useColumnsSetGap";
+import { useColumns } from "@/features/columns/hooks/useColumns";
 import { useColumnsQuery } from "@/features/columns/store/useColumnsQuery";
 import { ToolBoxInputNumber } from "@/features/toolbox/components/ToolBoxInputNumber";
 
 export function ColumnsGapSetInput() {
   const { data: columns } = useColumnsQuery();
-  const { set } = useColumnsSetGap();
+  const { setGap } = useColumns();
 
   if (!columns) {
     return null;
   }
 
   return (
-    <ToolBoxInputNumber label="Gap (px)" defaultValue={columns.gap} set={set} />
+    <ToolBoxInputNumber
+      label="Gap (px)"
+      defaultValue={columns.gap}
+      set={setGap}
+    />
   );
 }

@@ -1,4 +1,3 @@
-import { NormalizedPositionY } from "@/features/rulers/components/NormalizedPositionY";
 import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
 import { useRulerSetOriginCommand } from "@/features/rulers/store/useRulerSetOriginCommand";
 import { cn } from "@/ui/cn";
@@ -127,7 +126,7 @@ export function VerticalRuler({ origin }: { origin: number }) {
           </ol>
         </div>
       </div>
-      <NormalizedPositionY />
+      {/* <NormalizedPositionY /> */}
     </div>
   );
 }

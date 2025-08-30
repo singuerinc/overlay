@@ -1,4 +1,4 @@
-import { useColumnsToggle } from "@/features/columns/hooks/useColumnsToggle";
+import { useColumns } from "@/features/columns/hooks/useColumns";
 import { useUndo } from "@/features/commands/hooks/useUndo";
 import { useCrosshairToggle } from "@/features/crosshair/hooks/useCrosshairToggle";
 import { useGridToggle } from "@/features/grid/hooks/useGridToggle";
@@ -9,7 +9,7 @@ export const ShortcutsObserver: React.FC = () => {
   const undo = useUndo();
   const { toggle: toggleGrid } = useGridToggle();
   const { toggle: toggleRuler } = useRulerToggle();
-  const { toggle: toggleColumns } = useColumnsToggle();
+  const { toggleVisibility: toggleColumns } = useColumns();
   const { toggle: toggleCrosshair } = useCrosshairToggle();
 
   useHotkeys(["mod+z"], undo, { preventDefault: true });
