@@ -1,3 +1,4 @@
+import { ColumnsColor } from "@/features/columns/ColumnsColor";
 import type { IColumns } from "@/features/columns/types";
 
 export function createColumns(
@@ -11,5 +12,6 @@ export function createColumns(
     size: props?.size ?? "920px",
     gap: props?.gap ?? 4,
     numColumns: props?.numColumns ?? 12,
+    color: props?.color ?? ColumnsColor[0],
   };
 }

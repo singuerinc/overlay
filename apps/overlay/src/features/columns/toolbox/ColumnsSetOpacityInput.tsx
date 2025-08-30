@@ -1,10 +1,10 @@
-import { useColumnsSetOpacity } from "@/features/columns/hooks/useColumnsSetOpacity";
+import { useColumns } from "@/features/columns/hooks/useColumns";
 import { useColumnsQuery } from "@/features/columns/store/useColumnsQuery";
 import { ToolBoxInputNumber } from "@/features/toolbox/components/ToolBoxInputNumber";
 
 export function ColumnsSetOpacityInput() {
   const { data: columns } = useColumnsQuery();
-  const { set } = useColumnsSetOpacity();
+  const { setOpacity } = useColumns();
 
   if (!columns) {
     return null;
@@ -17,7 +17,7 @@ export function ColumnsSetOpacityInput() {
       min={0}
       step={0.1}
       defaultValue={columns.opacity}
-      set={set}
+      set={setOpacity}
     />
   );
 }

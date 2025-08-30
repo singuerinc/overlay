@@ -1,4 +1,6 @@
+import { type ColumnsColorType } from "@/features/columns/ColumnsColor";
 import { useColumnsQuery } from "@/features/columns/store/useColumnsQuery";
+import { cn } from "@/ui/cn";
 
 export function Columns() {
   const { data: columns } = useColumnsQuery();
@@ -8,6 +10,14 @@ export function Columns() {
   }
 
   const columnsObj = Array.from({ length: columns.numColumns }, () => ({}));
+  const color = columns.color;
+
+  const colors = {
+    neutral: "o:bg-neutral-600",
+    cyan: "o:bg-cyan-600",
+    green: "o:bg-green-600",
+    red: "o:bg-red-600",
+  } satisfies Record<ColumnsColorType, string>;
 
   return (
     <div
@@ -22,7 +32,7 @@ export function Columns() {
         <div
           key={index}
           style={{ opacity: columns.opacity }}
-          className="o:bg-cyan-600 o:w-full o:h-full"
+          className={cn("o:w-full o:h-full", colors[color])}
         ></div>
       ))}
     </div>

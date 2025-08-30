@@ -1,12 +1,12 @@
-import { useColumnsSetGap } from "@/features/columns/hooks/useColumnsSetGap";
+import { useColumns } from "@/features/columns/hooks/useColumns";
 import { ToolButton } from "@/ui/ToolButton";
 import { IconArrowBarBoth } from "@tabler/icons-react";
 
 export function ColumnsGapDecreaseButton() {
-  const { decrease } = useColumnsSetGap();
+  const { decreaseGap } = useColumns();
 
   const handleClick = () => {
-    decrease(4);
+    decreaseGap(4);
   };
 
   return (

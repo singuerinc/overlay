@@ -1,12 +1,12 @@
-import { useColumnsSetNum } from "@/features/columns/hooks/useColumnsSetNum";
+import { useColumns } from "@/features/columns/hooks/useColumns";
 import { ToolButton } from "@/ui/ToolButton";
 import { IconColumnRemove } from "@tabler/icons-react";
 
 export function ColumnsRemoveOneButton() {
-  const { removeOne } = useColumnsSetNum();
+  const { removeOneCol } = useColumns();
 
   const handleClick = () => {
-    removeOne();
+    removeOneCol();
   };
 
   return (
