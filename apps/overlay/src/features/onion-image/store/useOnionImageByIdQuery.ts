@@ -1,12 +1,16 @@
-import { useFrameActiveId } from "@/features/frame/hooks/useFrameActiveId";
 import { ONION_IMAGES_KEYS } from "@/features/onion-image/store/onionImagesKeys";
 import type { IOnionImage } from "@/features/onion-image/types";
+import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
+import type { IPreset } from "@/features/preset/types";
 import { useQuery } from "@tanstack/react-query";
 
-function getOnionImage(frameId: string, id: string): Promise<IOnionImage> {
+function getOnionImage(
+  presetId: IPreset["id"],
+  id: IOnionImage["id"]
+): Promise<IOnionImage> {
   return new Promise((resolve, reject) => {
     const maybeOnionImage = localStorage.getItem(
-      ONION_IMAGES_KEYS.onionImage(frameId, id).join("-")
+      ONION_IMAGES_KEYS.onionImage(presetId, id).join("-")
     );
 
     if (maybeOnionImage === null) {
@@ -17,10 +21,10 @@ function getOnionImage(frameId: string, id: string): Promise<IOnionImage> {
   });
 }
 
-export function useOnionImageByIdQuery(id: string) {
-  const frameId = useFrameActiveId();
+export function useOnionImageByIdQuery(id: IOnionImage["id"]) {
+  const presetId = usePresetActiveId();
   return useQuery({
-    queryKey: ONION_IMAGES_KEYS.onionImage(frameId, id),
-    queryFn: () => getOnionImage(frameId, id),
+    queryKey: ONION_IMAGES_KEYS.onionImage(presetId, id),
+    queryFn: () => getOnionImage(presetId, id),
   });
 }

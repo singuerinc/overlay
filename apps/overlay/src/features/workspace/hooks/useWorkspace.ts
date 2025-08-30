@@ -1,18 +1,19 @@
-import { createFrame } from "@/features/frame/store/createFrame";
-import { useWorkspaceAddFrameCommand } from "@/features/workspace/store/useWorkspaceAddFrameCommand";
-import { useWorkspaceSetActiveFrameIdCommand } from "@/features/workspace/store/useWorkspaceSetActiveFrameIdCommand";
+import { createPreset } from "@/features/preset/store/createPreset";
+import type { IPreset } from "@/features/preset/types";
+import { useWorkspaceAddPresetCommand } from "@/features/workspace/store/useWorkspaceAddPresetCommand";
+import { useWorkspaceSetActivePresetIdCommand } from "@/features/workspace/store/useWorkspaceSetActivePresetIdCommand";
 
 export function useWorkspace() {
-  const addFrameCmd = useWorkspaceAddFrameCommand();
-  const setActiveFrameIdCmd = useWorkspaceSetActiveFrameIdCommand();
+  const addPresetCmd = useWorkspaceAddPresetCommand();
+  const setActivePresetIdCmd = useWorkspaceSetActivePresetIdCommand();
 
   return {
-    setActiveFrameId: (id: string) => {
-      setActiveFrameIdCmd.execute(id);
+    setActivePresetId: (id: IPreset["id"]) => {
+      setActivePresetIdCmd.execute(id);
     },
-    addFrame: () => {
-      const frame = createFrame();
-      addFrameCmd.execute(frame);
+    addPreset: () => {
+      const preset = createPreset();
+      addPresetCmd.execute(preset);
     },
   };
 }

@@ -1,17 +1,17 @@
-import { useFrameActiveId } from "@/features/frame/hooks/useFrameActiveId";
+import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 import type { IGuidelineStore } from "../types";
 import { GUIDELINES_KEYS } from "./guidelinesKeys";
 
 export function useGuidelinesMutation() {
-  const frameId = useFrameActiveId();
+  const presetId = usePresetActiveId();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (props: Partial<Exclude<IGuidelineStore, "id">>) => {
       const guidelines = queryClient.getQueryData<IGuidelineStore>(
-        GUIDELINES_KEYS.guidelines(frameId)
+        GUIDELINES_KEYS.guidelines(presetId)
       );
 
       const newGuidelines = produce(
@@ -22,13 +22,13 @@ export function useGuidelinesMutation() {
       );
 
       localStorage.setItem(
-        GUIDELINES_KEYS.guidelines(frameId).join("-"),
+        GUIDELINES_KEYS.guidelines(presetId).join("-"),
         JSON.stringify(newGuidelines)
       );
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: GUIDELINES_KEYS.guidelines(frameId),
+        queryKey: GUIDELINES_KEYS.guidelines(presetId),
       });
     },
   });

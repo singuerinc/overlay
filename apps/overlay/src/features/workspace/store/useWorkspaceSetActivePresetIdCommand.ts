@@ -1,22 +1,21 @@
 import { Command } from "@/features/commands/Command";
 import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
-import type { IFrame } from "@/features/frame/types";
+import type { IPreset } from "@/features/preset/types";
 import { useWorkspaceMutation } from "@/features/workspace/store/useWorkspaceMutation";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
 
-export function useWorkspaceAddFrameCommand() {
+export function useWorkspaceSetActivePresetIdCommand() {
   const { data: workspace } = useWorkspaceQuery();
   const executeCommand = useCommandExecute();
   const mutation = useWorkspaceMutation();
 
   return {
-    execute: (frame: IFrame) => {
+    execute: (presetId: IPreset["id"]) => {
       const command = new Command(
         () => {
           if (workspace) {
             mutation.mutate({
-              frames: [...workspace.frames, frame.id],
-              activeFrameId: frame.id,
+              activePresetId: presetId,
             });
           }
         },

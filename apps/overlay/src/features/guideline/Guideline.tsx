@@ -83,7 +83,7 @@ export function Guideline({
   originX,
   originY,
 }: {
-  id: string;
+  id: IGuideline["id"];
   style: "solid" | "dashed";
   originX: number;
   originY: number;

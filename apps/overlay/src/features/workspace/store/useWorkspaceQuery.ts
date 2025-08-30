@@ -1,5 +1,5 @@
-import { createFrame } from "@/features/frame/store/createFrame";
-import { FRAMES_KEYS } from "@/features/frame/store/framesKeys";
+import { createPreset } from "@/features/preset/store/createPreset";
+import { PRESETS_KEYS } from "@/features/preset/store/presetsKeys";
 import { createWorkspace } from "@/features/workspace/store/createWorkspace";
 import { WORKSPACE_KEYS } from "@/features/workspace/store/workspaceKeys";
 import type { IWorkspace } from "@/features/workspace/types";
@@ -12,9 +12,9 @@ function getWorkspace(): Promise<IWorkspace> {
     );
 
     if (maybeWorkspace === null) {
-      const frame = createFrame();
+      const preset = createPreset();
 
-      const workspace = createWorkspace({ frame });
+      const workspace = createWorkspace({ preset });
 
       localStorage.setItem(
         WORKSPACE_KEYS.workspace().join("-"),
@@ -22,8 +22,8 @@ function getWorkspace(): Promise<IWorkspace> {
       );
 
       localStorage.setItem(
-        FRAMES_KEYS.frame(workspace.id, frame.id).join("-"),
-        JSON.stringify(frame)
+        PRESETS_KEYS.preset(workspace.id, preset.id).join("-"),
+        JSON.stringify(preset)
       );
 
       resolve(workspace);

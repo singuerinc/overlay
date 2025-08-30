@@ -1,6 +1,7 @@
-import { Frame } from "@/features/frame/Frame";
-import { useFrameByIdQuery } from "@/features/frame/hooks/useFrameByIdQuery";
-import { FrameContextProvider } from "@/features/frame/store/frameStore";
+import { usePresetByIdQuery } from "@/features/preset/hooks/usePresetByIdQuery";
+import { Preset } from "@/features/preset/Preset";
+import { PresetContextProvider } from "@/features/preset/store/presetsStore";
+import type { IPreset } from "@/features/preset/types";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
 import { WorkspaceContextProvider } from "@/features/workspace/store/workspaceStore";
 
@@ -13,21 +14,21 @@ export function Workspace() {
 
   return (
     <WorkspaceContextProvider id={workspace.id}>
-      <FrameLoader id={workspace.activeFrameId} />
+      <PresetLoader id={workspace.activePresetId} />
     </WorkspaceContextProvider>
   );
 }
 
-function FrameLoader({ id }: { id: string }) {
-  const { data: frame } = useFrameByIdQuery({ id });
+function PresetLoader({ id }: { id: IPreset["id"] }) {
+  const { data: preset } = usePresetByIdQuery({ id });
 
-  if (!frame) {
+  if (!preset) {
     return null;
   }
 
   return (
-    <FrameContextProvider key={frame.id} activeFrameId={frame.id}>
-      <Frame key={frame.id} id={frame.id} />
-    </FrameContextProvider>
+    <PresetContextProvider key={preset.id} activePresetId={preset.id}>
+      <Preset key={preset.id} id={preset.id} />
+    </PresetContextProvider>
   );
 }

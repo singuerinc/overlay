@@ -1,6 +1,6 @@
-export interface IFrame {
+export interface IPreset {
   id: string;
-  type: "frame";
+  type: "preset";
   name: string;
   x: number;
   y: number;

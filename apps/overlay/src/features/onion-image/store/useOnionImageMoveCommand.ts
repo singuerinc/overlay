@@ -1,23 +1,23 @@
 import { Command } from "@/features/commands/Command";
 import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
-import { useFrameActiveId } from "@/features/frame/hooks/useFrameActiveId";
 import { ONION_IMAGES_KEYS } from "@/features/onion-image/store/onionImagesKeys";
 import { useOnionImageMutation } from "@/features/onion-image/store/useOnionImageMutation";
+import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
 import { useSetSelectedTool } from "@/features/tools/store/tools";
 import { useQueryClient } from "@tanstack/react-query";
 import type { IOnionImage } from "../types";
 
 export function useOnionImageMoveCommand() {
-  const frameId = useFrameActiveId();
+  const presetId = usePresetActiveId();
   const queryClient = useQueryClient();
   const mutation = useOnionImageMutation();
   const executeCommand = useCommandExecute();
   const setSelectedTool = useSetSelectedTool();
 
   return {
-    execute: (id: string, position: { x: number; y: number }) => {
+    execute: (id: IOnionImage["id"], position: { x: number; y: number }) => {
       const onionImage = queryClient.getQueryData<IOnionImage>(
-        ONION_IMAGES_KEYS.onionImage(frameId, id)
+        ONION_IMAGES_KEYS.onionImage(presetId, id)
       );
 
       const command = new Command(

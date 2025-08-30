@@ -1,3 +1,5 @@
+import type { IPreset } from "@/features/preset/types";
+
 export const RULER_KEYS = {
-  ruler: (frameId: string) => ["overlay", frameId, "ruler"],
+  ruler: (presetId: IPreset["id"]) => ["overlay", presetId, "ruler"],
 };

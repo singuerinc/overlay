@@ -45,7 +45,7 @@ const variantsOnionImage = cva(
   }
 );
 
-export function OnionImage({ id }: { id: string }) {
+export function OnionImage({ id }: { id: IOnionImage["id"] }) {
   const { data: onionImage } = useOnionImageByIdQuery(id);
   const selectedTool = useSelectedTool();
   const setSelectedTool = useSetSelectedTool();
