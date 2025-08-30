@@ -1,12 +1,14 @@
+import type { IPreset } from "@/features/preset/types";
+
 export const COLUMNS_KEYS = {
-  horizontalColumns: (frameId: string) => [
+  horizontalColumns: (presetId: IPreset["id"]) => [
     "overlay",
-    frameId,
+    presetId,
     "horizontal-columns",
   ],
-  verticalColumns: (frameId: string) => [
+  verticalColumns: (presetId: IPreset["id"]) => [
     "overlay",
-    frameId,
+    presetId,
     "vertical-columns",
   ],
 };

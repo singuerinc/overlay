@@ -1,17 +1,17 @@
-import { useFrameActiveId } from "@/features/frame/hooks/useFrameActiveId";
 import { GRID_KEYS } from "@/features/grid/store/gridKeys";
 import type { IGridStore } from "@/features/grid/types";
+import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 
 export function useGridMutation() {
-  const frameId = useFrameActiveId();
+  const presetId = usePresetActiveId();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (props: Partial<Exclude<IGridStore, "id">>) => {
       const grid = queryClient.getQueryData<IGridStore>(
-        GRID_KEYS.grid(frameId)
+        GRID_KEYS.grid(presetId)
       );
 
       const updatedGrid = produce(grid, (draftState: IGridStore) => {
@@ -19,12 +19,12 @@ export function useGridMutation() {
       });
 
       localStorage.setItem(
-        GRID_KEYS.grid(frameId).join("-"),
+        GRID_KEYS.grid(presetId).join("-"),
         JSON.stringify(updatedGrid)
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: GRID_KEYS.grid(frameId) });
+      queryClient.invalidateQueries({ queryKey: GRID_KEYS.grid(presetId) });
     },
   });
 }

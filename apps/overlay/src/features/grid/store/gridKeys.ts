@@ -1,3 +1,5 @@
+import type { IPreset } from "@/features/preset/types";
+
 export const GRID_KEYS = {
-  grid: (frameId: string) => ["overlay", frameId, "grid"],
+  grid: (presetId: IPreset["id"]) => ["overlay", presetId, "grid"],
 };

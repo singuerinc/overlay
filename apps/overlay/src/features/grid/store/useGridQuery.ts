@@ -1,17 +1,18 @@
-import { useFrameActiveId } from "@/features/frame/hooks/useFrameActiveId";
 import { createGrid } from "@/features/grid/store/createGrid";
 import { GRID_KEYS } from "@/features/grid/store/gridKeys";
 import type { IGridStore } from "@/features/grid/types";
+import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
+import type { IPreset } from "@/features/preset/types";
 import { useQuery } from "@tanstack/react-query";
 
-function getGrid(frameId: string): Promise<IGridStore> {
+function getGrid(presetId: IPreset["id"]): Promise<IGridStore> {
   return new Promise((resolve) => {
-    const maybeGrid = localStorage.getItem(GRID_KEYS.grid(frameId).join("-"));
+    const maybeGrid = localStorage.getItem(GRID_KEYS.grid(presetId).join("-"));
 
     if (maybeGrid === null) {
       const grid = createGrid();
       localStorage.setItem(
-        GRID_KEYS.grid(frameId).join("-"),
+        GRID_KEYS.grid(presetId).join("-"),
         JSON.stringify(grid)
       );
       resolve(grid);
@@ -22,9 +23,9 @@ function getGrid(frameId: string): Promise<IGridStore> {
 }
 
 export function useGridQuery() {
-  const frameId = useFrameActiveId();
+  const presetId = usePresetActiveId();
   return useQuery({
-    queryKey: GRID_KEYS.grid(frameId),
-    queryFn: () => getGrid(frameId),
+    queryKey: GRID_KEYS.grid(presetId),
+    queryFn: () => getGrid(presetId),
   });
 }

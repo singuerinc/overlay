@@ -4,26 +4,26 @@ import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery"
 
 export function WorkspaceToolBox() {
   const { data: workspace } = useWorkspaceQuery();
-  const { addFrame, setActiveFrameId } = useWorkspace();
+  const { addPreset, setActivePresetId } = useWorkspace();
 
   return (
     <ToolBoxTabGrid>
-      <button type="button" onClick={() => addFrame()}>
-        Add Frame
+      <button type="button" onClick={() => addPreset()}>
+        Add Preset
       </button>
       <select
         onChange={(e) => {
-          const selectedFrameId = e.target.value;
-          setActiveFrameId(selectedFrameId);
+          const selectedPresetId = e.target.value;
+          setActivePresetId(selectedPresetId);
         }}
       >
-        {workspace?.frames.map((frameId) => (
+        {workspace?.presets.map((presetId) => (
           <option
-            key={frameId}
-            value={frameId}
-            selected={workspace.activeFrameId === frameId}
+            key={presetId}
+            value={presetId}
+            selected={workspace.activePresetId === presetId}
           >
-            {frameId}
+            {presetId}
           </option>
         ))}
       </select>

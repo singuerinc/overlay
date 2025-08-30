@@ -1,12 +1,16 @@
-import { useFrameActiveId } from "@/features/frame/hooks/useFrameActiveId";
 import type { IGuideline } from "@/features/guideline/types";
+import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
+import type { IPreset } from "@/features/preset/types";
 import { useQuery } from "@tanstack/react-query";
 import { GUIDELINES_KEYS } from "./guidelinesKeys";
 
-function getGuideline(frameId: string, id: string): Promise<IGuideline> {
+function getGuideline(
+  presetId: IPreset["id"],
+  id: IGuideline["id"]
+): Promise<IGuideline> {
   return new Promise((resolve, reject) => {
     const maybeGuideline = localStorage.getItem(
-      GUIDELINES_KEYS.guideline(frameId, id).join("-")
+      GUIDELINES_KEYS.guideline(presetId, id).join("-")
     );
 
     if (maybeGuideline === null) {
@@ -17,10 +21,10 @@ function getGuideline(frameId: string, id: string): Promise<IGuideline> {
   });
 }
 
-export function useGuidelineByIdQuery(id: string) {
-  const frameId = useFrameActiveId();
+export function useGuidelineByIdQuery(id: IGuideline["id"]) {
+  const presetId = usePresetActiveId();
   return useQuery({
-    queryKey: GUIDELINES_KEYS.guideline(frameId, id),
-    queryFn: () => getGuideline(frameId, id),
+    queryKey: GUIDELINES_KEYS.guideline(presetId, id),
+    queryFn: () => getGuideline(presetId, id),
   });
 }

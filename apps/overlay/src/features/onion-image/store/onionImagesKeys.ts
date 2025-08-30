@@ -1,8 +1,15 @@
+import type { IOnionImage } from "@/features/onion-image/types";
+import type { IPreset } from "@/features/preset/types";
+
 export const ONION_IMAGES_KEYS = {
-  onionImages: (frameId: string) => ["overlay", frameId, "onionImages"],
-  onionImage: (frameId: string, onionImageId: string) => [
+  onionImages: (presetId: IPreset["id"]) => [
     "overlay",
-    frameId,
+    presetId,
+    "onionImages",
+  ],
+  onionImage: (presetId: IPreset["id"], onionImageId: IOnionImage["id"]) => [
+    "overlay",
+    presetId,
     "onionImages",
     onionImageId,
   ],

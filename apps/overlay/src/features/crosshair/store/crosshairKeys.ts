@@ -1,3 +1,5 @@
+import type { IPreset } from "@/features/preset/types";
+
 export const CROSSHAIR_KEYS = {
-  crosshair: (frameId: string) => ["overlay", frameId, "crosshair"],
+  crosshair: (presetId: IPreset["id"]) => ["overlay", presetId, "crosshair"],
 };

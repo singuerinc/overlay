@@ -1,19 +1,20 @@
 import { COLUMNS_KEYS } from "@/features/columns/store/columnsKeys";
 import { createColumns } from "@/features/columns/store/createColumns";
 import type { IColumnsStore } from "@/features/columns/types";
-import { useFrameActiveId } from "@/features/frame/hooks/useFrameActiveId";
+import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
+import type { IPreset } from "@/features/preset/types";
 import { useQuery } from "@tanstack/react-query";
 
-function getColumns(frameId: string): Promise<IColumnsStore> {
+function getColumns(presetId: IPreset["id"]): Promise<IColumnsStore> {
   return new Promise((resolve) => {
     const maybeColumns = localStorage.getItem(
-      COLUMNS_KEYS.verticalColumns(frameId).join("-")
+      COLUMNS_KEYS.verticalColumns(presetId).join("-")
     );
 
     if (maybeColumns === null) {
       const columns = createColumns({ size: "1200px" });
       localStorage.setItem(
-        COLUMNS_KEYS.verticalColumns(frameId).join("-"),
+        COLUMNS_KEYS.verticalColumns(presetId).join("-"),
         JSON.stringify(columns)
       );
       resolve(columns);
@@ -24,9 +25,9 @@ function getColumns(frameId: string): Promise<IColumnsStore> {
 }
 
 export function useColumnsQuery() {
-  const frameId = useFrameActiveId();
+  const presetId = usePresetActiveId();
   return useQuery({
-    queryKey: COLUMNS_KEYS.verticalColumns(frameId),
-    queryFn: () => getColumns(frameId),
+    queryKey: COLUMNS_KEYS.verticalColumns(presetId),
+    queryFn: () => getColumns(presetId),
   });
 }

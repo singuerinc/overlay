@@ -1,8 +1,8 @@
-import type { IFrame } from "@/features/frame/types";
+import type { IPreset } from "@/features/preset/types";
 
 export interface IWorkspace {
   id: string;
   type: "workspace";
-  frames: IFrame["id"][];
-  activeFrameId: IFrame["id"];
+  presets: IPreset["id"][];
+  activePresetId: IPreset["id"];
 }
