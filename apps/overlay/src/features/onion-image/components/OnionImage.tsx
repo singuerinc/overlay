@@ -70,6 +70,7 @@ export function OnionImage({ id }: { id: string }) {
 
   const { listeners, setNodeRef, attributes, transform } = useDraggable({
     id,
+    disabled: onionImage?.locked,
     data: {
       x: onionImage?.x ?? 0,
       y: onionImage?.y ?? 0,
