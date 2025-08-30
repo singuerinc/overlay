@@ -8,12 +8,12 @@ import {
   ToolBoxButtons,
   ToolBoxRoot,
   ToolBoxTab,
-  ToolBoxTabGrid,
   ToolBoxTabs,
   ToolBoxTabTitle,
 } from "@/features/toolbox/components/ToolBox";
 import { useToolBoxMove } from "@/features/toolbox/hooks/useToolBoxMove";
 import { useToolBoxQuery } from "@/features/toolbox/store/useToolBoxQuery";
+import { WorkspaceToolBox } from "@/features/workspace/toolbox/WorkspaceToolBox";
 import { ToolButton } from "@/ui/ToolButton";
 import { DndContext } from "@dnd-kit/core";
 import {
@@ -135,7 +135,7 @@ export function OverlayToolBox() {
           {activeTab === "settings" && (
             <ToolBoxTab>
               <ToolBoxTabTitle>Settings</ToolBoxTabTitle>
-              <ToolBoxTabGrid>workspaces</ToolBoxTabGrid>
+              <WorkspaceToolBox />
             </ToolBoxTab>
           )}
         </ToolBoxTabs>

@@ -4,4 +4,5 @@ export interface IWorkspace {
   id: string;
   type: "workspace";
   frames: IFrame["id"][];
+  activeFrameId: IFrame["id"];
 }
