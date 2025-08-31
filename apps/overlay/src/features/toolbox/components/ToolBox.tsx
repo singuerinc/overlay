@@ -1,10 +1,7 @@
-import { useUndo } from "@/features/commands/hooks/useUndo";
-import { useUndoAvailable } from "@/features/commands/hooks/useUndoAvailable";
 import { ToolButton } from "@/ui/ToolButton";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import {
-  IconArrowBackUp,
   IconEye,
   IconEyeOff,
   IconGripVertical,
@@ -22,7 +19,9 @@ export function ToolBoxTab({ children }: PropsWithChildren) {
 }
 
 export function ToolBoxButtons({ children }: PropsWithChildren) {
-  return <div className="o:flex o:gap-1">{children}</div>;
+  return (
+    <div className="o:flex o:justify-between o:items-center">{children}</div>
+  );
 }
 
 export function ToolBoxTabs({ children }: PropsWithChildren) {
@@ -86,7 +85,6 @@ export function ToolBoxRoot({
         <div className="o:flex o:flex-col o:items-center o:gap-2">
           <ToolBoxLockToggle isLocked={locked} setIsLocked={setLocked} />
           <ToolBoxVisibilityToggle isOpen={open} setIsOpen={setOpen} />
-          <ToolBoxCommandHistory />
         </div>
       </div>
       {open && <div className="o:flex o:flex-col">{children}</div>}
@@ -122,18 +120,6 @@ function ToolBoxVisibilityToggle({
       activated={isOpen}
       Icon={!isOpen ? <IconEyeOff size={16} /> : <IconEye size={16} />}
       onClick={() => setIsOpen(!isOpen)}
-    />
-  );
-}
-
-function ToolBoxCommandHistory() {
-  const undo = useUndo();
-  const canUndo = useUndoAvailable();
-  return (
-    <ToolButton
-      enabled={canUndo}
-      Icon={<IconArrowBackUp size={16} />}
-      onClick={() => undo()}
     />
   );
 }
