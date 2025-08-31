@@ -1,7 +1,7 @@
 import type { GridColorType } from "@/features/grid/GridColor";
 import type { ITool } from "@/features/tools/ITool";
 
-export const GridPattern = ["dots", "lines"] as const;
+export const GridPattern = ["dots", "lines", "both"] as const;
 
 export type IGridPattern = (typeof GridPattern)[number];
 

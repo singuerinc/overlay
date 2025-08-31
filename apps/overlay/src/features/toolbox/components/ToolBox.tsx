@@ -1,16 +1,6 @@
-import { ToolBoxCommandHistory } from "@/features/toolbox/components/ToolBoxCommandHistory";
-import { useWorkspace } from "@/features/workspace/hooks/useWorkspace";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
-import { ToolButton } from "@/ui/ToolButton";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
-import {
-  IconArrowsMove,
-  IconEye,
-  IconEyeOff,
-  IconLock,
-  IconLockOpen,
-} from "@tabler/icons-react";
 import { type PropsWithChildren } from "react";
 
 export function ToolBoxTab({ children }: PropsWithChildren) {
@@ -81,8 +71,6 @@ export function ToolBoxRoot({
   y,
 }: PropsWithChildren<{ x: number; y: number }>) {
   const { data: workspace } = useWorkspaceQuery();
-  const { setVisible: setWorkspaceVisible, setLocked: setWorkspaceLocked } =
-    useWorkspace();
   const { listeners, setNodeRef, transform } = useDraggable({
     id: "tools",
   });
@@ -113,57 +101,10 @@ export function ToolBoxRoot({
         <div
           {...listeners}
           // {...attributes}
-          className="o:cursor-grab o:active:cursor-grabbing o:grow"
-        >
-          <IconArrowsMove className="o:text-white" size={18} />
-        </div>
-        <div className="o:flex o:flex-col o:items-center o:gap-2">
-          <ToolBoxCommandHistory />
-          <ToolBoxLockToggle
-            isLocked={workspace.locked}
-            setIsLocked={setWorkspaceLocked}
-          />
-          <ToolBoxVisibilityToggle
-            isOpen={workspace.visible}
-            setIsOpen={setWorkspaceVisible}
-          />
-        </div>
+          className="o:cursor-grab o:active:cursor-grabbing o:grow-0 o:w-4 o:shrink-0 o:h-full o:relative"
+        />
       </div>
-      {workspace.visible && (
-        <div className="o:flex o:flex-col o:ml-1">{children}</div>
-      )}
+      <div className="o:flex o:flex-col o:ml-1">{children}</div>
     </div>
-  );
-}
-
-function ToolBoxLockToggle({
-  isLocked,
-  setIsLocked,
-}: {
-  isLocked: boolean;
-  setIsLocked: (isLocked: boolean) => void;
-}) {
-  return (
-    <ToolButton
-      activated={isLocked}
-      Icon={!isLocked ? <IconLockOpen size={16} /> : <IconLock size={16} />}
-      onClick={() => setIsLocked(!isLocked)}
-    />
-  );
-}
-
-function ToolBoxVisibilityToggle({
-  isOpen,
-  setIsOpen,
-}: {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-}) {
-  return (
-    <ToolButton
-      activated={isOpen}
-      Icon={!isOpen ? <IconEyeOff size={16} /> : <IconEye size={16} />}
-      onClick={() => setIsOpen(!isOpen)}
-    />
   );
 }

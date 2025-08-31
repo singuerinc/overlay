@@ -9,7 +9,7 @@ export function useGridCyclePatternCommand() {
   const { execute: executeCommand } = useCommands();
   const updateGrid = useGridMutation();
 
-  const patterns = ["dots", "lines"];
+  const patterns = ["dots", "lines", "both"];
 
   return {
     execute: () => {

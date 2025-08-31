@@ -37,6 +37,9 @@ export function Grid() {
     lines: {
       backgroundImage: `linear-gradient(to right, ${colorClass} 1px, transparent 1px), linear-gradient(to bottom, ${colorClass} 1px, transparent 1px)`,
     },
+    both: {
+      backgroundImage: `radial-gradient(circle, ${colorClass} 1px, transparent 1px), linear-gradient(to right, ${colorClass} 1px, transparent 1px), linear-gradient(to bottom, ${colorClass} 1px, transparent 1px)`,
+    },
   } as Record<IGridPattern, React.CSSProperties>;
 
   return (
@@ -51,6 +54,9 @@ export function Grid() {
           ...styles[grid.pattern],
         }}
       />
+      <pre className="bg-yellow-200 font-mono">
+        {JSON.stringify(grid.pattern, null, 2)}
+      </pre>
     </>
   );
 }

@@ -1,7 +1,8 @@
 import { useGrid } from "@/features/grid/hooks/useGrid";
 import { useGridQuery } from "@/features/grid/store/useGridQuery";
+import type { IGridPattern } from "@/features/grid/types";
 import { ToolBoxLabeledButton } from "@/features/toolbox/components/ToolBoxLabeledButton";
-import { IconGrid4x4, IconGridDots } from "@tabler/icons-react";
+import { IconGrid3x3, IconGrid4x4, IconGridDots } from "@tabler/icons-react";
 
 export function GridCyclePatternButton() {
   const { data: grid } = useGridQuery();
@@ -11,10 +12,20 @@ export function GridCyclePatternButton() {
     cyclePattern();
   };
 
+  const iconsByPattern = {
+    dots: <IconGridDots />,
+    lines: <IconGrid3x3 />,
+    both: <IconGrid4x4 />,
+  } satisfies Record<IGridPattern, React.ReactNode>;
+
+  if (!grid) {
+    return null;
+  }
+
   return (
     <ToolBoxLabeledButton
       label="Pattern"
-      Icon={grid?.pattern === "dots" ? <IconGridDots /> : <IconGrid4x4 />}
+      Icon={iconsByPattern[grid.pattern]}
       onClick={handleClick}
     />
   );
