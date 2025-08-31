@@ -1,13 +1,13 @@
 import { Command } from "@/features/commands/Command";
 import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
+import { usePresetAddMutation } from "@/features/preset/store/usePresetAddMutation";
 import type { IPreset } from "@/features/preset/types";
-import { useWorkspaceMutation } from "@/features/workspace/store/useWorkspaceMutation";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
 
 export function useWorkspaceAddPresetCommand() {
   const { data: workspace } = useWorkspaceQuery();
   const executeCommand = useCommandExecute();
-  const mutation = useWorkspaceMutation();
+  const addPresetMutation = usePresetAddMutation();
 
   return {
     execute: (preset: IPreset) => {
@@ -15,9 +15,8 @@ export function useWorkspaceAddPresetCommand() {
         "Workspace - Add preset",
         () => {
           if (workspace) {
-            mutation.mutate({
-              presets: [...workspace.presets, preset.id],
-              activePresetId: preset.id,
+            addPresetMutation.mutate({
+              preset,
             });
           }
         },

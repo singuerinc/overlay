@@ -33,7 +33,9 @@ export function ToolBoxTabs({ children }: PropsWithChildren) {
 }
 
 export function ToolBoxTabTitle({ children }: PropsWithChildren) {
-  return <h3 className="o:text-lg o:font-light o:mb-2 o:hidden">{children}</h3>;
+  return (
+    <div className="o:bg-white o:flex o:items-center o:pr-2">{children}</div>
+  );
 }
 
 export function ToolBoxSeparator() {

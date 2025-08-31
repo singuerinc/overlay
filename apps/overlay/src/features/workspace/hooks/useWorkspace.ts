@@ -12,8 +12,12 @@ export function useWorkspace() {
       setActivePresetIdCmd.execute(id);
     },
     addPreset: () => {
-      const preset = createPreset();
-      addPresetCmd.execute(preset);
+      const presetNamePrompt = prompt("Enter preset name", "Preset");
+      if (presetNamePrompt !== null) {
+        const preset = createPreset({ name: presetNamePrompt });
+        console.log(preset);
+        addPresetCmd.execute(preset);
+      }
     },
   };
 }

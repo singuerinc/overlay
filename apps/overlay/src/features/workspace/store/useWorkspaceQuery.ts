@@ -13,7 +13,6 @@ function getWorkspace(): Promise<IWorkspace> {
 
     if (maybeWorkspace === null) {
       const preset = createPreset();
-
       const workspace = createWorkspace({ preset });
 
       localStorage.setItem(

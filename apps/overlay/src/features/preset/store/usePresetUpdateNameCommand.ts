@@ -1,0 +1,31 @@
+import { Command } from "@/features/commands/Command";
+import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
+import { usePresetMutation } from "@/features/preset/store/usePresetMutation";
+import { type IPreset } from "../types";
+
+export function usePresetUpdateNameCommand() {
+  const executeCommand = useCommandExecute();
+  const mutation = usePresetMutation();
+
+  return {
+    execute: (preset: IPreset, newName: string) => {
+      const prevName = preset.name;
+      const command = new Command(
+        "Presets - Update name",
+        () => {
+          mutation.mutate({
+            id: preset.id,
+            name: newName,
+          });
+        },
+        () => {
+          mutation.mutate({
+            id: preset.id,
+            name: prevName,
+          });
+        }
+      );
+      executeCommand(command, true);
+    },
+  };
+}
