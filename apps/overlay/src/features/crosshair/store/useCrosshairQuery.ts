@@ -5,7 +5,9 @@ import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
 import type { IPreset } from "@/features/preset/types";
 import { useQuery } from "@tanstack/react-query";
 
-function getCrosshair(presetId: IPreset["id"]): Promise<ICrosshairStore> {
+export function getCrosshair(
+  presetId: IPreset["id"]
+): Promise<ICrosshairStore> {
   return new Promise((resolve) => {
     const maybeCrosshair = localStorage.getItem(
       CROSSHAIR_KEYS.crosshair(presetId).join("-")

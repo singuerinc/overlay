@@ -5,7 +5,9 @@ import { useQuery } from "@tanstack/react-query";
 import type { IGuidelineStore } from "../types";
 import { GUIDELINES_KEYS } from "./guidelinesKeys";
 
-function getGuidelines(presetId: IPreset["id"]): Promise<IGuidelineStore> {
+export function getGuidelines(
+  presetId: IPreset["id"]
+): Promise<IGuidelineStore> {
   return new Promise((resolve) => {
     const maybeGuidelines = localStorage.getItem(
       GUIDELINES_KEYS.guidelines(presetId).join("-")

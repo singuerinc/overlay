@@ -5,7 +5,7 @@ import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
 import type { IPreset } from "@/features/preset/types";
 import { useQuery } from "@tanstack/react-query";
 
-function getGrid(presetId: IPreset["id"]): Promise<IGridStore> {
+export function getGrid(presetId: IPreset["id"]): Promise<IGridStore> {
   return new Promise((resolve) => {
     const maybeGrid = localStorage.getItem(GRID_KEYS.grid(presetId).join("-"));
 

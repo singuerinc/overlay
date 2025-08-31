@@ -4,7 +4,7 @@ import type { IPreset } from "@/features/preset/types";
 import { useQuery } from "@tanstack/react-query";
 import { GUIDELINES_KEYS } from "./guidelinesKeys";
 
-function getGuideline(
+export function getGuideline(
   presetId: IPreset["id"],
   id: IGuideline["id"]
 ): Promise<IGuideline> {

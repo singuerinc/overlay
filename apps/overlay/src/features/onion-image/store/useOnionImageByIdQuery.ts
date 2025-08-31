@@ -4,7 +4,7 @@ import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
 import type { IPreset } from "@/features/preset/types";
 import { useQuery } from "@tanstack/react-query";
 
-function getOnionImage(
+export function getOnionImage(
   presetId: IPreset["id"],
   id: IOnionImage["id"]
 ): Promise<IOnionImage> {
