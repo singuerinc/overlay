@@ -1,10 +1,10 @@
 import { Command } from "@/features/commands/Command";
-import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
+import { useCommands } from "@/features/commands/hooks/useCommands";
 import { usePresetAddMutation } from "@/features/preset/store/usePresetAddMutation";
 import { type IPreset } from "../types";
 
 export function usePresetAddCommand() {
-  const executeCommand = useCommandExecute();
+  const { execute: executeCommand } = useCommands();
   const mutation = usePresetAddMutation();
 
   return {

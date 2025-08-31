@@ -1,10 +1,10 @@
 import { Command } from "@/features/commands/Command";
-import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
+import { useCommands } from "@/features/commands/hooks/useCommands";
 import { useOnionImageMutation } from "@/features/onion-image/store/useOnionImageMutation";
 import { type IOnionImage } from "../types";
 
 export function useOnionImageOpacityCommand() {
-  const executeCommand = useCommandExecute();
+  const { execute: executeCommand } = useCommands();
   const mutation = useOnionImageMutation();
 
   return {

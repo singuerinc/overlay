@@ -1,10 +1,10 @@
 import { Command } from "@/features/commands/Command";
-import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
+import { useCommands } from "@/features/commands/hooks/useCommands";
 import { useNotesMutation } from "@/features/notes/store/useNotesMutation";
 import type { INotes } from "@/features/notes/types";
 
 export function useNotesSetContentCommand() {
-  const executeCommand = useCommandExecute();
+  const { execute: executeCommand } = useCommands();
   const updateNotes = useNotesMutation();
 
   return {

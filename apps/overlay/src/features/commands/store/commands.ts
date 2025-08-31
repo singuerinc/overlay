@@ -6,12 +6,14 @@ type State = {
   actions: {
     execute: (command: ICommand, skipStack?: boolean) => void;
     undo: () => void;
+    reset: () => void;
   };
 };
 
 export const useCommandStore = create<State>((set) => ({
   _commands: [],
   actions: {
+    reset: () => set({ _commands: [] }),
     execute: (command: ICommand, skipStack: boolean = false) => {
       command.execute();
       if (!skipStack) {

@@ -1,5 +1,5 @@
 import { Command } from "@/features/commands/Command";
-import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
+import { useCommands } from "@/features/commands/hooks/useCommands";
 import { ONION_IMAGES_KEYS } from "@/features/onion-image/store/onionImagesKeys";
 import { useOnionImageMutation } from "@/features/onion-image/store/useOnionImageMutation";
 import {
@@ -13,7 +13,7 @@ import { useQueryClient } from "@tanstack/react-query";
 export function useOnionImageCycleFilterCommand() {
   const presetId = usePresetActiveId();
   const queryClient = useQueryClient();
-  const executeCommand = useCommandExecute();
+  const { execute: executeCommand } = useCommands();
   const updateGrid = useOnionImageMutation();
 
   return {

@@ -1,10 +1,10 @@
 import { useColumnsMutation } from "@/features/columns/store/useColumnsMutation";
 import type { IColumns } from "@/features/columns/types";
 import { Command } from "@/features/commands/Command";
-import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
+import { useCommands } from "@/features/commands/hooks/useCommands";
 
 export function useColumnsSetNumCommand() {
-  const executeCommand = useCommandExecute();
+  const { execute: executeCommand } = useCommands();
   const updateColumns = useColumnsMutation();
 
   return {

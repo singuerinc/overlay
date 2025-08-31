@@ -15,7 +15,6 @@ export function useWorkspace() {
       const presetNamePrompt = prompt("Enter preset name", "Preset");
       if (presetNamePrompt !== null) {
         const preset = createPreset({ name: presetNamePrompt });
-        console.log(preset);
         addPresetCmd.execute(preset);
       }
     },

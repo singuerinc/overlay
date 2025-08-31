@@ -1,9 +1,9 @@
 import { Command } from "@/features/commands/Command";
-import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
+import { useCommands } from "@/features/commands/hooks/useCommands";
 import { useRulerMutation } from "@/features/rulers/store/useRulerMutation";
 
 export function useRulerToggleCommand() {
-  const executeCommand = useCommandExecute();
+  const { execute: executeCommand } = useCommands();
   const updateRuler = useRulerMutation();
 
   return {

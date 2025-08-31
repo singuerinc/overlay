@@ -25,8 +25,8 @@ import {
   IconNote,
   IconPhoto,
   IconRuler,
-  IconSettings,
   IconTable,
+  IconTools,
 } from "@tabler/icons-react";
 import { useLocalStorage } from "usehooks-ts";
 
@@ -39,7 +39,7 @@ export function OverlayToolBox() {
     | "guidelines"
     | "onion-images"
     | "notes"
-    | "settings"
+    | "workspace"
   >("overlay-toolbox-active-tab", "ruler");
   const { data: toolBox } = useToolBoxQuery();
   const { move: toolBoxMove } = useToolBoxMove();
@@ -115,12 +115,12 @@ export function OverlayToolBox() {
             />
             {activeTab === "notes" && <ToolBoxTabTitle>Notes</ToolBoxTabTitle>}
             <ToolButton
-              activated={activeTab === "settings"}
+              activated={activeTab === "workspace"}
               enabled={true}
-              Icon={<IconSettings />}
-              onClick={() => setActiveTab("settings")}
+              Icon={<IconTools />}
+              onClick={() => setActiveTab("workspace")}
             />
-            {activeTab === "settings" && (
+            {activeTab === "workspace" && (
               <ToolBoxTabTitle>Workspace</ToolBoxTabTitle>
             )}
           </div>
@@ -164,7 +164,7 @@ export function OverlayToolBox() {
               <NotesToolBox />
             </ToolBoxTab>
           )}
-          {activeTab === "settings" && (
+          {activeTab === "workspace" && (
             <ToolBoxTab>
               <WorkspaceToolBox />
             </ToolBoxTab>
