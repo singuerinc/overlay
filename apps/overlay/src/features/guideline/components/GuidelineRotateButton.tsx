@@ -8,13 +8,19 @@ export function GuidelineRotateButton({ id }: { id: IGuideline["id"] }) {
   const { data: guideline } = useGuidelineByIdQuery(id);
   const rotateGuidelineCommand = useGuidelineRotateCommand();
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
     if (guideline) {
       rotateGuidelineCommand.execute(guideline);
     }
   };
 
   return (
-    <ToolButton enabled={true} Icon={<IconRotate />} onClick={handleClick} />
+    <ToolButton
+      enabled={true}
+      Icon={<IconRotate size={16} />}
+      onClick={handleClick}
+    />
   );
 }

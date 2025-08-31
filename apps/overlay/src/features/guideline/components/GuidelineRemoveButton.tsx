@@ -10,8 +10,10 @@ export function GuidelineRemoveButton({ id }: { id: IGuideline["id"] }) {
   return (
     <ToolButton
       enabled={true}
-      Icon={<IconTrash />}
-      onClick={() => {
+      Icon={<IconTrash size={16} />}
+      onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        e.preventDefault();
         if (guideline) {
           removeGuideline(guideline);
         }
