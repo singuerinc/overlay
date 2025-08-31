@@ -5,7 +5,7 @@ import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
 import type { IPreset } from "@/features/preset/types";
 import { useQuery } from "@tanstack/react-query";
 
-function getColumns(presetId: IPreset["id"]): Promise<IColumnsStore> {
+export function getColumns(presetId: IPreset["id"]): Promise<IColumnsStore> {
   return new Promise((resolve) => {
     const maybeColumns = localStorage.getItem(
       COLUMNS_KEYS.verticalColumns(presetId).join("-")

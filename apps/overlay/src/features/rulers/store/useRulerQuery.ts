@@ -5,7 +5,7 @@ import { RULER_KEYS } from "@/features/rulers/store/rulerKeys";
 import type { IRulerStore } from "@/features/rulers/types";
 import { useQuery } from "@tanstack/react-query";
 
-function getRuler(presetId: IPreset["id"]): Promise<IRulerStore> {
+export function getRuler(presetId: IPreset["id"]): Promise<IRulerStore> {
   return new Promise((resolve) => {
     const maybeRuler = localStorage.getItem(
       RULER_KEYS.ruler(presetId).join("-")

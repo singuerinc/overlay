@@ -5,7 +5,7 @@ import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
 import type { IPreset } from "@/features/preset/types";
 import { useQuery } from "@tanstack/react-query";
 
-function getNotes(presetId: IPreset["id"]): Promise<INotesStore> {
+export function getNotes(presetId: IPreset["id"]): Promise<INotesStore> {
   return new Promise((resolve) => {
     const maybeNotes = localStorage.getItem(
       NOTES_KEYS.notes(presetId).join("-")

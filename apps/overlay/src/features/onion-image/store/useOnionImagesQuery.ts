@@ -5,7 +5,9 @@ import type { IPreset } from "@/features/preset/types";
 import { useQuery } from "@tanstack/react-query";
 import type { IOnionImagesStore } from "../types";
 
-function getOnionImages(presetId: IPreset["id"]): Promise<IOnionImagesStore> {
+export function getOnionImages(
+  presetId: IPreset["id"]
+): Promise<IOnionImagesStore> {
   return new Promise((resolve) => {
     const maybeOnionImages = localStorage.getItem(
       ONION_IMAGES_KEYS.onionImages(presetId).join("-")

@@ -4,7 +4,10 @@ import type { IPreset } from "@/features/preset/types";
 import { useWorkspaceId } from "@/features/workspace/hooks/useWorkspaceId";
 import { useQuery } from "@tanstack/react-query";
 
-function getPreset(workspaceId: string, id: IPreset["id"]): Promise<IPreset> {
+export function getPreset(
+  workspaceId: string,
+  id: IPreset["id"]
+): Promise<IPreset> {
   return new Promise((resolve) => {
     const maybePreset = localStorage.getItem(
       PRESETS_KEYS.preset(workspaceId, id).join("-")
