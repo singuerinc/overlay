@@ -1,10 +1,10 @@
-import { useGridSetGap } from "@/features/grid/hooks/useGridSetGap";
+import { useGrid } from "@/features/grid/hooks/useGrid";
 import { useGridQuery } from "@/features/grid/store/useGridQuery";
 import { ToolBoxInputNumber } from "@/features/toolbox/components/ToolBoxInputNumber";
 
 export function GridGapSetInput() {
   const { data: grid } = useGridQuery();
-  const { set } = useGridSetGap();
+  const { setGap } = useGrid();
 
   if (!grid) {
     return null;
@@ -12,11 +12,11 @@ export function GridGapSetInput() {
 
   return (
     <ToolBoxInputNumber
-      label="Gap (px)"
+      label="Gap"
       min={4}
       step={2}
       defaultValue={grid.gapX}
-      set={set}
+      set={setGap}
     />
   );
 }

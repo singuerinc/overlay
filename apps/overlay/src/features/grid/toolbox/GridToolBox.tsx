@@ -9,9 +9,8 @@ export function GridToolBox() {
   return (
     <ToolBoxTabGrid>
       <GridToggleButton />
-      <GridCyclePatternButton />
       <GridColorButton />
-      <div />
+      <GridCyclePatternButton />
       <GridGapSetInput />
       <GridOpacitySetInput />
     </ToolBoxTabGrid>

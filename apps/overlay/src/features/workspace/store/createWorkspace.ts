@@ -9,6 +9,8 @@ export const createWorkspace = ({
 }): IWorkspace => ({
   id: uuidv4(),
   type: "workspace" as const,
+  visible: true,
+  locked: false,
   presets: [preset.id],
   activePresetId: preset.id,
 });

@@ -18,6 +18,7 @@ export function RulerPositionButton() {
 
   return (
     <ToolBoxLabeledButton
+      className="o:col-span-2"
       label="Position"
       Icon={<div>{ruler?.position}</div>}
       onClick={handleClick}

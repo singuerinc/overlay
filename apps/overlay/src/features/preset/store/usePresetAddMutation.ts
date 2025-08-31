@@ -19,6 +19,7 @@ export function usePresetAddMutation() {
       if (!workspace) return;
 
       const updatedWorkspace = produce(workspace, (draftState: IWorkspace) => {
+        draftState.activePresetId = preset.id;
         draftState.presets.push(preset.id);
       });
 

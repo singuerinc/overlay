@@ -12,7 +12,7 @@ export function ToolBoxInputBoolean({
   return (
     <div className="o:flex o:flex-col o:text-neutral-600 o:rounded-md o:gap-1 o:items-start">
       <div className="o:flex o:flex-col">
-        <span className="o:text-xs o:font-semibold">{label}</span>
+        <span className="o:text-xs o:font-semibold o:select-none">{label}</span>
         <input
           type="checkbox"
           className="overlay-step-num o:border-0 o:outline-0 o:text-center o:hidden"

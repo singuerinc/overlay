@@ -1,15 +1,16 @@
 import { createOnionImage } from "@/features/onion-image/store/createOnionImage";
 import { useOnionImageAddCommand } from "@/features/onion-image/store/useOnionImageAddCommand";
 import { ToolBoxLabeledButton } from "@/features/toolbox/components/ToolBoxLabeledButton";
-import { IconPhotoPlus } from "@tabler/icons-react";
+import { IconPlus } from "@tabler/icons-react";
 
 export function OnionImagesAddButton() {
   const cmd = useOnionImageAddCommand();
 
   return (
     <ToolBoxLabeledButton
-      label="Add 1"
-      Icon={<IconPhotoPlus />}
+      className="o:col-span-2"
+      label="Add Image"
+      Icon={<IconPlus size={16} />}
       onClick={async () => {
         const fileInput = document.createElement("input");
         fileInput.type = "file";

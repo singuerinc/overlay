@@ -1,10 +1,10 @@
-import { useGridSetOpacity } from "@/features/grid/hooks/useGridSetOpacity";
+import { useGrid } from "@/features/grid/hooks/useGrid";
 import { useGridQuery } from "@/features/grid/store/useGridQuery";
 import { ToolBoxInputNumber } from "@/features/toolbox/components/ToolBoxInputNumber";
 
 export function GridOpacitySetInput() {
   const { data: grid } = useGridQuery();
-  const { set } = useGridSetOpacity();
+  const { setOpacity } = useGrid();
 
   if (!grid) {
     return null;
@@ -17,7 +17,7 @@ export function GridOpacitySetInput() {
       max={1}
       step={0.1}
       defaultValue={grid.opacity}
-      set={set}
+      set={setOpacity}
     />
   );
 }

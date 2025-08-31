@@ -12,7 +12,6 @@ import {
   ToolBoxTabs,
   ToolBoxTabTitle,
 } from "@/features/toolbox/components/ToolBox";
-import { ToolBoxCommandHistory } from "@/features/toolbox/components/ToolBoxCommandHistory";
 import { useToolBoxMove } from "@/features/toolbox/hooks/useToolBoxMove";
 import { useToolBoxQuery } from "@/features/toolbox/store/useToolBoxQuery";
 import { WorkspaceToolBox } from "@/features/workspace/toolbox/WorkspaceToolBox";
@@ -21,7 +20,7 @@ import { DndContext } from "@dnd-kit/core";
 import {
   IconColumns,
   IconCrosshair,
-  IconGrid3x3,
+  IconGridDots,
   IconNote,
   IconPhoto,
   IconRuler,
@@ -59,21 +58,18 @@ export function OverlayToolBox() {
           <div className="o:flex">
             <ToolButton
               activated={activeTab === "ruler"}
-              enabled={true}
               Icon={<IconRuler />}
               onClick={() => setActiveTab("ruler")}
             />
             {activeTab === "ruler" && <ToolBoxTabTitle>Ruler</ToolBoxTabTitle>}
             <ToolButton
               activated={activeTab === "grid"}
-              enabled={true}
-              Icon={<IconGrid3x3 />}
+              Icon={<IconGridDots stroke={1.5} />}
               onClick={() => setActiveTab("grid")}
             />
             {activeTab === "grid" && <ToolBoxTabTitle>Grid</ToolBoxTabTitle>}
             <ToolButton
               activated={activeTab === "crosshair"}
-              enabled={true}
               Icon={<IconCrosshair />}
               onClick={() => setActiveTab("crosshair")}
             />
@@ -82,7 +78,6 @@ export function OverlayToolBox() {
             )}
             <ToolButton
               activated={activeTab === "columns"}
-              enabled={true}
               Icon={<IconColumns />}
               onClick={() => setActiveTab("columns")}
             />
@@ -91,7 +86,6 @@ export function OverlayToolBox() {
             )}
             <ToolButton
               activated={activeTab === "guidelines"}
-              enabled={true}
               Icon={<IconTable />}
               onClick={() => setActiveTab("guidelines")}
             />
@@ -100,7 +94,6 @@ export function OverlayToolBox() {
             )}
             <ToolButton
               activated={activeTab === "onion-images"}
-              enabled={true}
               Icon={<IconPhoto />}
               onClick={() => setActiveTab("onion-images")}
             />
@@ -109,23 +102,18 @@ export function OverlayToolBox() {
             )}
             <ToolButton
               activated={activeTab === "notes"}
-              enabled={true}
               Icon={<IconNote />}
               onClick={() => setActiveTab("notes")}
             />
             {activeTab === "notes" && <ToolBoxTabTitle>Notes</ToolBoxTabTitle>}
             <ToolButton
               activated={activeTab === "workspace"}
-              enabled={true}
               Icon={<IconTools />}
               onClick={() => setActiveTab("workspace")}
             />
             {activeTab === "workspace" && (
               <ToolBoxTabTitle>Workspace</ToolBoxTabTitle>
             )}
-          </div>
-          <div className="o:flex o:gap-1">
-            <ToolBoxCommandHistory />
           </div>
         </ToolBoxButtons>
         <ToolBoxTabs>

@@ -1,5 +1,4 @@
 import { Columns } from "@/features/columns/Columns";
-import { CommandsDebugger } from "@/features/commands/components/CommandsDebugger";
 import { Coords } from "@/features/coords/Coords";
 import { Crosshair } from "@/features/crosshair/Crosshair";
 import { Grid } from "@/features/grid/Grid";
@@ -11,12 +10,14 @@ import { Ruler } from "@/features/rulers/Ruler";
 import { RulerContextProvider } from "@/features/rulers/store/rulerStore";
 import { ShortcutsObserver } from "@/features/shortcuts/ShortcutsObserver";
 import { OverlayToolBox } from "@/features/toolbox/OverlayToolBox";
+import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
 import { cn } from "@/ui/cn";
 
 export function Preset({ id }: { id: IPreset["id"] }) {
+  const { data: workspace } = useWorkspaceQuery();
   const { data: preset } = usePresetByIdQuery({ id });
 
-  if (!preset) {
+  if (!preset || !workspace) {
     return null;
   }
 
@@ -27,16 +28,18 @@ export function Preset({ id }: { id: IPreset["id"] }) {
     >
       <OverlayToolBox />
       <ShortcutsObserver />
-      <CommandsDebugger />
-      <RulerContextProvider>
-        <Columns />
-        <OnionImages />
-        <Guidelines />
-        <Grid />
-        <Ruler />
-        <Crosshair />
-        <Coords />
-      </RulerContextProvider>
+      {/* <CommandsDebugger /> */}
+      {workspace.visible && (
+        <RulerContextProvider>
+          <Columns />
+          <OnionImages />
+          <Guidelines />
+          <Grid />
+          <Ruler />
+          <Crosshair />
+          <Coords />
+        </RulerContextProvider>
+      )}
     </div>
   );
 }

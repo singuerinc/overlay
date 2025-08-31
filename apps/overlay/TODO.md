@@ -1,5 +1,4 @@
 - [x] guidelines: move with arrows
-- [ ] guidelines: set position with keyboard nums
 - [x] guidelines: colors
 - [x] guideline: can be locked individually
 - [x] guideline: coord in toolbar
@@ -15,7 +14,10 @@
 - [ ] eyedrop
 - [ ] zoom / loupe / magnifier
 - [x] measure tool, diagonal, free
-- [ ] crosshair: a zoom view in the corner to see the pixels under the cross
+- [ ] crosshair: a zoom view in the corner to see the pixels under the cross, canvas?
 - [x] presets - many configs
 - [ ] rulers "rectangles"
-- [ ] notes
+- [x] notes
+- [ ] lock workspace
+- [ ] import workspace
+- [ ] baseline grid

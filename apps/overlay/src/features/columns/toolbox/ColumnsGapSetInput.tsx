@@ -11,10 +11,6 @@ export function ColumnsGapSetInput() {
   }
 
   return (
-    <ToolBoxInputNumber
-      label="Gap (px)"
-      defaultValue={columns.gap}
-      set={setGap}
-    />
+    <ToolBoxInputNumber label="Gap" defaultValue={columns.gap} set={setGap} />
   );
 }
