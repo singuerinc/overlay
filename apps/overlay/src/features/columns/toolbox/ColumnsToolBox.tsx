@@ -10,9 +10,8 @@ export function ColumnsToolBox() {
   return (
     <ToolBoxTabGrid>
       <ColumnsToggleButton />
-      <ColumnsSetOpacityInput />
       <ColumnsCycleColorButton />
-      <div />
+      <ColumnsSetOpacityInput />
       <ColumnsSetNumInput />
       <ColumnsGapSetInput />
       <ColumnsSizeSetInput />

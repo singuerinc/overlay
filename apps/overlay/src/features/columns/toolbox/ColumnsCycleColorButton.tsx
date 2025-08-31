@@ -7,10 +7,10 @@ import { IconCircle } from "@tabler/icons-react";
 import { useCallback } from "react";
 
 const colors = {
-  neutral: "o:fill-neutral-600",
-  cyan: "o:fill-cyan-600",
-  green: "o:fill-green-600",
-  red: "o:fill-red-600",
+  neutral: "o:fill-neutral-400",
+  cyan: "o:fill-cyan-400",
+  green: "o:fill-green-400",
+  red: "o:fill-red-400",
 } satisfies Record<ColumnsColorType, string>;
 
 export function ColumnsCycleColorButton() {

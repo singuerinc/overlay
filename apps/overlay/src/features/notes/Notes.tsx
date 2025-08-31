@@ -31,7 +31,7 @@ function TextArea({
       <textarea
         name="notes"
         id="notes"
-        className="o:w-full o:resize-none o:box-border o:focus:outline-none"
+        className="o:w-full o:text-xs o:font-semibold o:resize-none o:box-border o:focus:outline-none"
         placeholder="Write your notes"
         value={content}
         rows={4}

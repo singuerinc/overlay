@@ -1,15 +1,16 @@
 import { createHorizontalGuideline } from "@/features/guideline/store/createHorizontalGuideline";
 import { useGuidelineAddCommand } from "@/features/guideline/store/useGuidelineAddCommand";
 import { ToolBoxLabeledButton } from "@/features/toolbox/components/ToolBoxLabeledButton";
-import { IconTablePlus } from "@tabler/icons-react";
+import { IconPlus } from "@tabler/icons-react";
 
 export function GuidelinesAddButton() {
   const cmd = useGuidelineAddCommand();
 
   return (
     <ToolBoxLabeledButton
-      label="Add 1"
-      Icon={<IconTablePlus />}
+      className="o:col-span-2"
+      label="Add Guideline"
+      Icon={<IconPlus size={16} />}
       onClick={() => {
         const guideline = createHorizontalGuideline({
           y: window.innerHeight / 2,

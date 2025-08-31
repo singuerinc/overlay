@@ -17,14 +17,14 @@ export function ToolBoxInputNumber({
 }) {
   return (
     <div className="o:flex o:flex-col o:group o:rounded-md o:gap-1">
-      <span className="o:text-xs o:font-semibold">{label}</span>
+      <span className="o:text-xs o:font-semibold o:select-none">{label}</span>
       <input
         type="number"
         min={min ?? 0}
         max={max ?? undefined}
         step={step ?? 1}
         className={cn(
-          "overlay-step-num o:border-b-2 o:text-neutral-400 o:border-neutral-400 o:focus:text-neutral-900 o:focus:border-neutral-900 o:pb-1 o:outline-0 o:text-left o:w-16"
+          "overlay-step-num o:focus:bg-neutral-100 o:p-1 o:border-b-2 o:text-neutral-400 o:border-neutral-400 o:focus:text-neutral-900 o:focus:border-neutral-900 o:pb-1 o:outline-0 o:text-left o:min-w-8"
         )}
         defaultValue={defaultValue}
         onChange={(e) => set(Number(e.target.value))}

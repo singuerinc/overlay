@@ -12,7 +12,7 @@ export function ColumnsSizeSetInput() {
 
   return (
     <ToolBoxInputNumber
-      label="Size (px)"
+      label="Size"
       defaultValue={Number.parseInt(columns.size, 10)}
       set={(num: number) => setSize(`${num}px`)}
     />

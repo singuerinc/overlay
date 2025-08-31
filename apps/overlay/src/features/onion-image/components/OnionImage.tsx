@@ -16,7 +16,9 @@ import { useHotkeys } from "react-hotkeys-hook";
 import type { HotkeysEvent } from "react-hotkeys-hook/packages/react-hotkeys-hook/dist/types";
 
 const variantsOnionImage = cva(
-  ["o:absolute o:top-0 o:left-0 o:overflow-visible o:pointer-events-auto"],
+  [
+    "o:absolute o:top-0 o:left-0 o:overflow-visible o:pointer-events-auto o:outline-none",
+  ],
   {
     variants: {
       locked: {

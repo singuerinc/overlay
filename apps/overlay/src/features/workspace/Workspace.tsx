@@ -14,7 +14,9 @@ export function Workspace() {
 
   return (
     <WorkspaceContextProvider id={workspace.id}>
-      <PresetLoader id={workspace.activePresetId} />
+      {workspace.activePresetId && (
+        <PresetLoader id={workspace.activePresetId} />
+      )}
     </WorkspaceContextProvider>
   );
 }
