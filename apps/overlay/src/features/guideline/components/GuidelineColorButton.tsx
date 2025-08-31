@@ -21,7 +21,9 @@ export function GuidelineColorButton({ id }: { id: IGuideline["id"] }) {
   const colorGuidelineCommand = useGuidelineColorCommand();
   const color = guideline?.color || "cyan";
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
     const newColor =
       GuidelineColors[
         (GuidelineColors.indexOf(color) + 1) % GuidelineColors.length
@@ -35,7 +37,11 @@ export function GuidelineColorButton({ id }: { id: IGuideline["id"] }) {
     <ToolButton
       enabled={true}
       Icon={
-        <IconCircle className={cn(fillByColor[color], "text-transparent")} />
+        <IconCircle
+          stroke={0}
+          className={cn(fillByColor[color], "text-transparent")}
+          size={16}
+        />
       }
       onClick={handleClick}
     />

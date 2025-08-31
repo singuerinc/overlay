@@ -1,3 +1,4 @@
+import { GuidelineActions } from "@/features/guideline/components/GuidelineActions";
 import { useGuidelineMove } from "@/features/guideline/hooks/useGuidelineMove";
 import { useGuidelineRemove } from "@/features/guideline/hooks/useGuidelineRemove";
 import { useGuidelineRotate } from "@/features/guideline/hooks/useGuidelineRotate";
@@ -14,68 +15,71 @@ import { useHotkeys } from "react-hotkeys-hook";
 import type { HotkeysEvent } from "react-hotkeys-hook/packages/react-hotkeys-hook/dist/types";
 import { GUIDELINE_VERTICAL, type IGuideline } from "./types";
 
-const variantsGuideline = cva(["o:pointer-events-auto o:focus:outline-none"], {
-  variants: {
-    locked: {
-      true: "o:cursor-not-allowed",
-      false: "o:cursor-move",
+const variantsGuideline = cva(
+  ["o:pointer-events-auto o:group o:focus:outline-none"],
+  {
+    variants: {
+      locked: {
+        true: "o:cursor-not-allowed",
+        false: "o:cursor-move",
+      },
+      isDrag: {
+        true: "",
+        false: "",
+      },
+      isVertical: {
+        true: "o:h-screen o:w-px o:border-l",
+        false: "o:w-screen o:h-px o:border-t",
+      },
+      color: {
+        cyan: "o:border-cyan-500/40 hover:o:border-cyan-500/100",
+        red: "o:border-red-500/40 hover:o:border-red-500/100",
+        green: "o:border-green-500/40 hover:o:border-green-500/100",
+        neutral: "o:border-neutral-500/40 hover:o:border-neutral-500/100",
+      },
+      selected: {
+        true: "",
+        false: "",
+      },
+      style: {
+        solid: "o:border-solid",
+        dashed: "o:border-dashed",
+      },
     },
-    isDrag: {
-      true: "",
-      false: "",
-    },
-    isVertical: {
-      true: "o:h-screen o:w-px o:border-l",
-      false: "o:w-screen o:h-px o:border-t",
-    },
-    color: {
-      cyan: "o:border-cyan-500/40 hover:o:border-cyan-500/100",
-      red: "o:border-red-500/40 hover:o:border-red-500/100",
-      green: "o:border-green-500/40 hover:o:border-green-500/100",
-      neutral: "o:border-neutral-500/40 hover:o:border-neutral-500/100",
-    },
-    selected: {
-      true: "",
-      false: "",
-    },
-    style: {
-      solid: "o:border-solid",
-      dashed: "o:border-dashed",
-    },
-  },
-  compoundVariants: [
-    {
-      isDrag: true,
-      locked: false,
-      className: "o:cursor-move",
-    },
-    {
-      selected: true,
+    compoundVariants: [
+      {
+        isDrag: true,
+        locked: false,
+        className: "o:cursor-move",
+      },
+      {
+        selected: true,
+        color: "cyan",
+        className: "o:border-cyan-500/100",
+      },
+      {
+        selected: true,
+        color: "red",
+        className: "o:border-red-500/100",
+      },
+      {
+        selected: true,
+        color: "green",
+        className: "o:border-green-500/100",
+      },
+      {
+        selected: true,
+        color: "neutral",
+        className: "o:border-neutral-500/100",
+      },
+    ],
+    defaultVariants: {
+      isVertical: true,
       color: "cyan",
-      className: "o:border-cyan-500/100",
+      selected: false,
     },
-    {
-      selected: true,
-      color: "red",
-      className: "o:border-red-500/100",
-    },
-    {
-      selected: true,
-      color: "green",
-      className: "o:border-green-500/100",
-    },
-    {
-      selected: true,
-      color: "neutral",
-      className: "o:border-neutral-500/100",
-    },
-  ],
-  defaultVariants: {
-    isVertical: true,
-    color: "cyan",
-    selected: false,
-  },
-});
+  }
+);
 
 export function Guideline({
   id,
@@ -259,7 +263,9 @@ export function Guideline({
         aria-orientation={isVertical ? "vertical" : "horizontal"}
         aria-selected={isSelected}
         className={variantsGuideline(variantsConfig)}
-      />
+      >
+        <GuidelineActions guideline={guideline} />
+      </div>
     </div>
   );
 }
