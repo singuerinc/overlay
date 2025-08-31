@@ -24,7 +24,7 @@ export function Preset({ id }: { id: IPreset["id"] }) {
   return (
     <div
       data-overlay-preset-id={preset.id}
-      className={cn("overlay-root o:pointer-events-auto o:overflow-hidden")}
+      className={cn("overlay-root o:overflow-hidden")}
     >
       <OverlayToolBox />
       <ShortcutsObserver />

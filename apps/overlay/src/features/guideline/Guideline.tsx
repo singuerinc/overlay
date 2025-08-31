@@ -154,12 +154,6 @@ export function Guideline({
     }
   }, [guideline, isVertical, onGuidelinePositionChanged]);
 
-  const handleDoubleClick = useCallback(() => {
-    if (guideline) {
-      toggleLock(guideline);
-    }
-  }, [guideline, toggleLock]);
-
   const handleUp = useCallback(
     (event: MouseEvent) => {
       if (guideline && isDrag && containerRef.current) {
@@ -249,7 +243,6 @@ export function Guideline({
       ref={containerRef}
       className="o:absolute o:top-0 o:left-0 o:h-0 o:w-0 o:overflow-visible o:pointer-events-none o:focus:outline-none"
       onMouseDown={handleDown}
-      onDoubleClick={handleDoubleClick}
     >
       <div
         ref={guidelineRef}
