@@ -10,7 +10,7 @@ export function usePreset() {
     updateName: (preset: IPreset, name: string) => {
       return updateNameCmd.execute(preset, name);
     },
-    duplicatePreset: (preset: IPreset) => {
+    duplicatePreset: (_preset: IPreset) => {
       return false;
     },
     removePreset: (preset: IPreset) => {
