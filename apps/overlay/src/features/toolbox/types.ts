@@ -6,3 +6,16 @@ export type IToolBox = {
   x: number;
   y: number;
 };
+
+export const ToolBoxTabNames = [
+  "ruler",
+  "grid",
+  "crosshair",
+  "columns",
+  "guidelines",
+  "onion-images",
+  "notes",
+  "workspace",
+] as const;
+
+export type ToolBoxTabNameType = (typeof ToolBoxTabNames)[number];

@@ -45,8 +45,8 @@ export function WorkspaceToolBox() {
       </ToolBoxTabGrid>
       <ToolBoxTabGrid>
         <ToolBoxGridTitle>Presets</ToolBoxGridTitle>
-        <PresetSelect />
         <PresetCreateButton />
+        <PresetSelect />
         {workspace.activePresetId && (
           <>
             <PresetUpdateNameButton id={workspace.activePresetId} />

@@ -1,5 +1,6 @@
 import { useRuler } from "@/features/rulers/hooks/useRuler";
 import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
+import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
 import { cn } from "@/ui/cn";
 import { cva } from "class-variance-authority";
 import { useCallback } from "react";
@@ -7,7 +8,7 @@ import { useWindowSize } from "usehooks-ts";
 
 const variantsWrapper = cva(
   [
-    "o:absolute o:top-0 o:w-5 o:pointer-events-auto",
+    "o:absolute o:top-0 o:w-5",
     "o:flex o:h-full",
     "o:select-none o:text-[9px] o:text-neutral-400",
   ],
@@ -38,6 +39,7 @@ const variantsItem = cva(
 );
 
 export function VerticalRuler({ origin }: { origin: number }) {
+  const { data: workspace } = useWorkspaceQuery();
   const { data: ruler } = useRulerQuery();
   const { setOrigin } = useRuler();
   const windowSize = useWindowSize();
@@ -62,7 +64,9 @@ export function VerticalRuler({ origin }: { origin: number }) {
   return (
     <div
       onClick={handleClick}
-      className={cn(variantsWrapper({ position: ruler.position }))}
+      className={cn(variantsWrapper({ position: ruler.position }), {
+        "o:pointer-events-auto": workspace?.locked === false,
+      })}
     >
       <div className="o:absolute o:h-fit o:w-full o:flex o:flex-col">
         <div

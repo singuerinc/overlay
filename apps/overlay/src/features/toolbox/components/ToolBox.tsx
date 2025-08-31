@@ -1,6 +1,11 @@
+import { ToolBoxLockToggle } from "@/features/toolbox/components/ToolBoxLockToggle";
+import { ToolBoxVisibilityToggle } from "@/features/toolbox/components/ToolBoxVisibilityToggle";
+import type { ToolBoxTabNameType } from "@/features/toolbox/types";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
+import { cn } from "@/ui/cn";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
+import { IconArrowsMove } from "@tabler/icons-react";
 import { type PropsWithChildren } from "react";
 
 export function ToolBoxTab({ children }: PropsWithChildren) {
@@ -29,9 +34,19 @@ export function ToolBoxIndicator({
   );
 }
 
-export function ToolBoxTabs({ children }: PropsWithChildren) {
+export function ToolBoxTabs({
+  activeTab,
+  children,
+}: PropsWithChildren<{ activeTab: ToolBoxTabNameType }>) {
   return (
-    <div className="o:flex o:bg-white o:rounded-r-md o:rounded-b-md o:gap-x-1 o:items-start o:w-96">
+    <div
+      className={cn(
+        "o:flex o:bg-white o:rounded-md o:gap-x-1 o:items-start o:w-96",
+        {
+          "o:rounded-l-none": activeTab === "ruler",
+        }
+      )}
+    >
       {children}
     </div>
   );
@@ -93,16 +108,19 @@ export function ToolBoxRoot({
   return (
     <div
       id="toolBox"
-      className="o:flex o:shadow o:bg-neutral-950/80 o:p-1 o:z-50 o:absolute o:rounded-sm o:pointer-events-auto"
+      className="o:flex o:opacity-15 o:hover:opacity-100 o:transition-opacity o:hover:delay-75 o:hover:duration-300 o:duration-500 o:delay-1000 o:shadow o:bg-neutral-950/80 o:p-1 o:z-50 o:absolute o:rounded-sm o:pointer-events-auto"
       ref={setNodeRef}
       style={style}
     >
       <div className="o:flex o:flex-col o:items-center o:py-1 o:justify-between o:gap-2">
-        <div
-          {...listeners}
-          // {...attributes}
-          className="o:cursor-grab o:active:cursor-grabbing o:grow-0 o:w-4 o:shrink-0 o:h-full o:relative"
-        />
+        <div {...listeners} className="o:cursor-grab o:active:cursor-grabbing">
+          <IconArrowsMove size={18} className="o:text-neutral-400" />
+        </div>
+        <div className="o:flex o:flex-col o:items-center o:gap-2">
+          {/* <ToolBoxCommandHistory /> */}
+          <ToolBoxLockToggle />
+          <ToolBoxVisibilityToggle />
+        </div>
       </div>
       <div className="o:flex o:flex-col o:ml-1">{children}</div>
     </div>

@@ -43,20 +43,15 @@ export function Grid() {
   } as Record<IGridPattern, React.CSSProperties>;
 
   return (
-    <>
-      <div
-        data-overlay-grid-id={grid.id}
-        className="o:absolute o:top-0 o:left-0 o:w-screen o:h-screen o:pointer-events-none"
-        style={{
-          opacity,
-          backgroundPosition: `${ruler.originX + grid.gapX / 2}px ${ruler.originY + grid.gapY / 2}px`,
-          backgroundSize: `${grid.gapX}px ${grid.gapY}px`,
-          ...styles[grid.pattern],
-        }}
-      />
-      <pre className="bg-yellow-200 font-mono">
-        {JSON.stringify(grid.pattern, null, 2)}
-      </pre>
-    </>
+    <div
+      data-overlay-grid-id={grid.id}
+      className="o:absolute o:top-0 o:left-0 o:w-screen o:h-screen"
+      style={{
+        opacity,
+        backgroundPosition: `${ruler.originX + grid.gapX / 2}px ${ruler.originY + grid.gapY / 2}px`,
+        backgroundSize: `${grid.gapX}px ${grid.gapY}px`,
+        ...styles[grid.pattern],
+      }}
+    />
   );
 }

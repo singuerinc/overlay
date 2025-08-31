@@ -2,13 +2,14 @@ import { CrosshairColors } from "@/features/crosshair/CrosshairColor";
 import { useCrosshairQuery } from "@/features/crosshair/store/useCrosshairQuery";
 import { useNormalizedPosition } from "@/features/rulers/hooks/useNormalizedPosition";
 import { useRulerSetPosition } from "@/features/rulers/store/rulerStore";
+import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
+import { cn } from "@/ui/cn";
 import { cva } from "class-variance-authority";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const variantsWrapper = cva(
   [
     "o:absolute o:top-0 o:left-0 o:overflow-visible",
-    "o:pointer-events-auto",
     "o:group o:hover:opacity-100 transition-colors",
     "o:h-full o:w-full",
     "o:justify-center o:items-center",
@@ -39,6 +40,7 @@ const variantsGuideline = cva(["o:absolute"], {
 });
 
 export function Crosshair() {
+  const { data: workspace } = useWorkspaceQuery();
   const { data: crosshair } = useCrosshairQuery();
   const { calculate: calculateNormalizePosition } = useNormalizedPosition();
   const setRulerPosition = useRulerSetPosition();
@@ -128,9 +130,10 @@ export function Crosshair() {
 
   return (
     <div
-      id="crosshair-root"
       ref={containerRef}
-      className={variantsWrapper(variantsConfig)}
+      className={cn(variantsWrapper(variantsConfig), {
+        "o:pointer-events-auto": workspace?.locked === false,
+      })}
       // onClick={handleClick}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
@@ -246,11 +249,7 @@ function MeasureRuler({
 
   return (
     <>
-      <svg
-        width="100%"
-        height="100%"
-        className="o:absolute o:pointer-events-none"
-      >
+      <svg width="100%" height="100%" className="o:absolute">
         <line
           ref={measureRef}
           stroke="oklch(71.5% 0.143 215.221)"

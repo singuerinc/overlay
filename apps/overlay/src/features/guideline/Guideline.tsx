@@ -6,77 +6,76 @@ import {
   useSelectedTool,
   useSetSelectedTool,
 } from "@/features/tools/store/tools";
+import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
+import { cn } from "@/ui/cn";
 import { cva } from "class-variance-authority";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import type { HotkeysEvent } from "react-hotkeys-hook/packages/react-hotkeys-hook/dist/types";
 import { GUIDELINE_VERTICAL, type IGuideline } from "./types";
 
-const variantsGuideline = cva(
-  ["o:pointer-events-auto o:group o:focus:outline-none"],
-  {
-    variants: {
-      locked: {
-        true: "o:cursor-not-allowed",
-        false: "o:cursor-move",
-      },
-      isDrag: {
-        true: "",
-        false: "",
-      },
-      isVertical: {
-        true: "o:h-screen o:w-px o:border-l",
-        false: "o:w-screen o:h-px o:border-t",
-      },
-      color: {
-        cyan: "o:border-cyan-500/40 hover:o:border-cyan-500/100",
-        red: "o:border-red-500/40 hover:o:border-red-500/100",
-        green: "o:border-green-500/40 hover:o:border-green-500/100",
-        neutral: "o:border-neutral-500/40 hover:o:border-neutral-500/100",
-      },
-      selected: {
-        true: "",
-        false: "",
-      },
-      style: {
-        solid: "o:border-solid",
-        dashed: "o:border-dashed",
-      },
+const variantsGuideline = cva(["o:group o:focus:outline-none"], {
+  variants: {
+    locked: {
+      true: "o:cursor-not-allowed",
+      false: "o:cursor-move",
     },
-    compoundVariants: [
-      {
-        isDrag: true,
-        locked: false,
-        className: "o:cursor-move",
-      },
-      {
-        selected: true,
-        color: "cyan",
-        className: "o:border-cyan-500/100",
-      },
-      {
-        selected: true,
-        color: "red",
-        className: "o:border-red-500/100",
-      },
-      {
-        selected: true,
-        color: "green",
-        className: "o:border-green-500/100",
-      },
-      {
-        selected: true,
-        color: "neutral",
-        className: "o:border-neutral-500/100",
-      },
-    ],
-    defaultVariants: {
-      isVertical: true,
+    isDrag: {
+      true: "",
+      false: "",
+    },
+    isVertical: {
+      true: "o:h-screen o:w-px o:border-l",
+      false: "o:w-screen o:h-px o:border-t",
+    },
+    color: {
+      cyan: "o:border-cyan-500/40 hover:o:border-cyan-500/100",
+      red: "o:border-red-500/40 hover:o:border-red-500/100",
+      green: "o:border-green-500/40 hover:o:border-green-500/100",
+      neutral: "o:border-neutral-500/40 hover:o:border-neutral-500/100",
+    },
+    selected: {
+      true: "",
+      false: "",
+    },
+    style: {
+      solid: "o:border-solid",
+      dashed: "o:border-dashed",
+    },
+  },
+  compoundVariants: [
+    {
+      isDrag: true,
+      locked: false,
+      className: "o:cursor-move",
+    },
+    {
+      selected: true,
       color: "cyan",
-      selected: false,
+      className: "o:border-cyan-500/100",
     },
-  }
-);
+    {
+      selected: true,
+      color: "red",
+      className: "o:border-red-500/100",
+    },
+    {
+      selected: true,
+      color: "green",
+      className: "o:border-green-500/100",
+    },
+    {
+      selected: true,
+      color: "neutral",
+      className: "o:border-neutral-500/100",
+    },
+  ],
+  defaultVariants: {
+    isVertical: true,
+    color: "cyan",
+    selected: false,
+  },
+});
 
 export function Guideline({
   id,
@@ -89,6 +88,7 @@ export function Guideline({
   originX: number;
   originY: number;
 }) {
+  const { data: workspace } = useWorkspaceQuery();
   const { data: guideline } = useGuidelineByIdQuery(id);
   const selectedTool = useSelectedTool();
   const rulerSetPosition = useRulerSetPosition();
@@ -241,7 +241,12 @@ export function Guideline({
       data-overlay-guideline-id={guideline.id}
       data-overlay-tool-type="guideline"
       ref={containerRef}
-      className="o:absolute o:top-0 o:left-0 o:h-0 o:w-0 o:overflow-visible o:pointer-events-none o:focus:outline-none"
+      className={cn(
+        "o:absolute o:top-0 o:left-0 o:h-0 o:w-0 o:overflow-visible o:focus:outline-none",
+        {
+          "o:pointer-events-auto": workspace?.locked === false,
+        }
+      )}
       onMouseDown={handleDown}
     >
       <div

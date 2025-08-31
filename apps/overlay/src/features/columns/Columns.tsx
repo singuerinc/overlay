@@ -21,7 +21,7 @@ export function Columns() {
 
   return (
     <div
-      className="o:h-full o:flex o:mx-auto o:pointer-events-none"
+      className="o:h-full o:flex o:mx-auto"
       style={{
         width: columns.size,
         maxWidth: "100%",

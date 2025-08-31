@@ -13,7 +13,7 @@ export function Ruler() {
   return (
     <HotkeysProvider>
       <div
-        className="o:absolute o:top-0 o:left-0 o:pointer-events-none"
+        className="o:absolute o:top-0 o:left-0"
         style={{
           width: `${ruler.width}`,
           height: `${ruler.height}`,

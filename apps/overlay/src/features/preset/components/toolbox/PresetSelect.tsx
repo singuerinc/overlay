@@ -13,7 +13,6 @@ export function PresetSelect() {
         "o:flex o:flex-col o:col-span-2 o:rounded-md o:gap-1 o:items-start"
       )}
     >
-      <span className="o:text-xs o:font-semibold o:select-none">Presets</span>
       <select
         className="o:text-xs"
         value={workspace?.activePresetId ?? undefined}

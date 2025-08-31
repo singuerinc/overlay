@@ -12,7 +12,11 @@ const variants = cva(["o:p-1"], {
     },
     activated: {
       true: " o:text-neutral-900",
-      false: "o:text-neutral-400 ",
+      false: "o:text-neutral-400",
+    },
+    inTab: {
+      true: "o:rounded-t-md",
+      false: "",
     },
   },
   compoundVariants: [
@@ -34,11 +38,13 @@ const variants = cva(["o:p-1"], {
 });
 
 export function ToolButton({
+  inTab = false,
   activated = false,
   enabled = true,
   onClick,
   Icon,
 }: {
+  inTab?: boolean;
   activated?: boolean;
   enabled?: boolean;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
@@ -47,7 +53,7 @@ export function ToolButton({
   return (
     <button
       disabled={!enabled}
-      className={variants({ activated, enabled })}
+      className={variants({ activated, inTab, enabled })}
       onMouseDown={onClick}
     >
       {Icon}

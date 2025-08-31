@@ -22,3 +22,21 @@ import "@singuerinc/overlay/overlay.css";
     <Overlay />
 </body>
 ```
+
+## Next.js
+
+Wrap `<Overlay />` in a client component
+
+```tsx
+// overlay-wrapper.tsx
+"use client";
+import { Overlay } from "@singuerinc/overlay";
+import "@singuerinc/overlay/overlay.css";
+
+export function OverlayWrapper() {
+  return <Overlay />;
+}
+
+// somewhere
+<OverlayWrapper />;
+```

@@ -6,6 +6,7 @@ import {
   useSelectedTool,
   useSetSelectedTool,
 } from "@/features/tools/store/tools";
+import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
 import { cn } from "@/ui/cn";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
@@ -15,9 +16,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import type { HotkeysEvent } from "react-hotkeys-hook/packages/react-hotkeys-hook/dist/types";
 
 const variantsOnionImage = cva(
-  [
-    "o:absolute o:top-0 o:left-0 o:overflow-visible o:pointer-events-auto o:outline-none",
-  ],
+  ["o:absolute o:top-0 o:left-0 o:overflow-visible o:outline-none"],
   {
     variants: {
       locked: {
@@ -47,6 +46,7 @@ const variantsOnionImage = cva(
 );
 
 export function OnionImage({ id }: { id: IOnionImage["id"] }) {
+  const { data: workspace } = useWorkspaceQuery();
   const { data: onionImage } = useOnionImageByIdQuery(id);
   const selectedTool = useSelectedTool();
   const setSelectedTool = useSetSelectedTool();
@@ -113,37 +113,37 @@ export function OnionImage({ id }: { id: IOnionImage["id"] }) {
   };
 
   return (
-    <>
-      <div
-        data-overlay-onion-image-id={onionImage.id}
-        data-overlay-tool-type="onion-image"
-        ref={setNodeRef}
-        className={cn(variantsOnionImage(variantsConfig))}
-        style={style}
-        {...listeners}
-        {...attributes}
-        onMouseDown={handleDown}
-        tabIndex={0}
-        aria-disabled={onionImage.locked}
-        aria-selected={isSelected}
-      >
-        <img
-          src={onionImage.data}
-          className={cn({
-            "o:opacity-100": onionImage.opacity === 1,
-            "o:opacity-50": onionImage.opacity === 0.5,
-            "o:invert": onionImage.filter === "invert",
-            "o:grayscale": onionImage.filter === "grayscale",
-          })}
-          style={{
-            objectFit: "cover",
-            width: "100%",
-            height: "100%",
-          }}
-        />
-        {isSelected && <OnionImageActions onionImage={onionImage} />}
-      </div>
-    </>
+    <div
+      data-overlay-onion-image-id={onionImage.id}
+      data-overlay-tool-type="onion-image"
+      ref={setNodeRef}
+      className={cn(variantsOnionImage(variantsConfig), {
+        "o:pointer-events-auto": workspace?.locked === false,
+      })}
+      style={style}
+      {...listeners}
+      {...attributes}
+      onMouseDown={handleDown}
+      tabIndex={0}
+      aria-disabled={onionImage.locked}
+      aria-selected={isSelected}
+    >
+      <img
+        src={onionImage.data}
+        className={cn({
+          "o:opacity-100": onionImage.opacity === 1,
+          "o:opacity-50": onionImage.opacity === 0.5,
+          "o:invert": onionImage.filter === "invert",
+          "o:grayscale": onionImage.filter === "grayscale",
+        })}
+        style={{
+          objectFit: "cover",
+          width: "100%",
+          height: "100%",
+        }}
+      />
+      {isSelected && <OnionImageActions onionImage={onionImage} />}
+    </div>
   );
 }
 
