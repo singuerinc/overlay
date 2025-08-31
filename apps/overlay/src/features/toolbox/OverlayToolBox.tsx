@@ -56,55 +56,73 @@ export function OverlayToolBox() {
     >
       <ToolBoxRoot x={toolBox.x} y={toolBox.y}>
         <ToolBoxButtons>
-          <div className="o:flex o:gap-1">
+          <div className="o:flex">
             <ToolButton
               activated={activeTab === "ruler"}
               enabled={true}
               Icon={<IconRuler />}
               onClick={() => setActiveTab("ruler")}
             />
+            {activeTab === "ruler" && <ToolBoxTabTitle>Ruler</ToolBoxTabTitle>}
             <ToolButton
               activated={activeTab === "grid"}
               enabled={true}
               Icon={<IconGrid3x3 />}
               onClick={() => setActiveTab("grid")}
             />
+            {activeTab === "grid" && <ToolBoxTabTitle>Grid</ToolBoxTabTitle>}
             <ToolButton
               activated={activeTab === "crosshair"}
               enabled={true}
               Icon={<IconCrosshair />}
               onClick={() => setActiveTab("crosshair")}
             />
+            {activeTab === "crosshair" && (
+              <ToolBoxTabTitle>Crosshair</ToolBoxTabTitle>
+            )}
             <ToolButton
               activated={activeTab === "columns"}
               enabled={true}
               Icon={<IconColumns />}
               onClick={() => setActiveTab("columns")}
             />
+            {activeTab === "columns" && (
+              <ToolBoxTabTitle>Columns</ToolBoxTabTitle>
+            )}
             <ToolButton
               activated={activeTab === "guidelines"}
               enabled={true}
               Icon={<IconTable />}
               onClick={() => setActiveTab("guidelines")}
             />
+            {activeTab === "guidelines" && (
+              <ToolBoxTabTitle>Guidelines</ToolBoxTabTitle>
+            )}
             <ToolButton
               activated={activeTab === "onion-images"}
               enabled={true}
               Icon={<IconPhoto />}
               onClick={() => setActiveTab("onion-images")}
             />
+            {activeTab === "onion-images" && (
+              <ToolBoxTabTitle>Images</ToolBoxTabTitle>
+            )}
             <ToolButton
               activated={activeTab === "notes"}
               enabled={true}
               Icon={<IconNote />}
               onClick={() => setActiveTab("notes")}
             />
+            {activeTab === "notes" && <ToolBoxTabTitle>Notes</ToolBoxTabTitle>}
             <ToolButton
               activated={activeTab === "settings"}
               enabled={true}
               Icon={<IconSettings />}
               onClick={() => setActiveTab("settings")}
             />
+            {activeTab === "settings" && (
+              <ToolBoxTabTitle>Workspace</ToolBoxTabTitle>
+            )}
           </div>
           <div className="o:flex o:gap-1">
             <ToolBoxCommandHistory />
@@ -113,49 +131,41 @@ export function OverlayToolBox() {
         <ToolBoxTabs>
           {activeTab === "ruler" && (
             <ToolBoxTab>
-              <ToolBoxTabTitle>Ruler</ToolBoxTabTitle>
               <RulerToolBox />
             </ToolBoxTab>
           )}
           {activeTab === "grid" && (
             <ToolBoxTab>
-              <ToolBoxTabTitle>Grid</ToolBoxTabTitle>
               <GridToolBox />
             </ToolBoxTab>
           )}
           {activeTab === "crosshair" && (
             <ToolBoxTab>
-              <ToolBoxTabTitle>Crosshair</ToolBoxTabTitle>
               <CrosshairToolBox />
             </ToolBoxTab>
           )}
           {activeTab === "columns" && (
             <ToolBoxTab>
-              <ToolBoxTabTitle>Columns</ToolBoxTabTitle>
               <ColumnsToolBox />
             </ToolBoxTab>
           )}
           {activeTab === "guidelines" && (
             <ToolBoxTab>
-              <ToolBoxTabTitle>Guidelines</ToolBoxTabTitle>
               <GuidelinesToolBox />
             </ToolBoxTab>
           )}
           {activeTab === "onion-images" && (
             <ToolBoxTab>
-              <ToolBoxTabTitle>Images</ToolBoxTabTitle>
               <OnionImagesToolBox />
             </ToolBoxTab>
           )}
           {activeTab === "notes" && (
             <ToolBoxTab>
-              <ToolBoxTabTitle>Notes</ToolBoxTabTitle>
               <NotesToolBox />
             </ToolBoxTab>
           )}
           {activeTab === "settings" && (
             <ToolBoxTab>
-              <ToolBoxTabTitle>Settings</ToolBoxTabTitle>
               <WorkspaceToolBox />
             </ToolBoxTab>
           )}

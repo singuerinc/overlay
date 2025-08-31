@@ -1,12 +1,19 @@
+import { usePreset } from "@/features/preset/hooks/usePreset";
+import { usePresetByIdQuery } from "@/features/preset/hooks/usePresetByIdQuery";
+import type { IPreset } from "@/features/preset/types";
 import { ToolBoxTabGrid } from "@/features/toolbox/components/ToolBox";
+import { ToolBoxLabeledButton } from "@/features/toolbox/components/ToolBoxLabeledButton";
 import { useWorkspace } from "@/features/workspace/hooks/useWorkspace";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
 import { useExportWorkspace } from "@/features/workspace/utils/useExportWorkspace";
+import { IconAdjustmentsPlus, IconFileArrowRight } from "@tabler/icons-react";
+import { useCopyToClipboard } from "usehooks-ts";
 
 export function WorkspaceToolBox() {
   const { data: workspace } = useWorkspaceQuery();
   const { addPreset, setActivePresetId } = useWorkspace();
   const { exportWorkspace } = useExportWorkspace();
+  const [, copy] = useCopyToClipboard();
 
   if (!workspace) {
     return null;
@@ -14,9 +21,29 @@ export function WorkspaceToolBox() {
 
   return (
     <ToolBoxTabGrid>
-      <button type="button" onClick={() => addPreset()}>
-        Add Preset
-      </button>
+      <ToolBoxLabeledButton
+        onClick={async () => {
+          const exportedWorkspace = await exportWorkspace();
+          copy(JSON.stringify(exportedWorkspace, null, 2));
+        }}
+        Icon={<IconFileArrowRight />}
+        label={"Import Workspace"}
+      />
+      <ToolBoxLabeledButton
+        onClick={async () => {
+          const exportedWorkspace = await exportWorkspace();
+          copy(JSON.stringify(exportedWorkspace, null, 2));
+        }}
+        Icon={<IconFileArrowRight />}
+        label={"Export Workspace"}
+      />
+      <ToolBoxLabeledButton
+        onClick={() => addPreset()}
+        Icon={<IconAdjustmentsPlus />}
+        label={"Create New Preset"}
+      />
+
+      <div />
       <select
         value={workspace.activePresetId}
         onChange={(e) => {
@@ -25,17 +52,38 @@ export function WorkspaceToolBox() {
         }}
       >
         {workspace.presets.map((presetId) => (
-          <option key={presetId}>{presetId}</option>
+          <PresetOption key={presetId} presetId={presetId} />
         ))}
       </select>
-      <button
-        type="button"
-        onClick={async () => {
-          console.log(await exportWorkspace());
-        }}
-      >
-        export
-      </button>
+      <UpdatePresetName id={workspace.activePresetId} />
     </ToolBoxTabGrid>
+  );
+}
+
+function PresetOption({ presetId }: { presetId: string }) {
+  const { data: preset } = usePresetByIdQuery({ id: presetId });
+
+  if (!preset) {
+    return null;
+  }
+
+  return <option key={preset.id}>{preset.name}</option>;
+}
+
+function UpdatePresetName({ id }: { id: IPreset["id"] }) {
+  const { data: preset } = usePresetByIdQuery({ id });
+  const { updateName: updatePresetName } = usePreset();
+
+  return (
+    <ToolBoxLabeledButton
+      onClick={() => {
+        const name = prompt("Enter new preset name", preset?.name);
+        if (name && preset) {
+          updatePresetName(preset, name);
+        }
+      }}
+      Icon={<IconAdjustmentsPlus />}
+      label={"Update Preset Name"}
+    />
   );
 }

@@ -1,19 +1,19 @@
 import { Command } from "@/features/commands/Command";
 import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
-import { useNotesMutation } from "@/features/notes/store/useNotesMutation";
-import type { INotes } from "@/features/notes/types";
+import { usePresetAddMutation } from "@/features/preset/store/usePresetAddMutation";
+import { type IPreset } from "../types";
 
-export function useNotesSetContentCommand() {
+export function usePresetAddCommand() {
   const executeCommand = useCommandExecute();
-  const updateNotes = useNotesMutation();
+  const mutation = usePresetAddMutation();
 
   return {
-    execute: (content: INotes["content"]) => {
+    execute: (preset: IPreset) => {
       const command = new Command(
-        "Notes - Set content",
+        "Presets - Add one",
         () => {
-          updateNotes.mutate({
-            content,
+          mutation.mutate({
+            preset,
           });
         },
         () => {
