@@ -9,10 +9,11 @@ export function Coords() {
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
+      console.log("mouse move");
       const rect = ref.current?.getBoundingClientRect();
       const x = event.clientX - (rect?.left || 0) + offset.x;
       const y = event.clientY - (rect?.top || 0) + offset.y;
-      setMouseCoords({ x, y });
+      setMouseCoords({ x: Math.round(x), y: Math.round(y) });
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -24,9 +25,10 @@ export function Coords() {
 
   return (
     <div
+      data-overlay-tool-type="coords"
       ref={ref}
       className={cn(
-        "o:absolute o:left-0 o:top-0",
+        "o:fixed o:left-0 o:top-0",
         "o:w-full o:h-full o:px-1",
         "o:text-neutral-950 o:text-[9px] o:tabular-nums"
       )}
@@ -39,14 +41,16 @@ export function Coords() {
         className="o:absolute o:w-12 o:h-5 o:flex o:justify-start o:border-l o:bg-gradient-to-r o:from-white o:to-transparent"
         style={{ left: mouseCoords.x, top: 0 }}
       >
-        <span className="o:absolute o:left-2">{mouseCoords.x}</span>
+        <span className="o:absolute o:left-2">
+          {mouseCoords.x + window.scrollX}
+        </span>
       </div>
       <div
         className="o:absolute o:w-5 o:h-16 o:bg-gradient-to-b o:from-white o:to-transparent o:border-t o:inline-block"
         style={{ left: 0, top: mouseCoords.y }}
       >
         <span className="o:absolute o:top-2 o:w-5 o:h-5 o:pt-0.5 o:flex o:justify-end o:-rotate-90">
-          {mouseCoords.y}
+          {mouseCoords.y + window.scrollY}
         </span>
       </div>
     </div>

@@ -25,8 +25,8 @@ const variantsGuideline = cva(["o:group o:focus:outline-none"], {
       false: "",
     },
     isVertical: {
-      true: "o:h-screen o:w-px o:border-l",
-      false: "o:w-screen o:h-px o:border-t",
+      true: "o:h-full o:w-px o:border-l",
+      false: "o:w-full o:h-px o:border-t",
     },
     color: {
       cyan: "o:border-cyan-500/40 hover:o:border-cyan-500/100",
@@ -245,6 +245,8 @@ export function Guideline({
         "o:absolute o:top-0 o:left-0 o:h-0 o:w-0 o:overflow-visible o:focus:outline-none",
         {
           "o:pointer-events-auto": workspace?.locked === false,
+          "o:h-full": isVertical === true,
+          "o:w-full": isVertical === false,
         }
       )}
       onMouseDown={handleDown}

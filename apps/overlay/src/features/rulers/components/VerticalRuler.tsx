@@ -4,7 +4,6 @@ import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery"
 import { cn } from "@/ui/cn";
 import { cva } from "class-variance-authority";
 import { useCallback } from "react";
-import { useWindowSize } from "usehooks-ts";
 
 const variantsWrapper = cva(
   [
@@ -42,9 +41,8 @@ export function VerticalRuler({ origin }: { origin: number }) {
   const { data: workspace } = useWorkspaceQuery();
   const { data: ruler } = useRulerQuery();
   const { setOrigin } = useRuler();
-  const windowSize = useWindowSize();
   const numList = Array.from(
-    { length: Math.floor(windowSize.height / 50) + 1 },
+    { length: Math.floor(document.body.scrollHeight / 50) + 1 },
     (_, i) => i
   );
 

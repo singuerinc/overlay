@@ -23,8 +23,8 @@ const variantsWrapper = cva(
 const variantsGuideline = cva(["o:absolute"], {
   variants: {
     isVertical: {
-      true: "o:h-screen o:w-px o:border-l o:border-dashed",
-      false: "o:w-screen o:h-px o:border-t o:border-dashed",
+      true: "o:h-full o:w-px o:border-l o:border-dashed",
+      false: "o:w-full o:h-px o:border-t o:border-dashed",
     },
     color: {
       cyan: "o:border-cyan-500",

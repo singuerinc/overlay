@@ -45,7 +45,7 @@ export function Grid() {
   return (
     <div
       data-overlay-grid-id={grid.id}
-      className="o:absolute o:top-0 o:left-0 o:w-screen o:h-screen"
+      className="o:absolute o:top-0 o:left-0 o:w-full o:h-full"
       style={{
         opacity,
         backgroundPosition: `${ruler.originX + grid.gapX / 2}px ${ruler.originY + grid.gapY / 2}px`,

@@ -17,7 +17,7 @@ export function Guidelines() {
   return (
     <div
       data-overlay-tool-type="guidelines"
-      className="o:h-0 o:w-0 o:absolute o:top-0 o:left-0"
+      className="o:h-full o:w-full o:absolute o:top-0 o:left-0"
     >
       {guidelines.guidelines.map((guidelineId) => (
         <Guideline
