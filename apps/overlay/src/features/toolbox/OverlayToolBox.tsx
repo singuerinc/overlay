@@ -2,6 +2,7 @@ import { ColumnsToolBox } from "@/features/columns/toolbox/ColumnsToolBox";
 import { CrosshairToolBox } from "@/features/crosshair/toolbox/CrosshairToolBox";
 import { GridToolBox } from "@/features/grid/toolbox/GridToolBox";
 import { GuidelinesToolBox } from "@/features/guideline/toolbox/GuidelinesToolBox";
+import { NotesToolBox } from "@/features/notes/components/toolbox/NotesToolBox";
 import { OnionImagesToolBox } from "@/features/onion-image/toolbox/OnionImagesToolBox";
 import { RulerToolBox } from "@/features/rulers/toolbox/RulerToolBox";
 import {
@@ -21,6 +22,7 @@ import {
   IconColumns,
   IconCrosshair,
   IconGrid3x3,
+  IconNote,
   IconPhoto,
   IconRuler,
   IconSettings,
@@ -36,6 +38,7 @@ export function OverlayToolBox() {
     | "columns"
     | "guidelines"
     | "onion-images"
+    | "notes"
     | "settings"
   >("overlay-toolbox-active-tab", "ruler");
   const { data: toolBox } = useToolBoxQuery();
@@ -91,6 +94,12 @@ export function OverlayToolBox() {
               onClick={() => setActiveTab("onion-images")}
             />
             <ToolButton
+              activated={activeTab === "notes"}
+              enabled={true}
+              Icon={<IconNote />}
+              onClick={() => setActiveTab("notes")}
+            />
+            <ToolButton
               activated={activeTab === "settings"}
               enabled={true}
               Icon={<IconSettings />}
@@ -136,6 +145,12 @@ export function OverlayToolBox() {
             <ToolBoxTab>
               <ToolBoxTabTitle>Images</ToolBoxTabTitle>
               <OnionImagesToolBox />
+            </ToolBoxTab>
+          )}
+          {activeTab === "notes" && (
+            <ToolBoxTab>
+              <ToolBoxTabTitle>Notes</ToolBoxTabTitle>
+              <NotesToolBox />
             </ToolBoxTab>
           )}
           {activeTab === "settings" && (
