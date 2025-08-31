@@ -10,6 +10,7 @@ export function useColumnsToggleCommand() {
   return {
     execute: (visible: IColumns["visible"]) => {
       const command = new Command(
+        "Columns - Toggle visibility",
         () => {
           updateColumns.mutate({
             visible,
@@ -21,7 +22,7 @@ export function useColumnsToggleCommand() {
           });
         }
       );
-      executeCommand(command, true);
+      executeCommand(command);
     },
   };
 }

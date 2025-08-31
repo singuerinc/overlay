@@ -11,6 +11,7 @@ export function useOnionImagesToggleCommand() {
   return {
     execute: (visible: boolean) => {
       const command = new Command(
+        "Onion Images - Toggle visibility",
         () => {
           setSelectedTool(null);
           mutation.mutate({ visible });
@@ -19,7 +20,7 @@ export function useOnionImagesToggleCommand() {
           // no undo
         }
       );
-      executeCommand(command, true);
+      executeCommand(command);
     },
   };
 }

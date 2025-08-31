@@ -7,13 +7,13 @@
 - [x] crosshair tool
 - [x] columns tool
 - [x] grid tool
-- [ ] image onion tool
+- [x] image onion tool
 - [ ] color drop
 - [ ] all borders (similar to extension)
 - [ ] dark mode
 - [ ] snap to grid
 - [ ] eyedrop
 - [ ] zoom / loupe / magnifier
-- [ ] measure tool, diagonal, free
+- [x] measure tool, diagonal, free
 - [ ] crosshair: a zoom view in the corner to see the pixels under the cross
-- [ ] dark mode
+- [x] presets - many configs

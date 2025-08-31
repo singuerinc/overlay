@@ -21,6 +21,7 @@ export function useGridCyclePatternCommand() {
       ] as IGridPattern;
 
       const command = new Command(
+        "Grid - Cycle pattern",
         () => {
           updateGrid.mutate({
             pattern: nextPattern,

@@ -14,6 +14,7 @@ export function useOnionImageAddCommand() {
   return {
     execute: (onionImage: IOnionImage) => {
       const command = new Command(
+        "Onion Image - Add",
         () => {
           addOnionImage.mutate({
             onionImage,

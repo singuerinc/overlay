@@ -14,6 +14,7 @@ export function useColumnsColorCommand() {
     execute: (columns: IColumns, color: ColumnsColorType) => {
       const prevColor = columns.color;
       const command = new Command(
+        "Columns - Change color",
         () => {
           updateColumns.mutate({
             color,

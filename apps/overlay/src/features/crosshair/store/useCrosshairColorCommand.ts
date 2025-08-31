@@ -14,6 +14,7 @@ export function useCrosshairColorCommand() {
     execute: (crosshair: ICrosshair, color: CrosshairColorType) => {
       const prevColor = crosshair.color;
       const command = new Command(
+        "Crosshair - Change Color",
         () => {
           updateCrosshair.mutate({
             color,

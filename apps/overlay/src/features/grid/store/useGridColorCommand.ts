@@ -12,6 +12,7 @@ export function useGridColorCommand() {
     execute: (grid: IGrid, color: GuidelineColorType) => {
       const prevColor = grid.color;
       const command = new Command(
+        "Grid - Change color",
         () => {
           mutation.mutate({
             color,

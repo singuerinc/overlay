@@ -10,6 +10,7 @@ export function useColumnsSetNumCommand() {
   return {
     execute: (numColumns: IColumns["numColumns"]) => {
       const command = new Command(
+        "Columns - Set number of columns",
         () => {
           updateColumns.mutate({
             numColumns,

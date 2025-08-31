@@ -1,4 +1,5 @@
 import { Columns } from "@/features/columns/Columns";
+import { CommandsDebugger } from "@/features/commands/components/CommandsDebugger";
 import { Coords } from "@/features/coords/Coords";
 import { Crosshair } from "@/features/crosshair/Crosshair";
 import { Grid } from "@/features/grid/Grid";
@@ -26,6 +27,7 @@ export function Preset({ id }: { id: IPreset["id"] }) {
     >
       <OverlayToolBox />
       <ShortcutsObserver />
+      <CommandsDebugger />
       <RulerContextProvider>
         <Columns />
         <OnionImages />

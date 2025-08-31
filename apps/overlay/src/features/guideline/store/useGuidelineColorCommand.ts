@@ -14,6 +14,7 @@ export function useGuidelineColorCommand() {
     execute: (guideline: IGuideline, color: GuidelineColorType) => {
       const prevColor = guideline.color;
       const command = new Command(
+        "Guideline - Change Color",
         () => {
           mutation.mutate({
             id: guideline.id,

@@ -21,6 +21,7 @@ export function useOnionImageMoveCommand() {
       );
 
       const command = new Command(
+        "Onion Image - Move",
         () => {
           if (onionImage) {
             mutation.mutate({

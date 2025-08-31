@@ -12,6 +12,7 @@ export function useWorkspaceAddPresetCommand() {
   return {
     execute: (preset: IPreset) => {
       const command = new Command(
+        "Workspace - Add preset",
         () => {
           if (workspace) {
             mutation.mutate({

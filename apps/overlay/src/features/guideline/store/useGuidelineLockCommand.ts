@@ -13,6 +13,7 @@ export function useGuidelineLockCommand() {
     execute: (guideline: IGuideline, locked: boolean) => {
       const prevLocked = guideline.locked;
       const command = new Command(
+        "Guideline - Lock",
         () => {
           mutation.mutate({
             id: guideline.id,

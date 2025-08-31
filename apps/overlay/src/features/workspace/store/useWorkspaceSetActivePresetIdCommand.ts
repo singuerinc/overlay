@@ -12,6 +12,7 @@ export function useWorkspaceSetActivePresetIdCommand() {
   return {
     execute: (presetId: IPreset["id"]) => {
       const command = new Command(
+        "Workspace - Set active preset",
         () => {
           if (workspace) {
             mutation.mutate({

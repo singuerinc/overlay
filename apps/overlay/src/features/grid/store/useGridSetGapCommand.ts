@@ -12,7 +12,9 @@ export function useGridSetGapCommand() {
     execute: (gap: number) => {
       if (!grid) return;
 
+      const prevGap = grid.gapX;
       const command = new Command(
+        "Grid - Set gap",
         () => {
           updateGrid.mutate({
             gapX: gap,
@@ -20,10 +22,13 @@ export function useGridSetGapCommand() {
           });
         },
         () => {
-          //
+          updateGrid.mutate({
+            gapX: prevGap,
+            gapY: prevGap,
+          });
         }
       );
-      executeCommand(command, true);
+      executeCommand(command);
     },
   };
 }

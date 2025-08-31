@@ -12,17 +12,21 @@ export function useGridSetOpacityCommand() {
     execute: (opacity: number) => {
       if (!grid) return;
 
+      const prevOpacity = grid.opacity;
       const command = new Command(
+        "Grid - Set opacity",
         () => {
           updateGrid.mutate({
             opacity,
           });
         },
         () => {
-          //
+          updateGrid.mutate({
+            opacity: prevOpacity,
+          });
         }
       );
-      executeCommand(command, true);
+      executeCommand(command);
     },
   };
 }
