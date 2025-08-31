@@ -1,12 +1,12 @@
 import { Command } from "@/features/commands/Command";
-import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
+import { useCommands } from "@/features/commands/hooks/useCommands";
 import type { CrosshairColorType } from "@/features/crosshair/CrosshairColor";
 import { useCrosshairMutation } from "@/features/crosshair/store/useCrosshairMutation";
 import { useSetSelectedTool } from "@/features/tools/store/tools";
 import { type ICrosshair } from "../types";
 
 export function useCrosshairColorCommand() {
-  const executeCommand = useCommandExecute();
+  const { execute: executeCommand } = useCommands();
   const updateCrosshair = useCrosshairMutation();
   const setSelectedTool = useSetSelectedTool();
 

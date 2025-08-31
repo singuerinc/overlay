@@ -1,11 +1,11 @@
 import { Command } from "@/features/commands/Command";
-import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
+import { useCommands } from "@/features/commands/hooks/useCommands";
 import { useGridMutation } from "@/features/grid/store/useGridMutation";
 import { type GuidelineColorType } from "@/features/guideline/GuidelineColor";
 import { type IGrid } from "../types";
 
 export function useGridColorCommand() {
-  const executeCommand = useCommandExecute();
+  const { execute: executeCommand } = useCommands();
   const mutation = useGridMutation();
 
   return {

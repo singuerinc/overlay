@@ -1,5 +1,5 @@
 import { Command } from "@/features/commands/Command";
-import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
+import { useCommands } from "@/features/commands/hooks/useCommands";
 import { ONION_IMAGES_KEYS } from "@/features/onion-image/store/onionImagesKeys";
 import { useOnionImageMutation } from "@/features/onion-image/store/useOnionImageMutation";
 import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
@@ -11,7 +11,7 @@ export function useOnionImageMoveCommand() {
   const presetId = usePresetActiveId();
   const queryClient = useQueryClient();
   const mutation = useOnionImageMutation();
-  const executeCommand = useCommandExecute();
+  const { execute: executeCommand } = useCommands();
   const setSelectedTool = useSetSelectedTool();
 
   return {

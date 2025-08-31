@@ -1,14 +1,12 @@
-import { useUndo } from "@/features/commands/hooks/useUndo";
-import { useUndoAvailable } from "@/features/commands/hooks/useUndoAvailable";
+import { useCommands } from "@/features/commands/hooks/useCommands";
 import { IconArrowBackUp } from "@tabler/icons-react";
 import { ToolButton } from "../../../ui/ToolButton";
 
 export function UndoButton() {
-  const undo = useUndo();
-  const isUndoAvailable = useUndoAvailable();
+  const { undo, hasCommands } = useCommands();
   return (
     <ToolButton
-      enabled={isUndoAvailable}
+      enabled={hasCommands}
       onClick={() => undo()}
       Icon={<IconArrowBackUp />}
     />

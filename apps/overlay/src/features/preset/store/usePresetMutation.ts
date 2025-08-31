@@ -9,7 +9,9 @@ export function usePresetMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (props: { id: IPreset["id"] } & Partial<IPreset>) => {
+    mutationFn: async (
+      props: { id: IPreset["id"] } & Partial<Exclude<IPreset, "id">>
+    ) => {
       const preset = queryClient.getQueryData<IPreset>(
         PRESETS_KEYS.preset(workspaceId, props.id)
       );

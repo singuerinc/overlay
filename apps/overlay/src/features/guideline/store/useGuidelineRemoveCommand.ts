@@ -1,5 +1,5 @@
 import { Command } from "@/features/commands/Command";
-import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
+import { useCommands } from "@/features/commands/hooks/useCommands";
 import { useSetSelectedTool } from "@/features/tools/store/tools";
 import { type IGuideline } from "../types";
 import { useGuidelineAddMutation } from "./useGuidelineAddMutation";
@@ -7,7 +7,7 @@ import { useGuidelineRemoveMutation } from "./useGuidelineRemoveMutation";
 
 export function useGuidelineRemoveCommand() {
   const setSelectedTool = useSetSelectedTool();
-  const executeCommand = useCommandExecute();
+  const { execute: executeCommand } = useCommands();
 
   const addGuideline = useGuidelineAddMutation();
   const removeGuideline = useGuidelineRemoveMutation();

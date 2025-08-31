@@ -1,12 +1,12 @@
 import { Command } from "@/features/commands/Command";
-import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
+import { useCommands } from "@/features/commands/hooks/useCommands";
 import { usePresetAddMutation } from "@/features/preset/store/usePresetAddMutation";
 import type { IPreset } from "@/features/preset/types";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
 
 export function useWorkspaceAddPresetCommand() {
   const { data: workspace } = useWorkspaceQuery();
-  const executeCommand = useCommandExecute();
+  const { execute: executeCommand } = useCommands();
   const addPresetMutation = usePresetAddMutation();
 
   return {

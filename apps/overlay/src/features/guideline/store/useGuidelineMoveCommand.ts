@@ -1,5 +1,5 @@
 import { Command } from "@/features/commands/Command";
-import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
+import { useCommands } from "@/features/commands/hooks/useCommands";
 import { useGuidelineMutation } from "@/features/guideline/store/useGuidelineMutation";
 import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
 import { useSetSelectedTool } from "@/features/tools/store/tools";
@@ -11,7 +11,7 @@ export function useGuidelineMoveCommand() {
   const presetId = usePresetActiveId();
   const queryClient = useQueryClient();
   const mutation = useGuidelineMutation();
-  const executeCommand = useCommandExecute();
+  const { execute: executeCommand } = useCommands();
   const setSelectedTool = useSetSelectedTool();
 
   return {

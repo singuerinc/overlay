@@ -1,11 +1,11 @@
 import { Command } from "@/features/commands/Command";
-import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
+import { useCommands } from "@/features/commands/hooks/useCommands";
 import { useOnionImageMutation } from "@/features/onion-image/store/useOnionImageMutation";
 import { useSetSelectedTool } from "@/features/tools/store/tools";
 import { type IOnionImage } from "../types";
 
 export function useOnionImageLockCommand() {
-  const executeCommand = useCommandExecute();
+  const { execute: executeCommand } = useCommands();
   const mutation = useOnionImageMutation();
   const setSelectedTool = useSetSelectedTool();
 

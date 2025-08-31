@@ -6,7 +6,11 @@ import { ToolBoxLabeledButton } from "@/features/toolbox/components/ToolBoxLabel
 import { useWorkspace } from "@/features/workspace/hooks/useWorkspace";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
 import { useExportWorkspace } from "@/features/workspace/utils/useExportWorkspace";
-import { IconAdjustmentsPlus, IconFileArrowRight } from "@tabler/icons-react";
+import {
+  IconAdjustmentsPlus,
+  IconFileArrowRight,
+  IconPencilCheck,
+} from "@tabler/icons-react";
 import { useCopyToClipboard } from "usehooks-ts";
 
 export function WorkspaceToolBox() {
@@ -44,17 +48,20 @@ export function WorkspaceToolBox() {
       />
 
       <div />
-      <select
-        value={workspace.activePresetId}
-        onChange={(e) => {
-          const selectedPresetId = e.target.value;
-          setActivePresetId(selectedPresetId);
-        }}
-      >
-        {workspace.presets.map((presetId) => (
-          <PresetOption key={presetId} presetId={presetId} />
-        ))}
-      </select>
+      <label htmlFor="presets">
+        <span>Presets:</span>
+        <select
+          value={workspace.activePresetId}
+          onChange={(e) => {
+            const selectedPresetId = e.target.value;
+            setActivePresetId(selectedPresetId);
+          }}
+        >
+          {workspace.presets.map((presetId) => (
+            <PresetOption key={presetId} presetId={presetId} />
+          ))}
+        </select>
+      </label>
       <UpdatePresetName id={workspace.activePresetId} />
     </ToolBoxTabGrid>
   );
@@ -67,22 +74,30 @@ function PresetOption({ presetId }: { presetId: string }) {
     return null;
   }
 
-  return <option key={preset.id}>{preset.name}</option>;
+  return (
+    <option key={preset.id} value={preset.id}>
+      {preset.name}
+    </option>
+  );
 }
 
 function UpdatePresetName({ id }: { id: IPreset["id"] }) {
   const { data: preset } = usePresetByIdQuery({ id });
   const { updateName: updatePresetName } = usePreset();
 
+  if (!preset) {
+    return null;
+  }
+
   return (
     <ToolBoxLabeledButton
       onClick={() => {
-        const name = prompt("Enter new preset name", preset?.name);
+        const name = prompt("Enter new preset name", preset.name);
         if (name && preset) {
           updatePresetName(preset, name);
         }
       }}
-      Icon={<IconAdjustmentsPlus />}
+      Icon={<IconPencilCheck />}
       label={"Update Preset Name"}
     />
   );

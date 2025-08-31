@@ -1,12 +1,12 @@
 import type { ColumnsColorType } from "@/features/columns/ColumnsColor";
 import { useColumnsMutation } from "@/features/columns/store/useColumnsMutation";
 import { Command } from "@/features/commands/Command";
-import { useCommandExecute } from "@/features/commands/hooks/useCommandExecute";
+import { useCommands } from "@/features/commands/hooks/useCommands";
 import { useSetSelectedTool } from "@/features/tools/store/tools";
 import { type IColumns } from "../types";
 
 export function useColumnsColorCommand() {
-  const executeCommand = useCommandExecute();
+  const { execute: executeCommand } = useCommands();
   const updateColumns = useColumnsMutation();
   const setSelectedTool = useSetSelectedTool();
 
