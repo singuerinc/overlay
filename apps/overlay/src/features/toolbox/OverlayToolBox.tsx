@@ -11,6 +11,7 @@ import {
   ToolBoxTabs,
   ToolBoxTabTitle,
 } from "@/features/toolbox/components/ToolBox";
+import { ToolBoxCommandHistory } from "@/features/toolbox/components/ToolBoxCommandHistory";
 import { useToolBoxMove } from "@/features/toolbox/hooks/useToolBoxMove";
 import { useToolBoxQuery } from "@/features/toolbox/store/useToolBoxQuery";
 import { WorkspaceToolBox } from "@/features/workspace/toolbox/WorkspaceToolBox";
@@ -52,48 +53,53 @@ export function OverlayToolBox() {
     >
       <ToolBoxRoot x={toolBox.x} y={toolBox.y}>
         <ToolBoxButtons>
-          <ToolButton
-            activated={activeTab === "ruler"}
-            enabled={true}
-            Icon={<IconRuler />}
-            onClick={() => setActiveTab("ruler")}
-          />
-          <ToolButton
-            activated={activeTab === "grid"}
-            enabled={true}
-            Icon={<IconGrid3x3 />}
-            onClick={() => setActiveTab("grid")}
-          />
-          <ToolButton
-            activated={activeTab === "crosshair"}
-            enabled={true}
-            Icon={<IconCrosshair />}
-            onClick={() => setActiveTab("crosshair")}
-          />
-          <ToolButton
-            activated={activeTab === "columns"}
-            enabled={true}
-            Icon={<IconColumns />}
-            onClick={() => setActiveTab("columns")}
-          />
-          <ToolButton
-            activated={activeTab === "guidelines"}
-            enabled={true}
-            Icon={<IconTable />}
-            onClick={() => setActiveTab("guidelines")}
-          />
-          <ToolButton
-            activated={activeTab === "onion-images"}
-            enabled={true}
-            Icon={<IconPhoto />}
-            onClick={() => setActiveTab("onion-images")}
-          />
-          <ToolButton
-            activated={activeTab === "settings"}
-            enabled={true}
-            Icon={<IconSettings />}
-            onClick={() => setActiveTab("settings")}
-          />
+          <div className="o:flex o:gap-1">
+            <ToolButton
+              activated={activeTab === "ruler"}
+              enabled={true}
+              Icon={<IconRuler />}
+              onClick={() => setActiveTab("ruler")}
+            />
+            <ToolButton
+              activated={activeTab === "grid"}
+              enabled={true}
+              Icon={<IconGrid3x3 />}
+              onClick={() => setActiveTab("grid")}
+            />
+            <ToolButton
+              activated={activeTab === "crosshair"}
+              enabled={true}
+              Icon={<IconCrosshair />}
+              onClick={() => setActiveTab("crosshair")}
+            />
+            <ToolButton
+              activated={activeTab === "columns"}
+              enabled={true}
+              Icon={<IconColumns />}
+              onClick={() => setActiveTab("columns")}
+            />
+            <ToolButton
+              activated={activeTab === "guidelines"}
+              enabled={true}
+              Icon={<IconTable />}
+              onClick={() => setActiveTab("guidelines")}
+            />
+            <ToolButton
+              activated={activeTab === "onion-images"}
+              enabled={true}
+              Icon={<IconPhoto />}
+              onClick={() => setActiveTab("onion-images")}
+            />
+            <ToolButton
+              activated={activeTab === "settings"}
+              enabled={true}
+              Icon={<IconSettings />}
+              onClick={() => setActiveTab("settings")}
+            />
+          </div>
+          <div className="o:flex o:gap-1">
+            <ToolBoxCommandHistory />
+          </div>
         </ToolBoxButtons>
         <ToolBoxTabs>
           {activeTab === "ruler" && (
