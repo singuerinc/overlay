@@ -92,7 +92,7 @@ export function Guideline({
   const { data: guideline } = useGuidelineByIdQuery(id);
   const selectedTool = useSelectedTool();
   const rulerSetPosition = useRulerSetPosition();
-  const { move, toggleLock } = useGuideline();
+  const { move } = useGuideline();
   const setSelectedTool = useSetSelectedTool();
   const isSelected = useMemo(
     () => selectedTool?.id === guideline?.id,
