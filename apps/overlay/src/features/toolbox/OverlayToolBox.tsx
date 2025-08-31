@@ -15,7 +15,7 @@ import {
 import { ToolBoxCommandHistory } from "@/features/toolbox/components/ToolBoxCommandHistory";
 import { ToolBoxLockToggle } from "@/features/toolbox/components/ToolBoxLockToggle";
 import { ToolBoxVisibilityToggle } from "@/features/toolbox/components/ToolBoxVisibilityToggle";
-import { useToolBoxMove } from "@/features/toolbox/hooks/useToolBoxMove";
+import { useToolBox } from "@/features/toolbox/hooks/useToolBox";
 import { useToolBoxQuery } from "@/features/toolbox/store/useToolBoxQuery";
 import { WorkspaceToolBox } from "@/features/workspace/toolbox/WorkspaceToolBox";
 import { ToolButton } from "@/ui/ToolButton";
@@ -44,7 +44,7 @@ export function OverlayToolBox() {
     | "workspace"
   >("overlay-toolbox-active-tab", "ruler");
   const { data: toolBox } = useToolBoxQuery();
-  const { move: toolBoxMove } = useToolBoxMove();
+  const { move: toolBoxMove } = useToolBox();
 
   if (!toolBox) {
     return null;

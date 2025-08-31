@@ -1,7 +1,6 @@
 import { OnionImageActions } from "@/features/onion-image/components/OnionImageActions";
-import { useOnionImageMove } from "@/features/onion-image/hooks/useOnionImageMove";
+import { useOnionImage } from "@/features/onion-image/hooks/useOnionImage";
 import { useOnionImageByIdQuery } from "@/features/onion-image/store/useOnionImageByIdQuery";
-import { useOnionImageRemoveCommand } from "@/features/onion-image/store/useOnionImageRemoveCommand";
 import type { IOnionImage } from "@/features/onion-image/types";
 import {
   useSelectedTool,
@@ -51,7 +50,7 @@ export function OnionImage({ id }: { id: IOnionImage["id"] }) {
   const { data: onionImage } = useOnionImageByIdQuery(id);
   const selectedTool = useSelectedTool();
   const setSelectedTool = useSetSelectedTool();
-  const { move } = useOnionImageMove();
+  const { move } = useOnionImage();
   const isSelected = useMemo(
     () => selectedTool?.id === onionImage?.id,
     [selectedTool, onionImage?.id]
@@ -161,7 +160,7 @@ function useOnionImageKeyboardShortcuts({
     y: number
   ) => void;
 }) {
-  const removeCommand = useOnionImageRemoveCommand();
+  const { remove } = useOnionImage();
 
   const left = useCallback(
     (_: KeyboardEvent, hotkeysEvent: HotkeysEvent) => {
@@ -224,9 +223,9 @@ function useOnionImageKeyboardShortcuts({
       return;
     }
     if (onionImage) {
-      removeCommand.execute(onionImage);
+      remove(onionImage);
     }
-  }, [onionImage, isSelected, removeCommand]);
+  }, [onionImage, isSelected, remove]);
 
   useHotkeys(["up", "shift+up"], up, {
     enabled: isSelected && onionImage && !onionImage.locked,

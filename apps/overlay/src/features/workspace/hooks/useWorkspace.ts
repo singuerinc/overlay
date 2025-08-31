@@ -1,9 +1,9 @@
 import { createPreset } from "@/features/preset/store/createPreset";
 import type { IPreset } from "@/features/preset/types";
-import { useWorkspaceAddPresetCommand } from "@/features/workspace/store/useWorkspaceAddPresetCommand";
-import { useWorkspaceSetActivePresetIdCommand } from "@/features/workspace/store/useWorkspaceSetActivePresetIdCommand";
-import { useWorkspaceSetLockedCommand } from "@/features/workspace/store/useWorkspaceSetLockedCommand";
-import { useWorkspaceSetVisibleCommand } from "@/features/workspace/store/useWorkspaceSetVisibleCommand";
+import { useWorkspaceAddPresetCommand } from "@/features/workspace/commands/useWorkspaceAddPresetCommand";
+import { useWorkspaceSetActivePresetIdCommand } from "@/features/workspace/commands/useWorkspaceSetActivePresetIdCommand";
+import { useWorkspaceSetLockedCommand } from "@/features/workspace/commands/useWorkspaceSetLockedCommand";
+import { useWorkspaceSetVisibleCommand } from "@/features/workspace/commands/useWorkspaceSetVisibleCommand";
 
 export function useWorkspace() {
   const addPresetCmd = useWorkspaceAddPresetCommand();

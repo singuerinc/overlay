@@ -1,8 +1,5 @@
 import { GuidelineActions } from "@/features/guideline/components/GuidelineActions";
-import { useGuidelineMove } from "@/features/guideline/hooks/useGuidelineMove";
-import { useGuidelineRemove } from "@/features/guideline/hooks/useGuidelineRemove";
-import { useGuidelineRotate } from "@/features/guideline/hooks/useGuidelineRotate";
-import { useGuidelineToggleLock } from "@/features/guideline/hooks/useGuidelineToggleLock";
+import { useGuideline } from "@/features/guideline/hooks/useGuideline";
 import { useGuidelineByIdQuery } from "@/features/guideline/store/useGuidelineByIdQuery";
 import { useRulerSetPosition } from "@/features/rulers/store/rulerStore";
 import {
@@ -95,8 +92,7 @@ export function Guideline({
   const { data: guideline } = useGuidelineByIdQuery(id);
   const selectedTool = useSelectedTool();
   const rulerSetPosition = useRulerSetPosition();
-  const { move } = useGuidelineMove();
-  const { toggleLock } = useGuidelineToggleLock();
+  const { move, toggleLock } = useGuideline();
   const setSelectedTool = useSetSelectedTool();
   const isSelected = useMemo(
     () => selectedTool?.id === guideline?.id,
@@ -285,8 +281,7 @@ function useGuidelineKeyboardShortcuts({
     y: number
   ) => void;
 }) {
-  const { remove } = useGuidelineRemove();
-  const { rotate } = useGuidelineRotate();
+  const { remove, rotate } = useGuideline();
 
   const left = useCallback(
     (_: KeyboardEvent, hotkeysEvent: HotkeysEvent) => {

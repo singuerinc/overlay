@@ -1,5 +1,4 @@
-import { GridColors } from "@/features/grid/GridColor";
-import { useGridColorCommand } from "@/features/grid/store/useGridColorCommand";
+import { useGrid } from "@/features/grid/hooks/useGrid";
 import { useGridQuery } from "@/features/grid/store/useGridQuery";
 import { type GuidelineColorType } from "@/features/guideline/GuidelineColor";
 import { ToolBoxLabeledButton } from "@/features/toolbox/components/ToolBoxLabeledButton";
@@ -15,24 +14,21 @@ const fillByColor = {
 
 export function GridColorButton() {
   const { data: grid } = useGridQuery();
-  const colorGridCommand = useGridColorCommand();
-  const color = grid?.color || GridColors[0];
+  const { cycleColor } = useGrid();
 
-  const handleClick = () => {
-    const newColor =
-      GridColors[(GridColors.indexOf(color) + 1) % GridColors.length];
-    if (grid) {
-      colorGridCommand.execute(grid, newColor);
-    }
-  };
+  if (!grid) {
+    return null;
+  }
 
   return (
     <ToolBoxLabeledButton
       label="Color"
       Icon={
-        <IconCircle className={cn(fillByColor[color], "o:text-transparent")} />
+        <IconCircle
+          className={cn(fillByColor[grid.color], "o:text-transparent")}
+        />
       }
-      onClick={handleClick}
+      onClick={() => cycleColor(grid)}
     />
   );
 }

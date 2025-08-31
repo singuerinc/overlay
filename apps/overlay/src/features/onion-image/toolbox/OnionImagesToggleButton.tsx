@@ -1,10 +1,10 @@
-import { useOnionImagesToggle } from "@/features/onion-image/hooks/useOnionImagesToggle";
+import { useOnionImages } from "@/features/onion-image/hooks/useOnionImages";
 import { useOnionImagesQuery } from "@/features/onion-image/store/useOnionImagesQuery";
 import { ToolBoxInputBoolean } from "@/features/toolbox/components/ToolBoxInputBoolean";
 
 export function OnionImagesToggleButton() {
   const { data: onionImages } = useOnionImagesQuery();
-  const { toggle } = useOnionImagesToggle();
+  const { toggle } = useOnionImages();
 
   return (
     <ToolBoxInputBoolean

@@ -1,8 +1,8 @@
-import { useRulerToggle } from "@/features/rulers/hooks/useRulerToggle";
+import { useRuler } from "@/features/rulers/hooks/useRuler";
 import { ToolBoxInputBoolean } from "@/features/toolbox/components/ToolBoxInputBoolean";
 
 export function RulerToggleButton() {
-  const { visible, toggle } = useRulerToggle();
+  const { visible, toggle } = useRuler();
 
   const handleClick = () => {
     toggle();

@@ -1,4 +1,4 @@
-import { useGuidelineRemove } from "@/features/guideline/hooks/useGuidelineRemove";
+import { useGuideline } from "@/features/guideline/hooks/useGuideline";
 import { useGuidelineByIdQuery } from "@/features/guideline/store/useGuidelineByIdQuery";
 import { ToolButton } from "@/ui/ToolButton";
 import { IconTrash } from "@tabler/icons-react";
@@ -6,7 +6,7 @@ import { type IGuideline } from "../types";
 
 export function GuidelineRemoveButton({ id }: { id: IGuideline["id"] }) {
   const { data: guideline } = useGuidelineByIdQuery(id);
-  const { remove: removeGuideline } = useGuidelineRemove();
+  const { remove } = useGuideline();
   return (
     <ToolButton
       enabled={true}
@@ -15,7 +15,7 @@ export function GuidelineRemoveButton({ id }: { id: IGuideline["id"] }) {
         e.stopPropagation();
         e.preventDefault();
         if (guideline) {
-          removeGuideline(guideline);
+          remove(guideline);
         }
       }}
     />

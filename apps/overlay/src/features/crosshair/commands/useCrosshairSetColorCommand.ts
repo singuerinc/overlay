@@ -5,7 +5,7 @@ import { useCrosshairMutation } from "@/features/crosshair/store/useCrosshairMut
 import { useSetSelectedTool } from "@/features/tools/store/tools";
 import { type ICrosshair } from "../types";
 
-export function useCrosshairColorCommand() {
+export function useCrosshairSetColorCommand() {
   const { execute: executeCommand } = useCommands();
   const updateCrosshair = useCrosshairMutation();
   const setSelectedTool = useSetSelectedTool();

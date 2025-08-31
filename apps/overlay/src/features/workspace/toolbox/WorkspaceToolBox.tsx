@@ -2,7 +2,7 @@ import { PresetCreateButton } from "@/features/preset/components/toolbox/PresetC
 import { PresetDuplicateButton } from "@/features/preset/components/toolbox/PresetDuplicateButton";
 import { PresetRemoveButton } from "@/features/preset/components/toolbox/PresetRemoveButton";
 import { PresetSelect } from "@/features/preset/components/toolbox/PresetSelect";
-import { PresetUpdateNameButton } from "@/features/preset/components/toolbox/UpdatePresetNameButton";
+import { PresetUpdateNameButton } from "@/features/preset/components/toolbox/PresetUpdateNameButton";
 import {
   ToolBoxGridTitle,
   ToolBoxTabGrid,

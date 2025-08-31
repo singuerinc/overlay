@@ -2,7 +2,7 @@ import {
   CrosshairColors,
   type CrosshairColorType,
 } from "@/features/crosshair/CrosshairColor";
-import { useCrosshairColorCommand } from "@/features/crosshair/store/useCrosshairColorCommand";
+import { useCrosshair } from "@/features/crosshair/hooks/useCrosshair";
 import { useCrosshairQuery } from "@/features/crosshair/store/useCrosshairQuery";
 import { ToolBoxLabeledButton } from "@/features/toolbox/components/ToolBoxLabeledButton";
 import { cn } from "@/ui/cn";
@@ -16,8 +16,8 @@ const fillByColor = {
 };
 
 export function CrosshairColorButton() {
-  const colorCrosshairCommand = useCrosshairColorCommand();
   const { data: crosshair } = useCrosshairQuery();
+  const { setColor } = useCrosshair();
   const color: CrosshairColorType = crosshair?.color || CrosshairColors[0];
 
   const handleClick = useCallback(() => {
@@ -27,9 +27,9 @@ export function CrosshairColorButton() {
       ];
 
     if (crosshair) {
-      colorCrosshairCommand.execute(crosshair, newColor);
+      setColor(newColor);
     }
-  }, [color, colorCrosshairCommand, crosshair]);
+  }, [color, setColor, crosshair]);
 
   if (!crosshair) {
     return null;

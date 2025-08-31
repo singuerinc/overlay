@@ -1,12 +1,12 @@
 import { OnionImage } from "@/features/onion-image/components/OnionImage";
-import { useOnionImageMove } from "@/features/onion-image/hooks/useOnionImageMove";
+import { useOnionImage } from "@/features/onion-image/hooks/useOnionImage";
 import { useOnionImagesQuery } from "@/features/onion-image/store/useOnionImagesQuery";
 import { DndContext, type DragEndEvent } from "@dnd-kit/core";
 import { useCallback } from "react";
 
 export function OnionImages() {
   const { data: onionImages, isLoading, isError } = useOnionImagesQuery();
-  const { move } = useOnionImageMove();
+  const { move } = useOnionImage();
 
   const handleDragEnd = useCallback(
     (ev: DragEndEvent) => {

@@ -1,11 +1,11 @@
 import { ColumnsColor } from "@/features/columns/ColumnsColor";
-import { useColumnsColorCommand } from "@/features/columns/store/useColumnsColorCommand";
+import { useColumnsColorCommand } from "@/features/columns/commands/useColumnsColorCommand";
+import { useColumnsSetGapCommand } from "@/features/columns/commands/useColumnsSetGapCommand";
+import { useColumnsSetNumCommand } from "@/features/columns/commands/useColumnsSetNumCommand";
+import { useColumnsSetOpacityCommand } from "@/features/columns/commands/useColumnsSetOpacityCommand";
+import { useColumnsSetSizeCommand } from "@/features/columns/commands/useColumnsSetSizeCommand";
+import { useColumnsToggleCommand } from "@/features/columns/commands/useColumnsToggleCommand";
 import { useColumnsQuery } from "@/features/columns/store/useColumnsQuery";
-import { useColumnsSetGapCommand } from "@/features/columns/store/useColumnsSetGapCommand";
-import { useColumnsSetNumCommand } from "@/features/columns/store/useColumnsSetNumCommand";
-import { useColumnsSetOpacityCommand } from "@/features/columns/store/useColumnsSetOpacityCommand";
-import { useColumnsSetSizeCommand } from "@/features/columns/store/useColumnsSetSizeCommand";
-import { useColumnsToggleCommand } from "@/features/columns/store/useColumnsToggleCommand";
 import type { IColumns } from "@/features/columns/types";
 
 export function useColumns() {

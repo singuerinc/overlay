@@ -1,7 +1,7 @@
 import { CrosshairColors } from "@/features/crosshair/CrosshairColor";
 import { useCrosshairQuery } from "@/features/crosshair/store/useCrosshairQuery";
+import { useNormalizedPosition } from "@/features/rulers/hooks/useNormalizedPosition";
 import { useRulerSetPosition } from "@/features/rulers/store/rulerStore";
-import { useNormalizedPosition } from "@/features/rulers/useNormalizedPosition";
 import { cva } from "class-variance-authority";
 import { useCallback, useEffect, useRef, useState } from "react";
 

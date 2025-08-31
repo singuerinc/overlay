@@ -1,4 +1,4 @@
-import { useOnionImageOpacity } from "@/features/onion-image/hooks/useOnionImageOpacity";
+import { useOnionImage } from "@/features/onion-image/hooks/useOnionImage";
 import { ToolButton } from "@/ui/ToolButton";
 import { IconCircleHalf2 } from "@tabler/icons-react";
 import { useCallback } from "react";
@@ -9,14 +9,14 @@ export function OnionImageOpacityButton({
 }: {
   onionImage: IOnionImage;
 }) {
-  const { set } = useOnionImageOpacity();
+  const { setOpacity } = useOnionImage();
 
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
-      set(onionImage, onionImage.opacity === 1 ? 0.5 : 1);
+      setOpacity(onionImage, onionImage.opacity === 1 ? 0.5 : 1);
     },
-    [onionImage, set]
+    [onionImage, setOpacity]
   );
 
   return (

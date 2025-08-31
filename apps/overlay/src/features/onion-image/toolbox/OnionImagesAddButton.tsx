@@ -1,10 +1,10 @@
+import { useOnionImages } from "@/features/onion-image/hooks/useOnionImages";
 import { createOnionImage } from "@/features/onion-image/store/createOnionImage";
-import { useOnionImageAddCommand } from "@/features/onion-image/store/useOnionImageAddCommand";
 import { ToolBoxLabeledButton } from "@/features/toolbox/components/ToolBoxLabeledButton";
 import { IconPlus } from "@tabler/icons-react";
 
 export function OnionImagesAddButton() {
-  const cmd = useOnionImageAddCommand();
+  const { addImage } = useOnionImages();
 
   return (
     <ToolBoxLabeledButton
@@ -31,7 +31,7 @@ export function OnionImagesAddButton() {
                   width,
                   height,
                 });
-                cmd.execute(onionImage);
+                addImage(onionImage);
               };
 
               img.onerror = (error) => {

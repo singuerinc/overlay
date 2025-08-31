@@ -1,9 +1,9 @@
-import { useRulerSetOrigin } from "@/features/rulers/hooks/useRulerSetOrigin";
+import { useRuler } from "@/features/rulers/hooks/useRuler";
 import { ToolBoxLabeledButton } from "@/features/toolbox/components/ToolBoxLabeledButton";
 import { IconBorderCornerSquare } from "@tabler/icons-react";
 
 export function RulerTopLeftOriginButton() {
-  const { resetOrigin } = useRulerSetOrigin();
+  const { resetOrigin } = useRuler();
 
   const handleClick = () => {
     resetOrigin();

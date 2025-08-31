@@ -1,11 +1,11 @@
-import { useRulerSetPosition } from "@/features/rulers/hooks/useRulerSetPosition";
+import { useRuler } from "@/features/rulers/hooks/useRuler";
 import { RulerPosition } from "@/features/rulers/RulerPosition";
 import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
 import { ToolBoxLabeledButton } from "@/features/toolbox/components/ToolBoxLabeledButton";
 
 export function RulerPositionButton() {
   const { data: ruler } = useRulerQuery();
-  const { setPositionRuler } = useRulerSetPosition();
+  const { setPosition } = useRuler();
 
   const handleClick = () => {
     const newPosition =
@@ -13,7 +13,7 @@ export function RulerPositionButton() {
         (RulerPosition.indexOf(ruler?.position ?? RulerPosition[0]) + 1) %
           RulerPosition.length
       ];
-    setPositionRuler(newPosition);
+    setPosition(newPosition);
   };
 
   return (

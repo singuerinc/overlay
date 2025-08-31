@@ -1,5 +1,5 @@
-import { usePresetRemoveCommand } from "@/features/preset/store/usePresetRemoveCommand";
-import { usePresetUpdateNameCommand } from "@/features/preset/store/usePresetUpdateNameCommand";
+import { usePresetRemoveCommand } from "@/features/preset/commands/usePresetRemoveCommand";
+import { usePresetUpdateNameCommand } from "@/features/preset/commands/usePresetUpdateNameCommand";
 import type { IPreset } from "@/features/preset/types";
 
 export function usePreset() {

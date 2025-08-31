@@ -1,5 +1,5 @@
+import { useRuler } from "@/features/rulers/hooks/useRuler";
 import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
-import { useRulerSetOriginCommand } from "@/features/rulers/store/useRulerSetOriginCommand";
 import { cn } from "@/ui/cn";
 import { cva } from "class-variance-authority";
 import { useCallback } from "react";
@@ -39,7 +39,7 @@ const variantsItem = cva(
 
 export function VerticalRuler({ origin }: { origin: number }) {
   const { data: ruler } = useRulerQuery();
-  const setOriginRulerCommand = useRulerSetOriginCommand();
+  const { setOrigin } = useRuler();
   const windowSize = useWindowSize();
   const numList = Array.from(
     { length: Math.floor(windowSize.height / 50) + 1 },
@@ -50,9 +50,9 @@ export function VerticalRuler({ origin }: { origin: number }) {
     (e: React.MouseEvent<HTMLDivElement>) => {
       const rect = e.currentTarget.getBoundingClientRect();
       const y = e.clientY - rect.top;
-      setOriginRulerCommand.execute(ruler?.originX ?? 0, y);
+      setOrigin(ruler?.originX ?? 0, y);
     },
-    [setOriginRulerCommand, ruler]
+    [setOrigin, ruler]
   );
 
   if (!ruler) {

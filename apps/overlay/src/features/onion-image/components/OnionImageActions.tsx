@@ -9,7 +9,7 @@ export function OnionImageActions({ onionImage }: { onionImage: IOnionImage }) {
     <div className="o:bg-neutral-50 o:place-self-start">
       <OnionImageLockButton id={onionImage.id} />
       <OnionImageOpacityButton onionImage={onionImage} />
-      <OnionImageFilterButton id={onionImage.id} />
+      <OnionImageFilterButton onionImage={onionImage} />
       <OnionImageRemoveButton id={onionImage.id} />
     </div>
   );
