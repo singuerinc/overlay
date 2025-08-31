@@ -9,6 +9,7 @@ export function useToolBoxMoveCommand() {
   return {
     execute: (x: number, y: number) => {
       const command = new Command(
+        "Toolbox - Move",
         () => {
           mutation.mutate({
             x,

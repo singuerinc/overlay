@@ -9,6 +9,7 @@ export function useCrosshairToggleCommand() {
   return {
     execute: (visible: boolean) => {
       const command = new Command(
+        "Crosshair - Toggle visibility",
         () => {
           updateCrosshair.mutate({
             visible,
@@ -20,7 +21,7 @@ export function useCrosshairToggleCommand() {
           });
         }
       );
-      executeCommand(command, true);
+      executeCommand(command);
     },
   };
 }

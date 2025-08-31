@@ -10,6 +10,7 @@ export function useRulerSetPositionCommand() {
   return {
     execute: (position: IRuler["position"]) => {
       const command = new Command(
+        "Ruler - Set position",
         () => {
           updateRuler.mutate({
             position,

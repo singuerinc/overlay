@@ -9,6 +9,7 @@ export function useRulerToggleCommand() {
   return {
     execute: (visible: boolean) => {
       const command = new Command(
+        "Ruler - Toggle visibility",
         () => {
           updateRuler.mutate({
             visible,
@@ -20,7 +21,7 @@ export function useRulerToggleCommand() {
           });
         }
       );
-      executeCommand(command, true);
+      executeCommand(command);
     },
   };
 }

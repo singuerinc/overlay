@@ -1,6 +1,10 @@
+import { useUndo } from "@/features/commands/hooks/useUndo";
+import { useUndoAvailable } from "@/features/commands/hooks/useUndoAvailable";
+import { ToolButton } from "@/ui/ToolButton";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import {
+  IconArrowBackUp,
   IconEye,
   IconEyeOff,
   IconGripVertical,
@@ -73,15 +77,16 @@ export function ToolBoxRoot({
       ref={setNodeRef}
       style={style}
     >
-      <div className="o:flex o:flex-col o:items-center o:py-1 o:justify-between o:gap-2">
+      <div className="o:flex o:flex-col o:items-center o:py-1 o:pr-1 o:justify-between o:gap-2">
         <IconGripVertical
           {...listeners}
           // {...attributes}
           className="o:cursor-grab o:active:cursor-grabbing o:text-neutral-400"
         />
-        <div className="o:flex o:flex-col o:gap-2">
+        <div className="o:flex o:flex-col o:items-center o:gap-2">
           <ToolBoxLockToggle isLocked={locked} setIsLocked={setLocked} />
           <ToolBoxVisibilityToggle isOpen={open} setIsOpen={setOpen} />
+          <ToolBoxCommandHistory />
         </div>
       </div>
       {open && <div className="o:flex o:flex-col">{children}</div>}
@@ -97,22 +102,11 @@ function ToolBoxLockToggle({
   setIsLocked: (isLocked: boolean) => void;
 }) {
   return (
-    <>
-      {!isLocked && (
-        <IconLockOpen
-          size={16}
-          className="o:cursor-pointer"
-          onClick={() => setIsLocked(!isLocked)}
-        />
-      )}
-      {isLocked && (
-        <IconLock
-          size={16}
-          className="o:cursor-pointer"
-          onClick={() => setIsLocked(!isLocked)}
-        />
-      )}
-    </>
+    <ToolButton
+      activated={isLocked}
+      Icon={!isLocked ? <IconLockOpen size={16} /> : <IconLock size={16} />}
+      onClick={() => setIsLocked(!isLocked)}
+    />
   );
 }
 
@@ -124,21 +118,22 @@ function ToolBoxVisibilityToggle({
   setIsOpen: (isOpen: boolean) => void;
 }) {
   return (
-    <>
-      {!isOpen && (
-        <IconEyeOff
-          size={16}
-          className="o:cursor-pointer"
-          onClick={() => setIsOpen(!isOpen)}
-        />
-      )}
-      {isOpen && (
-        <IconEye
-          size={16}
-          className="o:cursor-pointer"
-          onClick={() => setIsOpen(!isOpen)}
-        />
-      )}
-    </>
+    <ToolButton
+      activated={isOpen}
+      Icon={!isOpen ? <IconEyeOff size={16} /> : <IconEye size={16} />}
+      onClick={() => setIsOpen(!isOpen)}
+    />
+  );
+}
+
+function ToolBoxCommandHistory() {
+  const undo = useUndo();
+  const canUndo = useUndoAvailable();
+  return (
+    <ToolButton
+      enabled={canUndo}
+      Icon={<IconArrowBackUp size={16} />}
+      onClick={() => undo()}
+    />
   );
 }

@@ -13,6 +13,7 @@ export function useRulerSetOriginCommand() {
         originY,
       };
       const command = new Command(
+        "Ruler - Set origin",
         () => {
           updateRuler.mutate({
             originX: originX,

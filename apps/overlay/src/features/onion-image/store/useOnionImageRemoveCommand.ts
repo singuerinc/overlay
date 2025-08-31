@@ -15,6 +15,7 @@ export function useOnionImageRemoveCommand() {
   return {
     execute: (onionImage: IOnionImage) => {
       const command = new Command(
+        "Onion Image - Remove",
         () => {
           removeOnionImage.mutate({
             onionImage,

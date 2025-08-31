@@ -11,6 +11,7 @@ export function useOnionImageOpacityCommand() {
     execute: (onionImage: IOnionImage, opacity: number) => {
       const prevOpacity = onionImage.opacity;
       const command = new Command(
+        "Onion Image - Change opacity",
         () => {
           mutation.mutate({
             id: onionImage.id,

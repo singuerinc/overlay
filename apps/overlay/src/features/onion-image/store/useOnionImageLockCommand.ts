@@ -13,6 +13,7 @@ export function useOnionImageLockCommand() {
     execute: (onionImage: IOnionImage, locked: boolean) => {
       const prevLocked = onionImage.locked;
       const command = new Command(
+        "Onion Image - Lock",
         () => {
           mutation.mutate({
             id: onionImage.id,

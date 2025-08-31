@@ -9,6 +9,7 @@ export function useGridToggleCommand() {
   return {
     execute: (visible: boolean) => {
       const command = new Command(
+        "Grid - Toggle visibility",
         () => {
           updateGrid.mutate({
             visible,
@@ -20,7 +21,7 @@ export function useGridToggleCommand() {
           });
         }
       );
-      executeCommand(command, true);
+      executeCommand(command);
     },
   };
 }

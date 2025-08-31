@@ -28,6 +28,7 @@ export function useOnionImageCycleFilterCommand() {
       ] as OnionImageFilterType;
 
       const command = new Command(
+        "Onion Image - Change filter",
         () => {
           if (onionImage) {
             updateGrid.mutate({

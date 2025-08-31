@@ -14,6 +14,7 @@ export function useGuidelineAddCommand() {
   return {
     execute: (guideline: IGuideline) => {
       const command = new Command(
+        "Guidelines - Add one",
         () => {
           addGuideline.mutate({
             guideline,

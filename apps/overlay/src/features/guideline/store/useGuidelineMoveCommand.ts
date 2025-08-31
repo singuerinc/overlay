@@ -21,6 +21,7 @@ export function useGuidelineMoveCommand() {
       );
 
       const command = new Command(
+        "Guideline - Move",
         () => {
           if (guideline) {
             mutation.mutate({

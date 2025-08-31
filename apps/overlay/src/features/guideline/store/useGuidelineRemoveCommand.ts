@@ -15,6 +15,7 @@ export function useGuidelineRemoveCommand() {
   return {
     execute: (guideline: IGuideline) => {
       const command = new Command(
+        "Guideline - Remove",
         () => {
           removeGuideline.mutate({
             guideline,

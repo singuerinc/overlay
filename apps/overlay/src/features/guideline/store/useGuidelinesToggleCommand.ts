@@ -11,15 +11,16 @@ export function useGuidelinesToggleCommand() {
   return {
     execute: (visible: boolean) => {
       const command = new Command(
+        "Guidelines - Toggle visibility",
         () => {
           setSelectedTool(null);
           mutation.mutate({ visible });
         },
         () => {
-          // no undo
+          mutation.mutate({ visible: !visible });
         }
       );
-      executeCommand(command, true);
+      executeCommand(command);
     },
   };
 }

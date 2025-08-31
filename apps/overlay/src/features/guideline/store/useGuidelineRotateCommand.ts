@@ -16,6 +16,7 @@ export function useGuidelineRotateCommand() {
   return {
     execute: (guideline: IGuideline) => {
       const command = new Command(
+        "Guideline - Rotate",
         () => {
           mutation.mutate({
             id: guideline.id,
