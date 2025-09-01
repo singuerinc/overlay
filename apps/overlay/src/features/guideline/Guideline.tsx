@@ -14,7 +14,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import type { HotkeysEvent } from "react-hotkeys-hook/packages/react-hotkeys-hook/dist/types";
 import { GUIDELINE_VERTICAL, type IGuideline } from "./types";
 
-const variantsGuideline = cva(["o:group o:focus:outline-none"], {
+const variantsGuideline = cva(["o:group o:focus:outline-none o:z-50"], {
   variants: {
     locked: {
       true: "o:cursor-not-allowed",

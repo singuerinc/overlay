@@ -4,20 +4,41 @@ Essential tools to measure, align, and compare with pixel-perfect.
 
 ## Features
 
-### Grid
+### Guidelines
 
-- Rulers – Measure with precision, just like in professional design tools.
-- Grid – Customizable patterns, colors, and spacing for perfect alignment.
-- Columns – Quickly validate responsive layouts with flexible column overlays.
-- Onion Image – Overlay designs on top of live builds with adjustable transparency.
-- Notes – Leave comments and reminders directly on the workspace.
-- Crosshair – Pinpoint exact coordinates anywhere on the screen.
-  - Measure distances between elements to validate spacing.
+Add and move guides to snap and align elements easily.
+
+![](images/tool-guidelines.png)
+
+### Crosshair
+
+Pinpoint exact coordinates anywhere on the screen and measure distances between elements to validate spacing.
 
 ![](images/tool-crosshair.png)
 
-- Guidelines – Add and move guides to snap and align elements easily.
-- Presets – Save, switch, import, and export complete overlay setups in one click.
+### Rulers
+
+Measure with precision, just like in professional design tools.
+
+### Grid
+
+Customizable patterns, colors, and spacing for perfect alignment.
+
+### Columns
+
+Quickly validate responsive layouts with flexible column overlays.
+
+### Onion Image
+
+Overlay designs on top of live builds with adjustable transparency.
+
+### Notes
+
+Leave comments and reminders directly on the workspace.
+
+### Presets
+
+Save, switch, import, and export complete overlay setups in one click.
 
 ## Install
 
