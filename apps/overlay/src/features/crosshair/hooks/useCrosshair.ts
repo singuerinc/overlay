@@ -12,7 +12,7 @@ export function useCrosshair() {
 
   const toggle = useCallback(() => {
     if (crosshair) {
-      toggleCommand.execute(crosshair, !crosshair.visible);
+      return toggleCommand.execute(crosshair, !crosshair.visible);
     }
   }, [crosshair, toggleCommand]);
 
