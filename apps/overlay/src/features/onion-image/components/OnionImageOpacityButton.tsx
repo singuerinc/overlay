@@ -22,7 +22,7 @@ export function OnionImageOpacityButton({
   return (
     <ToolButton
       enabled={true}
-      Icon={<IconCircleHalf2 size={16} />}
+      Icon={<IconCircleHalf2 />}
       onClick={handleClick}
     />
   );

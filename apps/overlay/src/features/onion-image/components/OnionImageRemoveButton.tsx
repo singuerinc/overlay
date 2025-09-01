@@ -10,7 +10,7 @@ export function OnionImageRemoveButton({ id }: { id: IOnionImage["id"] }) {
   return (
     <ToolButton
       enabled={true}
-      Icon={<IconTrash size={16} />}
+      Icon={<IconTrash />}
       onClick={() => {
         if (onionImage) {
           remove(onionImage);

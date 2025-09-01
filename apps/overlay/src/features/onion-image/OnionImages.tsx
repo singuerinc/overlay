@@ -34,7 +34,7 @@ export function OnionImages() {
   return (
     <div
       data-overlay-tool-type="onion-images"
-      className="o:h-0 o:w-0 o:absolute o:top-0 o:left-0"
+      className="o:absolute o:top-0 o:left-0 o:z-40 o:w-full o:h-full"
     >
       <DndContext onDragEnd={handleDragEnd}>
         {onionImages.onionImages.map((imageId) => (

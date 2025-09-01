@@ -15,35 +15,32 @@ import { useCallback, useMemo } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import type { HotkeysEvent } from "react-hotkeys-hook/packages/react-hotkeys-hook/dist/types";
 
-const variantsOnionImage = cva(
-  ["o:absolute o:top-0 o:left-0 o:overflow-visible o:outline-none"],
-  {
-    variants: {
-      locked: {
-        true: "o:cursor-not-allowed",
-        false: "o:cursor-move",
-      },
-      isDrag: {
-        true: "",
-        false: "",
-      },
-      selected: {
-        true: "o:active:opacity-50",
-        false: "",
-      },
+const variantsOnionImage = cva(["o:absolute o:top-0 o:left-0 o:outline-none"], {
+  variants: {
+    locked: {
+      true: "o:cursor-not-allowed",
+      false: "o:cursor-move",
     },
-    compoundVariants: [
-      {
-        isDrag: true,
-        locked: false,
-        className: "o:cursor-move",
-      },
-    ],
-    defaultVariants: {
-      selected: false,
+    isDrag: {
+      true: "",
+      false: "",
     },
-  }
-);
+    selected: {
+      true: "o:active:opacity-50 o:ring-2 o:ring-offset-2 o:ring-blue-500",
+      false: "",
+    },
+  },
+  compoundVariants: [
+    {
+      isDrag: true,
+      locked: false,
+      className: "o:cursor-move",
+    },
+  ],
+  defaultVariants: {
+    selected: false,
+  },
+});
 
 export function OnionImage({ id }: { id: IOnionImage["id"] }) {
   const { data: workspace } = useWorkspaceQuery();
@@ -79,8 +76,6 @@ export function OnionImage({ id }: { id: IOnionImage["id"] }) {
   });
 
   const style = {
-    width: (onionImage?.width ?? 0) / 2,
-    height: (onionImage?.height ?? 0) / 2,
     transform: transform
       ? CSS.Translate.toString({
           x: (onionImage?.x ?? 0) + transform.x,
@@ -103,6 +98,10 @@ export function OnionImage({ id }: { id: IOnionImage["id"] }) {
   }, [onionImage, setSelectedTool]);
 
   if (!onionImage) {
+    return null;
+  }
+
+  if (onionImage.visible === false) {
     return null;
   }
 
@@ -136,11 +135,8 @@ export function OnionImage({ id }: { id: IOnionImage["id"] }) {
           "o:invert": onionImage.filter === "invert",
           "o:grayscale": onionImage.filter === "grayscale",
         })}
-        style={{
-          objectFit: "cover",
-          width: "100%",
-          height: "100%",
-        }}
+        width={onionImage.width * onionImage.scale}
+        height={onionImage.height * onionImage.scale}
       />
       {isSelected && <OnionImageActions onionImage={onionImage} />}
     </div>

@@ -26,7 +26,7 @@ export function OnionImagesAddButton() {
               img.src = URL.createObjectURL(file);
               img.onload = () => {
                 const { width, height } = img;
-                const onionImage = createOnionImage({
+                const onionImage = createOnionImage(file.name, {
                   data: base64,
                   width,
                   height,

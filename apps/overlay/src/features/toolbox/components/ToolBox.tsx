@@ -108,7 +108,7 @@ export function ToolBoxRoot({
   return (
     <div
       id="toolBox"
-      className="o:flex o:shadow o:bg-neutral-950/80 o:p-1 o:z-50 o:fixed o:rounded-sm o:pointer-events-auto"
+      className="o:flex o:shadow o:bg-neutral-950/80 o:p-1 o:z-[200] o:fixed o:rounded-sm o:pointer-events-auto"
       ref={setNodeRef}
       style={style}
     >

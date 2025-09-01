@@ -3,6 +3,8 @@ import { useOnionImageLockCommand } from "@/features/onion-image/commands/useOni
 import { useOnionImageMoveCommand } from "@/features/onion-image/commands/useOnionImageMoveCommand";
 import { useOnionImageOpacityCommand } from "@/features/onion-image/commands/useOnionImageOpacityCommand";
 import { useOnionImageRemoveCommand } from "@/features/onion-image/commands/useOnionImageRemoveCommand";
+import { useOnionImageSetScaleCommand } from "@/features/onion-image/commands/useOnionImageSetScaleCommand";
+import { useOnionImageToggleVisibilityCommand } from "@/features/onion-image/commands/useOnionImageToggleVisibilityCommand";
 import type { IOnionImage } from "@/features/onion-image/types";
 
 export function useOnionImage() {
@@ -11,8 +13,16 @@ export function useOnionImage() {
   const removeCmd = useOnionImageRemoveCommand();
   const cycleFilterCmd = useOnionImageCycleFilterCommand();
   const lockCmd = useOnionImageLockCommand();
+  const toggleVisibilityCmd = useOnionImageToggleVisibilityCommand();
+  const setScaleCmd = useOnionImageSetScaleCommand();
 
   return {
+    setScale: (onionImage: IOnionImage, scale: number) => {
+      setScaleCmd.execute(onionImage, scale);
+    },
+    toggleVisibility: (onionImage: IOnionImage) => {
+      toggleVisibilityCmd.execute(onionImage, !onionImage.visible);
+    },
     toggleLock: (onionImage: IOnionImage) => {
       lockCmd.execute(onionImage, !onionImage.locked);
     },

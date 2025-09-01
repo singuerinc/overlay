@@ -22,7 +22,7 @@ export function OnionImageFilterButton({
   return (
     <ToolButton
       enabled={true}
-      Icon={<IconContrastFilled size={16} />}
+      Icon={<IconContrastFilled />}
       onClick={handleClick}
     />
   );

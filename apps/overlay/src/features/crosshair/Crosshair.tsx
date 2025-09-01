@@ -9,7 +9,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 const variantsWrapper = cva(
   [
-    "o:absolute o:top-0 o:left-0 o:overflow-visible",
+    "o:absolute o:z-[60] o:top-0 o:left-0 o:overflow-visible",
     "o:group o:hover:opacity-100 transition-colors",
     "o:h-full o:w-full",
     "o:justify-center o:items-center",

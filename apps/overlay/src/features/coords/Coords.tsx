@@ -9,7 +9,6 @@ export function Coords() {
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
-      console.log("mouse move");
       const rect = ref.current?.getBoundingClientRect();
       const x = event.clientX - (rect?.left || 0) + offset.x;
       const y = event.clientY - (rect?.top || 0) + offset.y;
