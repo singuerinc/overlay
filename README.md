@@ -14,7 +14,7 @@ Essential tools to measure, align, and compare with pixel-perfect.
 - Crosshair – Pinpoint exact coordinates anywhere on the screen.
   - Measure distances between elements to validate spacing.
 
-![images/tool-crosshair.png]()
+![](images/tool-crosshair.png)
 
 - Guidelines – Add and move guides to snap and align elements easily.
 - Presets – Save, switch, import, and export complete overlay setups in one click.
