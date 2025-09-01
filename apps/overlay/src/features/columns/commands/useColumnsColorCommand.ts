@@ -15,19 +15,20 @@ export function useColumnsColorCommand() {
       const prevColor = columns.color;
       const command = new Command(
         "Columns - Change color",
-        () => {
-          updateColumns.mutate({
+        () =>
+          updateColumns.mutateAsync({
             color,
-          });
-        },
-        () => {
-          updateColumns.mutate({
-            color: prevColor,
-          });
-          setSelectedTool(columns);
-        }
+          }),
+        () =>
+          updateColumns
+            .mutateAsync({
+              color: prevColor,
+            })
+            .then(() => {
+              setSelectedTool(columns);
+            })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

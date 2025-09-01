@@ -14,13 +14,14 @@ export function useOnionImagesToggleCommand() {
         "Onion Images - Toggle visibility",
         () => {
           setSelectedTool(null);
-          mutation.mutate({ visible });
+          return mutation.mutateAsync({ visible });
         },
         () => {
           // no undo
+          return Promise.resolve();
         }
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

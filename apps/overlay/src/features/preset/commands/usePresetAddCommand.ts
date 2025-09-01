@@ -11,14 +11,11 @@ export function usePresetAddCommand() {
     execute: (preset: IPreset) => {
       const command = new Command(
         "Presets - Add one",
-        () => {
-          mutation.mutate({
+        () =>
+          mutation.mutateAsync({
             preset,
-          });
-        },
-        () => {
-          //
-        }
+          }),
+        () => Promise.resolve(void 0)
       );
       executeCommand(command, true);
     },

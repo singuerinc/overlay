@@ -23,28 +23,42 @@ export function useGuidelineMoveCommand() {
       const command = new Command(
         "Guideline - Move",
         () => {
-          if (guideline) {
-            mutation.mutate({
-              id: guideline.id,
-              x: position.x,
-              y: position.y,
-            });
-          }
+          return new Promise((resolve, reject) => {
+            if (guideline) {
+              mutation
+                .mutateAsync({
+                  id: guideline.id,
+                  x: position.x,
+                  y: position.y,
+                })
+                .then(() => resolve(void 0));
+            } else {
+              reject();
+            }
+          });
         },
         () => {
-          if (guideline) {
-            const pItem = { ...guideline, y: guideline.y, x: guideline.x };
-            mutation.mutate({
-              id: pItem.id,
-              x: pItem.x,
-              y: pItem.y,
-            });
-            setSelectedTool(pItem);
-          }
+          return new Promise((resolve, reject) => {
+            if (guideline) {
+              const pItem = { ...guideline, y: guideline.y, x: guideline.x };
+              mutation
+                .mutateAsync({
+                  id: pItem.id,
+                  x: pItem.x,
+                  y: pItem.y,
+                })
+                .then(() => {
+                  setSelectedTool(pItem);
+                  resolve(pItem);
+                });
+            } else {
+              reject();
+            }
+          });
         }
       );
 
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

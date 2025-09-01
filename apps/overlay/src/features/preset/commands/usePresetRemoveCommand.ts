@@ -11,12 +11,8 @@ export function usePresetRemoveCommand() {
     execute: (preset: IPreset) => {
       const command = new Command(
         "Presets - Remove",
-        () => {
-          mutation.mutate({ preset });
-        },
-        () => {
-          //
-        }
+        () => mutation.mutateAsync({ preset }),
+        () => Promise.resolve(void 0)
       );
       executeCommand(command, true);
     },

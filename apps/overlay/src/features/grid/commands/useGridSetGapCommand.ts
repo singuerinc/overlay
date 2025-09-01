@@ -15,20 +15,18 @@ export function useGridSetGapCommand() {
       const prevGap = grid.gapX;
       const command = new Command(
         "Grid - Set gap",
-        () => {
-          updateGrid.mutate({
+        () =>
+          updateGrid.mutateAsync({
             gapX: gap,
             gapY: gap,
-          });
-        },
-        () => {
-          updateGrid.mutate({
+          }),
+        () =>
+          updateGrid.mutateAsync({
             gapX: prevGap,
             gapY: prevGap,
-          });
-        }
+          })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

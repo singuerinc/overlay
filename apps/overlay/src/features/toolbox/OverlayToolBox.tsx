@@ -28,7 +28,6 @@ import {
   IconNote,
   IconPhoto,
   IconRuler,
-  IconTable,
   IconTools,
 } from "@tabler/icons-react";
 import { useLocalStorage } from "usehooks-ts";
@@ -85,15 +84,6 @@ export function OverlayToolBox() {
             />
             {activeTab === "columns" && (
               <ToolBoxTabTitle>Columns</ToolBoxTabTitle>
-            )}
-            <ToolButton
-              inTab={true}
-              activated={activeTab === "guidelines"}
-              Icon={<IconTable size={18} />}
-              onClick={() => setActiveTab("guidelines")}
-            />
-            {activeTab === "guidelines" && (
-              <ToolBoxTabTitle>Guidelines</ToolBoxTabTitle>
             )}
             <ToolButton
               inTab={true}

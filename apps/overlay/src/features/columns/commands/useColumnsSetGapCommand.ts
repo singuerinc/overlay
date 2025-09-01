@@ -14,18 +14,16 @@ export function useColumnsSetGapCommand() {
       const prevGap = columns?.gap;
       const command = new Command(
         "Columns - Set gap",
-        () => {
-          updateColumns.mutate({
+        () =>
+          updateColumns.mutateAsync({
             gap,
-          });
-        },
-        () => {
-          updateColumns.mutate({
+          }),
+        () =>
+          updateColumns.mutateAsync({
             gap: prevGap,
-          });
-        }
+          })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

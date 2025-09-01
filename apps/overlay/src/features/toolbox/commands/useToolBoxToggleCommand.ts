@@ -10,16 +10,14 @@ export function useToolBoxToggleCommand() {
     execute: (visible: boolean) => {
       const command = new Command(
         "Toolbox - Toggle visibility",
-        () => {
-          mutation.mutate({
+        () =>
+          mutation.mutateAsync({
             visible,
-          });
-        },
-        () => {
-          mutation.mutate({
+          }),
+        () =>
+          mutation.mutateAsync({
             visible: !visible,
-          });
-        }
+          })
       );
       executeCommand(command, true);
     },

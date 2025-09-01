@@ -14,18 +14,16 @@ export function useColumnsSetSizeCommand() {
       const prevSize = columns?.size;
       const command = new Command(
         "Columns - Set size",
-        () => {
-          updateColumns.mutate({
+        () =>
+          updateColumns.mutateAsync({
             size,
-          });
-        },
-        () => {
-          updateColumns.mutate({
+          }),
+        () =>
+          updateColumns.mutateAsync({
             size: prevSize,
-          });
-        }
+          })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

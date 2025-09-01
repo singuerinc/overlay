@@ -12,18 +12,16 @@ export function usePresetUpdateNameCommand() {
       const prevName = preset.name;
       const command = new Command(
         "Presets - Update name",
-        () => {
-          mutation.mutate({
+        () =>
+          mutation.mutateAsync({
             id: preset.id,
             name: newName,
-          });
-        },
-        () => {
-          mutation.mutate({
+          }),
+        () =>
+          mutation.mutateAsync({
             id: preset.id,
             name: prevName,
-          });
-        }
+          })
       );
       executeCommand(command, true);
     },

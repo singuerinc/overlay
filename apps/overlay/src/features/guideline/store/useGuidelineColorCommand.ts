@@ -29,7 +29,7 @@ export function useGuidelineColorCommand() {
           setSelectedTool(guideline);
         }
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

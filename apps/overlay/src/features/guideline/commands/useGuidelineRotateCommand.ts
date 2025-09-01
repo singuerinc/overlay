@@ -17,8 +17,8 @@ export function useGuidelineRotateCommand() {
     execute: (guideline: IGuideline) => {
       const command = new Command(
         "Guideline - Rotate",
-        () => {
-          mutation.mutate({
+        () =>
+          mutation.mutateAsync({
             id: guideline.id,
             x: guideline.y,
             y: guideline.x,
@@ -26,22 +26,23 @@ export function useGuidelineRotateCommand() {
               guideline.type === GUIDELINE_VERTICAL
                 ? GUIDELINE_HORIZONTAL
                 : GUIDELINE_VERTICAL,
-          });
-        },
-        () => {
-          mutation.mutate({
-            id: guideline.id,
-            x: guideline.y,
-            y: guideline.x,
-            type:
-              guideline.type === GUIDELINE_VERTICAL
-                ? GUIDELINE_HORIZONTAL
-                : GUIDELINE_VERTICAL,
-          });
-          setSelectedTool(guideline);
-        }
+          }),
+        () =>
+          mutation
+            .mutateAsync({
+              id: guideline.id,
+              x: guideline.y,
+              y: guideline.x,
+              type:
+                guideline.type === GUIDELINE_VERTICAL
+                  ? GUIDELINE_HORIZONTAL
+                  : GUIDELINE_VERTICAL,
+            })
+            .then(() => {
+              setSelectedTool(guideline);
+            })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

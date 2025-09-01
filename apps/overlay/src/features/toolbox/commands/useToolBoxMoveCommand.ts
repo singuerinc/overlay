@@ -10,15 +10,12 @@ export function useToolBoxMoveCommand() {
     execute: (x: number, y: number) => {
       const command = new Command(
         "Toolbox - Move",
-        () => {
-          mutation.mutate({
+        () =>
+          mutation.mutateAsync({
             x,
             y,
-          });
-        },
-        () => {
-          //
-        }
+          }),
+        () => Promise.resolve(void 0)
       );
       executeCommand(command, true);
     },

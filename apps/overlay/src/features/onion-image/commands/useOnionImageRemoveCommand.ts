@@ -2,13 +2,10 @@ import { Command } from "@/features/commands/Command";
 import { useCommands } from "@/features/commands/hooks/useCommands";
 import { useOnionImageAddMutation } from "@/features/onion-image/store/useOnionImageAddMutation";
 import { useOnionImageRemoveMutation } from "@/features/onion-image/store/useOnionImageRemoveMutation";
-import { useSetSelectedTool } from "@/features/tools/store/tools";
 import { type IOnionImage } from "../types";
 
 export function useOnionImageRemoveCommand() {
-  const setSelectedTool = useSetSelectedTool();
   const { execute: executeCommand } = useCommands();
-
   const addOnionImage = useOnionImageAddMutation();
   const removeOnionImage = useOnionImageRemoveMutation();
 
@@ -16,20 +13,16 @@ export function useOnionImageRemoveCommand() {
     execute: (onionImage: IOnionImage) => {
       const command = new Command(
         "Onion Image - Remove",
-        () => {
-          removeOnionImage.mutate({
+        () =>
+          removeOnionImage.mutateAsync({
             onionImage,
-          });
-          setSelectedTool(null);
-        },
-        () => {
-          addOnionImage.mutate({
+          }),
+        () =>
+          addOnionImage.mutateAsync({
             onionImage,
-          });
-          setSelectedTool(onionImage);
-        }
+          })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

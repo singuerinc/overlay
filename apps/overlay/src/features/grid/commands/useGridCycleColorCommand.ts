@@ -13,23 +13,20 @@ export function useGridCycleColorCommand() {
       const prevColor = grid.color;
       const command = new Command(
         "Grid - Change color",
-        () => {
-          const newColor =
-            GridColors[
-              (GridColors.indexOf(grid.color) + 1) % GridColors.length
-            ];
-          mutation.mutate({
-            color: newColor,
-          });
-        },
-        () => {
-          mutation.mutate({
+        () =>
+          mutation.mutateAsync({
+            color:
+              GridColors[
+                (GridColors.indexOf(grid.color) + 1) % GridColors.length
+              ],
+          }),
+        () =>
+          mutation.mutateAsync({
             id: grid.id,
             color: prevColor,
-          });
-        }
+          })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

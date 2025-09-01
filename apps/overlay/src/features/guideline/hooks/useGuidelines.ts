@@ -12,12 +12,11 @@ export function useGuidelines() {
   const { data: guidelines } = useGuidelinesQuery();
   const toggleCmd = useGuidelinesToggleCommand();
   const toggle = useCallback(() => {
-    if (guidelines) {
-      toggleCmd.execute(!guidelines.visible);
-    }
+    return toggleCmd.execute(!guidelines?.visible);
   }, [guidelines, toggleCmd]);
 
   return {
+    visible: guidelines?.visible ?? false,
     toggle,
     addHorizontal: () =>
       addCmd.execute(

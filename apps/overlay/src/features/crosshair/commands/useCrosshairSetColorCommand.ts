@@ -15,19 +15,20 @@ export function useCrosshairSetColorCommand() {
       const prevColor = crosshair.color;
       const command = new Command(
         "Crosshair - Change Color",
-        () => {
-          updateCrosshair.mutate({
+        () =>
+          updateCrosshair.mutateAsync({
             color,
-          });
-        },
-        () => {
-          updateCrosshair.mutate({
-            color: prevColor,
-          });
-          setSelectedTool(crosshair);
-        }
+          }),
+        () =>
+          updateCrosshair
+            .mutateAsync({
+              color: prevColor,
+            })
+            .then(() => {
+              setSelectedTool(crosshair);
+            })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

@@ -1,21 +1,25 @@
 import type { ICommand } from "@/features/commands/types";
 
-export class Command implements ICommand {
+export class Command<T> implements ICommand {
   name: string;
-  doAction: () => void;
-  undoAction: () => void;
+  doAction: () => Promise<T>;
+  undoAction: () => Promise<T>;
 
-  constructor(name: string, doAction: () => void, undoAction: () => void) {
+  constructor(
+    name: string,
+    doAction: () => Promise<T>,
+    undoAction: () => Promise<T>
+  ) {
     this.name = name;
     this.doAction = doAction;
     this.undoAction = undoAction;
   }
 
-  execute() {
-    this.doAction();
+  async execute() {
+    return this.doAction();
   }
 
-  undo() {
-    this.undoAction();
+  async undo() {
+    return this.undoAction();
   }
 }

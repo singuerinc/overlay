@@ -38,8 +38,6 @@ export function useOnionImageAddMutation() {
         ONION_IMAGES_KEYS.onionImage(presetId, onionImage.id).join("-"),
         JSON.stringify(onionImage)
       );
-
-      return onionImages;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

@@ -10,18 +10,16 @@ export function useRulerToggleCommand() {
     execute: (visible: boolean) => {
       const command = new Command(
         "Ruler - Toggle visibility",
-        () => {
-          updateRuler.mutate({
+        () =>
+          updateRuler.mutateAsync({
             visible,
-          });
-        },
-        () => {
-          updateRuler.mutate({
+          }),
+        () =>
+          updateRuler.mutateAsync({
             visible: !visible,
-          });
-        }
+          })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

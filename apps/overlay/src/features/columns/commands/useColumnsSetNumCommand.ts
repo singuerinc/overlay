@@ -11,18 +11,16 @@ export function useColumnsSetNumCommand() {
     execute: (numColumns: IColumns["numColumns"]) => {
       const command = new Command(
         "Columns - Set number of columns",
-        () => {
-          updateColumns.mutate({
+        () =>
+          updateColumns.mutateAsync({
             numColumns,
-          });
-        },
-        () => {
-          updateColumns.mutate({
+          }),
+        () =>
+          updateColumns.mutateAsync({
             numColumns: -numColumns,
-          });
-        }
+          })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

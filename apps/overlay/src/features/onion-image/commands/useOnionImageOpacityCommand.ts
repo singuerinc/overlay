@@ -12,20 +12,18 @@ export function useOnionImageOpacityCommand() {
       const prevOpacity = onionImage.opacity;
       const command = new Command(
         "Onion Image - Change opacity",
-        () => {
-          mutation.mutate({
+        () =>
+          mutation.mutateAsync({
             id: onionImage.id,
             opacity,
-          });
-        },
-        () => {
-          mutation.mutate({
+          }),
+        () =>
+          mutation.mutateAsync({
             id: onionImage.id,
             opacity: prevOpacity,
-          });
-        }
+          })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

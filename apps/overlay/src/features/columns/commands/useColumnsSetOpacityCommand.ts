@@ -14,18 +14,17 @@ export function useColumnsSetOpacityCommand() {
       const prevOpacity = columns?.opacity;
       const command = new Command(
         "Columns - Set opacity",
-        () => {
-          updateColumns.mutate({
+        () =>
+          updateColumns.mutateAsync({
             opacity,
-          });
-        },
-        () => {
-          updateColumns.mutate({
+          }),
+
+        () =>
+          updateColumns.mutateAsync({
             opacity: prevOpacity,
-          });
-        }
+          })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

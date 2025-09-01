@@ -1,25 +1,16 @@
 import { useOnionImageByIdQuery } from "@/features/onion-image/store/useOnionImageByIdQuery";
 import { useOnionImagesQuery } from "@/features/onion-image/store/useOnionImagesQuery";
 import { OnionImageLockButton } from "@/features/onion-image/toolbox/OnionImageLockButton";
-import { OnionImagesAddButton } from "@/features/onion-image/toolbox/OnionImagesAddButton";
-import { OnionImagesToggleButton } from "@/features/onion-image/toolbox/OnionImagesToggleButton";
 import { OnionImageToggleVisibilityButton } from "@/features/onion-image/toolbox/OnionImageToggleVisibilityButton";
-import { ToolBoxTabGrid } from "@/features/toolbox/components/ToolBox";
 
 export function OnionImagesToolBox() {
   const { data: onionImages } = useOnionImagesQuery();
   return (
-    <>
-      <ToolBoxTabGrid>
-        <OnionImagesToggleButton />
-        <OnionImagesAddButton />
-      </ToolBoxTabGrid>
-      <ul className="o:flex o:flex-col o:gap-1 o:divide-y o:divide-neutral-200">
-        {onionImages?.onionImages?.map((imageId) => (
-          <OnionImageItem key={imageId} imageId={imageId} />
-        ))}
-      </ul>
-    </>
+    <ul className="o:flex o:flex-col o:gap-1 o:divide-y o:divide-neutral-200">
+      {onionImages?.onionImages?.map((imageId) => (
+        <OnionImageItem key={imageId} imageId={imageId} />
+      ))}
+    </ul>
   );
 }
 
