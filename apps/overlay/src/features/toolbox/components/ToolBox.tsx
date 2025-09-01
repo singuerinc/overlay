@@ -10,7 +10,7 @@ import { type PropsWithChildren } from "react";
 
 export function ToolBoxTab({ children }: PropsWithChildren) {
   return (
-    <div className="o:flex o:flex-col o:gap-x-1 o:px-4 o:py-2 o:w-full">
+    <div className="o:flex o:flex-col o:min-h-18 o:gap-x-1 o:px-4 o:py-2 o:w-full">
       {children}
     </div>
   );
@@ -108,7 +108,7 @@ export function ToolBoxRoot({
   return (
     <div
       id="toolBox"
-      className="o:flex o:opacity-15 o:hover:opacity-100 o:transition-opacity o:hover:delay-75 o:hover:duration-300 o:duration-500 o:delay-1000 o:shadow o:bg-neutral-950/80 o:p-1 o:z-50 o:fixed o:rounded-sm o:pointer-events-auto"
+      className="o:flex o:shadow o:bg-neutral-950/80 o:p-1 o:z-50 o:fixed o:rounded-sm o:pointer-events-auto"
       ref={setNodeRef}
       style={style}
     >
