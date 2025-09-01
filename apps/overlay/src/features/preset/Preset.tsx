@@ -12,6 +12,7 @@ import { RulerContextProvider } from "@/features/rulers/store/rulerStore";
 import { ShortcutsObserver } from "@/features/shortcuts/ShortcutsObserver";
 import { Sizes } from "@/features/sizes/Sizes";
 import { SizesContextProvider } from "@/features/sizes/store/SizesStore";
+import { ToolBar } from "@/features/toolbar/ToolBar";
 import { OverlayToolBox } from "@/features/toolbox/OverlayToolBox";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
 import { cn } from "@/ui/cn";
@@ -30,6 +31,7 @@ export function Preset({ id }: { id: IPreset["id"] }) {
       className={cn("overlay-root o:overflow-hidden")}
     >
       <OverlayToolBox />
+      <ToolBar />
       <ShortcutsObserver />
       {/* <CommandsDebugger /> */}
       {workspace.visible && (

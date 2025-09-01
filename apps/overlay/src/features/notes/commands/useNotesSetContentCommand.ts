@@ -11,14 +11,11 @@ export function useNotesSetContentCommand() {
     execute: (content: INotes["content"]) => {
       const command = new Command(
         "Notes - Set content",
-        () => {
-          updateNotes.mutate({
+        () =>
+          updateNotes.mutateAsync({
             content,
-          });
-        },
-        () => {
-          //
-        }
+          }),
+        () => Promise.resolve()
       );
       executeCommand(command, true);
     },

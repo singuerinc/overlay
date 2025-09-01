@@ -29,24 +29,27 @@ export function useOnionImageCycleFilterCommand() {
 
       const command = new Command(
         "Onion Image - Change filter",
+        () =>
+          updateGrid.mutateAsync({
+            id,
+            filter: nextFilter,
+          }),
         () => {
-          if (onionImage) {
-            updateGrid.mutate({
-              id: onionImage.id,
-              filter: nextFilter,
-            });
-          }
-        },
-        () => {
-          if (onionImage) {
-            updateGrid.mutate({
-              id: onionImage.id,
-              filter: prevFilter,
-            });
-          }
+          return new Promise((resolve) => {
+            if (onionImage) {
+              updateGrid
+                .mutateAsync({
+                  id: onionImage.id,
+                  filter: prevFilter,
+                })
+                .then(() => resolve());
+            } else {
+              resolve();
+            }
+          });
         }
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

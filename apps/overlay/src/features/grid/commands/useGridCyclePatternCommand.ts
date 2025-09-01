@@ -22,18 +22,16 @@ export function useGridCyclePatternCommand() {
 
       const command = new Command(
         "Grid - Cycle pattern",
-        () => {
-          updateGrid.mutate({
+        () =>
+          updateGrid.mutateAsync({
             pattern: nextPattern,
-          });
-        },
-        () => {
-          updateGrid.mutate({
+          }),
+        () =>
+          updateGrid.mutateAsync({
             pattern: prevPattern,
-          });
-        }
+          })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

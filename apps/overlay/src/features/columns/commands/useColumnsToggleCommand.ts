@@ -11,18 +11,16 @@ export function useColumnsToggleCommand() {
     execute: (visible: IColumns["visible"]) => {
       const command = new Command(
         "Columns - Toggle visibility",
-        () => {
-          updateColumns.mutate({
+        () =>
+          updateColumns.mutateAsync({
             visible,
-          });
-        },
-        () => {
-          updateColumns.mutate({
+          }),
+        () =>
+          updateColumns.mutateAsync({
             visible: !visible,
-          });
-        }
+          })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

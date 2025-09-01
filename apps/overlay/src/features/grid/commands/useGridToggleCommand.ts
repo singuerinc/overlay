@@ -10,18 +10,16 @@ export function useGridToggleCommand() {
     execute: (visible: boolean) => {
       const command = new Command(
         "Grid - Toggle visibility",
-        () => {
-          updateGrid.mutate({
+        () =>
+          updateGrid.mutateAsync({
             visible,
-          });
-        },
-        () => {
-          updateGrid.mutate({
+          }),
+        () =>
+          updateGrid.mutateAsync({
             visible: !visible,
-          });
-        }
+          })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

@@ -15,18 +15,16 @@ export function useGridSetOpacityCommand() {
       const prevOpacity = grid.opacity;
       const command = new Command(
         "Grid - Set opacity",
-        () => {
-          updateGrid.mutate({
+        () =>
+          updateGrid.mutateAsync({
             opacity,
-          });
-        },
-        () => {
-          updateGrid.mutate({
+          }),
+        () =>
+          updateGrid.mutateAsync({
             opacity: prevOpacity,
-          });
-        }
+          })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

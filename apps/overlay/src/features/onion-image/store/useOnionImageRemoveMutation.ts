@@ -40,8 +40,6 @@ export function useOnionImageRemoveMutation() {
         ONION_IMAGES_KEYS.onionImage(presetId, onionImage.id),
         undefined
       );
-
-      return onionImages;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

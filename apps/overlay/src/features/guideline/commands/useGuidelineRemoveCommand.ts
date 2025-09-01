@@ -16,20 +16,24 @@ export function useGuidelineRemoveCommand() {
     execute: (guideline: IGuideline) => {
       const command = new Command(
         "Guideline - Remove",
-        () => {
-          removeGuideline.mutate({
-            guideline,
-          });
-          setSelectedTool(null);
-        },
-        () => {
-          addGuideline.mutate({
-            guideline,
-          });
-          setSelectedTool(guideline);
-        }
+        () =>
+          removeGuideline
+            .mutateAsync({
+              guideline,
+            })
+            .then(() => {
+              setSelectedTool(null);
+            }),
+        () =>
+          addGuideline
+            .mutateAsync({
+              guideline,
+            })
+            .then(() => {
+              setSelectedTool(guideline);
+            })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

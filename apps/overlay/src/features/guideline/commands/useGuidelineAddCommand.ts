@@ -15,20 +15,24 @@ export function useGuidelineAddCommand() {
     execute: (guideline: IGuideline) => {
       const command = new Command(
         "Guidelines - Add one",
-        () => {
-          addGuideline.mutate({
-            guideline,
-          });
-          setSelectedTool(guideline);
-        },
-        () => {
-          removeGuideline.mutate({
-            guideline,
-          });
-          setSelectedTool(null);
-        }
+        () =>
+          addGuideline
+            .mutateAsync({
+              guideline,
+            })
+            .then(() => {
+              setSelectedTool(guideline);
+            }),
+        () =>
+          removeGuideline
+            .mutateAsync({
+              guideline,
+            })
+            .then(() => {
+              setSelectedTool(null);
+            })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

@@ -11,18 +11,16 @@ export function useRulerSetPositionCommand() {
     execute: (position: IRuler["position"]) => {
       const command = new Command(
         "Ruler - Set position",
-        () => {
-          updateRuler.mutate({
+        () =>
+          updateRuler.mutateAsync({
             position,
-          });
-        },
-        () => {
-          updateRuler.mutate({
+          }),
+        () =>
+          updateRuler.mutateAsync({
             position,
-          });
-        }
+          })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

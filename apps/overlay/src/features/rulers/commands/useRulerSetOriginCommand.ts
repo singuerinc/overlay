@@ -14,20 +14,18 @@ export function useRulerSetOriginCommand() {
       };
       const command = new Command(
         "Ruler - Set origin",
-        () => {
-          updateRuler.mutate({
+        () =>
+          updateRuler.mutateAsync({
             originX: originX,
             originY: originY,
-          });
-        },
-        () => {
-          updateRuler.mutate({
+          }),
+        () =>
+          updateRuler.mutateAsync({
             originX: prevOriginX,
             originY: prevOriginY,
-          });
-        }
+          })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

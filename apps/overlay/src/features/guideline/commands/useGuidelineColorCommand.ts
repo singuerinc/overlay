@@ -16,25 +16,26 @@ export function useGuidelineCycleColorCommand() {
 
       const command = new Command(
         "Guideline - Change Color",
-        () => {
-          const color =
-            GuidelineColors[
-              (GuidelineColors.indexOf(prevColor) + 1) % GuidelineColors.length
-            ];
-          mutation.mutate({
+        () =>
+          mutation.mutateAsync({
             id: guideline.id,
-            color,
-          });
-        },
-        () => {
-          mutation.mutate({
-            id: guideline.id,
-            color: prevColor,
-          });
-          setSelectedTool(guideline);
-        }
+            color:
+              GuidelineColors[
+                (GuidelineColors.indexOf(prevColor) + 1) %
+                  GuidelineColors.length
+              ],
+          }),
+        () =>
+          mutation
+            .mutateAsync({
+              id: guideline.id,
+              color: prevColor,
+            })
+            .then(() => {
+              setSelectedTool(guideline);
+            })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

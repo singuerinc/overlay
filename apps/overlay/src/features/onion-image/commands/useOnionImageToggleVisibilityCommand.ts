@@ -12,21 +12,18 @@ export function useOnionImageToggleVisibilityCommand() {
       const prevVisible = onionImage.visible;
       const command = new Command(
         "Onion Image - Change visibility",
-        () => {
-          console.log("Changing visibility", onionImage.id, visible);
-          mutation.mutate({
+        () =>
+          mutation.mutateAsync({
             id: onionImage.id,
             visible,
-          });
-        },
-        () => {
-          mutation.mutate({
+          }),
+        () =>
+          mutation.mutateAsync({
             id: onionImage.id,
             visible: prevVisible,
-          });
-        }
+          })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

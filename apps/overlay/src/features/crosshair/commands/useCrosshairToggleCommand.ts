@@ -13,21 +13,22 @@ export function useCrosshairToggleCommand() {
     execute: (crosshair: ICrosshair, visible: boolean) => {
       const command = new Command(
         "Crosshair - Toggle visibility",
-        () => {
-          updateCrosshair.mutate({
-            visible,
-          });
-          if (visible) {
-            setSelectedTool(crosshair);
-          }
-        },
-        () => {
-          updateCrosshair.mutate({
+        () =>
+          updateCrosshair
+            .mutateAsync({
+              visible,
+            })
+            .then(() => {
+              if (visible) {
+                setSelectedTool(crosshair);
+              }
+            }),
+        () =>
+          updateCrosshair.mutateAsync({
             visible: !visible,
-          });
-        }
+          })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }

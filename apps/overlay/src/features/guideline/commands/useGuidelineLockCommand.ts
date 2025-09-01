@@ -14,21 +14,22 @@ export function useGuidelineLockCommand() {
       const prevLocked = guideline.locked;
       const command = new Command(
         "Guideline - Lock",
-        () => {
-          mutation.mutate({
+        () =>
+          mutation.mutateAsync({
             id: guideline.id,
             locked,
-          });
-        },
-        () => {
-          mutation.mutate({
-            id: guideline.id,
-            locked: prevLocked,
-          });
-          setSelectedTool(guideline);
-        }
+          }),
+        () =>
+          mutation
+            .mutateAsync({
+              id: guideline.id,
+              locked: prevLocked,
+            })
+            .then(() => {
+              setSelectedTool(guideline);
+            })
       );
-      executeCommand(command);
+      return executeCommand(command);
     },
   };
 }
