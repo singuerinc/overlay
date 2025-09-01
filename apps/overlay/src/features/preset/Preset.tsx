@@ -9,11 +9,9 @@ import { usePresetByIdQuery } from "@/features/preset/hooks/usePresetByIdQuery";
 import type { IPreset } from "@/features/preset/types";
 import { Ruler } from "@/features/rulers/Ruler";
 import { RulerContextProvider } from "@/features/rulers/store/rulerStore";
-import { ShortcutsObserver } from "@/features/shortcuts/ShortcutsObserver";
 import { Sizes } from "@/features/sizes/Sizes";
 import { SizesContextProvider } from "@/features/sizes/store/SizesStore";
 import { ToolBar } from "@/features/toolbar/ToolBar";
-import { OverlayToolBox } from "@/features/toolbox/OverlayToolBox";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
 import { cn } from "@/ui/cn";
 
@@ -30,9 +28,8 @@ export function Preset({ id }: { id: IPreset["id"] }) {
       data-overlay-preset-id={preset.id}
       className={cn("overlay-root o:overflow-hidden")}
     >
-      <OverlayToolBox />
       <ToolBar />
-      <ShortcutsObserver />
+      {/* <ShortcutsObserver /> */}
       {/* <CommandsDebugger /> */}
       {workspace.visible && (
         <CoordsContextProvider>

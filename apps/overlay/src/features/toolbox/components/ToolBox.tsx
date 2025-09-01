@@ -1,11 +1,9 @@
-import { ToolBoxLockToggle } from "@/features/toolbox/components/ToolBoxLockToggle";
-import { ToolBoxVisibilityToggle } from "@/features/toolbox/components/ToolBoxVisibilityToggle";
 import type { ToolBoxTabNameType } from "@/features/toolbox/types";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
 import { cn } from "@/ui/cn";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
-import { IconArrowsMove } from "@tabler/icons-react";
+import { IconGripVertical } from "@tabler/icons-react";
 import { type PropsWithChildren } from "react";
 
 export function ToolBoxTab({ children }: PropsWithChildren) {
@@ -74,9 +72,7 @@ export function ToolBoxGridTitle({ children }: PropsWithChildren) {
 
 export function ToolBoxTabGrid({ children }: PropsWithChildren) {
   return (
-    <div className="o:grid o:grid-cols-6 o:gap-2 o:items-start o:w-full">
-      {children}
-    </div>
+    <div className="o:flex o:gap-2 o:items-start o:w-full">{children}</div>
   );
 }
 
@@ -108,19 +104,12 @@ export function ToolBoxRoot({
   return (
     <div
       id="toolBox"
-      className="o:flex o:shadow o:bg-neutral-950/80 o:p-1 o:z-[200] o:fixed o:rounded-sm o:pointer-events-auto"
+      className="o:flex o:items-center o:shadow o:bg-neutral-950/80 o:p-1 o:z-[200] o:fixed o:rounded-sm o:pointer-events-auto"
       ref={setNodeRef}
       style={style}
     >
-      <div className="o:flex o:flex-col o:items-center o:py-1 o:justify-between o:gap-2">
-        <div {...listeners} className="o:cursor-grab o:active:cursor-grabbing">
-          <IconArrowsMove size={18} className="o:text-neutral-400" />
-        </div>
-        <div className="o:flex o:flex-col o:items-center o:gap-2">
-          {/* <ToolBoxCommandHistory /> */}
-          <ToolBoxLockToggle />
-          <ToolBoxVisibilityToggle />
-        </div>
+      <div {...listeners} className="o:cursor-grab o:active:cursor-grabbing">
+        <IconGripVertical size={18} className="o:text-neutral-400" />
       </div>
       <div className="o:flex o:flex-col o:ml-1">{children}</div>
     </div>

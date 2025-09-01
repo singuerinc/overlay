@@ -1,3 +1,4 @@
+import { useCoords } from "@/features/coords/hooks/useCoords";
 import { CrosshairColors } from "@/features/crosshair/CrosshairColor";
 import { useCrosshairQuery } from "@/features/crosshair/store/useCrosshairQuery";
 import { useNormalizedPosition } from "@/features/rulers/hooks/useNormalizedPosition";
@@ -44,6 +45,7 @@ export function Crosshair() {
   const { data: workspace } = useWorkspaceQuery();
   const { data: crosshair } = useCrosshairQuery();
   const { calculate: calculateNormalizePosition } = useNormalizedPosition();
+  const { setX, setY } = useCoords();
   const { setX0, setY0, setX1, setY1 } = useSizes();
   const setRulerPosition = useRulerSetPosition();
   const [isDrag, setIsDrag] = useState(false);
@@ -89,6 +91,9 @@ export function Crosshair() {
         const [normalizedX, normalizedY] = calculateNormalizePosition(x, y);
         setRulerPosition(normalizedX, normalizedY);
 
+        setX(x);
+        setY(y);
+
         if (isDrag) {
           const rectWidth = Math.abs(x - (dragRect.origin.x ?? 0));
           const rectHeight = Math.abs(y - (dragRect.origin.y ?? 0));
@@ -127,11 +132,11 @@ export function Crosshair() {
           width: rectWidth,
           height: rectHeight,
         });
-        setX0(null);
-        setY0(null);
-        setX1(null);
-        setY1(null);
       }
+      setX0(null);
+      setY0(null);
+      setX1(null);
+      setY1(null);
     },
     [dragRect]
   );
