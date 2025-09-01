@@ -1,5 +1,6 @@
 import { Columns } from "@/features/columns/Columns";
 import { Coords } from "@/features/coords/Coords";
+import { CoordsContextProvider } from "@/features/coords/store/CoordsStore";
 import { Crosshair } from "@/features/crosshair/Crosshair";
 import { Grid } from "@/features/grid/Grid";
 import { Guidelines } from "@/features/guideline/Guidelines";
@@ -9,6 +10,8 @@ import type { IPreset } from "@/features/preset/types";
 import { Ruler } from "@/features/rulers/Ruler";
 import { RulerContextProvider } from "@/features/rulers/store/rulerStore";
 import { ShortcutsObserver } from "@/features/shortcuts/ShortcutsObserver";
+import { Sizes } from "@/features/sizes/Sizes";
+import { SizesContextProvider } from "@/features/sizes/store/SizesStore";
 import { OverlayToolBox } from "@/features/toolbox/OverlayToolBox";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
 import { cn } from "@/ui/cn";
@@ -30,15 +33,20 @@ export function Preset({ id }: { id: IPreset["id"] }) {
       <ShortcutsObserver />
       {/* <CommandsDebugger /> */}
       {workspace.visible && (
-        <RulerContextProvider>
-          <Columns />
-          <OnionImages />
-          <Guidelines />
-          <Grid />
-          <Ruler />
-          <Crosshair />
-          <Coords />
-        </RulerContextProvider>
+        <CoordsContextProvider>
+          <SizesContextProvider>
+            <RulerContextProvider>
+              <Columns />
+              <OnionImages />
+              <Guidelines />
+              <Grid />
+              <Ruler />
+              <Crosshair />
+              <Coords />
+              <Sizes />
+            </RulerContextProvider>
+          </SizesContextProvider>
+        </CoordsContextProvider>
       )}
     </div>
   );

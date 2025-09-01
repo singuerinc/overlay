@@ -1,7 +1,9 @@
+import { useCoords } from "@/features/coords/hooks/useCoords";
 import { OnionImageActions } from "@/features/onion-image/components/OnionImageActions";
 import { useOnionImage } from "@/features/onion-image/hooks/useOnionImage";
 import { useOnionImageByIdQuery } from "@/features/onion-image/store/useOnionImageByIdQuery";
 import type { IOnionImage } from "@/features/onion-image/types";
+import { useSizes } from "@/features/sizes/hooks/useSizes";
 import {
   useSelectedTool,
   useSetSelectedTool,
@@ -11,7 +13,7 @@ import { cn } from "@/ui/cn";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { cva } from "class-variance-authority";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import type { HotkeysEvent } from "react-hotkeys-hook/packages/react-hotkeys-hook/dist/types";
 
@@ -43,6 +45,8 @@ const variantsOnionImage = cva(["o:absolute o:top-0 o:left-0 o:outline-none"], {
 });
 
 export function OnionImage({ id }: { id: IOnionImage["id"] }) {
+  const { setX, setY } = useCoords();
+  const { setX0, setY0, setX1, setY1 } = useSizes();
   const { data: workspace } = useWorkspaceQuery();
   const { data: onionImage } = useOnionImageByIdQuery(id);
   const selectedTool = useSelectedTool();
@@ -52,6 +56,17 @@ export function OnionImage({ id }: { id: IOnionImage["id"] }) {
     () => selectedTool?.id === onionImage?.id,
     [selectedTool, onionImage?.id]
   );
+
+  useEffect(() => {
+    if (isSelected && onionImage) {
+      setX(onionImage.x);
+      setY(onionImage.y);
+      setX0(onionImage.x);
+      setY0(onionImage.y);
+      setX1(onionImage.x + onionImage.width * onionImage.scale);
+      setY1(onionImage.y + onionImage.height * onionImage.scale);
+    }
+  }, [isSelected, onionImage, setX, setY]);
 
   const onOnionImagePositionChangeEnded = useCallback(
     (onionImage: IOnionImage, x: number, y: number) => {
@@ -94,8 +109,10 @@ export function OnionImage({ id }: { id: IOnionImage["id"] }) {
   const handleDown = useCallback(() => {
     if (onionImage) {
       setSelectedTool(onionImage);
+      setX(onionImage.x);
+      setY(onionImage.y);
     }
-  }, [onionImage, setSelectedTool]);
+  }, [onionImage, setSelectedTool, setX, setY]);
 
   if (!onionImage) {
     return null;

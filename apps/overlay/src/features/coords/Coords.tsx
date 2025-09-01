@@ -1,26 +1,41 @@
+import { useCoords } from "@/features/coords/hooks/useCoords";
+import { useSelectedTool } from "@/features/tools/store/tools";
 import { cn } from "@/ui/cn";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export function Coords() {
   const offset = { x: 0, y: 0 };
-
-  const ref = useRef<HTMLDivElement>(null);
-  const [mouseCoords, setMouseCoords] = useState({ x: 0, y: 0 });
+  const { x, y, setX, setY } = useCoords();
+  const selectedTool = useSelectedTool();
 
   useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
-      const rect = ref.current?.getBoundingClientRect();
-      const x = event.clientX - (rect?.left || 0) + offset.x;
-      const y = event.clientY - (rect?.top || 0) + offset.y;
-      setMouseCoords({ x: Math.round(x), y: Math.round(y) });
-    };
+    if (!selectedTool) {
+      setX(null);
+      setY(null);
+    }
+  }, [selectedTool]);
 
-    window.addEventListener("mousemove", handleMouseMove);
+  const ref = useRef<HTMLDivElement>(null);
+  // const [mouseCoords, setMouseCoords] = useState({ x: 0, y: 0 });
 
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const handleMouseMove = (event: MouseEvent) => {
+  //     const rect = ref.current?.getBoundingClientRect();
+  //     const x = event.clientX - (rect?.left || 0) + offset.x;
+  //     const y = event.clientY - (rect?.top || 0) + offset.y;
+
+  //     setX(Math.round(x));
+  //     setY(Math.round(y));
+
+  //     // setMouseCoords({ x: Math.round(x), y: Math.round(y) });
+  //   };
+
+  //   window.addEventListener("mousemove", handleMouseMove);
+
+  //   return () => {
+  //     window.removeEventListener("mousemove", handleMouseMove);
+  //   };
+  // }, []);
 
   return (
     <div
@@ -36,22 +51,31 @@ export function Coords() {
         left: offset.x,
       }}
     >
-      <div
-        className="o:absolute o:w-12 o:h-5 o:flex o:justify-start o:border-l o:bg-gradient-to-r o:from-white o:to-transparent"
-        style={{ left: mouseCoords.x, top: 0 }}
-      >
-        <span className="o:absolute o:left-2">
-          {mouseCoords.x + window.scrollX}
-        </span>
-      </div>
-      <div
-        className="o:absolute o:w-5 o:h-16 o:bg-gradient-to-b o:from-white o:to-transparent o:border-t o:inline-block"
-        style={{ left: 0, top: mouseCoords.y }}
-      >
-        <span className="o:absolute o:top-2 o:w-5 o:h-5 o:pt-0.5 o:flex o:justify-end o:-rotate-90">
-          {mouseCoords.y + window.scrollY}
-        </span>
-      </div>
+      {x !== null && (
+        <div
+          className={cn(
+            "o:absolute o:w-12 o:h-5 o:flex o:justify-start o:border-l o:bg-gradient-to-r o:from-white o:to-transparent"
+          )}
+          style={{ left: x, top: 0 }}
+        >
+          <span className="o:absolute o:left-2">{x + window.scrollX}</span>
+        </div>
+      )}
+      {y !== null && (
+        <div
+          className={cn(
+            "o:absolute o:w-5 o:h-16 o:bg-gradient-to-b o:from-white o:to-transparent o:border-t o:inline-block",
+            {
+              "o:hidden": y === null,
+            }
+          )}
+          style={{ left: 0, top: y }}
+        >
+          <span className="o:absolute o:top-2 o:w-5 o:h-5 o:pt-0.5 o:flex o:justify-end o:-rotate-90">
+            {y + window.scrollY}
+          </span>
+        </div>
+      )}
     </div>
   );
 }

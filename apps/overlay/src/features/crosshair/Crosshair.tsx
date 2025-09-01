@@ -2,6 +2,7 @@ import { CrosshairColors } from "@/features/crosshair/CrosshairColor";
 import { useCrosshairQuery } from "@/features/crosshair/store/useCrosshairQuery";
 import { useNormalizedPosition } from "@/features/rulers/hooks/useNormalizedPosition";
 import { useRulerSetPosition } from "@/features/rulers/store/rulerStore";
+import { useSizes } from "@/features/sizes/hooks/useSizes";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
 import { cn } from "@/ui/cn";
 import { cva } from "class-variance-authority";
@@ -43,6 +44,7 @@ export function Crosshair() {
   const { data: workspace } = useWorkspaceQuery();
   const { data: crosshair } = useCrosshairQuery();
   const { calculate: calculateNormalizePosition } = useNormalizedPosition();
+  const { setX0, setY0, setX1, setY1 } = useSizes();
   const setRulerPosition = useRulerSetPosition();
   const [isDrag, setIsDrag] = useState(false);
   const [dragRect, setDragRect] = useState<{
@@ -65,6 +67,10 @@ export function Crosshair() {
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
         setDragRect({ origin: { x, y }, point: { x, y }, width: 0, height: 0 });
+        setX0(x);
+        setY0(y);
+        setX1(x);
+        setY1(y);
       }
     },
     []
@@ -83,15 +89,22 @@ export function Crosshair() {
         const [normalizedX, normalizedY] = calculateNormalizePosition(x, y);
         setRulerPosition(normalizedX, normalizedY);
 
-        const rectWidth = Math.abs(x - (dragRect.origin.x ?? 0));
-        const rectHeight = Math.abs(y - (dragRect.origin.y ?? 0));
+        if (isDrag) {
+          const rectWidth = Math.abs(x - (dragRect.origin.x ?? 0));
+          const rectHeight = Math.abs(y - (dragRect.origin.y ?? 0));
 
-        setDragRect({
-          origin: dragRect.origin,
-          point: { x, y },
-          width: rectWidth,
-          height: rectHeight,
-        });
+          setDragRect({
+            origin: dragRect.origin,
+            point: { x, y },
+            width: rectWidth,
+            height: rectHeight,
+          });
+
+          setX0(dragRect.origin.x);
+          setY0(dragRect.origin.y);
+          setX1(x);
+          setY1(y);
+        }
       }
     },
     [calculateNormalizePosition, dragRect, setRulerPosition]
@@ -114,6 +127,10 @@ export function Crosshair() {
           width: rectWidth,
           height: rectHeight,
         });
+        setX0(null);
+        setY0(null);
+        setX1(null);
+        setY1(null);
       }
     },
     [dragRect]
@@ -169,10 +186,6 @@ function MeasureRuler({
   const vNodeOrigin = useRef<HTMLDivElement>(null);
   const hNodeOrigin = useRef<HTMLDivElement>(null);
   const measureRef = useRef<SVGLineElement>(null);
-  const measureWidthRef = useRef<HTMLDivElement>(null);
-  const measureWidthTxtRef = useRef<HTMLSpanElement>(null);
-  const measureHeightRef = useRef<HTMLDivElement>(null);
-  const measureHeightTxtRef = useRef<HTMLSpanElement>(null);
   const measureOriginTxtRef = useRef<HTMLDivElement>(null);
   const measureCoordsTxtRef = useRef<HTMLDivElement>(null);
   const measureSizeRef = useRef<SVGRectElement>(null);
@@ -183,10 +196,6 @@ function MeasureRuler({
       vNodeOrigin.current &&
       measureRef.current &&
       measureSizeRef.current &&
-      measureWidthRef.current &&
-      measureWidthTxtRef.current &&
-      measureHeightRef.current &&
-      measureHeightTxtRef.current &&
       measureOriginTxtRef.current &&
       measureCoordsTxtRef.current &&
       dragRect
@@ -225,23 +234,23 @@ function MeasureRuler({
       }
       measureSizeRef.current.setAttribute("width", String(dragRect.width));
       measureSizeRef.current.setAttribute("height", String(dragRect.height));
-      measureWidthRef.current.style.setProperty(
-        "transform",
-        `translate(${Math.min(dragRect.point.x, dragRect.origin.x)}px, 0)`
-      );
-      measureWidthRef.current.style.setProperty("width", `${dragRect.width}px`);
+      // measureWidthRef.current.style.setProperty(
+      //   "transform",
+      //   `translate(${Math.min(dragRect.point.x, dragRect.origin.x)}px, 0)`
+      // );
+      // measureWidthRef.current.style.setProperty("width", `${dragRect.width}px`);
 
-      measureHeightRef.current.style.setProperty(
-        "transform",
-        `translate(0, ${Math.min(dragRect.point.y, dragRect.origin.y)}px)`
-      );
-      measureHeightRef.current.style.setProperty(
-        "height",
-        `${dragRect.height}px`
-      );
+      // measureHeightRef.current.style.setProperty(
+      //   "transform",
+      //   `translate(0, ${Math.min(dragRect.point.y, dragRect.origin.y)}px)`
+      // );
+      // measureHeightRef.current.style.setProperty(
+      //   "height",
+      //   `${dragRect.height}px`
+      // );
 
-      measureWidthTxtRef.current.textContent = `${dragRect.width}px`;
-      measureHeightTxtRef.current.textContent = `${dragRect.height}px`;
+      // measureWidthTxtRef.current.textContent = `${dragRect.width}px`;
+      // measureHeightTxtRef.current.textContent = `${dragRect.height}px`;
       measureOriginTxtRef.current.textContent = `{x1: ${dragRect.origin.x}, y1: ${dragRect.origin.y}}`;
       measureCoordsTxtRef.current.textContent = `{x2: ${dragRect.point.x}, y2: ${dragRect.point.y}}`;
     }
@@ -268,26 +277,6 @@ function MeasureRuler({
           isVertical: false,
         })}
       />
-      <div
-        ref={measureWidthRef}
-        className="o:absolute o:border-red-600 o:border-x o:bg-neutral-900/10 o:top-0 o:left-0 o:h-5 o:justify-center o:items-center o:w-6 o:flex o:font-mono o:text-xs o:text-neutral-500 o:select-none"
-      >
-        <div className="o:absolute o:w-full o:h-px o:bg-red-600" />
-        <span
-          ref={measureWidthTxtRef}
-          className="o:bg-red-100 o:px-1 o:z-10 o:border o:rounded-sm o:border-red-600 o:text-red-600"
-        ></span>
-      </div>
-      <div
-        ref={measureHeightRef}
-        className="o:absolute o:border-red-600 o:border-y o:bg-neutral-900/10 o:left-0 o:top-0 o:w-5 o:items-center o:justify-center o:h-6 o:flex o:font-mono o:text-xs o:text-neutral-500 o:select-none"
-      >
-        <div className="o:absolute o:h-full o:w-px o:bg-red-600" />
-        <span
-          ref={measureHeightTxtRef}
-          className="o:-rotate-90 o:bg-neutral-100 o:px-1 o:z-10 o:border o:rounded-sm o:border-red-600 o:text-red-600"
-        ></span>
-      </div>
       <div
         ref={measureOriginTxtRef}
         className="o:absolute o:bg-neutral-950/30 o:font-mono o:text-xs o:text-neutral-50 o:select-none"
