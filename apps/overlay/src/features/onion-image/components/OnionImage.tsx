@@ -132,10 +132,10 @@ export function OnionImage({ id }: { id: IOnionImage["id"] }) {
     <div
       data-overlay-onion-image-id={onionImage.id}
       data-overlay-tool-type="onion-image"
-      ref={setNodeRef}
       className={cn(variantsOnionImage(variantsConfig), {
         "o:pointer-events-auto": workspace?.locked === false,
       })}
+      ref={setNodeRef}
       style={style}
       {...listeners}
       {...attributes}

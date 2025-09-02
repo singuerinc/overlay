@@ -2,6 +2,7 @@ import { Columns } from "@/features/columns/Columns";
 import { Coords } from "@/features/coords/Coords";
 import { CoordsContextProvider } from "@/features/coords/store/CoordsStore";
 import { Crosshair } from "@/features/crosshair/Crosshair";
+import { Frames } from "@/features/frames/Frames";
 import { Grid } from "@/features/grid/Grid";
 import { Guidelines } from "@/features/guideline/Guidelines";
 import { OnionImages } from "@/features/onion-image/OnionImages";
@@ -38,6 +39,7 @@ export function Preset({ id }: { id: IPreset["id"] }) {
               <Columns />
               <OnionImages />
               <Guidelines />
+              <Frames />
               <Grid />
               <Ruler />
               <Crosshair />
