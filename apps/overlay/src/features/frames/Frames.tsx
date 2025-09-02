@@ -20,7 +20,10 @@ function Frame({ id }: { id: IFrame["id"] }) {
   const { setX0, setY0, setX1, setY1 } = useSizes();
   const { data: frame } = useFrameByIdQuery(id);
   const { move, resize, remove } = useFrame();
-  const [tempResize, setTempResize] = useState({width: frame?.width || 0, height: frame?.height || 0});
+  const [tempResize, setTempResize] = useState({
+    width: frame?.width || 0,
+    height: frame?.height || 0,
+  });
   const selectedTool = useSelectedTool();
   const setSelectedTool = useSetSelectedTool();
   const ref = useRef<HTMLDivElement>(null);
@@ -36,13 +39,17 @@ function Frame({ id }: { id: IFrame["id"] }) {
     [selectedTool, frame?.id]
   );
 
-  useHotkeys("backspace", () => {
-    if (frame) {
-      remove(frame);
+  useHotkeys(
+    "backspace",
+    () => {
+      if (frame) {
+        remove(frame);
+      }
+    },
+    {
+      enabled: isSelected,
     }
-  }, {
-    enabled: isSelected
-  });
+  );
 
   useEffect(() => {
     if (isSelected && frame) {
@@ -56,8 +63,6 @@ function Frame({ id }: { id: IFrame["id"] }) {
   }, [isSelected, frame, setX, setY]);
 
   const handleDown = useCallback(() => {
-    console.log("🚀 ~ Frame ~ frame && selectedTool?.id !== frame.id:", frame, selectedTool?.id, frame?.id, selectedTool?.id !== frame?.id)
-    
     if (frame) {
       setSelectedTool(frame);
       setX(frame.x);
@@ -82,8 +87,28 @@ function Frame({ id }: { id: IFrame["id"] }) {
           width: ref.offsetWidth,
           height: ref.offsetHeight,
         });
+        setX0(frame.x);
+        setY0(frame.y);
+        setX1(frame.x + ref.offsetWidth);
+        setY1(frame.y + ref.offsetHeight);
       }}
-      onDragStop={(_e, d) => { move(frame.id, { x: d.x, y: d.y }) }}
+      onDrag={(_e, d) => {
+        setX(d.x);
+        setY(d.y);
+        setX0(d.x);
+        setY0(d.y);
+        setX1(d.x + frame.width);
+        setY1(d.y + frame.height);
+      }}
+      onResizeStart={() => {
+        setSelectedTool(frame);
+      }}
+      onDragStart={() => {
+        setSelectedTool(frame);
+      }}
+      onDragStop={(_e, d) => {
+        move(frame.id, { x: d.x, y: d.y });
+      }}
       onResizeStop={(_e, _direction, ref, _delta, _position) => {
         resize(frame.id, {
           width: ref.offsetWidth,
@@ -105,11 +130,16 @@ function Frame({ id }: { id: IFrame["id"] }) {
         backgroundPosition: "-1px -1px",
         backgroundSize: "10px 10px",
       }}
-      
       onMouseDown={handleDown}
-    ><div ref={ref} className="o:h-full">
-      {/* {isSelected && <FrameActions frame={frame} />} */}
-      {isSelected && <FrameMeasurements width={tempResize.width} height={tempResize.height} />}
+    >
+      <div ref={ref} className="o:h-full">
+        {/* {isSelected && <FrameActions frame={frame} />} */}
+        {isSelected && (
+          <FrameMeasurements
+            width={tempResize.width}
+            height={tempResize.height}
+          />
+        )}
       </div>
     </Rnd>
   );

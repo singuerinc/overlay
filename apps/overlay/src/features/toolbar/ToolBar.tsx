@@ -15,13 +15,11 @@ import { useOnionImages } from "@/features/onion-image/hooks/useOnionImages";
 import { useOnionImagesQuery } from "@/features/onion-image/store/useOnionImagesQuery";
 import { useRuler } from "@/features/rulers/hooks/useRuler";
 import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
-import { ToolBoxRoot } from "@/features/toolbox/components/ToolBox";
 import { useToolBox } from "@/features/toolbox/hooks/useToolBox";
 import { useToolBoxQuery } from "@/features/toolbox/store/useToolBoxQuery";
 import { useSetSelectedTool } from "@/features/tools/store/tools";
 import { useWorkspace } from "@/features/workspace/hooks/useWorkspace";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
-import { DndContext } from "@dnd-kit/core";
 import {
   IconArrowBackUp,
   IconChevronUp,
@@ -30,6 +28,7 @@ import {
   IconEye,
   IconEyeOff,
   IconGrid4x4,
+  IconGripVertical,
   IconLock,
   IconLockOpen,
   IconPhoto,
@@ -38,10 +37,11 @@ import {
   IconSquare,
   IconSquarePlus2,
   IconTable,
-  IconTablePlus,
+  IconTablePlus
 } from "@tabler/icons-react";
 import { cva } from "class-variance-authority";
 import { useRef, useState } from "react";
+import { Rnd } from "react-rnd";
 import { useOnClickOutside } from "usehooks-ts";
 
 function ToolBarButton({
@@ -53,6 +53,7 @@ function ToolBarButton({
 }) {
   const variants = cva(
     [
+      "o:flex o:justify-center",
       "o:cursor-pointer",
       "o:rounded-md o:p-1",
       "o:bg-transparent o:text-neutral-50",
@@ -138,7 +139,7 @@ function ToolBarToggleButton({
 }
 
 function ToolBarSeparator() {
-  return <div className="o:w-px o:bg-neutral-400" />;
+  return <div className="o:w-px o:bg-neutral-400 o:h-4" />;
 }
 
 function ToolBarConfigPanel({
@@ -194,13 +195,9 @@ export function ToolBar() {
   }
 
   return (
-    <DndContext
-      onDragEnd={({ delta }) => {
-        toolBoxMove(toolBox.x + delta.x, toolBox.y + delta.y);
-      }}
-    >
-      <ToolBoxRoot x={toolBox.x} y={toolBox.y}>
-        <div className="o:bg-neutral-950 o:shadow-lg o:flex o:flex-col o:gap-2 o:pointer-events-auto o:rounded-md o:p-1">
+  <Rnd onDragStop={(_e, d) => toolBoxMove(d.x, d.y)} position={{ x: toolBox.x, y: toolBox.y }}>
+      <div className="o:flex o:items-center o:gap-2 o:bg-neutral-950 o:shadow-lg o:p-1 o:z-[999999999999] o:fixed o:rounded-sm o:pointer-events-auto">
+          <IconGripVertical size={16} stroke={1} className="o:text-neutral-400" />
           <OnionImageAddToolBarButton />
           <FrameAddToolBarButton />
           <GuidelineAddToolBarButton />
@@ -221,9 +218,8 @@ export function ToolBar() {
           <WorkspaceToggleVisibilityToolBarButton />
           <WorkspaceLockToolBarButton />
           <UndoToolBarButton />
-        </div>
-      </ToolBoxRoot>
-    </DndContext>
+      </div>
+      </Rnd>
   );
 }
 
