@@ -18,6 +18,11 @@ export function useToolBoxMutation() {
         Object.assign(draftState, props);
       });
 
+      queryClient.setQueryData(
+        TOOLBOX_KEYS.toolbox(workspaceId),
+        updatedToolBox
+      );
+
       localStorage.setItem(
         TOOLBOX_KEYS.toolbox(workspaceId).join("-"),
         JSON.stringify(updatedToolBox)
