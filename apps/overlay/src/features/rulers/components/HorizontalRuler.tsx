@@ -58,7 +58,7 @@ export function HorizontalRuler({ origin }: { origin: number }) {
 
   return (
     <div
-      onClick={handleClick}
+      // onClick={handleClick}
       className={cn(variantsWrapper({ position: ruler.position }), {
         "o:pointer-events-auto": workspace?.locked === false,
       })}

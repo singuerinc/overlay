@@ -1,4 +1,5 @@
 import { useCoords } from "@/features/coords/hooks/useCoords";
+import { FrameMeasurements } from "@/features/frames/components/FrameMeasurements";
 import { useFrame } from "@/features/frames/hooks/useFrame";
 import { useFrameByIdQuery } from "@/features/frames/store/useFrameByIdQuery";
 import { useFramesQuery } from "@/features/frames/store/useFramesQuery";
@@ -9,20 +10,39 @@ import {
   useSetSelectedTool,
 } from "@/features/tools/store/tools";
 import { cn } from "@/ui/cn";
-import { DndContext, useDraggable, type DragEndEvent } from "@dnd-kit/core";
-import { CSS } from "@dnd-kit/utilities";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
+import { Rnd } from "react-rnd";
+import { useOnClickOutside } from "usehooks-ts";
 
 function Frame({ id }: { id: IFrame["id"] }) {
   const { setX, setY } = useCoords();
   const { setX0, setY0, setX1, setY1 } = useSizes();
   const { data: frame } = useFrameByIdQuery(id);
+  const { move, resize, remove } = useFrame();
+  const [tempResize, setTempResize] = useState({width: frame?.width || 0, height: frame?.height || 0});
   const selectedTool = useSelectedTool();
   const setSelectedTool = useSetSelectedTool();
+  const ref = useRef<HTMLDivElement>(null);
+
+  useOnClickOutside(ref, () => {
+    if (selectedTool?.id === frame?.id) {
+      setSelectedTool(null);
+    }
+  });
+
   const isSelected = useMemo(
     () => selectedTool?.id === frame?.id,
     [selectedTool, frame?.id]
   );
+
+  useHotkeys("backspace", () => {
+    if (frame) {
+      remove(frame);
+    }
+  }, {
+    enabled: isSelected
+  });
 
   useEffect(() => {
     if (isSelected && frame) {
@@ -35,20 +55,17 @@ function Frame({ id }: { id: IFrame["id"] }) {
     }
   }, [isSelected, frame, setX, setY]);
 
-  const { listeners, setNodeRef, attributes, transform } = useDraggable({
-    id,
-    disabled: frame?.locked,
-    data: {
-      x: frame?.x ?? 0,
-      y: frame?.y ?? 0,
-    },
-  });
-
   const handleDown = useCallback(() => {
+    console.log("🚀 ~ Frame ~ frame && selectedTool?.id !== frame.id:", frame, selectedTool?.id, frame?.id, selectedTool?.id !== frame?.id)
+    
     if (frame) {
       setSelectedTool(frame);
       setX(frame.x);
       setY(frame.y);
+      setTempResize({
+        width: frame.width,
+        height: frame.height,
+      });
     }
   }, [frame, setSelectedTool, setX, setY]);
 
@@ -56,62 +73,51 @@ function Frame({ id }: { id: IFrame["id"] }) {
     return null;
   }
 
-  const style = {
-    width: frame.width,
-    height: frame.height,
-    transform: transform
-      ? CSS.Translate.toString({
-          x: frame.x + transform.x,
-          y: frame.y + transform.y,
-          scaleX: 1,
-          scaleY: 1,
-        })
-      : CSS.Translate.toString({
-          x: frame.x,
-          y: frame.y,
-          scaleX: 1,
-          scaleY: 1,
-        }),
-  };
-
   return (
-    <div
-      className="o:bg-red-600 o:pointer-events-auto"
-      ref={setNodeRef}
-      style={style}
-      {...listeners}
-      {...attributes}
+    <Rnd
+      size={{ width: frame.width, height: frame.height }}
+      position={{ x: frame.x, y: frame.y }}
+      onResize={(_e, _direction, ref, _delta, _position) => {
+        setTempResize({
+          width: ref.offsetWidth,
+          height: ref.offsetHeight,
+        });
+      }}
+      onDragStop={(_e, d) => { move(frame.id, { x: d.x, y: d.y }) }}
+      onResizeStop={(_e, _direction, ref, _delta, _position) => {
+        resize(frame.id, {
+          width: ref.offsetWidth,
+          height: ref.offsetHeight,
+        });
+      }}
+      className={cn(
+        "o:bg-red-600/20 o:group o:border o:border-transparent o:pointer-events-auto o:hover:border o:hover:border-neutral-600",
+        {
+          "o:border-neutral-600": isSelected,
+        }
+      )}
+      style={{
+        width: frame.width,
+        height: frame.height,
+        backgroundImage: `
+          linear-gradient(to right, rgba(255, 0, 0, 0.1) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(255, 0, 0, 0.1) 1px, transparent 1px)`,
+        backgroundPosition: "-1px -1px",
+        backgroundSize: "10px 10px",
+      }}
+      
       onMouseDown={handleDown}
-    ></div>
+    ><div ref={ref} className="o:h-full">
+      {/* {isSelected && <FrameActions frame={frame} />} */}
+      {isSelected && <FrameMeasurements width={tempResize.width} height={tempResize.height} />}
+      </div>
+    </Rnd>
   );
 }
 
 export function Frames() {
   const { data: frames } = useFramesQuery();
   const containerRef = useRef<HTMLDivElement>(null);
-  const { move } = useFrame();
-  const { setX, setY } = useCoords();
-
-  // const handleDragMove = useCallback(
-  //   (ev: DragEndEvent) => {
-  //     setX(ev.active.rect.current.translated?.left ?? 0);
-  //     setY(ev.active.rect.current.translated?.top ?? 0);
-  //   },
-  //   [frames]
-  // );
-
-  const handleDragEnd = useCallback(
-    (ev: DragEndEvent) => {
-      const frameId = frames?.frames.find((x) => x === ev.active.id);
-      if (!frameId) return;
-
-      move(frameId, {
-        x: (ev.active.data.current?.x ?? 0) + ev.delta.x,
-        y: (ev.active.data.current?.y ?? 0) + ev.delta.y,
-      });
-    },
-    [frames]
-  );
 
   if (!frames || !frames.visible) {
     return null;
@@ -124,11 +130,9 @@ export function Frames() {
         "o:absolute o:pointer-events-none o:top-0 o:left-0 o:w-full o:h-full"
       )}
     >
-      <DndContext onDragEnd={handleDragEnd}>
-        {frames.frames.map((frameId) => (
-          <Frame key={frameId} id={frameId} />
-        ))}
-      </DndContext>
+      {frames.frames.map((frameId) => (
+        <Frame key={frameId} id={frameId} />
+      ))}
     </div>
   );
 }

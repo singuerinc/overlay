@@ -11,7 +11,10 @@ type Store = {
 const useToolsStore = create<Store>((set) => ({
   selectedTool: null,
   actions: {
-    setSelectedTool: (tool: ITool | null) => set({ selectedTool: tool }),
+    setSelectedTool: (tool: ITool | null) => {
+      console.log("setSelectedTool:", tool);
+      set({ selectedTool: tool });
+    },
   },
 }));
 

@@ -200,7 +200,7 @@ export function ToolBar() {
       }}
     >
       <ToolBoxRoot x={toolBox.x} y={toolBox.y}>
-        <div className="o:bg-neutral-950 o:shadow-lg o:flex o:gap-2 o:pointer-events-auto o:rounded-md o:p-1">
+        <div className="o:bg-neutral-950 o:shadow-lg o:flex o:flex-col o:gap-2 o:pointer-events-auto o:rounded-md o:p-1">
           <OnionImageAddToolBarButton />
           <FrameAddToolBarButton />
           <GuidelineAddToolBarButton />
