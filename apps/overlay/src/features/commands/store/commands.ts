@@ -10,6 +10,8 @@ type State = {
   };
 };
 
+const UNDO_MAX_STACK = 25;
+
 export const useCommandStore = create<State>((set) => ({
   _commands: [],
   actions: {
@@ -22,7 +24,7 @@ export const useCommandStore = create<State>((set) => ({
       if (!skipStack) {
         return new Promise((resolve) => {
           set((state) => ({
-            _commands: [...state._commands, command],
+            _commands: [...state._commands, command].slice(-UNDO_MAX_STACK),
           }));
           const result = command.execute();
           resolve(result);

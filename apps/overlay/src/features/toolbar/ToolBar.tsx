@@ -4,6 +4,8 @@ import { ColumnsToolBox } from "@/features/columns/toolbox/ColumnsToolBox";
 import { useCommands } from "@/features/commands/hooks/useCommands";
 import { useCrosshair } from "@/features/crosshair/hooks/useCrosshair";
 import { useCrosshairQuery } from "@/features/crosshair/store/useCrosshairQuery";
+import { useFrames } from "@/features/frames/hooks/useFrames";
+import { useFramesQuery } from "@/features/frames/store/useFramesQuery";
 import { useGrid } from "@/features/grid/hooks/useGrid";
 import { useGridQuery } from "@/features/grid/store/useGridQuery";
 import { GridToolBox } from "@/features/grid/toolbox/GridToolBox";
@@ -33,6 +35,7 @@ import {
   IconPhoto,
   IconPhotoPlus,
   IconRuler,
+  IconSquare,
   IconSquarePlus2,
   IconTable,
   IconTablePlus,
@@ -198,17 +201,23 @@ export function ToolBar() {
     >
       <ToolBoxRoot x={toolBox.x} y={toolBox.y}>
         <div className="o:bg-neutral-950 o:shadow-lg o:flex o:gap-2 o:pointer-events-auto o:rounded-md o:p-1">
-          <CrosshairToolBarButton />
-          <RulersToolBarButton />
           <OnionImageAddToolBarButton />
+          <FrameAddToolBarButton />
           <GuidelineAddToolBarButton />
+          <CrosshairToolBarButton />
+
           <ToolBarSeparator />
-          <RulerToolBarButton />
-          <GuidelinesToolBarButton />
+
           <OnionImagesToolBarButton />
+          <FramesToolBarButton />
+          <GuidelinesToolBarButton />
+
+          <RulerToolBarButton />
           <GridToolBarButton />
           <ColumnsToolBarButton />
+
           <ToolBarSeparator />
+
           <WorkspaceToggleVisibilityToolBarButton />
           <WorkspaceLockToolBarButton />
           <UndoToolBarButton />
@@ -283,17 +292,22 @@ function GuidelineAddToolBarButton() {
   );
 }
 
-function RulersToolBarButton() {
-  // const { data: ruler } = useRulerQuery();
-  // const { toggle } = useRuler();
+function FrameAddToolBarButton() {
+  const { data: frames } = useFramesQuery();
+  const { toggle, add, visible } = useFrames();
 
-  // if (!ruler) return null;
+  if (!frames) return null;
 
   return (
     <ToolBarToggleButton
-      enabled={false}
       active={false}
-      onClick={() => {}}
+      onClick={() => {
+        add().then(() => {
+          if (!visible) {
+            toggle();
+          }
+        });
+      }}
       Icon={<IconSquarePlus2 stroke={1} />}
     />
   );
@@ -363,6 +377,23 @@ function ColumnsToolBarButton() {
         Icon={<IconColumns stroke={1} />}
       />
     </ToolBarButtonWithConfigButton>
+  );
+}
+
+function FramesToolBarButton() {
+  const { data: frames } = useFramesQuery();
+  const { toggle } = useFrames();
+
+  if (!frames) return null;
+
+  return (
+    <ToolBarToggleButton
+      active={frames.visible ?? false}
+      onClick={() => {
+        toggle();
+      }}
+      Icon={<IconSquare stroke={1} />}
+    />
   );
 }
 
