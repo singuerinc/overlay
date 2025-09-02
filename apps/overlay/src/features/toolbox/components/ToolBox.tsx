@@ -104,14 +104,14 @@ export function ToolBoxRoot({
   return (
     <div
       id="toolBox"
-      className="o:flex o:items-center o:shadow o:bg-neutral-950/80 o:p-1 o:z-[200] o:fixed o:rounded-sm o:pointer-events-auto"
+      className="o:flex o:items-center o:shadow o:bg-neutral-950/80 o:p-0.5 o:z-[200] o:fixed o:rounded-sm o:pointer-events-auto"
       ref={setNodeRef}
       style={style}
     >
       <div {...listeners} className="o:cursor-grab o:active:cursor-grabbing">
-        <IconGripVertical size={18} className="o:text-neutral-400" />
+        <IconGripVertical size={16} stroke={1} className="o:text-neutral-400" />
       </div>
-      <div className="o:flex o:flex-col o:ml-1">{children}</div>
+      <div className="o:flex o:flex-col">{children}</div>
     </div>
   );
 }

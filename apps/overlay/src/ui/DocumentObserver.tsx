@@ -7,7 +7,7 @@ export const DocumentObserver: React.FC = () => {
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
       // if (event.target === document.querySelector(".overlay-root")) {
-      setSelectedTool(null);
+      //   setSelectedTool(null);
       // }
     };
 
