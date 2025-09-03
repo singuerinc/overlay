@@ -1,6 +1,8 @@
 import { HorizontalRuler } from "@/features/rulers/components/HorizontalRuler";
 import { VerticalRuler } from "@/features/rulers/components/VerticalRuler";
 import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
+import { zIndex } from "@/features/workspace/utils/zIndex";
+import { cn } from "@/ui/cn";
 import { HotkeysProvider } from "react-hotkeys-hook";
 
 export function Ruler() {
@@ -13,7 +15,7 @@ export function Ruler() {
   return (
     <HotkeysProvider>
       <div
-        className="o:absolute o:top-0 o:left-0"
+        className={cn("o:absolute o:top-0 o:left-0", zIndex.rulers)}
         style={{
           width: `${ruler.width}`,
           height: `${ruler.height}`,

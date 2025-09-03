@@ -11,6 +11,7 @@ import {
   useSetSelectedTool,
 } from "@/features/tools/store/tools";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
+import { zIndex } from "@/features/workspace/utils/zIndex";
 import { cn } from "@/ui/cn";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -158,6 +159,7 @@ export function Frames() {
     <div
       ref={containerRef}
       className={cn(
+        zIndex.frames,
         "o:absolute o:pointer-events-none o:top-0 o:left-0 o:w-full o:h-full"
       )}
     >

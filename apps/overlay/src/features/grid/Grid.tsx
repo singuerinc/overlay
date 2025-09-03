@@ -2,6 +2,8 @@ import { GridColors } from "@/features/grid/GridColor";
 import { useGridQuery } from "@/features/grid/store/useGridQuery";
 import { type IGridPattern } from "@/features/grid/types";
 import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
+import { zIndex } from "@/features/workspace/utils/zIndex";
+import { cn } from "@/ui/cn";
 import { cva } from "class-variance-authority";
 
 const variantsGrid = cva([], {
@@ -45,7 +47,10 @@ export function Grid() {
   return (
     <div
       data-overlay-grid-id={grid.id}
-      className="o:absolute o:top-0 o:left-0 o:w-full o:h-full"
+      className={cn(
+        "o:absolute o:top-0 o:left-0 o:w-full o:h-full",
+        zIndex.grid
+      )}
       style={{
         opacity,
         backgroundPosition: `top ${ruler.originY + grid.gapY / 2}px left ${ruler.originX + grid.gapX / 2}px`,

@@ -1,5 +1,6 @@
 import { useSizes } from "@/features/sizes/hooks/useSizes";
 import { useSelectedTool } from "@/features/tools/store/tools";
+import { zIndex } from "@/features/workspace/utils/zIndex";
 import { cn } from "@/ui/cn";
 import { useEffect } from "react";
 
@@ -19,7 +20,11 @@ export function Sizes() {
   return (
     <div
       data-overlay-tool-type="sizes"
-      className={cn("o:absolute o:left-0 o:top-0", "o:w-full o:h-full")}
+      className={cn(
+        "o:absolute o:left-0 o:top-0",
+        "o:w-full o:h-full",
+        zIndex.sizes
+      )}
     >
       {x0 !== null && x1 !== null && (
         <div

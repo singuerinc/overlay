@@ -153,7 +153,7 @@ export function OnionImage({ id }: { id: IOnionImage["id"] }) {
       aria-disabled={onionImage.locked}
       aria-selected={isSelected}
     >
-      <div ref={ref} className="o:border-2">
+      <div ref={ref}>
         <img
           src={onionImage.data}
           className={cn(["o:pointer-events-none"], {

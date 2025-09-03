@@ -1,32 +1,38 @@
-- [x] guidelines: move with arrows
-- [x] guidelines: colors
-- [x] guideline: can be locked individually
-- [x] guideline: coord in toolbar
-- [x] guideline: rotate
-- [x] crosshair tool
-- [x] columns tool
-- [x] grid tool
-- [x] image onion tool
-- [ ] color drop
-- [ ] all borders (similar to extension)
-- [ ] dark mode
-- [-] snap to grid
-- [ ] eyedrop
-- [ ] zoom / loupe / magnifier
-- [x] measure tool, diagonal, free
-- [ ] crosshair: a zoom view in the corner to see the pixels under the cross, canvas?
-- [x] presets - many configs
-- [x] rulers "rectangles"
-- [x] notes
-- [ ] lock workspace
-- [ ] import workspace
-- [ ] baseline grid
-- [ ] normalize dragging (guideline, frame, onion-image)
+- [ ] bug: re-render removes the anchor
+- [ ] bug: font in project affects overlay
+- [ ] bug: coords background does not work great on semi transparent background
+- [ ] bug: lock workspace is missing
+- [ ] onion: actions should be in toolbar
+- [ ] feat: load/import workspace from <Overlay workspaceConfig={}>
+- [ ] feat: light/dark mode
+- [ ] feat(rulers): add colors
+- [ ] idea: color drop
+- [ ] idea: all borders (similar to extension)
+- [ ] idea: eyedrop
+- [ ] idea: zoom / loupe / magnifier
+- [ ] feat: crosshair with a zoom view in the corner to see the pixels under the cross, canvas?
+- [ ] feat(grid): with baseline grid
+- [ ] tools: normalize dragging (guideline, frame, onion-image)
   - [x] move to rnd
     - [x] guidelines
     - [x] frames
     - [x] onion image
   - [ ] create a hook or similar with based functionality
   - [ ] create a hook for snap props
-- config as prop
-- rulers colors
+- [x] feat: snap to grid
+- [x] bug(guidelines): should be on top of everything
+- [x] bug(frames): should be on top of columns
+- [x] feat(crosshair): measure tool, diagonal, free
+- [x] bug(onion-image): border on images
+- [x] feat(presets): many configs
+- [x] feat(frames): "rectangles"
+- [x] feat(notes): tool
+- [x] feat(guidelines): move with arrows
+- [x] feat(guidelines): colors
+- [x] feat(guideline): can be locked individually
+- [x] feat(guideline): coord in toolbar
+- [x] feat(guideline): rotate
+- [x] feat(crosshair): tool
+- [x] feat(columns): tool
+- [x] feat(grid): tool
+- [x] feat(onion-image): tool

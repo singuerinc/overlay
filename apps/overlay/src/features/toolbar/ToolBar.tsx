@@ -31,6 +31,8 @@ import {
 import { useWorkspace } from "@/features/workspace/hooks/useWorkspace";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
 import { useExportWorkspace } from "@/features/workspace/utils/useExportWorkspace";
+import { zIndex } from "@/features/workspace/utils/zIndex";
+import { cn } from "@/ui/cn";
 import {
   IconArrowBackUp,
   IconChevronUp,
@@ -217,7 +219,7 @@ export function ToolBar() {
   return (
     <Rnd
       dragHandleClassName="overlay-toolbar-handler"
-      className="o:z-[99999]"
+      className={cn(zIndex.toolbar)}
       onDragStop={(_e, d) => toolBoxMove(d.x, d.y)}
       position={{ x: toolBox.x, y: toolBox.y }}
     >

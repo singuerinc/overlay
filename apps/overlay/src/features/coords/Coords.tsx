@@ -1,5 +1,6 @@
 import { useCoords } from "@/features/coords/hooks/useCoords";
 import { useSelectedTool } from "@/features/tools/store/tools";
+import { zIndex } from "@/features/workspace/utils/zIndex";
 import { cn } from "@/ui/cn";
 import { useEffect, useRef } from "react";
 
@@ -16,26 +17,6 @@ export function Coords() {
   }, [selectedTool]);
 
   const ref = useRef<HTMLDivElement>(null);
-  // const [mouseCoords, setMouseCoords] = useState({ x: 0, y: 0 });
-
-  // useEffect(() => {
-  //   const handleMouseMove = (event: MouseEvent) => {
-  //     const rect = ref.current?.getBoundingClientRect();
-  //     const x = event.clientX - (rect?.left || 0) + offset.x;
-  //     const y = event.clientY - (rect?.top || 0) + offset.y;
-
-  //     setX(Math.round(x));
-  //     setY(Math.round(y));
-
-  //     // setMouseCoords({ x: Math.round(x), y: Math.round(y) });
-  //   };
-
-  //   window.addEventListener("mousemove", handleMouseMove);
-
-  //   return () => {
-  //     window.removeEventListener("mousemove", handleMouseMove);
-  //   };
-  // }, []);
 
   return (
     <div
@@ -44,7 +25,8 @@ export function Coords() {
       className={cn(
         "o:absolute o:left-0 o:top-0",
         "o:w-full o:h-full o:px-1",
-        "o:text-neutral-950 o:text-[9px] o:tabular-nums"
+        "o:text-neutral-950 o:text-[9px] o:tabular-nums",
+        zIndex.coords
       )}
       style={{
         top: offset.y,

@@ -31,10 +31,10 @@ const variantsGuideline = cva(["o:group o:focus:outline-none o:z-50"], {
       false: "o:w-full o:h-px o:border-t",
     },
     color: {
-      cyan: "o:border-cyan-500/40 hover:o:border-cyan-500/100",
-      red: "o:border-red-500/40 hover:o:border-red-500/100",
-      green: "o:border-green-500/40 hover:o:border-green-500/100",
-      neutral: "o:border-neutral-500/40 hover:o:border-neutral-500/100",
+      cyan: "o:border-cyan-500/60 hover:o:border-cyan-500/100",
+      red: "o:border-red-500/60 hover:o:border-red-500/100",
+      green: "o:border-green-500/60 hover:o:border-green-500/100",
+      neutral: "o:border-neutral-500/60 hover:o:border-neutral-500/100",
     },
     selected: {
       true: "",

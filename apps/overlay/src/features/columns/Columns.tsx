@@ -1,5 +1,6 @@
 import { type ColumnsColorType } from "@/features/columns/ColumnsColor";
 import { useColumnsQuery } from "@/features/columns/store/useColumnsQuery";
+import { zIndex } from "@/features/workspace/utils/zIndex";
 import { cn } from "@/ui/cn";
 
 export function Columns() {
@@ -21,7 +22,7 @@ export function Columns() {
 
   return (
     <div
-      className="o:h-full o:flex o:mx-auto"
+      className={cn("o:h-full o:flex o:mx-auto", zIndex.columns)}
       style={{
         width: columns.size,
         maxWidth: "100%",
