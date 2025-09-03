@@ -24,7 +24,7 @@ export function ToolBoxInputNumber({
         max={max ?? undefined}
         step={step ?? 1}
         className={cn(
-          "overlay-step-num o:grow-0 o:max-w-12 o:focus:bg-neutral-100 o:p-1 o:border-b-2 o:text-neutral-400 o:border-neutral-400 o:focus:text-neutral-900 o:focus:border-neutral-900 o:pb-1 o:outline-0 o:text-left o:min-w-8"
+          "overlay-step-num o:grow-0 o:max-w-12 o:focus:bg-neutral-700 o:p-1 o:border-b-2 o:text-neutral-50 o:border-neutral-400 o:focus:text-neutral-200 o:focus:border-cyan-300 o:pb-1 o:outline-0 o:text-left o:min-w-8"
         )}
         defaultValue={defaultValue}
         onChange={(e) => set(Number(e.target.value))}

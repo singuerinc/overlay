@@ -17,7 +17,7 @@ export function ToolBoxLabeledButton({
   return (
     <div
       className={cn(
-        "o:flex o:flex-col o:text-neutral-600 o:rounded-md o:gap-1 o:items-start",
+        "o:flex o:flex-col o:text-neutral-50 o:rounded-md o:gap-1 o:items-start",
         className
       )}
     >
