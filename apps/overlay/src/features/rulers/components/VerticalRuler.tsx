@@ -86,7 +86,7 @@ export function VerticalRuler({ origin }: { origin: number }) {
           </ol>
         </div>
         <div
-          className="o:absolute o:w-full o:h-fit o:bg-neutral-100/50 o:grow"
+          className="o:absolute o:w-full o:h-fit o:bg-black/40 o:grow"
           style={{ transform: `translateY(${origin}px)` }}
         >
           <div
@@ -96,7 +96,7 @@ export function VerticalRuler({ origin }: { origin: number }) {
             })}
             style={{
               backgroundImage:
-                "linear-gradient(to top, rgba(0,0,0,0.3) 1px, transparent 1px)",
+                "linear-gradient(to top, rgba(255,255,255,1) 1px, transparent 1px)",
               backgroundSize: "50px 50px",
             }}
           />
@@ -108,7 +108,9 @@ export function VerticalRuler({ origin }: { origin: number }) {
               >
                 <div className="o:relative o:w-full o:h-full o:flex o:items-center o:-translate-y-1/2">
                   <div className="o:w-full" />
-                  <span className="o:absolute o:-rotate-90">{num * 50}</span>
+                  <span className="o:absolute o:-rotate-90 o:text-white">
+                    {num * 50}
+                  </span>
                 </div>
               </li>
             ))}

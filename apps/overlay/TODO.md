@@ -29,3 +29,4 @@
   - [ ] create a hook or similar with based functionality
   - [ ] create a hook for snap props
 - config as prop
+- rulers colors

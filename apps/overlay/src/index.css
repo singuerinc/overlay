@@ -1,5 +1,11 @@
 @import "tailwindcss" prefix(o);
 
+@theme {
+  --font-sans:
+    "Inter", --apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
 .overlay-anchor {
   anchor-name: --overlay-anchor;
 }
@@ -10,10 +16,6 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  /* --font-sans:
-    "Inter", --apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */
 
   position: fixed;
   position-anchor: --overlay-anchor;

@@ -42,7 +42,7 @@ export function Coords() {
       data-overlay-tool-type="coords"
       ref={ref}
       className={cn(
-        "o:fixed o:left-0 o:top-0",
+        "o:absolute o:left-0 o:top-0",
         "o:w-full o:h-full o:px-1",
         "o:text-neutral-950 o:text-[9px] o:tabular-nums"
       )}

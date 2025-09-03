@@ -77,7 +77,7 @@ export function HorizontalRuler({ origin }: { origin: number }) {
         </ol>
       </div>
       <div
-        className="o:absolute o:h-full o:w-fit o:bg-neutral-200/50 o:shrink-0 o:grow-0"
+        className="o:absolute o:h-full o:w-fit o:bg-black/40 o:shrink-0 o:grow-0"
         style={{ transform: `translateX(${origin}px)` }}
       >
         <div
@@ -87,7 +87,7 @@ export function HorizontalRuler({ origin }: { origin: number }) {
           })}
           style={{
             backgroundImage:
-              "linear-gradient(to right, rgba(0,0,0,0.3) 1px, transparent 1px)",
+              "linear-gradient(to right, rgba(255,255,255,1) 1px, transparent 1px)",
             backgroundSize: "50px 50px",
           }}
         />
@@ -97,7 +97,9 @@ export function HorizontalRuler({ origin }: { origin: number }) {
               key={num}
               className={cn(variantsItem({ position: ruler.position }))}
             >
-              <span className="o:-translate-x-1/2">{num * 50}</span>
+              <span className="o:-translate-x-1/2 o:text-white">
+                {num * 50}
+              </span>
             </li>
           ))}
         </ol>
