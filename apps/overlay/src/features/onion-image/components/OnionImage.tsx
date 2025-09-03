@@ -1,4 +1,5 @@
 import { useCoords } from "@/features/coords/hooks/useCoords";
+import { useGridQuery } from "@/features/grid/store/useGridQuery";
 import { OnionImageActions } from "@/features/onion-image/components/OnionImageActions";
 import { useOnionImage } from "@/features/onion-image/hooks/useOnionImage";
 import { useOnionImageByIdQuery } from "@/features/onion-image/store/useOnionImageByIdQuery";
@@ -10,12 +11,12 @@ import {
 } from "@/features/tools/store/tools";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
 import { cn } from "@/ui/cn";
-import { useDraggable } from "@dnd-kit/core";
-import { CSS } from "@dnd-kit/utilities";
 import { cva } from "class-variance-authority";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import type { HotkeysEvent } from "react-hotkeys-hook/packages/react-hotkeys-hook/dist/types";
+import { Rnd } from "react-rnd";
+import { useOnClickOutside } from "usehooks-ts";
 
 const variantsOnionImage = cva(["o:absolute o:top-0 o:left-0 o:outline-none"], {
   variants: {
@@ -45,13 +46,15 @@ const variantsOnionImage = cva(["o:absolute o:top-0 o:left-0 o:outline-none"], {
 });
 
 export function OnionImage({ id }: { id: IOnionImage["id"] }) {
+  const { data: workspace } = useWorkspaceQuery();
+  const { data: grid } = useGridQuery();
   const { setX, setY } = useCoords();
   const { setX0, setY0, setX1, setY1 } = useSizes();
-  const { data: workspace } = useWorkspaceQuery();
   const { data: onionImage } = useOnionImageByIdQuery(id);
   const selectedTool = useSelectedTool();
   const setSelectedTool = useSetSelectedTool();
   const { move } = useOnionImage();
+  const ref = useRef<HTMLImageElement>(null);
   const isSelected = useMemo(
     () => selectedTool?.id === onionImage?.id,
     [selectedTool, onionImage?.id]
@@ -81,30 +84,11 @@ export function OnionImage({ id }: { id: IOnionImage["id"] }) {
     onOnionImagePositionChanged: onOnionImagePositionChangeEnded,
   });
 
-  const { listeners, setNodeRef, attributes, transform } = useDraggable({
-    id,
-    disabled: onionImage?.locked,
-    data: {
-      x: onionImage?.x ?? 0,
-      y: onionImage?.y ?? 0,
-    },
+  useOnClickOutside(ref, () => {
+    if (selectedTool?.id === onionImage?.id) {
+      setSelectedTool(null);
+    }
   });
-
-  const style = {
-    transform: transform
-      ? CSS.Translate.toString({
-          x: (onionImage?.x ?? 0) + transform.x,
-          y: (onionImage?.y ?? 0) + transform.y,
-          scaleX: 1,
-          scaleY: 1,
-        })
-      : CSS.Translate.toString({
-          x: onionImage?.x ?? 0,
-          y: onionImage?.y ?? 0,
-          scaleX: 1,
-          scaleY: 1,
-        }),
-  };
 
   const handleDown = useCallback(() => {
     if (onionImage) {
@@ -114,9 +98,13 @@ export function OnionImage({ id }: { id: IOnionImage["id"] }) {
     }
   }, [onionImage, setSelectedTool, setX, setY]);
 
-  if (!onionImage) {
+  if (!onionImage || !grid || !workspace) {
     return null;
   }
+
+  const shouldSnap = workspace.snapToGrid;
+  const gridGap = grid.gapX;
+  const snapGrid: [number, number] = shouldSnap ? [gridGap, gridGap] : [1, 1];
 
   if (onionImage.visible === false) {
     return null;
@@ -129,34 +117,57 @@ export function OnionImage({ id }: { id: IOnionImage["id"] }) {
   };
 
   return (
-    <div
+    <Rnd
+      size={{
+        width: onionImage.width * onionImage.scale,
+        height: onionImage.height * onionImage.scale,
+      }}
+      enableResizing={false}
+      dragGrid={snapGrid}
+      position={{ x: onionImage.x, y: onionImage.y }}
+      onDrag={(_e, d) => {
+        setX(d.x);
+        setY(d.y);
+        setX0(d.x);
+        setY0(d.y);
+        setX1(d.x + onionImage.width);
+        setY1(d.y + onionImage.height);
+      }}
+      onDragStart={() => {
+        setSelectedTool(onionImage);
+      }}
+      onDragStop={(_e, d) => {
+        move(onionImage.id, { x: d.x, y: d.y });
+      }}
       data-overlay-onion-image-id={onionImage.id}
       data-overlay-tool-type="onion-image"
       className={cn(variantsOnionImage(variantsConfig), {
-        "o:pointer-events-auto": workspace?.locked === false,
+        "o:pointer-events-auto o:group:": workspace?.locked === false,
       })}
-      ref={setNodeRef}
-      style={style}
-      {...listeners}
-      {...attributes}
+      // ref={setNodeRef}
+      // style={style}
+      // {...listeners}
+      // {...attributes}
       onMouseDown={handleDown}
       tabIndex={0}
       aria-disabled={onionImage.locked}
       aria-selected={isSelected}
     >
-      <img
-        src={onionImage.data}
-        className={cn({
-          "o:opacity-100": onionImage.opacity === 1,
-          "o:opacity-50": onionImage.opacity === 0.5,
-          "o:invert": onionImage.filter === "invert",
-          "o:grayscale": onionImage.filter === "grayscale",
-        })}
-        width={onionImage.width * onionImage.scale}
-        height={onionImage.height * onionImage.scale}
-      />
-      {isSelected && <OnionImageActions onionImage={onionImage} />}
-    </div>
+      <div ref={ref} className="o:border-2">
+        <img
+          src={onionImage.data}
+          className={cn(["o:pointer-events-none"], {
+            "o:opacity-100": onionImage.opacity === 1,
+            "o:opacity-50": onionImage.opacity === 0.5,
+            "o:invert": onionImage.filter === "invert",
+            "o:grayscale": onionImage.filter === "grayscale",
+          })}
+          width={onionImage.width * onionImage.scale}
+          height={onionImage.height * onionImage.scale}
+        />
+        {isSelected && <OnionImageActions onionImage={onionImage} />}
+      </div>
+    </Rnd>
   );
 }
 

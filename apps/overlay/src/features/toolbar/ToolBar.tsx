@@ -55,7 +55,7 @@ function ToolBarButton({
 }) {
   const variants = cva(
     [
-      "o:flex o:justify-center",
+      "o:flex o:justify-center o:items-center o:size-6",
       "o:cursor-pointer",
       "o:rounded-md o:p-1",
       "o:bg-transparent o:text-neutral-50",
@@ -88,7 +88,7 @@ function ToolBarToggleButton({
 }) {
   const variants = cva(
     [
-      "o:relative",
+      "o:relative o:size-6",
       "o:cursor-pointer",
       "o:transition-colors",
       "o:rounded-md o:p-1 o:gap-y-0.5",
@@ -155,7 +155,7 @@ function ToolBarConfigPanel({
     <div
       className="o:bg-neutral-950 o:p-2 o:shadow o:rounded-md o:absolute o:-top-3 o:-translate-y-full"
       style={{
-        transform: "translateX(calc(-50% + 38px))",
+        transform: "translateX(calc(-50% + 32px))",
       }}
     >
       <div className="o:bg-neutral-950 o:w-2 o:h-2 o:absolute o:-bottom-1 o:left-1/2 o:-translate-x-1/2 o:rotate-45"></div>
@@ -179,15 +179,15 @@ function ToolBarButtonWithConfigButton({
   return (
     <div
       ref={containerRef}
-      className="o:flex o:relative o:items-center o:cursor-pointer"
+      className="o:flex o:relative o:gap-0.5 o:items-center o:cursor-pointer"
     >
       {children}
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="o:text-neutral-400 o:hover:text-white o:hover:bg-neutral-700 o:cursor-pointer o:rounded-sm o:h-8"
+        className="o:text-neutral-400 o:hover:text-white o:hover:bg-neutral-700 o:cursor-pointer o:rounded-sm"
       >
-        <IconChevronUp size={12} />
+        <IconChevronUp size={12} stroke={3} />
       </button>
       {open && ConfigPanel}
     </div>
@@ -208,7 +208,7 @@ export function ToolBar() {
       onDragStop={(_e, d) => toolBoxMove(d.x, d.y)}
       position={{ x: toolBox.x, y: toolBox.y }}
     >
-      <div className="o:flex o:items-center o:gap-2 o:bg-neutral-950 o:shadow-lg o:p-1 o:rounded-sm o:pointer-events-auto">
+      <div className="o:flex o:items-center o:gap-1 o:bg-neutral-950 o:shadow-lg o:p-1 o:rounded-sm o:pointer-events-auto">
         <IconGripVertical size={16} stroke={1} className="o:text-neutral-400" />
         <OnionImageAddToolBarButton />
         <FrameAddToolBarButton />
@@ -251,7 +251,7 @@ function CrosshairToolBarButton() {
           }
         });
       }}
-      Icon={<IconCrosshair stroke={1} />}
+      Icon={<IconCrosshair />}
     />
   );
 }
@@ -271,7 +271,7 @@ function OnionImageAddToolBarButton() {
           }
         });
       }}
-      Icon={<IconPhotoPlus stroke={1} />}
+      Icon={<IconPhotoPlus />}
     />
   );
 }
@@ -291,7 +291,7 @@ function GuidelineAddToolBarButton() {
           }
         });
       }}
-      Icon={<IconTablePlus stroke={1} />}
+      Icon={<IconTablePlus />}
     />
   );
 }
@@ -312,7 +312,7 @@ function FrameAddToolBarButton() {
           }
         });
       }}
-      Icon={<IconSquarePlus2 stroke={1} />}
+      Icon={<IconSquarePlus2 />}
     />
   );
 }
@@ -329,7 +329,7 @@ function RulerToolBarButton() {
       onClick={() => {
         toggle();
       }}
-      Icon={<IconRuler stroke={1} />}
+      Icon={<IconRuler />}
     />
   );
 }
@@ -353,7 +353,7 @@ function GridToolBarButton() {
         onClick={() => {
           toggle();
         }}
-        Icon={<IconGrid4x4 stroke={1} />}
+        Icon={<IconGrid4x4 />}
       />
     </ToolBarButtonWithConfigButton>
   );
@@ -378,7 +378,7 @@ function ColumnsToolBarButton() {
         onClick={() => {
           toggleVisibility();
         }}
-        Icon={<IconColumns stroke={1} />}
+        Icon={<IconColumns />}
       />
     </ToolBarButtonWithConfigButton>
   );
@@ -396,7 +396,7 @@ function FramesToolBarButton() {
       onClick={() => {
         toggle();
       }}
-      Icon={<IconSquare stroke={1} />}
+      Icon={<IconSquare />}
     />
   );
 }
@@ -413,7 +413,7 @@ function GuidelinesToolBarButton() {
       onClick={() => {
         toggle();
       }}
-      Icon={<IconTable stroke={1} />}
+      Icon={<IconTable />}
     />
   );
 }
@@ -430,7 +430,7 @@ function OnionImagesToolBarButton() {
       onClick={() => {
         toggle();
       }}
-      Icon={<IconPhoto stroke={1} />}
+      Icon={<IconPhoto />}
     />
   );
 }
@@ -515,7 +515,7 @@ function UndoToolBarButton() {
       enabled={hasCommands}
       active={false}
       onClick={() => undo()}
-      Icon={<IconArrowBackUp stroke={1} />}
+      Icon={<IconArrowBackUp />}
     />
   );
 }
