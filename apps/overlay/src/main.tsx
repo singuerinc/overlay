@@ -4,6 +4,6 @@ import { Overlay } from "./overlay";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Overlay />
+    <Overlay anchorSelector=".my-anchor" />
   </StrictMode>
 );

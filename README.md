@@ -2,21 +2,48 @@
 
 Essential tools to measure, align, and compare with pixel-perfect.
 
+## Install
+
+```sh
+npm install @singuerinc/overlay
+```
+
+## Setup
+
+```tsx
+// import Overlay
+import { Overlay } from "@singuerinc/overlay";
+// import Overlay styles
+import "@singuerinc/overlay/overlay.css";
+
+// place Overlay anywhere within your React app
+<App>
+  <Overlay />
+</App>;
+```
+
+### Container
+
+By default, Overlay will match the `document.body` size, but you can override this behavior by passing the `anchorSelector` option.
+
+```tsx
+// somewhere in the app
+<main className="container">...</main>
+
+<Overlay anchorSelector=".container" />
+```
+
 ## Features
 
 ### Guidelines
 
 Add and move guides to snap and align elements easily.
 
-![](images/tool-guidelines.png)
-
 ### Crosshair
 
 Pinpoint exact coordinates anywhere on the screen and measure distances between elements to validate spacing.
 
-![](images/tool-crosshair.png)
-
-### Rulers
+### Rules and Frames
 
 Measure with precision, just like in professional design tools.
 
@@ -32,33 +59,6 @@ Quickly validate responsive layouts with flexible column overlays.
 
 Overlay designs on top of live builds with adjustable transparency.
 
-### Notes
-
-Leave comments and reminders directly on the workspace.
-
 ### Presets
 
 Save, switch, import, and export complete overlay setups in one click.
-
-## Install
-
-```sh
-pnpm add @singuerinc/overlay
-# or with npm
-npm install @singuerinc/overlay
-```
-
-## Setup
-
-```tsx
-// import Overlay
-import { Overlay } from "@singuerinc/overlay";
-// import Overlay styles
-import "@singuerinc/overlay/overlay.css";
-
-// place Overlay anywhere inside the body
-<body>
-    <!-- app -->
-    <Overlay />
-</body>
-```
