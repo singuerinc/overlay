@@ -6,16 +6,17 @@ import "./index.css";
 
 const queryClient = new QueryClient();
 
-export function Overlay() {
+export function Overlay({ anchorSelector }: { anchorSelector?: string }) {
   useEffect(() => {
-    const hasAnchorEl = document.querySelector(".overlay-anchor") !== null;
-    if (!hasAnchorEl) {
-      document.body.classList.add("overlay-anchor");
-    }
+    const anchorEl = anchorSelector
+      ? (document.querySelector(anchorSelector) ?? document.body)
+      : document.body;
+
+    anchorEl.classList.add("overlay-anchor");
     return () => {
-      document.body.classList.remove("overlay-anchor");
+      anchorEl.classList.remove("overlay-anchor");
     };
-  }, []);
+  }, [anchorSelector]);
 
   return (
     <div id="overlay-app" className="o:pointer-events-none o:z-[99999]">
