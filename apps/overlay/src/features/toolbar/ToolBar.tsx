@@ -37,7 +37,7 @@ import {
   IconSquare,
   IconSquarePlus2,
   IconTable,
-  IconTablePlus
+  IconTablePlus,
 } from "@tabler/icons-react";
 import { cva } from "class-variance-authority";
 import { useRef, useState } from "react";
@@ -150,7 +150,13 @@ function ToolBarConfigPanel({
   title: string;
 }) {
   return (
-    <div className="o:bg-white o:p-2 o:shadow o:rounded-md o:absolute o:-top-2 o:-translate-y-full o:-translate-x-1/2">
+    <div
+      className="o:bg-neutral-950 o:p-2 o:shadow o:rounded-md o:absolute o:-top-3 o:-translate-y-full"
+      style={{
+        transform: "translateX(calc(-50% + 42px))",
+      }}
+    >
+      <div className="o:bg-neutral-950 o:w-2 o:h-2 o:absolute o:-bottom-1 o:left-1/2 o:-translate-x-1/2 o:rotate-45"></div>
       <div className="o:flex o:flex-col o:w-full">{children}</div>
     </div>
   );
@@ -171,13 +177,13 @@ function ToolBarButtonWithConfigButton({
   return (
     <div
       ref={containerRef}
-      className="o:flex o:items-center o:gap-1 o:cursor-pointer"
+      className="o:flex o:relative o:items-center o:cursor-pointer"
     >
       {children}
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="o:text-neutral-400 o:hover:text-white o:cursor-pointer o:h-full"
+        className="o:text-neutral-400 o:hover:text-white o:hover:bg-neutral-700 o:cursor-pointer o:rounded-sm o:h-8"
       >
         <IconChevronUp size={12} />
       </button>
@@ -195,31 +201,30 @@ export function ToolBar() {
   }
 
   return (
-  <Rnd onDragStop={(_e, d) => toolBoxMove(d.x, d.y)} position={{ x: toolBox.x, y: toolBox.y }}>
-      <div className="o:flex o:items-center o:gap-2 o:bg-neutral-950 o:shadow-lg o:p-1 o:z-[999999999999] o:fixed o:rounded-sm o:pointer-events-auto">
-          <IconGripVertical size={16} stroke={1} className="o:text-neutral-400" />
-          <OnionImageAddToolBarButton />
-          <FrameAddToolBarButton />
-          <GuidelineAddToolBarButton />
-          <CrosshairToolBarButton />
+    <Rnd
+      className="o:z-[99999]"
+      onDragStop={(_e, d) => toolBoxMove(d.x, d.y)}
+      position={{ x: toolBox.x, y: toolBox.y }}
+    >
+      <div className="o:flex o:items-center o:gap-2 o:bg-neutral-950 o:shadow-lg o:p-1 o:rounded-sm o:pointer-events-auto">
+        <IconGripVertical size={16} stroke={1} className="o:text-neutral-400" />
+        <OnionImageAddToolBarButton />
+        <FrameAddToolBarButton />
+        <GuidelineAddToolBarButton />
+        <CrosshairToolBarButton />
 
-          <ToolBarSeparator />
+        <ToolBarSeparator />
 
-          <OnionImagesToolBarButton />
-          <FramesToolBarButton />
-          <GuidelinesToolBarButton />
+        <GridToolBarButton />
+        <ColumnsToolBarButton />
 
-          <RulerToolBarButton />
-          <GridToolBarButton />
-          <ColumnsToolBarButton />
+        <ToolBarSeparator />
 
-          <ToolBarSeparator />
-
-          <WorkspaceToggleVisibilityToolBarButton />
-          <WorkspaceLockToolBarButton />
-          <UndoToolBarButton />
+        <WorkspaceToggleVisibilityToolBarButton />
+        <WorkspaceLockToolBarButton />
+        <UndoToolBarButton />
       </div>
-      </Rnd>
+    </Rnd>
   );
 }
 
@@ -453,15 +458,26 @@ function WorkspaceToggleVisibilityToolBarButton() {
   if (!workspace) return null;
 
   return (
-    <ToolBarToggleButton
-      active={workspace.visible ?? false}
-      onClick={() => {
-        setVisible(!workspace.visible);
-      }}
-      Icon={
-        workspace.visible ? <IconEye stroke={1} /> : <IconEyeOff stroke={1} />
+    <ToolBarButtonWithConfigButton
+      ConfigPanel={
+        <ToolBarConfigPanel title="Visibility">
+          <OnionImagesToolBarButton />
+          <FramesToolBarButton />
+          <GuidelinesToolBarButton />
+          <RulerToolBarButton />
+        </ToolBarConfigPanel>
       }
-    />
+    >
+      <ToolBarToggleButton
+        active={workspace.visible ?? false}
+        onClick={() => {
+          setVisible(!workspace.visible);
+        }}
+        Icon={
+          workspace.visible ? <IconEye stroke={1} /> : <IconEyeOff stroke={1} />
+        }
+      />
+    </ToolBarButtonWithConfigButton>
   );
 }
 
