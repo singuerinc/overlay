@@ -1,9 +1,7 @@
-import { useRuler } from "@/features/rulers/hooks/useRuler";
 import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
 import { cn } from "@/ui/cn";
 import { cva } from "class-variance-authority";
-import { useCallback } from "react";
 
 const variantsWrapper = cva(
   [
@@ -37,19 +35,9 @@ const variantsItem = cva(["o:w-[50px] o:flex o:items-start o:shrink-0"], {
 export function HorizontalRuler({ origin }: { origin: number }) {
   const { data: workspace } = useWorkspaceQuery();
   const { data: ruler } = useRulerQuery();
-  const { setOrigin } = useRuler();
   const numList = Array.from(
     { length: Math.floor(document.body.scrollWidth / 50) + 1 },
     (_, i) => i
-  );
-
-  const handleClick = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      setOrigin(x, ruler?.originY ?? 0);
-    },
-    [setOrigin, ruler]
   );
 
   if (!ruler) {
@@ -58,7 +46,6 @@ export function HorizontalRuler({ origin }: { origin: number }) {
 
   return (
     <div
-      // onClick={handleClick}
       className={cn(variantsWrapper({ position: ruler.position }), {
         "o:pointer-events-auto": workspace?.locked === false,
       })}

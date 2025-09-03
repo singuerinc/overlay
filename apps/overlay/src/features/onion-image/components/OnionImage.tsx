@@ -84,7 +84,7 @@ export function OnionImage({ id }: { id: IOnionImage["id"] }) {
     onOnionImagePositionChanged: onOnionImagePositionChangeEnded,
   });
 
-  useOnClickOutside(ref, () => {
+  useOnClickOutside(ref as React.RefObject<HTMLDivElement>, () => {
     if (selectedTool?.id === onionImage?.id) {
       setSelectedTool(null);
     }

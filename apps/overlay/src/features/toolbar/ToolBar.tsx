@@ -158,7 +158,6 @@ function ToolBarSeparator() {
 
 function ToolBarConfigPanel({
   children,
-  title,
 }: {
   children: React.ReactNode;
   title: string;
@@ -242,7 +241,7 @@ export function ToolBar() {
 
         <WorkspaceSnapToGridToolBarButton />
         <WorkspaceLockToolBarButton />
-        {/* <WorkspaceToggleVisibilityToolBarButton /> */}
+        <WorkspaceToggleVisibilityToolBarButton />
         <UndoToolBarButton />
         <WorkspaceExtrasToolBarButton />
 
@@ -328,7 +327,7 @@ function FrameAddToolBarButton() {
     <ToolBarToggleButton
       active={false}
       onClick={() => {
-        add().then(() => {
+        add({}).then(() => {
           if (!visible) {
             toggle();
           }
@@ -493,7 +492,6 @@ function WorkspaceLockToolBarButton() {
 
 function WorkspaceToggleVisibilityToolBarButton() {
   const { data: workspace } = useWorkspaceQuery();
-  const { setVisible } = useWorkspace();
 
   if (!workspace) return null;
 
@@ -511,7 +509,7 @@ function WorkspaceToggleVisibilityToolBarButton() {
       <ToolBarToggleButton
         active={workspace.visible ?? false}
         onClick={() => {
-          setVisible(!workspace.visible);
+          //setVisible(!workspace.visible);
         }}
         Icon={workspace.visible ? <IconEye /> : <IconEyeOff />}
       />

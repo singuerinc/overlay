@@ -1,6 +1,5 @@
 import { KeyboardObserver } from "@/features/keyboard/KeyboardObserver";
 import { Workspace } from "@/features/workspace/Workspace";
-import { DocumentObserver } from "@/ui/DocumentObserver";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect } from "react";
 import "./index.css";
@@ -21,7 +20,6 @@ export function Overlay() {
   return (
     <div id="overlay-app" className="o:pointer-events-none o:z-[99999]">
       <QueryClientProvider client={queryClient}>
-        <DocumentObserver />
         <KeyboardObserver />
         <Workspace />
       </QueryClientProvider>

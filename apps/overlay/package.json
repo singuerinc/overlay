@@ -1,6 +1,6 @@
 {
   "name": "@singuerinc/overlay",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "private": false,
   "description": "Set of tools for devs and designers to measure, align and overlay on-screen graphics and layouts.",
   "keywords": [

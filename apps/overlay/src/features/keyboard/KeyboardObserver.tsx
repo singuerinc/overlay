@@ -3,7 +3,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 
 export const KeyboardObserver: React.FC = () => {
   const toggleOverlay = useCallback(() => {
-    document.getElementById("overlay-app")!.classList.toggle("hidden");
+    document.getElementById("overlay-app")!.classList.toggle("o:hidden");
   }, []);
 
   useHotkeys(["o>o"], toggleOverlay, { preventDefault: true });
