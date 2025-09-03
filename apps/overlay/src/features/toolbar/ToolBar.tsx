@@ -9,17 +9,28 @@ import { useFramesQuery } from "@/features/frames/store/useFramesQuery";
 import { useGrid } from "@/features/grid/hooks/useGrid";
 import { useGridQuery } from "@/features/grid/store/useGridQuery";
 import { GridToolBox } from "@/features/grid/toolbox/GridToolBox";
+import { GuidelineActions } from "@/features/guideline/components/GuidelineActions";
 import { useGuidelines } from "@/features/guideline/hooks/useGuidelines";
 import { useGuidelinesQuery } from "@/features/guideline/store/useGuidelinesQuery";
 import { useOnionImages } from "@/features/onion-image/hooks/useOnionImages";
 import { useOnionImagesQuery } from "@/features/onion-image/store/useOnionImagesQuery";
+import { PresetCreateButton } from "@/features/preset/components/toolbox/PresetCreateButton";
+import { PresetDuplicateButton } from "@/features/preset/components/toolbox/PresetDuplicateButton";
+import { PresetRemoveButton } from "@/features/preset/components/toolbox/PresetRemoveButton";
+import { PresetSelect } from "@/features/preset/components/toolbox/PresetSelect";
+import { PresetUpdateNameButton } from "@/features/preset/components/toolbox/PresetUpdateNameButton";
 import { useRuler } from "@/features/rulers/hooks/useRuler";
 import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
+import { ToolBoxLabeledButton } from "@/features/toolbox/components/ToolBoxLabeledButton";
 import { useToolBox } from "@/features/toolbox/hooks/useToolBox";
 import { useToolBoxQuery } from "@/features/toolbox/store/useToolBoxQuery";
-import { useSetSelectedTool } from "@/features/tools/store/tools";
+import {
+  useSelectedTool,
+  useSetSelectedTool,
+} from "@/features/tools/store/tools";
 import { useWorkspace } from "@/features/workspace/hooks/useWorkspace";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
+import { useExportWorkspace } from "@/features/workspace/utils/useExportWorkspace";
 import {
   IconArrowBackUp,
   IconChevronUp,
@@ -40,11 +51,12 @@ import {
   IconSquarePlus2,
   IconTable,
   IconTablePlus,
+  IconUpload,
 } from "@tabler/icons-react";
 import { cva } from "class-variance-authority";
 import { useRef, useState } from "react";
 import { Rnd } from "react-rnd";
-import { useOnClickOutside } from "usehooks-ts";
+import { useCopyToClipboard, useOnClickOutside } from "usehooks-ts";
 
 function ToolBarButton({
   onClick,
@@ -57,7 +69,7 @@ function ToolBarButton({
     [
       "o:flex o:justify-center o:items-center o:size-6",
       "o:cursor-pointer",
-      "o:rounded-md o:p-1",
+      "o:rounded-sm o:p-1",
       "o:bg-transparent o:text-neutral-50",
       "o:hover:bg-neutral-600 o:active:bg-white o:active:text-neutral-950 o:active:scale-90",
     ],
@@ -91,7 +103,7 @@ function ToolBarToggleButton({
       "o:relative o:size-6",
       "o:cursor-pointer",
       "o:transition-colors",
-      "o:rounded-md o:p-1 o:gap-y-0.5",
+      "o:rounded-sm o:p-1 o:gap-y-0.5",
       "o:flex o:flex-col o:justify-center o:items-center",
     ],
     {
@@ -153,7 +165,7 @@ function ToolBarConfigPanel({
 }) {
   return (
     <div
-      className="o:bg-neutral-950 o:p-2 o:shadow o:rounded-md o:absolute o:-top-3 o:-translate-y-full"
+      className="o:bg-neutral-950 o:p-2 o:flex o:shadow o:rounded-md o:absolute o:-top-3 o:-translate-y-full"
       style={{
         transform: "translateX(calc(-50% + 32px))",
       }}
@@ -179,7 +191,7 @@ function ToolBarButtonWithConfigButton({
   return (
     <div
       ref={containerRef}
-      className="o:flex o:relative o:gap-0.5 o:items-center o:cursor-pointer"
+      className="o:flex o:relative o:gap-0.5 o:items-center"
     >
       {children}
       <button
@@ -195,6 +207,7 @@ function ToolBarButtonWithConfigButton({
 }
 
 export function ToolBar() {
+  const selectedTool = useSelectedTool();
   const { data: toolBox } = useToolBoxQuery();
   const { move: toolBoxMove } = useToolBox();
 
@@ -204,12 +217,17 @@ export function ToolBar() {
 
   return (
     <Rnd
+      dragHandleClassName="overlay-toolbar-handler"
       className="o:z-[99999]"
       onDragStop={(_e, d) => toolBoxMove(d.x, d.y)}
       position={{ x: toolBox.x, y: toolBox.y }}
     >
       <div className="o:flex o:items-center o:gap-1 o:bg-neutral-950 o:shadow-lg o:p-1 o:rounded-sm o:pointer-events-auto">
-        <IconGripVertical size={16} stroke={1} className="o:text-neutral-400" />
+        <IconGripVertical
+          size={16}
+          stroke={1}
+          className="o:text-neutral-400 overlay-toolbar-handler o:cursor-grab o:active:cursor-grabbing"
+        />
         <OnionImageAddToolBarButton />
         <FrameAddToolBarButton />
         <GuidelineAddToolBarButton />
@@ -224,8 +242,12 @@ export function ToolBar() {
 
         <WorkspaceSnapToGridToolBarButton />
         <WorkspaceLockToolBarButton />
-        <WorkspaceToggleVisibilityToolBarButton />
+        {/* <WorkspaceToggleVisibilityToolBarButton /> */}
         <UndoToolBarButton />
+        <WorkspaceExtrasToolBarButton />
+
+        {selectedTool && <ToolBarSeparator />}
+        <GuidelineActions />
       </div>
     </Rnd>
   );
@@ -447,13 +469,7 @@ function WorkspaceSnapToGridToolBarButton() {
       onClick={() => {
         setSnapToGrid(!workspace.snapToGrid);
       }}
-      Icon={
-        workspace.snapToGrid ? (
-          <IconMagnet stroke={1} />
-        ) : (
-          <IconMagnetOff stroke={1} />
-        )
-      }
+      Icon={workspace.snapToGrid ? <IconMagnet /> : <IconMagnetOff />}
     />
   );
 }
@@ -470,9 +486,7 @@ function WorkspaceLockToolBarButton() {
       onClick={() => {
         setLocked(!workspace.locked);
       }}
-      Icon={
-        workspace.locked ? <IconLock stroke={1} /> : <IconLockOpen stroke={1} />
-      }
+      Icon={workspace.locked ? <IconLock /> : <IconLockOpen />}
     />
   );
 }
@@ -499,10 +513,51 @@ function WorkspaceToggleVisibilityToolBarButton() {
         onClick={() => {
           setVisible(!workspace.visible);
         }}
-        Icon={
-          workspace.visible ? <IconEye stroke={1} /> : <IconEyeOff stroke={1} />
-        }
+        Icon={workspace.visible ? <IconEye /> : <IconEyeOff />}
       />
+    </ToolBarButtonWithConfigButton>
+  );
+}
+
+function ToolBarConfigPanelSeparator() {
+  return <div className="o:h-px o:bg-neutral-700 o:my-1" />;
+}
+
+function WorkspaceExtrasToolBarButton() {
+  const { data: workspace } = useWorkspaceQuery();
+  const { exportWorkspace } = useExportWorkspace();
+  const [, copy] = useCopyToClipboard();
+
+  if (!workspace) return null;
+
+  return (
+    <ToolBarButtonWithConfigButton
+      ConfigPanel={
+        <ToolBarConfigPanel title="Extras">
+          <ToolBoxLabeledButton
+            onClick={async () => {
+              const exportedWorkspace = await exportWorkspace();
+              copy(JSON.stringify(exportedWorkspace, null, 2));
+            }}
+            Icon={<IconUpload size={18} />}
+            label={"Export Workspace"}
+          />
+          <ToolBarConfigPanelSeparator />
+          <PresetSelect />
+          {workspace.activePresetId && (
+            <>
+              <PresetUpdateNameButton id={workspace.activePresetId} />
+              <PresetDuplicateButton id={workspace.activePresetId} />
+              {workspace.presets.length > 1 && (
+                <PresetRemoveButton id={workspace.activePresetId} />
+              )}
+            </>
+          )}
+          <PresetCreateButton />
+        </ToolBarConfigPanel>
+      }
+    >
+      {null}
     </ToolBarButtonWithConfigButton>
   );
 }

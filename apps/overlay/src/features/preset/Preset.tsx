@@ -29,13 +29,13 @@ export function Preset({ id }: { id: IPreset["id"] }) {
       data-overlay-preset-id={preset.id}
       className={cn("overlay-root o:overflow-hidden")}
     >
-      <ToolBar />
       {/* <ShortcutsObserver /> */}
       {/* <CommandsDebugger /> */}
       {workspace.visible && (
         <CoordsContextProvider>
           <SizesContextProvider>
             <RulerContextProvider>
+              <ToolBar />
               <Columns />
               <OnionImages />
               <Guidelines />

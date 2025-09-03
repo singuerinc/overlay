@@ -10,14 +10,22 @@
 - [ ] color drop
 - [ ] all borders (similar to extension)
 - [ ] dark mode
-- [ ] snap to grid
+- [-] snap to grid
 - [ ] eyedrop
 - [ ] zoom / loupe / magnifier
 - [x] measure tool, diagonal, free
 - [ ] crosshair: a zoom view in the corner to see the pixels under the cross, canvas?
 - [x] presets - many configs
-- [ ] rulers "rectangles"
+- [x] rulers "rectangles"
 - [x] notes
 - [ ] lock workspace
 - [ ] import workspace
 - [ ] baseline grid
+- [ ] normalize dragging (guideline, frame, onion-image)
+  - [x] move to rnd
+    - [x] guidelines
+    - [x] frames
+    - [x] onion image
+  - [ ] create a hook or similar with based functionality
+  - [ ] create a hook for snap props
+- config as prop

@@ -5,7 +5,7 @@ const variants = cva(["o:p-1"], {
   variants: {
     enabled: {
       true: [
-        "o:opacity-100 o:bg-neutral-950 o:cursor-pointer o:active:scale-95 o:transition-transform",
+        "o:opacity-100 o:bg-neutral-950 o:rounded-sm o:cursor-pointer o:active:scale-95 o:transition-transform",
         "",
       ],
       false: "o:opacity-20 o:cursor-auto",

@@ -1,8 +1,6 @@
 import { useCoords } from "@/features/coords/hooks/useCoords";
 import { CrosshairColors } from "@/features/crosshair/CrosshairColor";
 import { useCrosshairQuery } from "@/features/crosshair/store/useCrosshairQuery";
-import { useNormalizedPosition } from "@/features/rulers/hooks/useNormalizedPosition";
-import { useRulerSetPosition } from "@/features/rulers/store/rulerStore";
 import { useSizes } from "@/features/sizes/hooks/useSizes";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
 import { cn } from "@/ui/cn";
@@ -44,10 +42,8 @@ const variantsGuideline = cva(["o:absolute"], {
 export function Crosshair() {
   const { data: workspace } = useWorkspaceQuery();
   const { data: crosshair } = useCrosshairQuery();
-  const { calculate: calculateNormalizePosition } = useNormalizedPosition();
   const { setX, setY } = useCoords();
   const { setX0, setY0, setX1, setY1 } = useSizes();
-  const setRulerPosition = useRulerSetPosition();
   const [isDrag, setIsDrag] = useState(false);
   const [dragRect, setDragRect] = useState<{
     origin: { x: number; y: number };
@@ -88,9 +84,6 @@ export function Crosshair() {
         hNode.current?.style.setProperty("transform", `translateY(${y}px)`);
         vNode.current?.style.setProperty("transform", `translateX(${x}px)`);
 
-        const [normalizedX, normalizedY] = calculateNormalizePosition(x, y);
-        setRulerPosition(normalizedX, normalizedY);
-
         setX(x);
         setY(y);
 
@@ -112,7 +105,7 @@ export function Crosshair() {
         }
       }
     },
-    [calculateNormalizePosition, dragRect, setRulerPosition]
+    [dragRect]
   );
 
   const handleMouseUp = useCallback(

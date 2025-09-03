@@ -1,7 +1,7 @@
-import { GuidelineActions } from "@/features/guideline/components/GuidelineActions";
+import { useCoords } from "@/features/coords/hooks/useCoords";
+import { useGridQuery } from "@/features/grid/store/useGridQuery";
 import { useGuideline } from "@/features/guideline/hooks/useGuideline";
 import { useGuidelineByIdQuery } from "@/features/guideline/store/useGuidelineByIdQuery";
-import { useRulerSetPosition } from "@/features/rulers/store/rulerStore";
 import {
   useSelectedTool,
   useSetSelectedTool,
@@ -9,9 +9,11 @@ import {
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
 import { cn } from "@/ui/cn";
 import { cva } from "class-variance-authority";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import type { HotkeysEvent } from "react-hotkeys-hook/packages/react-hotkeys-hook/dist/types";
+import { Rnd } from "react-rnd";
+import { useOnClickOutside } from "usehooks-ts";
 import { GUIDELINE_VERTICAL, type IGuideline } from "./types";
 
 const variantsGuideline = cva(["o:group o:focus:outline-none o:z-50"], {
@@ -80,35 +82,22 @@ const variantsGuideline = cva(["o:group o:focus:outline-none o:z-50"], {
 export function Guideline({
   id,
   style,
-  originX,
-  originY,
 }: {
   id: IGuideline["id"];
   style: "solid" | "dashed";
-  originX: number;
-  originY: number;
 }) {
   const { data: workspace } = useWorkspaceQuery();
+  const { data: grid } = useGridQuery();
+  const { setX, setY } = useCoords();
   const { data: guideline } = useGuidelineByIdQuery(id);
   const selectedTool = useSelectedTool();
-  const rulerSetPosition = useRulerSetPosition();
   const { move } = useGuideline();
   const setSelectedTool = useSetSelectedTool();
   const isSelected = useMemo(
     () => selectedTool?.id === guideline?.id,
     [selectedTool, guideline?.id]
   );
-  const containerRef = useRef<HTMLDivElement>(null);
-  const guidelineRef = useRef<HTMLDivElement>(null);
-
-  const [isDrag, setDrag] = useState(false);
-
-  const onGuidelinePositionChanged = useCallback(
-    (_: IGuideline, x: number | null, y: number | null) => {
-      rulerSetPosition(x, y);
-    },
-    [rulerSetPosition]
-  );
+  const ref = useRef<HTMLDivElement>(null);
 
   const onGuidelinePositionChangeEnded = useCallback(
     (guideline: IGuideline, x: number, y: number) => {
@@ -117,12 +106,11 @@ export function Guideline({
     [move]
   );
 
-  const onGuidelineSelected = useCallback(
-    (guideline: IGuideline) => {
-      setSelectedTool(guideline);
-    },
-    [setSelectedTool]
-  );
+  useOnClickOutside(ref, () => {
+    if (selectedTool?.id === guideline?.id) {
+      setSelectedTool(null);
+    }
+  });
 
   const isVertical = guideline?.type === GUIDELINE_VERTICAL ? true : false;
 
@@ -131,99 +119,11 @@ export function Guideline({
     isSelected,
     isVertical,
     onGuidelinePositionChanged: (guideline, x, y) => {
-      onGuidelinePositionChanged(guideline, x, y);
       onGuidelinePositionChangeEnded(guideline, x, y);
     },
   });
 
-  const handleOnFocus = useCallback(() => {
-    if (guideline) {
-      onGuidelineSelected(guideline);
-    }
-  }, [guideline, onGuidelineSelected]);
-
-  const handleDown = useCallback(() => {
-    if (guideline && !guideline.locked && containerRef.current) {
-      setDrag(true);
-
-      onGuidelinePositionChanged(
-        guideline,
-        isVertical ? guideline.x : null,
-        isVertical ? null : guideline.y
-      );
-    }
-  }, [guideline, isVertical, onGuidelinePositionChanged]);
-
-  const handleUp = useCallback(
-    (event: MouseEvent) => {
-      if (guideline && isDrag && containerRef.current) {
-        setDrag(false);
-
-        const rect = containerRef.current.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-
-        onGuidelinePositionChangeEnded(
-          guideline,
-          isVertical ? x : 0,
-          isVertical ? 0 : y
-        );
-      }
-    },
-    [guideline, isDrag, isVertical, onGuidelinePositionChangeEnded]
-  );
-
-  const handleMove = useCallback(
-    (event: MouseEvent) => {
-      if (guideline && isDrag && containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        const normalizedX = event.clientX - rect.left;
-        const normalizedY = event.clientY - rect.top;
-        const x = isVertical ? normalizedX : -(originX ?? 0);
-        const y = isVertical ? -(originY ?? 0) : normalizedY;
-        // const snapX = Math.round(x / 10) * 10;
-        // const snapY = Math.round(y / 10) * 10;
-
-        guidelineRef.current?.style.setProperty(
-          "transform",
-          `translateX(${x}px) translateY(${y}px)`
-        );
-
-        onGuidelinePositionChanged(
-          guideline,
-          isVertical ? normalizedX : null,
-          isVertical ? null : normalizedY
-        );
-      }
-    },
-    [
-      guideline,
-      isDrag,
-      isVertical,
-      onGuidelinePositionChanged,
-      originX,
-      originY,
-    ]
-  );
-
-  useEffect(() => {
-    document.body.addEventListener("mouseup", handleUp);
-    document.body.addEventListener("mousemove", handleMove);
-
-    return () => {
-      document.body.removeEventListener("mouseup", handleUp);
-      document.body.removeEventListener("mousemove", handleMove);
-    };
-  }, [handleMove, handleUp]);
-
-  useEffect(() => {
-    guidelineRef.current?.style.setProperty(
-      "transform",
-      `translateX(${isVertical ? guideline?.x : -(originX ?? 0)}px) translateY(${isVertical ? -(originY ?? 0) : guideline?.y}px)`
-    );
-  }, [guideline, isVertical, originX, originY]);
-
-  if (!guideline) {
+  if (!guideline || !grid || !workspace) {
     return null;
   }
 
@@ -232,37 +132,60 @@ export function Guideline({
     color: guideline.color,
     locked: guideline.locked,
     isVertical,
-    isDrag,
     style,
   };
 
+  const shouldSnap = workspace.snapToGrid;
+  const gridGap = grid.gapX;
+  const snapGrid: [number, number] = shouldSnap ? [gridGap, gridGap] : [1, 1];
+
   return (
-    <div
-      data-overlay-guideline-id={guideline.id}
-      data-overlay-tool-type="guideline"
-      ref={containerRef}
-      className={cn(
-        "o:absolute o:top-0 o:left-0 o:h-0 o:w-0 o:overflow-visible o:focus:outline-none",
-        {
-          "o:pointer-events-auto": workspace?.locked === false,
-          "o:h-full": isVertical === true,
-          "o:w-full": isVertical === false,
+    <Rnd
+      disableDragging={guideline.locked}
+      dragAxis={isVertical ? "x" : "y"}
+      enableResizing={false}
+      size={{ width: isVertical ? 1 : "100%", height: isVertical ? "100%" : 1 }}
+      dragGrid={snapGrid}
+      position={{ x: guideline.x, y: guideline.y }}
+      onDrag={(_e, d) => {
+        if (isVertical) {
+          setX(d.x);
+        } else {
+          setY(d.y);
         }
-      )}
-      onMouseDown={handleDown}
+      }}
+      onMouseDown={() => {
+        setSelectedTool(guideline);
+      }}
+      // onDragStart={() => {
+      //   setSelectedTool(guideline);
+      // }}
+      onDragStop={(_e, d) => {
+        move(guideline, { x: d.x, y: d.y });
+      }}
     >
       <div
-        ref={guidelineRef}
-        tabIndex={0}
-        onFocus={handleOnFocus}
-        aria-disabled={guideline.locked}
-        aria-orientation={isVertical ? "vertical" : "horizontal"}
-        aria-selected={isSelected}
-        className={variantsGuideline(variantsConfig)}
+        data-overlay-guideline-id={guideline.id}
+        data-overlay-tool-type="guideline"
+        ref={ref}
+        className={cn(
+          "o:absolute o:top-0 o:left-0 o:h-0 o:w-0 o:overflow-visible o:focus:outline-none",
+          {
+            "o:pointer-events-auto": workspace?.locked === false,
+            "o:h-full": isVertical === true,
+            "o:w-full": isVertical === false,
+          }
+        )}
       >
-        <GuidelineActions guideline={guideline} />
+        <div
+          tabIndex={0}
+          aria-disabled={guideline.locked}
+          aria-orientation={isVertical ? "vertical" : "horizontal"}
+          aria-selected={isSelected}
+          className={variantsGuideline(variantsConfig)}
+        />
       </div>
-    </div>
+    </Rnd>
   );
 }
 

@@ -1,11 +1,13 @@
 import { Command } from "@/features/commands/Command";
 import { useCommands } from "@/features/commands/hooks/useCommands";
+import { useCoords } from "@/features/coords/hooks/useCoords";
 import { useGuidelineAddMutation } from "@/features/guideline/store/useGuidelineAddMutation";
 import { useGuidelineRemoveMutation } from "@/features/guideline/store/useGuidelineRemoveMutation";
 import { useSetSelectedTool } from "@/features/tools/store/tools";
 import { type IGuideline } from "../types";
 
 export function useGuidelineRemoveCommand() {
+  const { setX, setY } = useCoords();
   const setSelectedTool = useSetSelectedTool();
   const { execute: executeCommand } = useCommands();
 
@@ -22,6 +24,8 @@ export function useGuidelineRemoveCommand() {
               guideline,
             })
             .then(() => {
+              setX(null);
+              setY(null);
               setSelectedTool(null);
             }),
         () =>
@@ -30,6 +34,8 @@ export function useGuidelineRemoveCommand() {
               guideline,
             })
             .then(() => {
+              setX(guideline.x);
+              setY(guideline.y);
               setSelectedTool(guideline);
             })
       );
