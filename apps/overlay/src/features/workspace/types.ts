@@ -5,6 +5,7 @@ export interface IWorkspace {
   type: "workspace";
   visible: boolean;
   locked: boolean;
+  snapToGrid: boolean;
   presets: IPreset["id"][];
   activePresetId: IPreset["id"] | null;
 }

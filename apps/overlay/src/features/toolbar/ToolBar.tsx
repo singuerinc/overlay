@@ -31,6 +31,8 @@ import {
   IconGripVertical,
   IconLock,
   IconLockOpen,
+  IconMagnet,
+  IconMagnetOff,
   IconPhoto,
   IconPhotoPlus,
   IconRuler,
@@ -220,8 +222,9 @@ export function ToolBar() {
 
         <ToolBarSeparator />
 
-        <WorkspaceToggleVisibilityToolBarButton />
+        <WorkspaceSnapToGridToolBarButton />
         <WorkspaceLockToolBarButton />
+        <WorkspaceToggleVisibilityToolBarButton />
         <UndoToolBarButton />
       </div>
     </Rnd>
@@ -428,6 +431,29 @@ function OnionImagesToolBarButton() {
         toggle();
       }}
       Icon={<IconPhoto stroke={1} />}
+    />
+  );
+}
+
+function WorkspaceSnapToGridToolBarButton() {
+  const { data: workspace } = useWorkspaceQuery();
+  const { setSnapToGrid } = useWorkspace();
+
+  if (!workspace) return null;
+
+  return (
+    <ToolBarToggleButton
+      active={workspace.snapToGrid ?? false}
+      onClick={() => {
+        setSnapToGrid(!workspace.snapToGrid);
+      }}
+      Icon={
+        workspace.snapToGrid ? (
+          <IconMagnet stroke={1} />
+        ) : (
+          <IconMagnetOff stroke={1} />
+        )
+      }
     />
   );
 }

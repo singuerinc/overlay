@@ -3,12 +3,14 @@ import type { IPreset } from "@/features/preset/types";
 import { useWorkspaceAddPresetCommand } from "@/features/workspace/commands/useWorkspaceAddPresetCommand";
 import { useWorkspaceSetActivePresetIdCommand } from "@/features/workspace/commands/useWorkspaceSetActivePresetIdCommand";
 import { useWorkspaceSetLockedCommand } from "@/features/workspace/commands/useWorkspaceSetLockedCommand";
+import { useWorkspaceSetSnapToGridCommand } from "@/features/workspace/commands/useWorkspaceSetSnapToGridCommand";
 import { useWorkspaceSetVisibleCommand } from "@/features/workspace/commands/useWorkspaceSetVisibleCommand";
 
 export function useWorkspace() {
   const addPresetCmd = useWorkspaceAddPresetCommand();
   const setActivePresetIdCmd = useWorkspaceSetActivePresetIdCommand();
   const setLockedCmd = useWorkspaceSetLockedCommand();
+  const setSnapToGridCmd = useWorkspaceSetSnapToGridCommand();
   const setVisibleCmd = useWorkspaceSetVisibleCommand();
 
   return {
@@ -17,6 +19,9 @@ export function useWorkspace() {
     },
     setLocked: (locked: boolean) => {
       setLockedCmd.execute(locked);
+    },
+    setSnapToGrid: (snapToGrid: boolean) => {
+      setSnapToGridCmd.execute(snapToGrid);
     },
     setActivePresetId: (id: IPreset["id"]) => {
       setActivePresetIdCmd.execute(id);

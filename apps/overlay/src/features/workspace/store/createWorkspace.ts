@@ -11,6 +11,7 @@ export const createWorkspace = ({
   type: "workspace" as const,
   visible: true,
   locked: false,
+  snapToGrid: false,
   presets: [preset.id],
   activePresetId: preset.id,
 });
