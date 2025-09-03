@@ -22,6 +22,7 @@ export function GridColorButton() {
 
   return (
     <ToolBoxLabeledButton
+      className="o:flex-col-reverse"
       label="Color"
       Icon={
         <IconCircle
