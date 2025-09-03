@@ -17,7 +17,9 @@ export function ToolBoxInputNumber({
 }) {
   return (
     <div className="o:flex o:flex-col o:group o:rounded-md o:gap-1">
-      <span className="o:text-xs o:font-semibold o:select-none">{label}</span>
+      <span className="o:text-xs o:font-semibold o:select-none o:text-neutral-50">
+        {label}
+      </span>
       <input
         type="number"
         min={min ?? 0}

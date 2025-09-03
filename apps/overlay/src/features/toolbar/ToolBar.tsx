@@ -153,11 +153,11 @@ function ToolBarConfigPanel({
     <div
       className="o:bg-neutral-950 o:p-2 o:shadow o:rounded-md o:absolute o:-top-3 o:-translate-y-full"
       style={{
-        transform: "translateX(calc(-50% + 42px))",
+        transform: "translateX(calc(-50% + 38px))",
       }}
     >
       <div className="o:bg-neutral-950 o:w-2 o:h-2 o:absolute o:-bottom-1 o:left-1/2 o:-translate-x-1/2 o:rotate-45"></div>
-      <div className="o:flex o:flex-col o:w-full">{children}</div>
+      <div className="o:flex o:flex-col o:gap-1 o:w-full">{children}</div>
     </div>
   );
 }

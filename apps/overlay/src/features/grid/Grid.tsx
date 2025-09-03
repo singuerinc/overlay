@@ -48,7 +48,7 @@ export function Grid() {
       className="o:absolute o:top-0 o:left-0 o:w-full o:h-full"
       style={{
         opacity,
-        backgroundPosition: `${ruler.originX + grid.gapX / 2}px ${ruler.originY + grid.gapY / 2}px`,
+        backgroundPosition: `top ${ruler.originY + grid.gapY / 2}px left ${ruler.originX + grid.gapX / 2}px`,
         backgroundSize: `${grid.gapX}px ${grid.gapY}px`,
         ...styles[grid.pattern],
       }}
