@@ -15,19 +15,20 @@ export function useGuidelineColorCommand() {
       const prevColor = guideline.color;
       const command = new Command(
         "Guideline - Change Color",
-        () => {
-          mutation.mutate({
+        () =>
+          mutation.mutateAsync({
             id: guideline.id,
             color,
-          });
-        },
-        () => {
-          mutation.mutate({
-            id: guideline.id,
-            color: prevColor,
-          });
-          setSelectedTool(guideline);
-        }
+          }),
+        () =>
+          mutation
+            .mutateAsync({
+              id: guideline.id,
+              color: prevColor,
+            })
+            .then(() => {
+              setSelectedTool(guideline);
+            })
       );
       return executeCommand(command);
     },

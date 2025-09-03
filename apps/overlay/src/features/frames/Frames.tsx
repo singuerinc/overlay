@@ -33,7 +33,7 @@ function Frame({ id }: { id: IFrame["id"] }) {
   const setSelectedTool = useSetSelectedTool();
   const ref = useRef<HTMLDivElement>(null);
 
-  useOnClickOutside(ref, () => {
+  useOnClickOutside(ref as React.RefObject<HTMLDivElement>, () => {
     if (selectedTool?.id === frame?.id) {
       setSelectedTool(null);
     }

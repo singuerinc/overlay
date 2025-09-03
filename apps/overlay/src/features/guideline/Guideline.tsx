@@ -106,7 +106,7 @@ export function Guideline({
     [move]
   );
 
-  useOnClickOutside(ref, () => {
+  useOnClickOutside(ref as React.RefObject<HTMLDivElement>, () => {
     if (selectedTool?.id === guideline?.id) {
       setSelectedTool(null);
     }

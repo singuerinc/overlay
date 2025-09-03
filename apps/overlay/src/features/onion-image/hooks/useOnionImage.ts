@@ -5,7 +5,10 @@ import { useOnionImageOpacityCommand } from "@/features/onion-image/commands/use
 import { useOnionImageRemoveCommand } from "@/features/onion-image/commands/useOnionImageRemoveCommand";
 import { useOnionImageSetScaleCommand } from "@/features/onion-image/commands/useOnionImageSetScaleCommand";
 import { useOnionImageToggleVisibilityCommand } from "@/features/onion-image/commands/useOnionImageToggleVisibilityCommand";
-import type { IOnionImage } from "@/features/onion-image/types";
+import type {
+  IOnionImage,
+  OnionImageScaleType,
+} from "@/features/onion-image/types";
 
 export function useOnionImage() {
   const setOpacityCmd = useOnionImageOpacityCommand();
@@ -17,7 +20,7 @@ export function useOnionImage() {
   const setScaleCmd = useOnionImageSetScaleCommand();
 
   return {
-    setScale: (onionImage: IOnionImage, scale: number) => {
+    setScale: (onionImage: IOnionImage, scale: OnionImageScaleType) => {
       setScaleCmd.execute(onionImage, scale);
     },
     toggleVisibility: (onionImage: IOnionImage) => {
