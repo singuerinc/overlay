@@ -24,6 +24,7 @@ export function GridCyclePatternButton() {
 
   return (
     <ToolBoxLabeledButton
+      className="o:flex-col-reverse"
       label="Pattern"
       Icon={iconsByPattern[grid.pattern]}
       onClick={handleClick}
