@@ -17,12 +17,12 @@ export function ToolBoxLabeledButton({
   return (
     <div
       className={cn(
-        "o:flex o:flex-col o:text-neutral-50 o:rounded-md o:gap-1 o:items-start",
+        "o:flex o:items-center o:text-neutral-50 o:rounded-md o:gap-1",
         className
       )}
     >
-      <span className="o:text-xs o:font-semibold o:select-none">{label}</span>
       <ToolButton enabled={enabled} Icon={Icon} onClick={onClick} />
+      <span className="o:text-xs o:font-semibold o:select-none">{label}</span>
     </div>
   );
 }

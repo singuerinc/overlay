@@ -1,13 +1,19 @@
 import { Command } from "@/features/commands/Command";
 import { useCommands } from "@/features/commands/hooks/useCommands";
+import { useCoords } from "@/features/coords/hooks/useCoords";
 import { GUIDELINES_KEYS } from "@/features/guideline/store/guidelinesKeys";
 import { useGuidelineMutation } from "@/features/guideline/store/useGuidelineMutation";
 import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
 import { useSetSelectedTool } from "@/features/tools/store/tools";
 import { useQueryClient } from "@tanstack/react-query";
-import type { IGuideline } from "../types";
+import {
+  GUIDELINE_HORIZONTAL,
+  GUIDELINE_VERTICAL,
+  type IGuideline,
+} from "../types";
 
 export function useGuidelineMoveCommand() {
+  const { setX, setY } = useCoords();
   const presetId = usePresetActiveId();
   const queryClient = useQueryClient();
   const mutation = useGuidelineMutation();
@@ -31,7 +37,18 @@ export function useGuidelineMoveCommand() {
                   x: position.x,
                   y: position.y,
                 })
-                .then(() => resolve(void 0));
+                .then((g) => {
+                  if (g) {
+                    if (g.type === GUIDELINE_VERTICAL) {
+                      setX(g.x);
+                      setY(null);
+                    } else if (g.type === GUIDELINE_HORIZONTAL) {
+                      setX(null);
+                      setY(g.y);
+                    }
+                  }
+                  resolve(void 0);
+                });
             } else {
               reject();
             }
@@ -47,9 +64,18 @@ export function useGuidelineMoveCommand() {
                   x: pItem.x,
                   y: pItem.y,
                 })
-                .then(() => {
-                  setSelectedTool(pItem);
-                  resolve(pItem);
+                .then((g) => {
+                  if (g) {
+                    setSelectedTool(g);
+                    if (g.type === GUIDELINE_VERTICAL) {
+                      setX(g.x);
+                      setY(null);
+                    } else if (g.type === GUIDELINE_HORIZONTAL) {
+                      setX(null);
+                      setY(g.y);
+                    }
+                  }
+                  resolve(g);
                 });
             } else {
               reject();

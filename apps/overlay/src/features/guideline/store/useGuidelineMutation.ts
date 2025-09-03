@@ -24,7 +24,11 @@ export function useGuidelineMutation() {
           GUIDELINES_KEYS.guideline(presetId, props.id).join("-"),
           JSON.stringify(newGuideline)
         );
+
+        return newGuideline;
       }
+
+      return guideline;
     },
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({

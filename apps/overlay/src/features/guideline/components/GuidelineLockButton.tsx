@@ -7,17 +7,22 @@ import { type IGuideline } from "../types";
 
 export function GuidelineLockButton({ id }: { id: IGuideline["id"] }) {
   const { data: guideline } = useGuidelineByIdQuery(id);
-  const { toggleLock } = useGuideline();
+  const { lock, unlock } = useGuideline();
 
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
       e.preventDefault();
-      if (guideline) {
-        toggleLock(guideline);
+
+      if (!guideline) return;
+
+      if (guideline.locked) {
+        unlock(guideline);
+      } else {
+        lock(guideline);
       }
     },
-    [guideline, toggleLock]
+    [guideline, lock, unlock]
   );
 
   return (

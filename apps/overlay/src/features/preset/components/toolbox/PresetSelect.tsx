@@ -10,7 +10,7 @@ export function PresetSelect() {
   return (
     <div
       className={cn(
-        "o:flex o:flex-col o:col-span-2 o:rounded-md o:gap-1 o:items-start"
+        "o:flex o:flex-col o:col-span-2 o:rounded-md o:gap-1 o:items-start o:text-neutral-50"
       )}
     >
       <select

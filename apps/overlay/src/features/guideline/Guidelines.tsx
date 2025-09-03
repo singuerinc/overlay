@@ -1,9 +1,7 @@
 import { Guideline } from "@/features/guideline/Guideline";
 import { useGuidelinesQuery } from "@/features/guideline/store/useGuidelinesQuery";
-import { useRulerQuery } from "@/features/rulers/store/useRulerQuery";
 
 export function Guidelines() {
-  const { data: ruler } = useRulerQuery();
   const { data: guidelines, isLoading, isError } = useGuidelinesQuery();
 
   if (isLoading || isError || !guidelines) {
@@ -20,13 +18,7 @@ export function Guidelines() {
       className="o:h-full o:w-full o:absolute o:top-0 o:left-0"
     >
       {guidelines.guidelines.map((guidelineId) => (
-        <Guideline
-          key={guidelineId}
-          id={guidelineId}
-          originX={ruler?.originX ?? 0}
-          originY={ruler?.originY ?? 0}
-          style="solid"
-        />
+        <Guideline key={guidelineId} id={guidelineId} style="solid" />
       ))}
     </div>
   );

@@ -4,7 +4,7 @@ import { useGuidelineLockMutation } from "@/features/guideline/store/useGuidelin
 import { useGuidelineUnlockMutation } from "@/features/guideline/store/useGuidelineUnlockMutation";
 import { type IGuideline } from "../types";
 
-export function useGuidelineLockCommand() {
+export function useGuidelineUnlockCommand() {
   const { execute: executeCommand } = useCommands();
   const { mutate: unlockMutate } = useGuidelineUnlockMutation();
   const { mutate: lockMutate } = useGuidelineLockMutation();
@@ -12,9 +12,9 @@ export function useGuidelineLockCommand() {
   return {
     execute: (guideline: IGuideline) => {
       const command = new Command(
-        "Guideline - Lock",
-        () => lockMutate(guideline.id),
-        () => unlockMutate(guideline.id)
+        "Guideline - Unlock",
+        () => unlockMutate(guideline.id),
+        () => lockMutate(guideline.id)
       );
       return executeCommand(command);
     },
