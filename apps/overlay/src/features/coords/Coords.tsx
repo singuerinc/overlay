@@ -25,7 +25,7 @@ export function Coords() {
       className={cn(
         "o:absolute o:left-0 o:top-0",
         "o:w-full o:h-full o:px-1",
-        "o:text-neutral-950 o:text-[9px] o:tabular-nums",
+        "o:text-neutral-50 o:text-[9px] o:tabular-nums",
         zIndex.coords
       )}
       style={{
@@ -36,7 +36,7 @@ export function Coords() {
       {x !== null && (
         <div
           className={cn(
-            "o:absolute o:w-12 o:h-5 o:flex o:justify-start o:border-l o:bg-gradient-to-r o:from-white o:to-transparent"
+            "o:absolute o:w-12 o:h-5 o:flex o:justify-start o:border-l o:bg-gradient-to-r o:from-neutral-800 o:to-transparent"
           )}
           style={{ left: x, top: 0 }}
         >
@@ -46,7 +46,7 @@ export function Coords() {
       {y !== null && (
         <div
           className={cn(
-            "o:absolute o:w-5 o:h-16 o:bg-gradient-to-b o:from-white o:to-transparent o:border-t o:inline-block",
+            "o:absolute o:w-5 o:h-16 o:bg-gradient-to-b o:from-neutral-800 o:to-transparent o:border-t o:inline-block",
             {
               "o:hidden": y === null,
             }

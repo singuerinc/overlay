@@ -1,4 +1,4 @@
-- [ ] bug: re-render removes the anchor
+- [x] bug: re-render removes the anchor
 - [ ] bug: font in project affects overlay
 - [ ] bug: coords background does not work great on semi transparent background
 - [ ] bug: lock workspace is missing

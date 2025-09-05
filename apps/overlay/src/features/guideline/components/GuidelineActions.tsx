@@ -15,7 +15,8 @@ export function GuidelineActions() {
   const guideline = selectedTool;
 
   return (
-    <div className="o:flex">
+    <div className="o:flex o:gap-1 o:items-center">
+      <span className="o:text-xs o:text-neutral-200 o:px-1">Guideline</span>
       <GuidelineColorButton id={guideline.id} />
       <GuidelineLockButton id={guideline.id} />
       <GuidelineRotateButton id={guideline.id} />

@@ -1,15 +1,20 @@
 import { FrameLockButton } from "@/features/frames/components/FrameLockButton";
 import { FrameRemoveButton } from "@/features/frames/components/FrameRemoveButton";
-import type { IFrame } from "@/features/frames/types";
-import { cn } from "@/ui/cn";
+import { isFrame } from "@/features/frames/utils/isFrame";
+import { useSelectedTool } from "@/features/tools/store/tools";
 
-export function FrameActions({ frame }: { frame: IFrame }) {
+export function FrameActions() {
+  const selectedTool = useSelectedTool();
+
+  if (!selectedTool || !isFrame(selectedTool)) {
+    return null;
+  }
+
+  const frame = selectedTool;
+
   return (
-    <div
-      className={cn(
-        "o:gap-1 o:absolute o:left-1/2 o:top-1/2 o:-translate-1/2 o:flex"
-      )}
-    >
+    <div className="o:flex o:gap-1 o:items-center">
+      <span className="o:text-xs o:text-neutral-200 o:px-1">Frame</span>
       <FrameLockButton id={frame.id} />
       <FrameRemoveButton id={frame.id} />
     </div>

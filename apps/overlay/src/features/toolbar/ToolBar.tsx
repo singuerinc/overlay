@@ -4,6 +4,7 @@ import { ColumnsToolBox } from "@/features/columns/toolbox/ColumnsToolBox";
 import { useCommands } from "@/features/commands/hooks/useCommands";
 import { useCrosshair } from "@/features/crosshair/hooks/useCrosshair";
 import { useCrosshairQuery } from "@/features/crosshair/store/useCrosshairQuery";
+import { FrameActions } from "@/features/frames/components/FrameActions";
 import { useFrames } from "@/features/frames/hooks/useFrames";
 import { useFramesQuery } from "@/features/frames/store/useFramesQuery";
 import { useGrid } from "@/features/grid/hooks/useGrid";
@@ -12,6 +13,7 @@ import { GridToolBox } from "@/features/grid/toolbox/GridToolBox";
 import { GuidelineActions } from "@/features/guideline/components/GuidelineActions";
 import { useGuidelines } from "@/features/guideline/hooks/useGuidelines";
 import { useGuidelinesQuery } from "@/features/guideline/store/useGuidelinesQuery";
+import { OnionImageActions } from "@/features/onion-image/components/OnionImageActions";
 import { useOnionImages } from "@/features/onion-image/hooks/useOnionImages";
 import { useOnionImagesQuery } from "@/features/onion-image/store/useOnionImagesQuery";
 import { PresetCreateButton } from "@/features/preset/components/toolbox/PresetCreateButton";
@@ -56,9 +58,14 @@ import {
   IconUpload,
 } from "@tabler/icons-react";
 import { cva } from "class-variance-authority";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Rnd } from "react-rnd";
-import { useCopyToClipboard, useOnClickOutside } from "usehooks-ts";
+import {
+  useCopyToClipboard,
+  useDebounceCallback,
+  useOnClickOutside,
+  useResizeObserver,
+} from "usehooks-ts";
 
 function ToolBarButton({
   onClick,
@@ -208,9 +215,26 @@ function ToolBarButtonWithConfigButton({
 }
 
 export function ToolBar() {
+  const ref = useRef(document.body);
   const selectedTool = useSelectedTool();
   const { data: toolBox } = useToolBoxQuery();
   const { move: toolBoxMove } = useToolBox();
+
+  const moveToSafePosition = useCallback(() => {
+    if (!toolBox) return;
+
+    toolBoxMove(
+      Math.min(toolBox.x, document.body.clientWidth - 372),
+      Math.min(toolBox.y, document.body.clientHeight - 32)
+    );
+  }, [toolBox?.x, toolBox?.y]);
+
+  const onResize = useDebounceCallback(moveToSafePosition, 200);
+
+  useResizeObserver({
+    ref: ref as React.RefObject<HTMLElement>,
+    onResize,
+  });
 
   if (!toolBox) {
     return null;
@@ -218,10 +242,14 @@ export function ToolBar() {
 
   return (
     <Rnd
+      bounds="parent"
       dragHandleClassName="overlay-toolbar-handler"
       className={cn(zIndex.toolbar)}
       onDragStop={(_e, d) => toolBoxMove(d.x, d.y)}
-      position={{ x: toolBox.x, y: toolBox.y }}
+      position={{
+        x: toolBox.x,
+        y: toolBox.y,
+      }}
     >
       <div className="o:flex o:items-center o:gap-1 o:bg-neutral-950 o:shadow-lg o:p-1 o:rounded-sm o:pointer-events-auto">
         <IconGripVertical
@@ -249,6 +277,8 @@ export function ToolBar() {
 
         {selectedTool && <ToolBarSeparator />}
         <GuidelineActions />
+        <FrameActions />
+        <OnionImageActions />
       </div>
     </Rnd>
   );

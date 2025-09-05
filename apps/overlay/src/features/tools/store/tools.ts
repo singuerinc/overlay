@@ -12,7 +12,7 @@ const useToolsStore = create<Store>((set) => ({
   selectedTool: null,
   actions: {
     setSelectedTool: (tool: ITool | null) => {
-      console.log("setSelectedTool:", tool);
+      // console.log("setSelectedTool:", tool);
       set({ selectedTool: tool });
     },
   },

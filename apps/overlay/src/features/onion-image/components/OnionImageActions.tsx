@@ -2,14 +2,24 @@ import { OnionImageFilterButton } from "@/features/onion-image/components/OnionI
 import { OnionImageOpacityButton } from "@/features/onion-image/components/OnionImageOpacityButton";
 import { OnionImageRemoveButton } from "@/features/onion-image/components/OnionImageRemoveButton";
 import { OnionImageScaleButton } from "@/features/onion-image/components/OnionImageScaleButton";
-import type { IOnionImage } from "@/features/onion-image/types";
+import { isOnionImage } from "@/features/onion-image/utils/isOnionImage";
+import { useSelectedTool } from "@/features/tools/store/tools";
 
-export function OnionImageActions({ onionImage }: { onionImage: IOnionImage }) {
+export function OnionImageActions() {
+  const selectedTool = useSelectedTool();
+
+  if (!selectedTool || !isOnionImage(selectedTool)) {
+    return null;
+  }
+
+  const onionImage = selectedTool;
+
   return (
-    <div className="o:bg-neutral-50 o:absolute o:left-1/2 o:top-1/2 o:-translate-1/2">
-      <OnionImageOpacityButton onionImage={onionImage} />
-      <OnionImageFilterButton onionImage={onionImage} />
-      <OnionImageScaleButton onionImage={onionImage} />
+    <div className="o:flex o:gap-1 o:items-center">
+      <span className="o:text-xs o:text-neutral-200 o:px-1">Image</span>
+      <OnionImageOpacityButton id={onionImage.id} />
+      <OnionImageFilterButton id={onionImage.id} />
+      <OnionImageScaleButton id={onionImage.id} />
       <OnionImageRemoveButton id={onionImage.id} />
     </div>
   );

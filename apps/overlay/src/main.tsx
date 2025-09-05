@@ -1,5 +1,4 @@
 import type { IExportedWorkspace } from "@/features/workspace/utils/useExportWorkspace";
-import { workspaceImport } from "@/features/workspace/utils/workspaceImport";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Overlay } from "./overlay";
@@ -124,7 +123,7 @@ const workspace: IExportedWorkspace = {
   ],
 };
 
-await workspaceImport(workspace);
+// await workspaceImport(workspace);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

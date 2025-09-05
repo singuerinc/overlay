@@ -1,6 +1,5 @@
 import { useCoords } from "@/features/coords/hooks/useCoords";
 import { useGridQuery } from "@/features/grid/store/useGridQuery";
-import { OnionImageActions } from "@/features/onion-image/components/OnionImageActions";
 import { useOnionImage } from "@/features/onion-image/hooks/useOnionImage";
 import { useOnionImageByIdQuery } from "@/features/onion-image/store/useOnionImageByIdQuery";
 import type { IOnionImage } from "@/features/onion-image/types";
@@ -165,7 +164,6 @@ export function OnionImage({ id }: { id: IOnionImage["id"] }) {
           width={onionImage.width * onionImage.scale}
           height={onionImage.height * onionImage.scale}
         />
-        {isSelected && <OnionImageActions onionImage={onionImage} />}
       </div>
     </Rnd>
   );

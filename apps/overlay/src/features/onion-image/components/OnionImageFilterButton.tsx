@@ -1,19 +1,18 @@
 import { useOnionImage } from "@/features/onion-image/hooks/useOnionImage";
+import { useOnionImageByIdQuery } from "@/features/onion-image/store/useOnionImageByIdQuery";
 import { ToolButton } from "@/ui/ToolButton";
 import { IconContrastFilled } from "@tabler/icons-react";
 import { useCallback } from "react";
 import { type IOnionImage } from "../types";
 
-export function OnionImageFilterButton({
-  onionImage,
-}: {
-  onionImage: IOnionImage;
-}) {
+export function OnionImageFilterButton({ id }: { id: IOnionImage["id"] }) {
+  const { data: onionImage } = useOnionImageByIdQuery(id);
   const { cycleFilter } = useOnionImage();
 
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
+      if (!onionImage) return;
       cycleFilter(onionImage);
     },
     [onionImage, cycleFilter]
@@ -22,7 +21,7 @@ export function OnionImageFilterButton({
   return (
     <ToolButton
       enabled={true}
-      Icon={<IconContrastFilled />}
+      Icon={<IconContrastFilled size={16} />}
       onClick={handleClick}
     />
   );
