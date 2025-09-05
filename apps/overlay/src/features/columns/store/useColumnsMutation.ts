@@ -1,4 +1,5 @@
 import { COLUMNS_KEYS } from "@/features/columns/store/columnsKeys";
+import { columnsSave } from "@/features/columns/store/columnsSave";
 import type { IColumnsStore } from "@/features/columns/types";
 import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -14,14 +15,13 @@ export function useColumnsMutation() {
         COLUMNS_KEYS.verticalColumns(presetId)
       );
 
-      const updatedColumns = produce(columns, (draftState: IColumnsStore) => {
-        Object.assign(draftState, props);
-      });
+      if (columns) {
+        const updatedColumns = produce(columns, (draftState: IColumnsStore) => {
+          Object.assign(draftState, props);
+        });
 
-      localStorage.setItem(
-        COLUMNS_KEYS.verticalColumns(presetId).join("-"),
-        JSON.stringify(updatedColumns)
-      );
+        await columnsSave(presetId, updatedColumns);
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

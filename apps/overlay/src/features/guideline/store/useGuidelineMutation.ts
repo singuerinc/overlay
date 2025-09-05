@@ -1,3 +1,4 @@
+import { guidelineSave } from "@/features/guideline/store/guidelineSave";
 import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
@@ -20,10 +21,7 @@ export function useGuidelineMutation() {
           Object.assign(draftState, props);
         });
 
-        localStorage.setItem(
-          GUIDELINES_KEYS.guideline(presetId, props.id).join("-"),
-          JSON.stringify(newGuideline)
-        );
+        await guidelineSave(presetId, newGuideline);
 
         return newGuideline;
       }

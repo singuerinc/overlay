@@ -14,7 +14,6 @@ export const ToolBoxTabNames = [
   "columns",
   "guidelines",
   "onion-images",
-  "notes",
   "workspace",
 ] as const;
 

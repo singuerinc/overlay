@@ -1,4 +1,5 @@
 import { GRID_KEYS } from "@/features/grid/store/gridKeys";
+import { gridSave } from "@/features/grid/store/gridSave";
 import type { IGridStore } from "@/features/grid/types";
 import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -14,14 +15,13 @@ export function useGridMutation() {
         GRID_KEYS.grid(presetId)
       );
 
-      const updatedGrid = produce(grid, (draftState: IGridStore) => {
-        Object.assign(draftState, props);
-      });
+      if (grid) {
+        const updatedGrid = produce(grid, (draftState: IGridStore) => {
+          Object.assign(draftState, props);
+        });
 
-      localStorage.setItem(
-        GRID_KEYS.grid(presetId).join("-"),
-        JSON.stringify(updatedGrid)
-      );
+        await gridSave(presetId, updatedGrid);
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: GRID_KEYS.grid(presetId) });

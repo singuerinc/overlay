@@ -1,3 +1,4 @@
+import { frameSave } from "@/features/frames/store/frameSave";
 import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
@@ -13,15 +14,13 @@ export function useFrameMutation() {
       const frame = queryClient.getQueryData<IFrame>(
         FRAMES_KEYS.frame(presetId, props.id)
       );
+
       if (frame) {
         const newFrame = produce(frame, (draftState: IFrame) => {
           Object.assign(draftState, props);
         });
 
-        localStorage.setItem(
-          FRAMES_KEYS.frame(presetId, props.id).join("-"),
-          JSON.stringify(newFrame)
-        );
+        await frameSave(presetId, newFrame);
       }
     },
     onSuccess: (_, { id }) => {

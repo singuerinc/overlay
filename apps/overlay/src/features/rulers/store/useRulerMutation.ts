@@ -1,5 +1,6 @@
 import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
 import { RULER_KEYS } from "@/features/rulers/store/rulerKeys";
+import { rulerSave } from "@/features/rulers/store/rulerSave";
 import type { IRulerStore } from "@/features/rulers/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
@@ -14,14 +15,13 @@ export function useRulerMutation() {
         RULER_KEYS.ruler(presetId)
       );
 
-      const updatedRuler = produce(ruler, (draftState: IRulerStore) => {
-        Object.assign(draftState, props);
-      });
+      if (ruler) {
+        const updatedRuler = produce(ruler, (draftState: IRulerStore) => {
+          Object.assign(draftState, props);
+        });
 
-      localStorage.setItem(
-        RULER_KEYS.ruler(presetId).join("-"),
-        JSON.stringify(updatedRuler)
-      );
+        await rulerSave(presetId, updatedRuler);
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: RULER_KEYS.ruler(presetId) });

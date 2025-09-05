@@ -1,4 +1,5 @@
 import { ONION_IMAGES_KEYS } from "@/features/onion-image/store/onionImagesKeys";
+import { onionImagesSave } from "@/features/onion-image/store/onionImagesSave";
 import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
@@ -14,17 +15,16 @@ export function useOnionImagesMutation() {
         ONION_IMAGES_KEYS.onionImages(presetId)
       );
 
-      const newOnionImages = produce(
-        onionImages,
-        (draftState: IOnionImagesStore) => {
-          Object.assign(draftState, props);
-        }
-      );
+      if (onionImages) {
+        const newOnionImages = produce(
+          onionImages,
+          (draftState: IOnionImagesStore) => {
+            Object.assign(draftState, props);
+          }
+        );
 
-      localStorage.setItem(
-        ONION_IMAGES_KEYS.onionImages(presetId).join("-"),
-        JSON.stringify(newOnionImages)
-      );
+        await onionImagesSave(presetId, newOnionImages);
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

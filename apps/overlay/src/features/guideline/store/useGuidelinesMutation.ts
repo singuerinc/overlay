@@ -1,3 +1,4 @@
+import { guidelinesSave } from "@/features/guideline/store/guidelinesSave";
 import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
@@ -14,17 +15,16 @@ export function useGuidelinesMutation() {
         GUIDELINES_KEYS.guidelines(presetId)
       );
 
-      const newGuidelines = produce(
-        guidelines,
-        (draftState: IGuidelineStore) => {
-          Object.assign(draftState, props);
-        }
-      );
+      if (guidelines) {
+        const newGuidelines = produce(
+          guidelines,
+          (draftState: IGuidelineStore) => {
+            Object.assign(draftState, props);
+          }
+        );
 
-      localStorage.setItem(
-        GUIDELINES_KEYS.guidelines(presetId).join("-"),
-        JSON.stringify(newGuidelines)
-      );
+        await guidelinesSave(presetId, newGuidelines);
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

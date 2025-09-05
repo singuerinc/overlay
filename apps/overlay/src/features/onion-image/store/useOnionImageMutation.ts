@@ -1,3 +1,4 @@
+import { onionImageSave } from "@/features/onion-image/store/onionImageSave";
 import { ONION_IMAGES_KEYS } from "@/features/onion-image/store/onionImagesKeys";
 import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -32,10 +33,7 @@ export function useOnionImageMutation() {
           Object.assign(draftState, props);
         });
 
-        localStorage.setItem(
-          ONION_IMAGES_KEYS.onionImage(presetId, props.id).join("-"),
-          JSON.stringify(newOnionImage)
-        );
+        await onionImageSave(presetId, newOnionImage);
       }
     },
     onSuccess: (_, { id }) => {

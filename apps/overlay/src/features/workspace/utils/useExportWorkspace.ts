@@ -2,19 +2,17 @@ import { getColumns } from "@/features/columns/store/useColumnsQuery";
 import type { IColumnsStore } from "@/features/columns/types";
 import { getCrosshair } from "@/features/crosshair/store/useCrosshairQuery";
 import type { ICrosshairStore } from "@/features/crosshair/types";
+import { getFrame } from "@/features/frames/store/useFrameByIdQuery";
+import { getFrames } from "@/features/frames/store/useFramesQuery";
+import type { IFrame } from "@/features/frames/types";
 import { getGrid } from "@/features/grid/store/useGridQuery";
 import type { IGridStore } from "@/features/grid/types";
 import { getGuideline } from "@/features/guideline/store/useGuidelineByIdQuery";
 import { getGuidelines } from "@/features/guideline/store/useGuidelinesQuery";
-import type { IGuideline, IGuidelineStore } from "@/features/guideline/types";
-import { getNotes } from "@/features/notes/store/useNotesQuery";
-import type { INotesStore } from "@/features/notes/types";
+import type { IGuideline } from "@/features/guideline/types";
 import { getOnionImage } from "@/features/onion-image/store/useOnionImageByIdQuery";
 import { getOnionImages } from "@/features/onion-image/store/useOnionImagesQuery";
-import type {
-  IOnionImage,
-  IOnionImagesStore,
-} from "@/features/onion-image/types";
+import type { IOnionImage } from "@/features/onion-image/types";
 import { getPreset } from "@/features/preset/hooks/usePresetByIdQuery";
 import type { IPreset } from "@/features/preset/types";
 import { getRuler } from "@/features/rulers/store/useRulerQuery";
@@ -22,20 +20,29 @@ import type { IRulerStore } from "@/features/rulers/types";
 import { useWorkspaceQuery } from "@/features/workspace/store/useWorkspaceQuery";
 import type { IWorkspace } from "@/features/workspace/types";
 
-type IExportedWorkspace = {
+export type IExportedWorkspace = {
   id: string;
   type: IWorkspace["type"];
+  version: "1";
   presets: (IPreset & {
     ruler: IRulerStore;
     crosshair: ICrosshairStore;
     columns: IColumnsStore;
     grid: IGridStore;
-    guidelines: Exclude<IGuidelineStore, "guidelines"> & {
+    guidelines: {
       guidelines: IGuideline[];
+      visible: boolean;
+      locked: boolean;
     };
-    notes: INotesStore;
-    onionImages: Exclude<IOnionImagesStore, "onionImages"> & {
+    onionImages: {
       onionImages: IOnionImage[];
+      visible: boolean;
+      locked: boolean;
+    };
+    frames: {
+      frames: IFrame[];
+      visible: boolean;
+      locked: boolean;
     };
   })[];
 };
@@ -68,7 +75,6 @@ export function useExportWorkspace() {
               guidelines: guidelineList,
             };
 
-            const notes = await getNotes(presetId);
             const onionImages = await getOnionImages(presetId);
             const onionImagesList = await Promise.all(
               onionImages.onionImages.map((id) => getOnionImage(presetId, id))
@@ -79,6 +85,16 @@ export function useExportWorkspace() {
               onionImages: onionImagesList,
             };
 
+            const frames = await getFrames(presetId);
+            const framesList = await Promise.all(
+              frames.frames.map((id) => getFrame(presetId, id))
+            );
+
+            const framesWithList = {
+              ...frames,
+              frames: framesList,
+            };
+
             return {
               ...preset,
               ruler,
@@ -87,7 +103,7 @@ export function useExportWorkspace() {
               columns,
               guidelines: guidelinesWithList,
               onionImages: onionImagesWithList,
-              notes,
+              frames: framesWithList,
             };
           })
         ),

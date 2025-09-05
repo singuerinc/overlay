@@ -1,4 +1,5 @@
 import { CROSSHAIR_KEYS } from "@/features/crosshair/store/crosshairKeys";
+import { crosshairSave } from "@/features/crosshair/store/crosshairSave";
 import { usePresetActiveId } from "@/features/preset/hooks/usePresetActiveId";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
@@ -14,17 +15,16 @@ export function useCrosshairMutation() {
         CROSSHAIR_KEYS.crosshair(presetId)
       );
 
-      const updatedCrosshair = produce(
-        crosshair,
-        (draftState: ICrosshairStore) => {
-          Object.assign(draftState, props);
-        }
-      );
+      if (crosshair) {
+        const updatedCrosshair = produce(
+          crosshair,
+          (draftState: ICrosshairStore) => {
+            Object.assign(draftState, props);
+          }
+        );
 
-      localStorage.setItem(
-        CROSSHAIR_KEYS.crosshair(presetId).join("-"),
-        JSON.stringify(updatedCrosshair)
-      );
+        await crosshairSave(presetId, updatedCrosshair);
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

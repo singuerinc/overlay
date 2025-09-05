@@ -12,7 +12,7 @@
   "dependencies": {
     "@codesandbox/sandpack-react": "2.20.0",
     "@codesandbox/sandpack-themes": "2.0.21",
-    "@singuerinc/overlay": "0.0.13",
+    "@singuerinc/overlay": "0.0.14",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "tailwindcss": "4.1.11"
